@@ -47,11 +47,12 @@ Node* node_create(DataType data) { // 새로운 노드가 생성될 때 노드의 data 필드에
 	return new_node;
 }
 
-/*  노드 삭제 함수
-	- 개별 노드의 "메모리 자체" 를 해제
-	- 매개 변수 : node - 삭제할 노드의 포인터 */
-void node_destroy(Node* node) {
-	free(node);
+
+// 리스트를 지운다고 되는게 아니고 노드들이 각각 다 따로 메모리지정이 되어있으니 노드부터 지워주고 남은 빈 리스트를 지워야 됨.
+void list_destroy(LinkedList* list) {
+	// 리무브노드에서 노드의 메모리해제까지 만들고
+	// 이 함수에서는 리무브노드를 반복문으로 호출해서 노드를 싹 없애는 코드를 만들어주고
+	// 마지막에 free(list);
 }
 
 /*  리스트의 맨 앞에 노드 삽입
@@ -61,12 +62,12 @@ void node_destroy(Node* node) {
 int list_push_front(LinkedList* list, DataType data) {
 	Node* new_node = node_create(data); // 새로운 노드를 생성하고(Node형 구조체의 메모리 주소 저장할 곳 : new_node) 내용물을 받아옴
 	if (new_node == NULL) { // 뉴노드 삽입 실패시
-		return 0;
+		return 0; // 노드삽입 실패시 0반환
 	}
 	new_node->next = list->head; // 새로운 노드의 next 포인터가 현재 리스트의 헤드를 가리키도록 설정
 	list->head = new_node; // 이제 새로운노드가 연결리스트'의' 헤드가 되었고(->는 역참조 자동)
 	list->size++; // 사이즈는(노드의 개수는) 하나 늘어났다
-	return 1;
+	return 1; // 맨앞에 노드삽입 성공시 1반환
 }
 /*  
 	Node* new_node = node_create(data);
@@ -76,6 +77,122 @@ int list_push_front(LinkedList* list, DataType data) {
 	Node 구조체 자체가 아니라, 그 구조체의 메모리 주소만 반환합니다.
 	포인터형을 반환한다는 것은 메모리 주소를 반환한다는 뜻
 */
+
+/* 리스트의 맨 뒤에 노드 추가
+  - 새 노드를 생성하여 리스트의 마지막에 추가
+  - 매개변수: list - 대상 리스트, data - 저장할 데이터
+  - 반환값: 성공 시 1, 실패 시 0
+*/
+
+int list_push_back(LinkedList* list, DataType data) {
+	Node* new_node = node_create(data); // 노드구조체포인터타입 뉴노드는 노드만드는 함수에 data를 넣어서 만들어옴
+	if (new_node == NULL) {
+		return 0; // 못만들어왔으면 0반환
+	}
+
+	if (list->head == NULL) { // 리스트의 헤드가 없으면 (비어있으면)
+		list->head == new_node; // 여기서 만든 뉴노드가 헤드가 되겠지
+	}
+	else { // 리스트가 비어있지 않으면
+		Node* current = list->head; // 리스트의 원래 있던 헤드를 현재노드를 가리키는 포인터로 지정하고
+		while (current->next != NULL) { // 현재노드주소의 다음 노드주소를 가리키는 넥스트 포인터가 없을때까지(제일 뒤로 올 때까지)
+			current = current->next; // 조건문 한번 반복될때마다 이게 실행되는거지 > 한칸씩 이동
+		}
+		current->next = new_node; // 현재 노드의 넥스트가 새로 생성된 노드를 가리킴(push_back이 된 것)
+		//current->next == NULL이 되면 while문 빠져나오고 current->next = new_node; 실행
+	}
+	list->size++; // 노드 추가되었으니 노드 개수 늘어났고
+	return 1; // 노드추가 성공시 1반환
+}
+
+/* 특정 위치 뒤에 노드 삽입
+  - 지정된 노드 뒤에 새 노드를 삽입
+  - 매개변수: node - 삽입 위치 노드, data - 저장할 데이터
+  - 반환값: 성공 시 1, 실패 시 0
+ */
+int list_insert_after(Node* node, DataType data) {
+	
+	if (node == NULL) { // 삽입할 위치(node) 유효성검사부터
+		return 0;
+	}
+
+	Node* new_node = node_create(data);
+	if (new_node == NULL) { // 노드생성 유효성검사
+		return 0;
+	}
+
+	new_node->next = node->next; // 원래 노드의 넥스트주소에 새노드의 넥스트주소를 대입 (뒤에 끼어든거지)
+	node->next = new_node; // 그래서 뒤에오게 된 것
+	
+	return 1;
+}
+
+/* 특정 위치의 노드 탐색
+  - 인덱스로 노드를 찾아서 반환
+  - 매개변수: list - 대상 리스트, index - 찾을 위치
+  - 반환값: 찾은 노드의 포인터 또는 NULL
+*/
+Node* list_get_node(LinkedList* list, size_t index) { // search
+	if (index >= list->size) { // index == list면 전체 size가 5라쳤을때 index 0,1,2,3,4 이므로 유효하지 않은 위치접근임
+		return NULL;
+	}
+
+	Node* current = list->head; // 헤드부터 쭉 가보자고
+	for (size_t i = 0; i < index; i++) { // 지정한 index(예를들어 3이면) 3크기의 012 나오고 2를 찾으니 3번째 인덱스를 찾은 셈)
+		current = current->next;
+		/* 주석처럼 리스트 크기 5이고 0, 1, 2, 3, 4 가 있다고 쳤을 때
+		 Node* current = list->head; 여기서 current는 0을 가리킴
+		 index에 3을 받아오면 0 > 1 까지 찾고(i < index; 이니까 2번째까지 순회한거지)
+		 1노드 다음인 2노드를 가리키고 있다(current = current->next;)
+		 그래서 결국 찾아야 하는 2노드가 나온 것. (받아온 값3은 결국 3번째 노드(2노드)니까)
+		*/
+	}
+	return current;
+}
+
+/* 노드 삭제
+ * - 리스트에서 특정 노드를 제거하고 메모리 해제
+ * - 매개변수: list - 대상 리스트, target - 삭제할 노드
+ * - 반환값: 성공 시 1, 실패 시 0
+ */
+int list_remove_target_node(LinkedList* list, Node* target) {
+	
+	if (target >= list->size) { // 타겟 유효성 검사 outOfRange면 return 0;
+		return 0;
+	}
+
+	// 타겟 찾기
+	Node* current = list->head; // 현재노드 포인터 하나 헤드에 지정해주고
+	Node* prev = NULL; // 이전노드 포인터 하나 지정해주고 (previous)
+	for (size_t i = 0; i < target; i++) { // target -1 크기만큼 순회 > 인덱스 찾음
+		prev = current; // 순회하는동안 얘도 한칸씩 이동
+		current = current->next; // 순회하는동안 포인터 한칸씩 이동 (타겟주소는 current포인터에 저장)
+	} // 찾았으면 반복문 빠져나오고
+
+	// 이전노드 링크해줘야지(노드 연결 관계 수정)
+	if (prev == NULL) { // 첫번째 노드를 삭제할 때
+		list->head = current->next; // 삭제할 타겟 다음 노드가 헤드가 되고
+	}
+	else { // 중간이나 마지막 노드를 삭제할 때(타겟 앞에 노드가 있다)
+		prev->next = current->next; // 삭제할 타겟의 다음노드와 앞노드의 next 연결
+	}
+
+	free(current); // 타겟 노드 메모리 해제
+	list->size--; // 하나 삭제하면 리스트의 크기--;
+	return 1; // 삭제 성공
+}
+
+int list_remove_head(LinkedList* list) {
+
+	
+
+}
+
+int list_remove_tail(LinkedList* list, Node* index) {
+
+
+
+}
 
 int main(void) {
 	

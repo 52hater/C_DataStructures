@@ -2,24 +2,24 @@
 #include <stdlib.h>
 
 /*
-Å½¿å ¾Ë°í¸®Áò - °Å½º¸§µ· ¹®Á¦
+íƒìš• ì•Œê³ ë¦¬ì¦˜ - ê±°ìŠ¤ë¦„ëˆ ë¬¸ì œ
 ==========================
 
-Æ¯Â¡:
-1. °¡Àå Å« ´ÜÀ§ºÎÅÍ ¼±ÅÃ
-2. °¢ ¼±ÅÃÀÌ ÀÌÈÄ ¼±ÅÃ¿¡ ¿µÇâ
-3. ÇÑ±¹/¹Ì±¹ È­ÆóÃ³·³ Å« ´ÜÀ§°¡ ÀÛÀº ´ÜÀ§ÀÇ ¹è¼öÀÏ ¶§ ÃÖÀûÇØ º¸Àå
-4. ÀÓÀÇÀÇ È­Æó ´ÜÀ§¿¡¼­´Â ÃÖÀûÇØ º¸ÀåÇÏÁö ¾ÊÀ½
+íŠ¹ì§•:
+1. ê°€ì¥ í° ë‹¨ìœ„ë¶€í„° ì„ íƒ
+2. ê° ì„ íƒì´ ì´í›„ ì„ íƒì— ì˜í–¥
+3. í•œêµ­/ë¯¸êµ­ í™”íì²˜ëŸ¼ í° ë‹¨ìœ„ê°€ ì‘ì€ ë‹¨ìœ„ì˜ ë°°ìˆ˜ì¼ ë•Œ ìµœì í•´ ë³´ì¥
+4. ì„ì˜ì˜ í™”í ë‹¨ìœ„ì—ì„œëŠ” ìµœì í•´ ë³´ì¥í•˜ì§€ ì•ŠìŒ
 */
 
 typedef struct {
-    int* coins;         // µ¿Àü Á¾·ù
-    int* counts;        // °¢ µ¿ÀüÀÇ »ç¿ë °³¼ö
-    int num_types;      // µ¿Àü Á¾·ùÀÇ ¼ö
-    int total_coins;    // ÃÑ »ç¿ëµÈ µ¿Àü ¼ö
+    int* coins;         // ë™ì „ ì¢…ë¥˜
+    int* counts;        // ê° ë™ì „ì˜ ì‚¬ìš© ê°œìˆ˜
+    int num_types;      // ë™ì „ ì¢…ë¥˜ì˜ ìˆ˜
+    int total_coins;    // ì´ ì‚¬ìš©ëœ ë™ì „ ìˆ˜
 } ChangeResult;
 
-/* °Å½º¸§µ· °è»ê ÇÔ¼ö */
+/* ê±°ìŠ¤ë¦„ëˆ ê³„ì‚° í•¨ìˆ˜ */
 ChangeResult* calculate_change(int amount, int* denominations, int num_denoms) {
     ChangeResult* result = (ChangeResult*)malloc(sizeof(ChangeResult));
     result->coins = (int*)malloc(num_denoms * sizeof(int));
@@ -27,11 +27,11 @@ ChangeResult* calculate_change(int amount, int* denominations, int num_denoms) {
     result->num_types = num_denoms;
     result->total_coins = 0;
 
-    printf("\n=== °Å½º¸§µ· °è»ê °úÁ¤ ===\n");
-    printf("¸ñÇ¥ ±İ¾×: %d\n\n", amount);
+    printf("\n=== ê±°ìŠ¤ë¦„ëˆ ê³„ì‚° ê³¼ì • ===\n");
+    printf("ëª©í‘œ ê¸ˆì•¡: %d\n\n", amount);
     int remaining = amount;
 
-    // Å« ´ÜÀ§ºÎÅÍ Ã³¸®
+    // í° ë‹¨ìœ„ë¶€í„° ì²˜ë¦¬
     for (int i = 0; i < num_denoms; i++) {
         result->coins[i] = denominations[i];
         if (remaining >= denominations[i]) {
@@ -39,62 +39,62 @@ ChangeResult* calculate_change(int amount, int* denominations, int num_denoms) {
             remaining = remaining % denominations[i];
             result->total_coins += result->counts[i];
 
-            printf("´ÜÀ§ %d¿ø »ç¿ë: %d°³\n",
+            printf("ë‹¨ìœ„ %dì› ì‚¬ìš©: %dê°œ\n",
                 denominations[i], result->counts[i]);
-            printf("³²Àº ±İ¾×: %d¿ø\n\n", remaining);
+            printf("ë‚¨ì€ ê¸ˆì•¡: %dì›\n\n", remaining);
         }
     }
 
     if (remaining > 0) {
-        printf("°æ°í: °Å½º¸§µ·À» ¿ÏÀüÈ÷ ¸¸µé ¼ö ¾ø½À´Ï´Ù!\n");
-        printf("ºÎÁ·ÇÑ ±İ¾×: %d¿ø\n", remaining);
+        printf("ê²½ê³ : ê±°ìŠ¤ë¦„ëˆì„ ì™„ì „íˆ ë§Œë“¤ ìˆ˜ ì—†ìŠµë‹ˆë‹¤!\n");
+        printf("ë¶€ì¡±í•œ ê¸ˆì•¡: %dì›\n", remaining);
     }
 
     return result;
 }
 
-/* °á°ú Ãâ·Â ÇÔ¼ö */
+/* ê²°ê³¼ ì¶œë ¥ í•¨ìˆ˜ */
 void print_change_result(ChangeResult* result) {
-    printf("\n=== ÃÖÁ¾ °Å½º¸§µ· ³»¿ª ===\n");
+    printf("\n=== ìµœì¢… ê±°ìŠ¤ë¦„ëˆ ë‚´ì—­ ===\n");
     for (int i = 0; i < result->num_types; i++) {
         if (result->counts[i] > 0) {
-            printf("%d¿ø: %d°³ (ÃÑ %d¿ø)\n",
+            printf("%dì›: %dê°œ (ì´ %dì›)\n",
                 result->coins[i],
                 result->counts[i],
                 result->coins[i] * result->counts[i]);
         }
     }
-    printf("\nÃÑ »ç¿ëµÈ µ¿Àü °³¼ö: %d°³\n", result->total_coins);
+    printf("\nì´ ì‚¬ìš©ëœ ë™ì „ ê°œìˆ˜: %dê°œ\n", result->total_coins);
 }
 
-/* ¹İ·Ê ÄÉÀÌ½º °Ë»ç ÇÔ¼ö */
+/* ë°˜ë¡€ ì¼€ì´ìŠ¤ ê²€ì‚¬ í•¨ìˆ˜ */
 void check_counterexample(void) {
-    printf("\n=== ¹İ·Ê ÄÉÀÌ½º °Ë»ç ===\n");
+    printf("\n=== ë°˜ë¡€ ì¼€ì´ìŠ¤ ê²€ì‚¬ ===\n");
     int amount = 6;
-    int denoms[] = { 4, 3, 1 };  // ºñÃÖÀû ÄÉÀÌ½º
+    int denoms[] = { 4, 3, 1 };  // ë¹„ìµœì  ì¼€ì´ìŠ¤
     int num_denoms = sizeof(denoms) / sizeof(denoms[0]);
 
-    printf("±İ¾×: %d\n", amount);
-    printf("È­Æó ´ÜÀ§: ");
+    printf("ê¸ˆì•¡: %d\n", amount);
+    printf("í™”í ë‹¨ìœ„: ");
     for (int i = 0; i < num_denoms; i++) {
         printf("%d ", denoms[i]);
     }
     printf("\n\n");
 
-    printf("Å½¿åÀû ¹æ¹ı °á°ú:\n");
+    printf("íƒìš•ì  ë°©ë²• ê²°ê³¼:\n");
     ChangeResult* greedy = calculate_change(amount, denoms, num_denoms);
     print_change_result(greedy);
 
-    printf("\nÃÖÀûÇØ: 3¿ø 2°³ = 2°³\n");
-    printf("Å½¿åÀû ÇØ: 4¿ø 1°³ + 1¿ø 2°³ = 3°³\n");
-    printf("\nÀÌ °æ¿ì Å½¿åÀû ¹æ¹ıÀº ÃÖÀûÇØ¸¦ Ã£Áö ¸øÇÔ\n");
+    printf("\nìµœì í•´: 3ì› 2ê°œ = 2ê°œ\n");
+    printf("íƒìš•ì  í•´: 4ì› 1ê°œ + 1ì› 2ê°œ = 3ê°œ\n");
+    printf("\nì´ ê²½ìš° íƒìš•ì  ë°©ë²•ì€ ìµœì í•´ë¥¼ ì°¾ì§€ ëª»í•¨\n");
 
     free(greedy->coins);
     free(greedy->counts);
     free(greedy);
 }
 
-/* ¸Ş¸ğ¸® ÇØÁ¦ ÇÔ¼ö */
+/* ë©”ëª¨ë¦¬ í•´ì œ í•¨ìˆ˜ */
 void cleanup_change_result(ChangeResult* result) {
     free(result->coins);
     free(result->counts);
@@ -102,21 +102,21 @@ void cleanup_change_result(ChangeResult* result) {
 }
 
 int main(void) {
-    int default_denoms[] = { 500, 100, 50, 10, 1 };  // ÇÑ±¹ È­Æó ´ÜÀ§
+    int default_denoms[] = { 500, 100, 50, 10, 1 };  // í•œêµ­ í™”í ë‹¨ìœ„
     int num_default_denoms = sizeof(default_denoms) / sizeof(default_denoms[0]);
 
-    printf("=== °Å½º¸§µ· °è»ê ÇÁ·Î±×·¥ ===\n");
-    printf("1. ±âº» È­Æó ´ÜÀ§ »ç¿ë (ÇÑ±¹ ¿øÈ­)\n");
-    printf("2. »ç¿ëÀÚ Á¤ÀÇ È­Æó ´ÜÀ§\n");
-    printf("3. ¹İ·Ê ÄÉÀÌ½º È®ÀÎ\n");
-    printf("¼±ÅÃ: ");
+    printf("=== ê±°ìŠ¤ë¦„ëˆ ê³„ì‚° í”„ë¡œê·¸ë¨ ===\n");
+    printf("1. ê¸°ë³¸ í™”í ë‹¨ìœ„ ì‚¬ìš© (í•œêµ­ ì›í™”)\n");
+    printf("2. ì‚¬ìš©ì ì •ì˜ í™”í ë‹¨ìœ„\n");
+    printf("3. ë°˜ë¡€ ì¼€ì´ìŠ¤ í™•ì¸\n");
+    printf("ì„ íƒ: ");
 
     int choice;
     scanf("%d", &choice);
 
     if (choice == 1 || choice == 2) {
         int amount;
-        printf("±İ¾× ÀÔ·Â: ");
+        printf("ê¸ˆì•¡ ì…ë ¥: ");
         scanf("%d", &amount);
 
         ChangeResult* result;
@@ -125,11 +125,11 @@ int main(void) {
         }
         else {
             int num_denoms;
-            printf("È­Æó ´ÜÀ§ °³¼ö ÀÔ·Â: ");
+            printf("í™”í ë‹¨ìœ„ ê°œìˆ˜ ì…ë ¥: ");
             scanf("%d", &num_denoms);
 
             int* denoms = (int*)malloc(num_denoms * sizeof(int));
-            printf("È­Æó ´ÜÀ§ ÀÔ·Â (Å« ´ÜÀ§ºÎÅÍ): ");
+            printf("í™”í ë‹¨ìœ„ ì…ë ¥ (í° ë‹¨ìœ„ë¶€í„°): ");
             for (int i = 0; i < num_denoms; i++) {
                 scanf("%d", &denoms[i]);
             }
@@ -149,41 +149,41 @@ int main(void) {
 }
 
 /*
-°Å½º¸§µ· ¹®Á¦ ºĞ¼®
+ê±°ìŠ¤ë¦„ëˆ ë¬¸ì œ ë¶„ì„
 ==============
 
-1. Å½¿åÀû ¼±ÅÃÀÇ Æ¯¼º
+1. íƒìš•ì  ì„ íƒì˜ íŠ¹ì„±
 -----------------
-- ¸Å ´Ü°è¿¡¼­ °¡Àå Å« ´ÜÀ§ ¼±ÅÃ
-- ÀÌÀü ¼±ÅÃÀ» ¹øº¹ÇÏÁö ¾ÊÀ½
-- Áö¿ªÀû ÃÖÀûÇØ Ãß±¸
+- ë§¤ ë‹¨ê³„ì—ì„œ ê°€ì¥ í° ë‹¨ìœ„ ì„ íƒ
+- ì´ì „ ì„ íƒì„ ë²ˆë³µí•˜ì§€ ì•ŠìŒ
+- ì§€ì—­ì  ìµœì í•´ ì¶”êµ¬
 
-2. ÃÖÀûÇØ º¸Àå Á¶°Ç
+2. ìµœì í•´ ë³´ì¥ ì¡°ê±´
 ---------------
-- Å« ´ÜÀ§°¡ ÀÛÀº ´ÜÀ§ÀÇ ¹è¼ö
-- ¿¬¼ÓµÈ ´ÜÀ§ °£ ÀûÀıÇÑ ¹è¼ö °ü°è
-- ÃÖ¼Ò ´ÜÀ§°¡ 1ÀÎ °æ¿ì
+- í° ë‹¨ìœ„ê°€ ì‘ì€ ë‹¨ìœ„ì˜ ë°°ìˆ˜
+- ì—°ì†ëœ ë‹¨ìœ„ ê°„ ì ì ˆí•œ ë°°ìˆ˜ ê´€ê³„
+- ìµœì†Œ ë‹¨ìœ„ê°€ 1ì¸ ê²½ìš°
 
-3. ½Ã°£ º¹Àâµµ
+3. ì‹œê°„ ë³µì¡ë„
 -----------
-- O(N): NÀº È­Æó ´ÜÀ§ÀÇ °³¼ö
-- °¢ ´ÜÀ§¿¡ ´ëÇØ ÇÑ ¹ø¾¿¸¸ °è»ê
-- ¸Å¿ì È¿À²ÀûÀÎ ¾Ë°í¸®Áò
+- O(N): Nì€ í™”í ë‹¨ìœ„ì˜ ê°œìˆ˜
+- ê° ë‹¨ìœ„ì— ëŒ€í•´ í•œ ë²ˆì”©ë§Œ ê³„ì‚°
+- ë§¤ìš° íš¨ìœ¨ì ì¸ ì•Œê³ ë¦¬ì¦˜
 
-4. ÀÀ¿ë ¹× È®Àå
+4. ì‘ìš© ë° í™•ì¥
 -----------
-- ÀÚÆÇ±â °Å½º¸§µ· °è»ê
-- ATM Ãâ±İ ±İ¾× °è»ê
-- È­Æó ´ÜÀ§ ÃÖÀûÈ­
-- µ¿Àü ¼ö ÃÖ¼ÒÈ­
+- ìíŒê¸° ê±°ìŠ¤ë¦„ëˆ ê³„ì‚°
+- ATM ì¶œê¸ˆ ê¸ˆì•¡ ê³„ì‚°
+- í™”í ë‹¨ìœ„ ìµœì í™”
+- ë™ì „ ìˆ˜ ìµœì†Œí™”
 
-5. ÇÑ°èÁ¡
+5. í•œê³„ì 
 -------
-- ÀÓÀÇÀÇ È­Æó ´ÜÀ§¿¡¼­ ÃÖÀûÇØ ¹Ìº¸Àå
-- Æ¯Á¤ ÄÉÀÌ½º¿¡¼­ ºñÈ¿À²Àû ÇØ µµÃâ
-- Á¦¾à Á¶°Ç Á¸Àç ½Ã Àû¿ë ¾î·Á¿ò
+- ì„ì˜ì˜ í™”í ë‹¨ìœ„ì—ì„œ ìµœì í•´ ë¯¸ë³´ì¥
+- íŠ¹ì • ì¼€ì´ìŠ¤ì—ì„œ ë¹„íš¨ìœ¨ì  í•´ ë„ì¶œ
+- ì œì•½ ì¡°ê±´ ì¡´ì¬ ì‹œ ì ìš© ì–´ë ¤ì›€
 
-ÀÌ ±¸ÇöÀº °Å½º¸§µ· ¹®Á¦¸¦ ÅëÇØ
-Å½¿å ¾Ë°í¸®ÁòÀÇ ±âº» °³³ä°ú
-ÇÑ°èÁ¡À» ¸íÈ®È÷ º¸¿©Áİ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ê±°ìŠ¤ë¦„ëˆ ë¬¸ì œë¥¼ í†µí•´
+íƒìš• ì•Œê³ ë¦¬ì¦˜ì˜ ê¸°ë³¸ ê°œë…ê³¼
+í•œê³„ì ì„ ëª…í™•íˆ ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

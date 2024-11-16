@@ -4,17 +4,17 @@
 #include <limits.h>
 
 /*
-µ¥ÀÌÅ©½ºÆ®¶ó ¾Ë°í¸®ÁòÀÇ Å½¿åÀû Æ¯¼º
+ë°ì´í¬ìŠ¤íŠ¸ë¼ ì•Œê³ ë¦¬ì¦˜ì˜ íƒìš•ì  íŠ¹ì„±
 =============================
 
-1. Å½¿åÀû ¼±ÅÃ
-- ÇöÀç ¾Ë·ÁÁø ÃÖ´Ü °Å¸®¸¦ °¡Áø Á¤Á¡ ¼±ÅÃ
-- ¼±ÅÃ ÈÄ ÀÎÁ¢ Á¤Á¡µéÀÇ °Å¸® °»½Å
-- ¸Å ´Ü°è ¼±ÅÃÀÌ ÃÖÁ¾ ÇØÀÇ ÀÏºÎ
+1. íƒìš•ì  ì„ íƒ
+- í˜„ì¬ ì•Œë ¤ì§„ ìµœë‹¨ ê±°ë¦¬ë¥¼ ê°€ì§„ ì •ì  ì„ íƒ
+- ì„ íƒ í›„ ì¸ì ‘ ì •ì ë“¤ì˜ ê±°ë¦¬ ê°±ì‹ 
+- ë§¤ ë‹¨ê³„ ì„ íƒì´ ìµœì¢… í•´ì˜ ì¼ë¶€
 
-2. ÃÖÀû¼º Áõ¸í
-- À½¼ö °¡ÁßÄ¡°¡ ¾ø´Â °æ¿ì ÃÖÀûÇØ º¸Àå
-- »ï°¢ ºÎµî½Ä¿¡ ÀÇÇÑ Á¤´ç¼º
+2. ìµœì ì„± ì¦ëª…
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ê°€ ì—†ëŠ” ê²½ìš° ìµœì í•´ ë³´ì¥
+- ì‚¼ê° ë¶€ë“±ì‹ì— ì˜í•œ ì •ë‹¹ì„±
 */
 
 #define MAX_VERTICES 100
@@ -23,7 +23,7 @@
 typedef struct {
     int graph[MAX_VERTICES][MAX_VERTICES];
     int num_vertices;
-    bool directed;  // ¹æÇâ ±×·¡ÇÁ ¿©ºÎ
+    bool directed;  // ë°©í–¥ ê·¸ë˜í”„ ì—¬ë¶€
 } Graph;
 
 typedef struct {
@@ -32,7 +32,7 @@ typedef struct {
     bool visited;
 } VertexInfo;
 
-// ±×·¡ÇÁ »ı¼º
+// ê·¸ë˜í”„ ìƒì„±
 Graph* create_graph(int num_vertices, bool directed) {
     Graph* g = malloc(sizeof(Graph));
     g->num_vertices = num_vertices;
@@ -47,7 +47,7 @@ Graph* create_graph(int num_vertices, bool directed) {
     return g;
 }
 
-// °£¼± Ãß°¡
+// ê°„ì„  ì¶”ê°€
 void add_edge(Graph* g, int src, int dest, int weight) {
     g->graph[src][dest] = weight;
     if (!g->directed) {
@@ -55,11 +55,11 @@ void add_edge(Graph* g, int src, int dest, int weight) {
     }
 }
 
-// ÇöÀç »óÅÂ Ãâ·Â
+// í˜„ì¬ ìƒíƒœ ì¶œë ¥
 void print_current_state(VertexInfo* info, int num_vertices, int current) {
-    printf("\nÇöÀç »óÅÂ:\n");
-    printf("¼±ÅÃµÈ Á¤Á¡: %d\n", current);
-    printf("Á¤Á¡ | °Å¸® | ÀÌÀü Á¤Á¡\n");
+    printf("\ní˜„ì¬ ìƒíƒœ:\n");
+    printf("ì„ íƒëœ ì •ì : %d\n", current);
+    printf("ì •ì  | ê±°ë¦¬ | ì´ì „ ì •ì \n");
     printf("-----+------+----------\n");
 
     for (int i = 0; i < num_vertices; i++) {
@@ -76,7 +76,7 @@ void print_current_state(VertexInfo* info, int num_vertices, int current) {
     }
 }
 
-// ÃÖ´Ü °æ·Î ÃßÀû ¹× Ãâ·Â
+// ìµœë‹¨ ê²½ë¡œ ì¶”ì  ë° ì¶œë ¥
 void print_path(int dest, VertexInfo* info) {
     if (info[dest].parent == -1) {
         printf("%d", dest);
@@ -86,14 +86,14 @@ void print_path(int dest, VertexInfo* info) {
     printf(" -> %d", dest);
 }
 
-// Å½¿åÀû ¼±ÅÃ °úÁ¤À» º¸¿©ÁÖ´Â µ¥ÀÌÅ©½ºÆ®¶ó ¾Ë°í¸®Áò
+// íƒìš•ì  ì„ íƒ ê³¼ì •ì„ ë³´ì—¬ì£¼ëŠ” ë°ì´í¬ìŠ¤íŠ¸ë¼ ì•Œê³ ë¦¬ì¦˜
 void dijkstra_with_steps(Graph* g, int start) {
     VertexInfo* info = malloc(g->num_vertices * sizeof(VertexInfo));
 
-    // ÃÊ±âÈ­
-    printf("\n=== µ¥ÀÌÅ©½ºÆ®¶ó ¾Ë°í¸®Áò ½ÇÇà °úÁ¤ ===\n");
-    printf("½ÃÀÛ Á¤Á¡: %d\n", start);
-    printf("\nÃÊ±âÈ­ ´Ü°è:\n");
+    // ì´ˆê¸°í™”
+    printf("\n=== ë°ì´í¬ìŠ¤íŠ¸ë¼ ì•Œê³ ë¦¬ì¦˜ ì‹¤í–‰ ê³¼ì • ===\n");
+    printf("ì‹œì‘ ì •ì : %d\n", start);
+    printf("\nì´ˆê¸°í™” ë‹¨ê³„:\n");
 
     for (int i = 0; i < g->num_vertices; i++) {
         info[i].distance = INF;
@@ -104,9 +104,9 @@ void dijkstra_with_steps(Graph* g, int start) {
 
     print_current_state(info, g->num_vertices, start);
 
-    // ¸ŞÀÎ ·çÇÁ
+    // ë©”ì¸ ë£¨í”„
     for (int count = 0; count < g->num_vertices - 1; count++) {
-        // Å½¿åÀû ¼±ÅÃ: ÃÖ¼Ò °Å¸® Á¤Á¡
+        // íƒìš•ì  ì„ íƒ: ìµœì†Œ ê±°ë¦¬ ì •ì 
         int min_distance = INF;
         int min_vertex = -1;
 
@@ -117,20 +117,20 @@ void dijkstra_with_steps(Graph* g, int start) {
             }
         }
 
-        if (min_vertex == -1) break;  // ¿¬°áµÇÁö ¾ÊÀº ±×·¡ÇÁ
+        if (min_vertex == -1) break;  // ì—°ê²°ë˜ì§€ ì•Šì€ ê·¸ë˜í”„
 
         info[min_vertex].visited = true;
-        printf("\n¼±ÅÃµÈ Á¤Á¡: %d (ÇöÀç °Å¸®: %d)\n",
+        printf("\nì„ íƒëœ ì •ì : %d (í˜„ì¬ ê±°ë¦¬: %d)\n",
             min_vertex, info[min_vertex].distance);
 
-        // ÀÎÁ¢ Á¤Á¡ °Å¸® °»½Å
+        // ì¸ì ‘ ì •ì  ê±°ë¦¬ ê°±ì‹ 
         for (int v = 0; v < g->num_vertices; v++) {
             if (!info[v].visited &&
                 g->graph[min_vertex][v] != INF &&
                 info[min_vertex].distance != INF &&
                 info[min_vertex].distance + g->graph[min_vertex][v] < info[v].distance) {
 
-                printf("Á¤Á¡ %dÀÇ °Å¸® °»½Å: %d -> %d (°æÀ¯: %d)\n",
+                printf("ì •ì  %dì˜ ê±°ë¦¬ ê°±ì‹ : %d -> %d (ê²½ìœ : %d)\n",
                     v,
                     info[v].distance == INF ? -1 : info[v].distance,
                     info[min_vertex].distance + g->graph[min_vertex][v],
@@ -144,11 +144,11 @@ void dijkstra_with_steps(Graph* g, int start) {
         print_current_state(info, g->num_vertices, min_vertex);
     }
 
-    // °á°ú Ãâ·Â
-    printf("\n=== ÃÖÁ¾ °á°ú ===\n");
+    // ê²°ê³¼ ì¶œë ¥
+    printf("\n=== ìµœì¢… ê²°ê³¼ ===\n");
     for (int i = 0; i < g->num_vertices; i++) {
         if (i != start && info[i].distance != INF) {
-            printf("\n%d¿¡¼­ %d±îÁöÀÇ ÃÖ´Ü °æ·Î (°Å¸®: %d):\n",
+            printf("\n%dì—ì„œ %dê¹Œì§€ì˜ ìµœë‹¨ ê²½ë¡œ (ê±°ë¦¬: %d):\n",
                 start, i, info[i].distance);
             print_path(i, info);
             printf("\n");
@@ -162,23 +162,23 @@ int main(void) {
     int num_vertices, num_edges, start;
     bool directed;
 
-    printf("Á¤Á¡ ¼ö ÀÔ·Â: ");
+    printf("ì •ì  ìˆ˜ ì…ë ¥: ");
     scanf("%d", &num_vertices);
-    printf("°£¼± ¼ö ÀÔ·Â: ");
+    printf("ê°„ì„  ìˆ˜ ì…ë ¥: ");
     scanf("%d", &num_edges);
-    printf("¹æÇâ ±×·¡ÇÁÀÔ´Ï±î? (1: ¿¹, 0: ¾Æ´Ï¿À): ");
+    printf("ë°©í–¥ ê·¸ë˜í”„ì…ë‹ˆê¹Œ? (1: ì˜ˆ, 0: ì•„ë‹ˆì˜¤): ");
     scanf("%d", &directed);
 
     Graph* graph = create_graph(num_vertices, directed);
 
-    printf("\n°£¼± Á¤º¸ ÀÔ·Â (½ÃÀÛÁ¡ µµÂøÁ¡ °¡ÁßÄ¡):\n");
+    printf("\nê°„ì„  ì •ë³´ ì…ë ¥ (ì‹œì‘ì  ë„ì°©ì  ê°€ì¤‘ì¹˜):\n");
     for (int i = 0; i < num_edges; i++) {
         int src, dest, weight;
         scanf("%d %d %d", &src, &dest, &weight);
         add_edge(graph, src, dest, weight);
     }
 
-    printf("\n½ÃÀÛ Á¤Á¡ ÀÔ·Â: ");
+    printf("\nì‹œì‘ ì •ì  ì…ë ¥: ");
     scanf("%d", &start);
 
     dijkstra_with_steps(graph, start);
@@ -188,35 +188,35 @@ int main(void) {
 }
 
 /*
-µ¥ÀÌÅ©½ºÆ®¶ó ¾Ë°í¸®ÁòÀÇ Å½¿åÀû Á¤´ç¼º
+ë°ì´í¬ìŠ¤íŠ¸ë¼ ì•Œê³ ë¦¬ì¦˜ì˜ íƒìš•ì  ì •ë‹¹ì„±
 ==============================
 
-1. ¾ÈÀü¼º Áõ¸í
+1. ì•ˆì „ì„± ì¦ëª…
 -----------
-- »ï°¢ ºÎµî½Ä ¼ºÁú È°¿ë
-- À½¼ö °¡ÁßÄ¡°¡ ¾ø´Ù´Â °¡Á¤ ÇÊ¿ä
-- ¹æ¹® ¼ø¼­ÀÇ µ¶¸³¼º
+- ì‚¼ê° ë¶€ë“±ì‹ ì„±ì§ˆ í™œìš©
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ê°€ ì—†ë‹¤ëŠ” ê°€ì • í•„ìš”
+- ë°©ë¬¸ ìˆœì„œì˜ ë…ë¦½ì„±
 
-2. ÃÖÀû¼º º¸Àå
+2. ìµœì ì„± ë³´ì¥
 -----------
-- ºÎºĞ °æ·ÎÀÇ ÃÖÀû¼º
-- RelaxationÀÇ ´ÜÁ¶¼º
-- ÃÖ´Ü °æ·ÎÀÇ ºÎºĞ ±¸Á¶
+- ë¶€ë¶„ ê²½ë¡œì˜ ìµœì ì„±
+- Relaxationì˜ ë‹¨ì¡°ì„±
+- ìµœë‹¨ ê²½ë¡œì˜ ë¶€ë¶„ êµ¬ì¡°
 
-3. Å½¿åÀû ¼±ÅÃÀÇ ÀÇ¹Ì
+3. íƒìš•ì  ì„ íƒì˜ ì˜ë¯¸
 ----------------
-- °¢ ´Ü°èÀÇ ¼±ÅÃÀÌ ¹øº¹µÇÁö ¾ÊÀ½
-- Áö¿ªÀû ÃÖÀûÇØ°¡ Àü¿ª ÃÖÀûÇØ·Î ¿¬°á
-- ¼±ÅÃÀÇ ¼ø¼­°¡ °á°ú¿¡ ¿µÇâ ¾øÀ½
+- ê° ë‹¨ê³„ì˜ ì„ íƒì´ ë²ˆë³µë˜ì§€ ì•ŠìŒ
+- ì§€ì—­ì  ìµœì í•´ê°€ ì „ì—­ ìµœì í•´ë¡œ ì—°ê²°
+- ì„ íƒì˜ ìˆœì„œê°€ ê²°ê³¼ì— ì˜í–¥ ì—†ìŒ
 
-4. ±¸Çö ÃÖÀûÈ­
+4. êµ¬í˜„ ìµœì í™”
 -----------
-- ¿ì¼±¼øÀ§ Å¥ »ç¿ë °¡´É
-- ºÒÇÊ¿äÇÑ Á¤Á¡ ¹æ¹® Á¦°Å
-- Á¶±â Á¾·á Á¶°Ç È°¿ë
+- ìš°ì„ ìˆœìœ„ í ì‚¬ìš© ê°€ëŠ¥
+- ë¶ˆí•„ìš”í•œ ì •ì  ë°©ë¬¸ ì œê±°
+- ì¡°ê¸° ì¢…ë£Œ ì¡°ê±´ í™œìš©
 
-ÀÌ ±¸ÇöÀº µ¥ÀÌÅ©½ºÆ®¶ó ¾Ë°í¸®ÁòÀÇ
-Å½¿åÀû Æ¯¼ºÀ» °­Á¶ÇÏ°í,
-°¢ ¼±ÅÃ °úÁ¤°ú ±× ¿µÇâÀ»
-½Ã°¢ÀûÀ¸·Î º¸¿©Áİ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë°ì´í¬ìŠ¤íŠ¸ë¼ ì•Œê³ ë¦¬ì¦˜ì˜
+íƒìš•ì  íŠ¹ì„±ì„ ê°•ì¡°í•˜ê³ ,
+ê° ì„ íƒ ê³¼ì •ê³¼ ê·¸ ì˜í–¥ì„
+ì‹œê°ì ìœ¼ë¡œ ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

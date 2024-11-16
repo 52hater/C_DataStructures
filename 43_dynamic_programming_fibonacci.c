@@ -4,44 +4,44 @@
 #include <stdbool.h>
 
 /*
-µ¿Àû °èÈ¹¹ý (Dynamic Programming)
+ë™ì  ê³„íšë²• (Dynamic Programming)
 ============================
 
-ÇÙ½É °³³ä:
-1. ÃÖÀû ºÎºÐ ±¸Á¶ (Optimal Substructure)
-   - Å« ¹®Á¦ÀÇ ÃÖÀûÇØ°¡ ÀÛÀº ¹®Á¦µéÀÇ ÃÖÀûÇØ¸¦ Æ÷ÇÔ
-   - F(n) = F(n-1) + F(n-2) ÇüÅÂ·Î Ç¥Çö °¡´É
-   - »óÇâ½Ä/ÇÏÇâ½Ä Á¢±Ù ¸ðµÎ °¡´É
+í•µì‹¬ ê°œë…:
+1. ìµœì  ë¶€ë¶„ êµ¬ì¡° (Optimal Substructure)
+   - í° ë¬¸ì œì˜ ìµœì í•´ê°€ ìž‘ì€ ë¬¸ì œë“¤ì˜ ìµœì í•´ë¥¼ í¬í•¨
+   - F(n) = F(n-1) + F(n-2) í˜•íƒœë¡œ í‘œí˜„ ê°€ëŠ¥
+   - ìƒí–¥ì‹/í•˜í–¥ì‹ ì ‘ê·¼ ëª¨ë‘ ê°€ëŠ¥
 
-2. Áßº¹µÇ´Â ºÎºÐ ¹®Á¦ (Overlapping Subproblems)
-   - µ¿ÀÏÇÑ ÀÛÀº ¹®Á¦µéÀÌ ¿©·¯ ¹ø µîÀå
-   - ¸Þ¸ð¸®¿¡ ÀúÀåÇÏ¿© Àç»ç¿ë (¸Þ¸ðÀÌÁ¦ÀÌ¼Ç)
-   - Áßº¹ °è»ê Á¦°Å·Î ¼º´É Çâ»ó
+2. ì¤‘ë³µë˜ëŠ” ë¶€ë¶„ ë¬¸ì œ (Overlapping Subproblems)
+   - ë™ì¼í•œ ìž‘ì€ ë¬¸ì œë“¤ì´ ì—¬ëŸ¬ ë²ˆ ë“±ìž¥
+   - ë©”ëª¨ë¦¬ì— ì €ìž¥í•˜ì—¬ ìž¬ì‚¬ìš© (ë©”ëª¨ì´ì œì´ì…˜)
+   - ì¤‘ë³µ ê³„ì‚° ì œê±°ë¡œ ì„±ëŠ¥ í–¥ìƒ
 
-3. ±¸Çö ¹æ½Ä
-   a) Top-down (ÇÏÇâ½Ä)
-      - Àç±ÍÀû Á¢±Ù
-      - ÇÊ¿äÇÑ ºÎºÐ¸¸ °è»ê
-      - ¸Þ¸ðÀÌÁ¦ÀÌ¼Ç È°¿ë
+3. êµ¬í˜„ ë°©ì‹
+   a) Top-down (í•˜í–¥ì‹)
+      - ìž¬ê·€ì  ì ‘ê·¼
+      - í•„ìš”í•œ ë¶€ë¶„ë§Œ ê³„ì‚°
+      - ë©”ëª¨ì´ì œì´ì…˜ í™œìš©
 
-   b) Bottom-up (»óÇâ½Ä)
-      - ¹Ýº¹Àû Á¢±Ù
-      - ÀÛÀº ¹®Á¦ºÎÅÍ ¼øÂ÷Àû ÇØ°á
-      - Å×ÀÌºí »ç¿ë
+   b) Bottom-up (ìƒí–¥ì‹)
+      - ë°˜ë³µì  ì ‘ê·¼
+      - ìž‘ì€ ë¬¸ì œë¶€í„° ìˆœì°¨ì  í•´ê²°
+      - í…Œì´ë¸” ì‚¬ìš©
 */
 
-// === 1. ±âº» Àç±Í ¹æ½Ä ===
+// === 1. ê¸°ë³¸ ìž¬ê·€ ë°©ì‹ ===
 long long fib_recursive(int n, bool print_steps) {
-    static int depth = 0;  // Àç±Í ±íÀÌ ÃßÀû
+    static int depth = 0;  // ìž¬ê·€ ê¹Šì´ ì¶”ì 
     depth++;
 
-    // µé¿©¾²±â·Î Àç±Í ±íÀÌ Ç¥Çö
+    // ë“¤ì—¬ì“°ê¸°ë¡œ ìž¬ê·€ ê¹Šì´ í‘œí˜„
     if (print_steps) {
         for (int i = 1; i < depth; i++) printf("  ");
         printf("Calculating F(%d)\n", n);
     }
 
-    // ±âÀú Á¶°Ç
+    // ê¸°ì € ì¡°ê±´
     if (n <= 1) {
         if (print_steps) {
             for (int i = 1; i < depth; i++) printf("  ");
@@ -51,7 +51,7 @@ long long fib_recursive(int n, bool print_steps) {
         return n;
     }
 
-    // Àç±ÍÀû °è»ê
+    // ìž¬ê·€ì  ê³„ì‚°
     long long result = fib_recursive(n - 1, print_steps) +
         fib_recursive(n - 2, print_steps);
 
@@ -64,16 +64,16 @@ long long fib_recursive(int n, bool print_steps) {
     return result;
 }
 
-// === 2. ¸Þ¸ðÀÌÁ¦ÀÌ¼Ç (Top-down) ===
+// === 2. ë©”ëª¨ì´ì œì´ì…˜ (Top-down) ===
 long long* memo;
-int* calculation_count;  // °¢ n¿¡ ´ëÇÑ °è»ê È½¼ö ÃßÀû
+int* calculation_count;  // ê° nì— ëŒ€í•œ ê³„ì‚° íšŸìˆ˜ ì¶”ì 
 
 void init_memoization(int size) {
     memo = (long long*)malloc(size * sizeof(long long));
     calculation_count = (int*)calloc(size, sizeof(int));
 
     for (int i = 0; i < size; i++) {
-        memo[i] = -1;  // ¹Ì°è»ê »óÅÂ Ç¥½Ã
+        memo[i] = -1;  // ë¯¸ê³„ì‚° ìƒíƒœ í‘œì‹œ
     }
 }
 
@@ -86,7 +86,7 @@ long long fib_memoization(int n, bool print_steps) {
     static int depth = 0;
     depth++;
 
-    // ÁøÇà »óÈ² Ãâ·Â
+    // ì§„í–‰ ìƒí™© ì¶œë ¥
     if (print_steps) {
         for (int i = 1; i < depth; i++) printf("  ");
         printf("Checking F(%d)", n);
@@ -98,7 +98,7 @@ long long fib_memoization(int n, bool print_steps) {
         }
     }
 
-    // ±âÀú Á¶°Ç
+    // ê¸°ì € ì¡°ê±´
     if (n <= 1) {
         calculation_count[n]++;
         if (print_steps) {
@@ -109,7 +109,7 @@ long long fib_memoization(int n, bool print_steps) {
         return n;
     }
 
-    // ÀÌ¹Ì °è»êµÈ °ªÀÌ¸é Àç»ç¿ë
+    // ì´ë¯¸ ê³„ì‚°ëœ ê°’ì´ë©´ ìž¬ì‚¬ìš©
     if (memo[n] != -1) {
         if (print_steps) {
             for (int i = 1; i < depth; i++) printf("  ");
@@ -119,7 +119,7 @@ long long fib_memoization(int n, bool print_steps) {
         return memo[n];
     }
 
-    // »õ·Î¿î °ª °è»ê
+    // ìƒˆë¡œìš´ ê°’ ê³„ì‚°
     calculation_count[n]++;
     memo[n] = fib_memoization(n - 1, print_steps) +
         fib_memoization(n - 2, print_steps);
@@ -133,7 +133,7 @@ long long fib_memoization(int n, bool print_steps) {
     return memo[n];
 }
 
-// === 3. Å¸ºæ·¹ÀÌ¼Ç (Bottom-up) ===
+// === 3. íƒ€ë·¸ë ˆì´ì…˜ (Bottom-up) ===
 typedef struct {
     long long* table;
     int size;
@@ -144,7 +144,7 @@ FibTable create_fib_table(int size) {
     table.table = (long long*)malloc(size * sizeof(long long));
     table.size = size;
 
-    // ±âÀú Á¶°Ç ÃÊ±âÈ­
+    // ê¸°ì € ì¡°ê±´ ì´ˆê¸°í™”
     if (size > 0) table.table[0] = 0;
     if (size > 1) table.table[1] = 1;
 
@@ -166,7 +166,7 @@ long long fib_tabulation(int n, bool print_steps) {
         if (n >= 1) printf("Initialize F(1) = 1\n");
     }
 
-    // Bottom-upÀ¸·Î °ª °è»ê
+    // Bottom-upìœ¼ë¡œ ê°’ ê³„ì‚°
     for (int i = 2; i <= n; i++) {
         table.table[i] = table.table[i - 1] + table.table[i - 2];
 
@@ -181,7 +181,7 @@ long long fib_tabulation(int n, bool print_steps) {
     return result;
 }
 
-// === 4. °ø°£ ÃÖÀûÈ­ ¹öÀü ===
+// === 4. ê³µê°„ ìµœì í™” ë²„ì „ ===
 long long fib_optimized(int n, bool print_steps) {
     if (n <= 1) return n;
 
@@ -206,14 +206,14 @@ long long fib_optimized(int n, bool print_steps) {
     return curr;
 }
 
-// === ¼º´É ºÐ¼® ¹× ºñ±³ ===
+// === ì„±ëŠ¥ ë¶„ì„ ë° ë¹„êµ ===
 void analyze_performance(int n) {
     clock_t start, end;
     double cpu_time;
 
     printf("\n=== Performance Analysis for F(%d) ===\n", n);
 
-    // 1. ±âº» Àç±Í
+    // 1. ê¸°ë³¸ ìž¬ê·€
     if (n <= 40) {
         start = clock();
         long long result1 = fib_recursive(n, false);
@@ -222,13 +222,13 @@ void analyze_performance(int n) {
         printf("\n1. Basic Recursive:\n");
         printf("   Result: %lld\n", result1);
         printf("   Time: %.6f seconds\n", cpu_time);
-        printf("   Space: O(n) - Àç±Í ½ºÅÃ\n");
+        printf("   Space: O(n) - ìž¬ê·€ ìŠ¤íƒ\n");
     }
     else {
-        printf("\n1. Basic Recursive: n > 40 - ½Ã°£ ÃÊ°ú ¿¹»ó\n");
+        printf("\n1. Basic Recursive: n > 40 - ì‹œê°„ ì´ˆê³¼ ì˜ˆìƒ\n");
     }
 
-    // 2. ¸Þ¸ðÀÌÁ¦ÀÌ¼Ç
+    // 2. ë©”ëª¨ì´ì œì´ì…˜
     start = clock();
     init_memoization(n + 1);
     long long result2 = fib_memoization(n, false);
@@ -246,7 +246,7 @@ void analyze_performance(int n) {
     }
     cleanup_memoization();
 
-    // 3. Å¸ºæ·¹ÀÌ¼Ç
+    // 3. íƒ€ë·¸ë ˆì´ì…˜
     start = clock();
     long long result3 = fib_tabulation(n, false);
     end = clock();
@@ -255,9 +255,9 @@ void analyze_performance(int n) {
     printf("\n3. Tabulation:\n");
     printf("   Result: %lld\n", result3);
     printf("   Time: %.6f seconds\n", cpu_time);
-    printf("   Space: O(n) - Å×ÀÌºí\n");
+    printf("   Space: O(n) - í…Œì´ë¸”\n");
 
-    // 4. °ø°£ ÃÖÀûÈ­
+    // 4. ê³µê°„ ìµœì í™”
     start = clock();
     long long result4 = fib_optimized(n, false);
     end = clock();
@@ -266,30 +266,30 @@ void analyze_performance(int n) {
     printf("\n4. Space Optimized:\n");
     printf("   Result: %lld\n", result4);
     printf("   Time: %.6f seconds\n", cpu_time);
-    printf("   Space: O(1) - »ó¼ö °ø°£\n");
+    printf("   Space: O(1) - ìƒìˆ˜ ê³µê°„\n");
 }
 
-// === ¸ÞÀÎ ÇÔ¼ö ===
+// === ë©”ì¸ í•¨ìˆ˜ ===
 int main(void) {
-    printf("=== µ¿Àû °èÈ¹¹ý ÇÐ½À: ÇÇº¸³ªÄ¡ ¼ö¿­ ===\n");
-    printf("ÀÌ ÇÁ·Î±×·¥Àº ³× °¡Áö ´Ù¸¥ ±¸Çö ¹æ½ÄÀ» ºñ±³ÇÕ´Ï´Ù:\n");
-    printf("1. ±âº» Àç±Í (educational)\n");
-    printf("2. ¸Þ¸ðÀÌÁ¦ÀÌ¼Ç (top-down)\n");
-    printf("3. Å¸ºæ·¹ÀÌ¼Ç (bottom-up)\n");
-    printf("4. °ø°£ ÃÖÀûÈ­ ¹öÀü\n\n");
+    printf("=== ë™ì  ê³„íšë²• í•™ìŠµ: í”¼ë³´ë‚˜ì¹˜ ìˆ˜ì—´ ===\n");
+    printf("ì´ í”„ë¡œê·¸ëž¨ì€ ë„¤ ê°€ì§€ ë‹¤ë¥¸ êµ¬í˜„ ë°©ì‹ì„ ë¹„êµí•©ë‹ˆë‹¤:\n");
+    printf("1. ê¸°ë³¸ ìž¬ê·€ (educational)\n");
+    printf("2. ë©”ëª¨ì´ì œì´ì…˜ (top-down)\n");
+    printf("3. íƒ€ë·¸ë ˆì´ì…˜ (bottom-up)\n");
+    printf("4. ê³µê°„ ìµœì í™” ë²„ì „\n\n");
 
     int choice, n;
     bool running = true;
 
     while (running) {
-        printf("\n=== ¸Þ´º ===\n");
-        printf("1. ±âº» Àç±Í ½ÇÇà (´Ü°è Ç¥½Ã)\n");
-        printf("2. ¸Þ¸ðÀÌÁ¦ÀÌ¼Ç ½ÇÇà (´Ü°è Ç¥½Ã)\n");
-        printf("3. Å¸ºæ·¹ÀÌ¼Ç ½ÇÇà (´Ü°è Ç¥½Ã)\n");
-        printf("4. °ø°£ ÃÖÀûÈ­ ½ÇÇà (´Ü°è Ç¥½Ã)\n");
-        printf("5. ¸ðµç ¹æ½Ä ¼º´É ºñ±³\n");
-        printf("0. Á¾·á\n");
-        printf("¼±ÅÃ: ");
+        printf("\n=== ë©”ë‰´ ===\n");
+        printf("1. ê¸°ë³¸ ìž¬ê·€ ì‹¤í–‰ (ë‹¨ê³„ í‘œì‹œ)\n");
+        printf("2. ë©”ëª¨ì´ì œì´ì…˜ ì‹¤í–‰ (ë‹¨ê³„ í‘œì‹œ)\n");
+        printf("3. íƒ€ë·¸ë ˆì´ì…˜ ì‹¤í–‰ (ë‹¨ê³„ í‘œì‹œ)\n");
+        printf("4. ê³µê°„ ìµœì í™” ì‹¤í–‰ (ë‹¨ê³„ í‘œì‹œ)\n");
+        printf("5. ëª¨ë“  ë°©ì‹ ì„±ëŠ¥ ë¹„êµ\n");
+        printf("0. ì¢…ë£Œ\n");
+        printf("ì„ íƒ: ");
         scanf("%d", &choice);
 
         if (choice == 0) {
@@ -297,35 +297,35 @@ int main(void) {
             continue;
         }
 
-        printf("°è»êÇÒ ÇÇº¸³ªÄ¡ ¼ö ÀÔ·Â (n): ");
+        printf("ê³„ì‚°í•  í”¼ë³´ë‚˜ì¹˜ ìˆ˜ ìž…ë ¥ (n): ");
         scanf("%d", &n);
 
         if (n < 0) {
-            printf("À½¼ö´Â °è»êÇÒ ¼ö ¾ø½À´Ï´Ù.\n");
+            printf("ìŒìˆ˜ëŠ” ê³„ì‚°í•  ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n");
             continue;
         }
 
         switch (choice) {
         case 1:
             if (n > 40) {
-                printf("nÀÌ ³Ê¹« Å®´Ï´Ù. 40 ÀÌÇÏ¸¦ ÀÔ·ÂÇÏ¼¼¿ä.\n");
+                printf("nì´ ë„ˆë¬´ í½ë‹ˆë‹¤. 40 ì´í•˜ë¥¼ ìž…ë ¥í•˜ì„¸ìš”.\n");
                 break;
             }
-            printf("\n°á°ú: %lld\n", fib_recursive(n, true));
+            printf("\nê²°ê³¼: %lld\n", fib_recursive(n, true));
             break;
 
         case 2:
             init_memoization(n + 1);
-            printf("\n°á°ú: %lld\n", fib_memoization(n, true));
+            printf("\nê²°ê³¼: %lld\n", fib_memoization(n, true));
             cleanup_memoization();
             break;
 
         case 3:
-            printf("\n°á°ú: %lld\n", fib_tabulation(n, true));
+            printf("\nê²°ê³¼: %lld\n", fib_tabulation(n, true));
             break;
 
         case 4:
-            printf("\n°á°ú: %lld\n", fib_optimized(n, true));
+            printf("\nê²°ê³¼: %lld\n", fib_optimized(n, true));
             break;
 
         case 5:
@@ -333,7 +333,7 @@ int main(void) {
             break;
 
         default:
-            printf("Àß¸øµÈ ¼±ÅÃÀÔ´Ï´Ù.\n");
+            printf("ìž˜ëª»ëœ ì„ íƒìž…ë‹ˆë‹¤.\n");
         }
     }
 
@@ -341,140 +341,140 @@ int main(void) {
 }
 
 /*
-±¸Çö ºÐ¼® ¹× ±³ÈÆ
+êµ¬í˜„ ë¶„ì„ ë° êµí›ˆ
 ==============
 
-1. ½Ã°£ º¹Àâµµ ºÐ¼®
+1. ì‹œê°„ ë³µìž¡ë„ ë¶„ì„
 ----------------
-±âº» Àç±Í:
+ê¸°ë³¸ ìž¬ê·€:
 - O(2^n)
-- ¸Å È£Ãâ¸¶´Ù 2¹øÀÇ Àç±Í È£Ãâ
-- Áßº¹ °è»êÀÌ ¸Å¿ì ¸¹À½
+- ë§¤ í˜¸ì¶œë§ˆë‹¤ 2ë²ˆì˜ ìž¬ê·€ í˜¸ì¶œ
+- ì¤‘ë³µ ê³„ì‚°ì´ ë§¤ìš° ë§ŽìŒ
 
-¸Þ¸ðÀÌÁ¦ÀÌ¼Ç:
+ë©”ëª¨ì´ì œì´ì…˜:
 - O(n)
-- °¢ ºÎºÐ ¹®Á¦¸¦ ÇÑ ¹ø¸¸ °è»ê
-- Ä³½Ã ÀûÁßÀ¸·Î Àç°è»ê ¹æÁö
+- ê° ë¶€ë¶„ ë¬¸ì œë¥¼ í•œ ë²ˆë§Œ ê³„ì‚°
+- ìºì‹œ ì ì¤‘ìœ¼ë¡œ ìž¬ê³„ì‚° ë°©ì§€
 
-Å¸ºæ·¹ÀÌ¼Ç:
+íƒ€ë·¸ë ˆì´ì…˜:
 - O(n)
-- ¼øÂ÷Àû °è»êÀ¸·Î ¿À¹öÇìµå ÃÖ¼ÒÈ­
-- ¸ðµç °ªÀ» ÇÑ ¹ø¾¿¸¸ °è»ê
+- ìˆœì°¨ì  ê³„ì‚°ìœ¼ë¡œ ì˜¤ë²„í—¤ë“œ ìµœì†Œí™”
+- ëª¨ë“  ê°’ì„ í•œ ë²ˆì”©ë§Œ ê³„ì‚°
 
-°ø°£ ÃÖÀûÈ­:
-- O(n) ½Ã°£
-- O(1) °ø°£
-- °¡Àå È¿À²ÀûÀÎ ±¸Çö
+ê³µê°„ ìµœì í™”:
+- O(n) ì‹œê°„
+- O(1) ê³µê°„
+- ê°€ìž¥ íš¨ìœ¨ì ì¸ êµ¬í˜„
 
-2. °ø°£ º¹Àâµµ ºÐ¼®
+2. ê³µê°„ ë³µìž¡ë„ ë¶„ì„
 ----------------
-±âº» Àç±Í:
-- O(n) ½ºÅÃ °ø°£
-- Àç±Í È£Ãâ¸¶´Ù ½ºÅÃ ÇÁ·¹ÀÓ »ç¿ë
-- ½ºÅÃ ¿À¹öÇÃ·Î¿ì À§Çè
+ê¸°ë³¸ ìž¬ê·€:
+- O(n) ìŠ¤íƒ ê³µê°„
+- ìž¬ê·€ í˜¸ì¶œë§ˆë‹¤ ìŠ¤íƒ í”„ë ˆìž„ ì‚¬ìš©
+- ìŠ¤íƒ ì˜¤ë²„í”Œë¡œìš° ìœ„í—˜
 
-¸Þ¸ðÀÌÁ¦ÀÌ¼Ç:
-- O(n) ¸Þ¸ð¸®
-- ¸ðµç ºÎºÐ ¹®Á¦ÀÇ °á°ú ÀúÀå
-- ½ºÅÃ °ø°£ Ãß°¡ ÇÊ¿ä
+ë©”ëª¨ì´ì œì´ì…˜:
+- O(n) ë©”ëª¨ë¦¬
+- ëª¨ë“  ë¶€ë¶„ ë¬¸ì œì˜ ê²°ê³¼ ì €ìž¥
+- ìŠ¤íƒ ê³µê°„ ì¶”ê°€ í•„ìš”
 
-Å¸ºæ·¹ÀÌ¼Ç:
-- O(n) ¸Þ¸ð¸®
-- Å×ÀÌºí¿¡ ¸ðµç °ª ÀúÀå
-- ½ºÅÃ »ç¿ë ¾øÀ½
+íƒ€ë·¸ë ˆì´ì…˜:
+- O(n) ë©”ëª¨ë¦¬
+- í…Œì´ë¸”ì— ëª¨ë“  ê°’ ì €ìž¥
+- ìŠ¤íƒ ì‚¬ìš© ì—†ìŒ
 
-°ø°£ ÃÖÀûÈ­:
-- O(1) ¸Þ¸ð¸®
-- ÇÊ¿äÇÑ ÃÖ¼ÒÇÑÀÇ °ª¸¸ À¯Áö
-- Ãß°¡ °ø°£ ¾øÀ½
+ê³µê°„ ìµœì í™”:
+- O(1) ë©”ëª¨ë¦¬
+- í•„ìš”í•œ ìµœì†Œí•œì˜ ê°’ë§Œ ìœ ì§€
+- ì¶”ê°€ ê³µê°„ ì—†ìŒ
 
-3. ±³ÈÆ
+3. êµí›ˆ
 ------
-Áßº¹ °è»êÀÇ ¿µÇâ:
-- ±âº» Àç±Í¿¡¼­ Áö¼öÀû Áõ°¡
-- ¸Þ¸ðÀÌÁ¦ÀÌ¼ÇÀ¸·Î ±ØÀûÀÎ ¼º´É Çâ»ó
-- °°Àº °è»ê ¹Ýº¹ÀÌ ¼º´É ÀúÇÏÀÇ ÁÖ¿øÀÎ
+ì¤‘ë³µ ê³„ì‚°ì˜ ì˜í–¥:
+- ê¸°ë³¸ ìž¬ê·€ì—ì„œ ì§€ìˆ˜ì  ì¦ê°€
+- ë©”ëª¨ì´ì œì´ì…˜ìœ¼ë¡œ ê·¹ì ì¸ ì„±ëŠ¥ í–¥ìƒ
+- ê°™ì€ ê³„ì‚° ë°˜ë³µì´ ì„±ëŠ¥ ì €í•˜ì˜ ì£¼ì›ì¸
 
-¸Þ¸ð¸®-½Ã°£ Æ®·¹ÀÌµå¿ÀÇÁ:
-- °ø°£À» »ç¿ëÇØ ½Ã°£ Àý¾à
-- ¸Þ¸ð¸® »ç¿ë·®°ú ½ÇÇà ¼ÓµµÀÇ ±ÕÇü
-- »óÈ²¿¡ µû¸¥ ÀûÀýÇÑ ¼±ÅÃ
+ë©”ëª¨ë¦¬-ì‹œê°„ íŠ¸ë ˆì´ë“œì˜¤í”„:
+- ê³µê°„ì„ ì‚¬ìš©í•´ ì‹œê°„ ì ˆì•½
+- ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ê³¼ ì‹¤í–‰ ì†ë„ì˜ ê· í˜•
+- ìƒí™©ì— ë”°ë¥¸ ì ì ˆí•œ ì„ íƒ
 
-±¸Çö ¹æ½ÄÀÇ ¼±ÅÃ:
-- ¹®Á¦ Å©±â¿Í Á¦¾à Á¶°Ç °í·Á
-- °¡µ¶¼º°ú À¯Áöº¸¼ö¼º °¨¾È
-- ½ÇÁ¦ È¯°æ¿¡¼­ÀÇ Àû¿ë¼º °ËÅä
+êµ¬í˜„ ë°©ì‹ì˜ ì„ íƒ:
+- ë¬¸ì œ í¬ê¸°ì™€ ì œì•½ ì¡°ê±´ ê³ ë ¤
+- ê°€ë…ì„±ê³¼ ìœ ì§€ë³´ìˆ˜ì„± ê°ì•ˆ
+- ì‹¤ì œ í™˜ê²½ì—ì„œì˜ ì ìš©ì„± ê²€í† 
 
-4. ÃÖÀûÈ­ °¡´É¼º
+4. ìµœì í™” ê°€ëŠ¥ì„±
 -------------
-Çà·Ä °ÅµìÁ¦°ö:
-- O(log n) ½Ã°£ º¹Àâµµ
-- ºÐÇÒ Á¤º¹ ±â¹ý È°¿ë
-- ´ë±Ô¸ð ¼ö¿¡ È¿°úÀû
+í–‰ë ¬ ê±°ë“­ì œê³±:
+- O(log n) ì‹œê°„ ë³µìž¡ë„
+- ë¶„í•  ì •ë³µ ê¸°ë²• í™œìš©
+- ëŒ€ê·œëª¨ ìˆ˜ì— íš¨ê³¼ì 
 
-¸ðµâ·¯ ¿¬»ê:
-- ¿À¹öÇÃ·Î¿ì ¹æÁö
-- ¾ÏÈ£ÇÐÀû ÀÀ¿ë
-- ¸Å¿ì Å« ¼ö Ã³¸®
+ëª¨ë“ˆëŸ¬ ì—°ì‚°:
+- ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
+- ì•”í˜¸í•™ì  ì‘ìš©
+- ë§¤ìš° í° ìˆ˜ ì²˜ë¦¬
 
-º´·ÄÈ­:
-- µ¶¸³Àû ºÎºÐ ¹®Á¦ º´·Ä Ã³¸®
-- ÇÏµå¿þ¾î È°¿ë ÃÖÀûÈ­
-- ´ë±Ô¸ð °è»ê¿¡ À¯¿ë
+ë³‘ë ¬í™”:
+- ë…ë¦½ì  ë¶€ë¶„ ë¬¸ì œ ë³‘ë ¬ ì²˜ë¦¬
+- í•˜ë“œì›¨ì–´ í™œìš© ìµœì í™”
+- ëŒ€ê·œëª¨ ê³„ì‚°ì— ìœ ìš©
 
-5. ½ÇÁ¦ ÀÀ¿ë ºÐ¾ß
+5. ì‹¤ì œ ì‘ìš© ë¶„ì•¼
 --------------
-¾Ë°í¸®Áò ¼³°è:
-- µ¿Àû °èÈ¹¹ýÀÇ ±âÃÊ ¿¹Á¦
-- ºÐÇÒ Á¤º¹°úÀÇ ºñ±³
-- ÃÖÀûÈ­ ±â¹ý ÇÐ½À
+ì•Œê³ ë¦¬ì¦˜ ì„¤ê³„:
+- ë™ì  ê³„íšë²•ì˜ ê¸°ì´ˆ ì˜ˆì œ
+- ë¶„í•  ì •ë³µê³¼ì˜ ë¹„êµ
+- ìµœì í™” ê¸°ë²• í•™ìŠµ
 
-½Ã½ºÅÛ ¼³°è:
-- Ä³½Ì ½Ã½ºÅÛ ¼³°è
-- ¸Þ¸ð¸® °ü¸® Àü·«
-- ¼º´É ÃÖÀûÈ­ ±â¹ý
+ì‹œìŠ¤í…œ ì„¤ê³„:
+- ìºì‹± ì‹œìŠ¤í…œ ì„¤ê³„
+- ë©”ëª¨ë¦¬ ê´€ë¦¬ ì „ëžµ
+- ì„±ëŠ¥ ìµœì í™” ê¸°ë²•
 
-¼öÇÐÀû ÀÀ¿ë:
-- ¼ö¿­°ú ÆÐÅÏ
-- È²±Ýºñ¿ÍÀÇ °ü°è
-- ÀÚ¿¬°è Çö»ó ¸ðµ¨¸µ
+ìˆ˜í•™ì  ì‘ìš©:
+- ìˆ˜ì—´ê³¼ íŒ¨í„´
+- í™©ê¸ˆë¹„ì™€ì˜ ê´€ê³„
+- ìžì—°ê³„ í˜„ìƒ ëª¨ë¸ë§
 
-6. ±¸Çö ½Ã °í·Á»çÇ×
+6. êµ¬í˜„ ì‹œ ê³ ë ¤ì‚¬í•­
 ---------------
-¿À¹öÇÃ·Î¿ì Ã³¸®:
-- Å« ¼ö Ã³¸® ¹æ¹ý
-- ÀÚ·áÇü ¼±ÅÃ
-- ¿¹¿Ü Ã³¸®
+ì˜¤ë²„í”Œë¡œìš° ì²˜ë¦¬:
+- í° ìˆ˜ ì²˜ë¦¬ ë°©ë²•
+- ìžë£Œí˜• ì„ íƒ
+- ì˜ˆì™¸ ì²˜ë¦¬
 
-¸Þ¸ð¸® °ü¸®:
-- µ¿Àû ÇÒ´ç ¹× ÇØÁ¦
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- È¿À²Àû ÀÚ¿ø »ç¿ë
+ë©”ëª¨ë¦¬ ê´€ë¦¬:
+- ë™ì  í• ë‹¹ ë° í•´ì œ
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- íš¨ìœ¨ì  ìžì› ì‚¬ìš©
 
-µð¹ö±ë ¿ëÀÌ¼º:
-- ´Ü°èº° ÁøÇà »óÈ² Ãâ·Â
-- Áß°£ °á°ú È®ÀÎ
-- ¿À·ù ÃßÀû Áö¿ø
+ë””ë²„ê¹… ìš©ì´ì„±:
+- ë‹¨ê³„ë³„ ì§„í–‰ ìƒí™© ì¶œë ¥
+- ì¤‘ê°„ ê²°ê³¼ í™•ì¸
+- ì˜¤ë¥˜ ì¶”ì  ì§€ì›
 
-7. ¼º´É Çâ»ó Àü·«
+7. ì„±ëŠ¥ í–¥ìƒ ì „ëžµ
 --------------
-Ä³½Ã È¿À²¼º:
-- ¸Þ¸ð¸® Á¢±Ù ÆÐÅÏ ÃÖÀûÈ­
-- Áö¿ª¼º ¿ø¸® È°¿ë
-- Ä³½Ã ¹Ì½º ÃÖ¼ÒÈ­
+ìºì‹œ íš¨ìœ¨ì„±:
+- ë©”ëª¨ë¦¬ ì ‘ê·¼ íŒ¨í„´ ìµœì í™”
+- ì§€ì—­ì„± ì›ë¦¬ í™œìš©
+- ìºì‹œ ë¯¸ìŠ¤ ìµœì†Œí™”
 
-¸Þ¸ð¸® Àç»ç¿ë:
-- ºÒÇÊ¿äÇÑ ÇÒ´ç Á¦°Å
-- ¹öÆÛ ÀçÈ°¿ë
-- ÀÓ½Ã °´Ã¼ ÃÖ¼ÒÈ­
+ë©”ëª¨ë¦¬ ìž¬ì‚¬ìš©:
+- ë¶ˆí•„ìš”í•œ í• ë‹¹ ì œê±°
+- ë²„í¼ ìž¬í™œìš©
+- ìž„ì‹œ ê°ì²´ ìµœì†Œí™”
 
-¾Ë°í¸®Áò ¼±ÅÃ:
-- ÀÔ·Â Å©±âº° ÃÖÀû ¹æ¹ý
-- ÇÏµå¿þ¾î Æ¯¼º °í·Á
-- ½ÇÇà È¯°æ ÀûÀÀ
+ì•Œê³ ë¦¬ì¦˜ ì„ íƒ:
+- ìž…ë ¥ í¬ê¸°ë³„ ìµœì  ë°©ë²•
+- í•˜ë“œì›¨ì–´ íŠ¹ì„± ê³ ë ¤
+- ì‹¤í–‰ í™˜ê²½ ì ì‘
 
-ÀÌ ±¸ÇöÀº µ¿Àû °èÈ¹¹ýÀÇ ±âº»À»
-ÇÇº¸³ªÄ¡ ¼ö¿­À» ÅëÇØ ¼³¸íÇÏ¸ç,
-´Ù¾çÇÑ ÃÖÀûÈ­ ±â¹ý°ú ½ÇÁ¦ ÀÀ¿ë
-°¡´É¼ºÀ» º¸¿©ÁÝ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë™ì  ê³„íšë²•ì˜ ê¸°ë³¸ì„
+í”¼ë³´ë‚˜ì¹˜ ìˆ˜ì—´ì„ í†µí•´ ì„¤ëª…í•˜ë©°,
+ë‹¤ì–‘í•œ ìµœì í™” ê¸°ë²•ê³¼ ì‹¤ì œ ì‘ìš©
+ê°€ëŠ¥ì„±ì„ ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

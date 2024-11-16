@@ -4,16 +4,16 @@
 #include <time.h>
 
 /*
-Èü ±â¹İ ¿ì¼±¼øÀ§ Å¥:
-- ÃÖ´ë ÈüÀ» È°¿ëÇÑ È¿À²ÀûÀÎ ¿ì¼±¼øÀ§ Å¥ ±¸Çö
-- ¿ì¼±¼øÀ§°¡ ³ôÀº ¿ø¼Ò´Â Ç×»ó ·çÆ®¿¡ À§Ä¡
-- O(log n) ½Ã°£ º¹ÀâµµÀÇ »ğÀÔ/»èÁ¦ ¿¬»ê
-- ¿ÏÀü ÀÌÁø Æ®¸®ÀÇ Æ¯¼º È°¿ë
+í™ ê¸°ë°˜ ìš°ì„ ìˆœìœ„ í:
+- ìµœëŒ€ í™ì„ í™œìš©í•œ íš¨ìœ¨ì ì¸ ìš°ì„ ìˆœìœ„ í êµ¬í˜„
+- ìš°ì„ ìˆœìœ„ê°€ ë†’ì€ ì›ì†ŒëŠ” í•­ìƒ ë£¨íŠ¸ì— ìœ„ì¹˜
+- O(log n) ì‹œê°„ ë³µì¡ë„ì˜ ì‚½ì…/ì‚­ì œ ì—°ì‚°
+- ì™„ì „ ì´ì§„ íŠ¸ë¦¬ì˜ íŠ¹ì„± í™œìš©
 */
 
 typedef struct {
-    int priority;   // ¿ì¼±¼øÀ§
-    char data[50];  // ½ÇÁ¦ µ¥ÀÌÅÍ
+    int priority;   // ìš°ì„ ìˆœìœ„
+    char data[50];  // ì‹¤ì œ ë°ì´í„°
 } QueueElement;
 
 typedef struct {
@@ -22,17 +22,17 @@ typedef struct {
     int size;
 } PriorityQueue;
 
-/* ºÎ¸ğ ³ëµåÀÇ ÀÎµ¦½º °è»ê */
+/* ë¶€ëª¨ ë…¸ë“œì˜ ì¸ë±ìŠ¤ ê³„ì‚° */
 #define PARENT(i) (((i) - 1) / 2)
 
-/* ¿ŞÂÊ ÀÚ½Ä ³ëµåÀÇ ÀÎµ¦½º °è»ê */
+/* ì™¼ìª½ ìì‹ ë…¸ë“œì˜ ì¸ë±ìŠ¤ ê³„ì‚° */
 #define LEFT_CHILD(i) (2 * (i) + 1)
 
-/* ¿À¸¥ÂÊ ÀÚ½Ä ³ëµåÀÇ ÀÎµ¦½º °è»ê */
+/* ì˜¤ë¥¸ìª½ ìì‹ ë…¸ë“œì˜ ì¸ë±ìŠ¤ ê³„ì‚° */
 #define RIGHT_CHILD(i) (2 * (i) + 2)
 
-/* ¿ì¼±¼øÀ§ Å¥ »ı¼º
- * - ¸Å°³º¯¼ö: capacity - Å¥ÀÇ ÃÖ´ë ¿ë·®
+/* ìš°ì„ ìˆœìœ„ í ìƒì„±
+ * - ë§¤ê°œë³€ìˆ˜: capacity - íì˜ ìµœëŒ€ ìš©ëŸ‰
  */
 PriorityQueue* queue_create(int capacity) {
     PriorityQueue* queue = (PriorityQueue*)malloc(sizeof(PriorityQueue));
@@ -51,7 +51,7 @@ PriorityQueue* queue_create(int capacity) {
     return queue;
 }
 
-/* ¿ì¼±¼øÀ§ Å¥ ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ìš°ì„ ìˆœìœ„ í ë©”ëª¨ë¦¬ í•´ì œ */
 void queue_destroy(PriorityQueue* queue) {
     if (queue) {
         free(queue->elements);
@@ -59,14 +59,14 @@ void queue_destroy(PriorityQueue* queue) {
     }
 }
 
-/* µÎ ¿ø¼ÒÀÇ ±³È¯ */
+/* ë‘ ì›ì†Œì˜ êµí™˜ */
 void swap_elements(QueueElement* a, QueueElement* b) {
     QueueElement temp = *a;
     *a = *b;
     *b = temp;
 }
 
-/* »óÇâ ÀÌµ¿ (»ğÀÔ ½Ã »ç¿ë) */
+/* ìƒí–¥ ì´ë™ (ì‚½ì… ì‹œ ì‚¬ìš©) */
 void heapify_up(PriorityQueue* queue, int index) {
     while (index > 0) {
         int parent = PARENT(index);
@@ -78,7 +78,7 @@ void heapify_up(PriorityQueue* queue, int index) {
     }
 }
 
-/* ÇÏÇâ ÀÌµ¿ (»èÁ¦ ½Ã »ç¿ë) */
+/* í•˜í–¥ ì´ë™ (ì‚­ì œ ì‹œ ì‚¬ìš©) */
 void heapify_down(PriorityQueue* queue, int index) {
     int largest = index;
     int left = LEFT_CHILD(index);
@@ -100,9 +100,9 @@ void heapify_down(PriorityQueue* queue, int index) {
     }
 }
 
-/* ¿ø¼Ò »ğÀÔ
- * - ¸Å°³º¯¼ö: queue - ¿ì¼±¼øÀ§ Å¥, priority - ¿ì¼±¼øÀ§, data - µ¥ÀÌÅÍ
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* ì›ì†Œ ì‚½ì…
+ * - ë§¤ê°œë³€ìˆ˜: queue - ìš°ì„ ìˆœìœ„ í, priority - ìš°ì„ ìˆœìœ„, data - ë°ì´í„°
+ * - ì‹œê°„ë³µì¡ë„: O(log n)
  */
 bool queue_enqueue(PriorityQueue* queue, int priority, const char* data) {
     if (queue->size >= queue->capacity) {
@@ -117,9 +117,9 @@ bool queue_enqueue(PriorityQueue* queue, int priority, const char* data) {
     return true;
 }
 
-/* ÃÖ°í ¿ì¼±¼øÀ§ ¿ø¼Ò Á¦°Å
- * - ¸Å°³º¯¼ö: queue - ¿ì¼±¼øÀ§ Å¥, priority - ¿ì¼±¼øÀ§ ÀúÀå, data - µ¥ÀÌÅÍ ÀúÀå
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* ìµœê³  ìš°ì„ ìˆœìœ„ ì›ì†Œ ì œê±°
+ * - ë§¤ê°œë³€ìˆ˜: queue - ìš°ì„ ìˆœìœ„ í, priority - ìš°ì„ ìˆœìœ„ ì €ì¥, data - ë°ì´í„° ì €ì¥
+ * - ì‹œê°„ë³µì¡ë„: O(log n)
  */
 bool queue_dequeue(PriorityQueue* queue, int* priority, char* data) {
     if (queue->size == 0) {
@@ -135,8 +135,8 @@ bool queue_dequeue(PriorityQueue* queue, int* priority, char* data) {
     return true;
 }
 
-/* ÃÖ°í ¿ì¼±¼øÀ§ ¿ø¼Ò È®ÀÎ (Á¦°ÅÇÏÁö ¾ÊÀ½)
- * - ½Ã°£º¹Àâµµ: O(1)
+/* ìµœê³  ìš°ì„ ìˆœìœ„ ì›ì†Œ í™•ì¸ (ì œê±°í•˜ì§€ ì•ŠìŒ)
+ * - ì‹œê°„ë³µì¡ë„: O(1)
  */
 bool queue_peek(PriorityQueue* queue, int* priority, char* data) {
     if (queue->size == 0) {
@@ -148,7 +148,7 @@ bool queue_peek(PriorityQueue* queue, int* priority, char* data) {
     return true;
 }
 
-/* ¿ì¼±¼øÀ§ Å¥ ½Ã°¢È­ */
+/* ìš°ì„ ìˆœìœ„ í ì‹œê°í™” */
 void queue_print(const PriorityQueue* queue) {
     if (queue->size == 0) {
         printf("Priority Queue is empty\n");
@@ -164,12 +164,12 @@ void queue_print(const PriorityQueue* queue) {
     int printed_nodes = 0;
 
     while (printed_nodes < queue->size) {
-        // ÇöÀç ·¹º§ÀÇ µé¿©¾²±â
+        // í˜„ì¬ ë ˆë²¨ì˜ ë“¤ì—¬ì“°ê¸°
         for (int i = 0; i < (1 << (4 - level)); i++) {
             printf("  ");
         }
 
-        // ÇöÀç ·¹º§ÀÇ ³ëµåµé Ãâ·Â
+        // í˜„ì¬ ë ˆë²¨ì˜ ë…¸ë“œë“¤ ì¶œë ¥
         for (int i = 0; i < level_nodes && printed_nodes < queue->size; i++) {
             printf("(%d,%s) ",
                 queue->elements[printed_nodes].priority,
@@ -183,17 +183,17 @@ void queue_print(const PriorityQueue* queue) {
     }
 }
 
-/* ¿ì¼±¼øÀ§ Å¥°¡ ºñ¾îÀÖ´ÂÁö È®ÀÎ */
+/* ìš°ì„ ìˆœìœ„ íê°€ ë¹„ì–´ìˆëŠ”ì§€ í™•ì¸ */
 bool queue_is_empty(const PriorityQueue* queue) {
     return queue->size == 0;
 }
 
-/* ¿ì¼±¼øÀ§ Å¥°¡ °¡µæ Ã¡´ÂÁö È®ÀÎ */
+/* ìš°ì„ ìˆœìœ„ íê°€ ê°€ë“ ì°¼ëŠ”ì§€ í™•ì¸ */
 bool queue_is_full(const PriorityQueue* queue) {
     return queue->size >= queue->capacity;
 }
 
-/* ¼º´É ÃøÁ¤À» À§ÇÑ ·£´ı ¹®ÀÚ¿­ »ı¼º */
+/* ì„±ëŠ¥ ì¸¡ì •ì„ ìœ„í•œ ëœë¤ ë¬¸ìì—´ ìƒì„± */
 void generate_random_string(char* str, int length) {
     const char charset[] = "abcdefghijklmnopqrstuvwxyz";
     for (int i = 0; i < length - 1; i++) {
@@ -202,13 +202,13 @@ void generate_random_string(char* str, int length) {
     str[length - 1] = '\0';
 }
 
-/* ¼º´É ÃøÁ¤ */
+/* ì„±ëŠ¥ ì¸¡ì • */
 void measure_performance(PriorityQueue* queue, int operations) {
     clock_t start, end;
     char data[50];
     int priority;
 
-    // »ğÀÔ ¼º´É ÃøÁ¤
+    // ì‚½ì… ì„±ëŠ¥ ì¸¡ì •
     start = clock();
     for (int i = 0; i < operations; i++) {
         generate_random_string(data, 6);
@@ -217,7 +217,7 @@ void measure_performance(PriorityQueue* queue, int operations) {
     end = clock();
     double enqueue_time = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-    // »èÁ¦ ¼º´É ÃøÁ¤
+    // ì‚­ì œ ì„±ëŠ¥ ì¸¡ì •
     start = clock();
     for (int i = 0; i < operations; i++) {
         queue_dequeue(queue, &priority, data);
@@ -232,7 +232,7 @@ void measure_performance(PriorityQueue* queue, int operations) {
         dequeue_time, dequeue_time / operations);
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Priority Queue Menu ===\n");
     printf("1. Enqueue element\n");
@@ -329,67 +329,67 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. Èü ±â¹İ ¿ì¼±¼øÀ§ Å¥ÀÇ Æ¯Â¡
+1. í™ ê¸°ë°˜ ìš°ì„ ìˆœìœ„ íì˜ íŠ¹ì§•
 -----------------------
-- ÃÖ´ë Èü ±¸Á¶ È°¿ë
-- µ¿Àû ¸Ş¸ğ¸® ÇÒ´ç
-- ¿ì¼±¼øÀ§¿Í µ¥ÀÌÅÍ ºĞ¸®
-- È¿À²ÀûÀÎ ±¸Çö
+- ìµœëŒ€ í™ êµ¬ì¡° í™œìš©
+- ë™ì  ë©”ëª¨ë¦¬ í• ë‹¹
+- ìš°ì„ ìˆœìœ„ì™€ ë°ì´í„° ë¶„ë¦¬
+- íš¨ìœ¨ì ì¸ êµ¬í˜„
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µì¡ë„
 -----------
-»ğÀÔ(Enqueue): O(log n)
-»èÁ¦(Dequeue): O(log n)
-Á¶È¸(Peek): O(1)
-- ¸ğµç ÀÛ¾÷ÀÌ È¿À²Àû
+ì‚½ì…(Enqueue): O(log n)
+ì‚­ì œ(Dequeue): O(log n)
+ì¡°íšŒ(Peek): O(1)
+- ëª¨ë“  ì‘ì—…ì´ íš¨ìœ¨ì 
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µì¡ë„
 -----------
 O(n)
-- µ¿Àû ¹è¿­ »ç¿ë
-- Ãß°¡ °ø°£ ÃÖ¼ÒÈ­
-- È®Àå °¡´ÉÇÑ ±¸Á¶
+- ë™ì  ë°°ì—´ ì‚¬ìš©
+- ì¶”ê°€ ê³µê°„ ìµœì†Œí™”
+- í™•ì¥ ê°€ëŠ¥í•œ êµ¬ì¡°
 
-4. ÁÖ¿ä ±¸Çö Æ¯Â¡
+4. ì£¼ìš” êµ¬í˜„ íŠ¹ì§•
 -------------
-- ¿ì¼±¼øÀ§¿Í µ¥ÀÌÅÍ ½Ö
-- µ¿Àû Å©±â Á¶Àı
-- ½Ã°¢È­ ±â´É
-- ¼º´É ÃøÁ¤
+- ìš°ì„ ìˆœìœ„ì™€ ë°ì´í„° ìŒ
+- ë™ì  í¬ê¸° ì¡°ì ˆ
+- ì‹œê°í™” ê¸°ëŠ¥
+- ì„±ëŠ¥ ì¸¡ì •
 
-5. ÀåÁ¡
+5. ì¥ì 
 -----
-- ºü¸¥ ¿ì¼±¼øÀ§ Ã³¸®
-- ¸Ş¸ğ¸® È¿À²¼º
-- ¾ÈÁ¤ÀûÀÎ ¼º´É
-- È®Àå °¡´É¼º
+- ë¹ ë¥¸ ìš°ì„ ìˆœìœ„ ì²˜ë¦¬
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì„±
+- ì•ˆì •ì ì¸ ì„±ëŠ¥
+- í™•ì¥ ê°€ëŠ¥ì„±
 
-6. ´ÜÁ¡
+6. ë‹¨ì 
 -----
-- ±¸Çö º¹Àâµµ
-- ¸Ş¸ğ¸® ´ÜÆíÈ­
-- Ä³½Ã Áö¿ª¼º
-- ºÒ¾ÈÁ¤ Á¤·Ä
+- êµ¬í˜„ ë³µì¡ë„
+- ë©”ëª¨ë¦¬ ë‹¨í¸í™”
+- ìºì‹œ ì§€ì—­ì„±
+- ë¶ˆì•ˆì • ì •ë ¬
 
-7. ÃÖÀûÈ­ ±â¹ı
+7. ìµœì í™” ê¸°ë²•
 -----------
-- µ¿Àû ¸Ş¸ğ¸® °ü¸®
-- Ä³½Ã È°¿ë
-- ¿¬»ê ÃÖ¼ÒÈ­
-- ¸Ş¸ğ¸® Á¤·Ä
+- ë™ì  ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ìºì‹œ í™œìš©
+- ì—°ì‚° ìµœì†Œí™”
+- ë©”ëª¨ë¦¬ ì •ë ¬
 
-8. ÀÀ¿ë ºĞ¾ß
+8. ì‘ìš© ë¶„ì•¼
 ----------
-- ÀÛ¾÷ ½ºÄÉÁÙ¸µ
-- ÀÌº¥Æ® Ã³¸®
-- ³×Æ®¿öÅ© ÆĞÅ¶ Ã³¸®
-- ½Ã¹Ä·¹ÀÌ¼Ç
+- ì‘ì—… ìŠ¤ì¼€ì¤„ë§
+- ì´ë²¤íŠ¸ ì²˜ë¦¬
+- ë„¤íŠ¸ì›Œí¬ íŒ¨í‚· ì²˜ë¦¬
+- ì‹œë®¬ë ˆì´ì…˜
 
-ÀÌ ±¸ÇöÀº ½ÇÁ¦ Çö¾÷¿¡¼­ »ç¿ëÇÒ ¼ö
-ÀÖ´Â ¼öÁØÀÇ ¿ì¼±¼øÀ§ Å¥¸¦ Á¦°øÇÏ¸ç,
-¼º´É°ú ±â´É¼ºÀ» ¸ğµÎ °í·ÁÇÑ
-¼³°è¸¦ º¸¿©Áİ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ì‹¤ì œ í˜„ì—…ì—ì„œ ì‚¬ìš©í•  ìˆ˜
+ìˆëŠ” ìˆ˜ì¤€ì˜ ìš°ì„ ìˆœìœ„ íë¥¼ ì œê³µí•˜ë©°,
+ì„±ëŠ¥ê³¼ ê¸°ëŠ¥ì„±ì„ ëª¨ë‘ ê³ ë ¤í•œ
+ì„¤ê³„ë¥¼ ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

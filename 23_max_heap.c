@@ -4,11 +4,11 @@
 #include <time.h>
 
 /*
-ÃÖ´ë Èü:
-- ¿ÏÀü ÀÌÁø Æ®¸® ±¸Á¶
-- ºÎ¸ğ ³ëµå°¡ ÀÚ½Ä ³ëµåº¸´Ù Å©°Å³ª °°À½
-- ¹è¿­·Î ±¸Çö (ÀÎµ¦½º °è»êÀ¸·Î ºÎ¸ğ-ÀÚ½Ä °ü°è Ç¥Çö)
-- È¿À²ÀûÀÎ »ğÀÔ/»èÁ¦ ¿¬»ê
+ìµœëŒ€ í™:
+- ì™„ì „ ì´ì§„ íŠ¸ë¦¬ êµ¬ì¡°
+- ë¶€ëª¨ ë…¸ë“œê°€ ìì‹ ë…¸ë“œë³´ë‹¤ í¬ê±°ë‚˜ ê°™ìŒ
+- ë°°ì—´ë¡œ êµ¬í˜„ (ì¸ë±ìŠ¤ ê³„ì‚°ìœ¼ë¡œ ë¶€ëª¨-ìì‹ ê´€ê³„ í‘œí˜„)
+- íš¨ìœ¨ì ì¸ ì‚½ì…/ì‚­ì œ ì—°ì‚°
 */
 
 typedef int ElementType;
@@ -16,48 +16,48 @@ typedef int ElementType;
 
 typedef struct {
     ElementType elements[MAX_HEAP_SIZE];
-    int size;  // ÈüÀÇ ÇöÀç Å©±â
+    int size;  // í™ì˜ í˜„ì¬ í¬ê¸°
 } MaxHeap;
 
-/* ºÎ¸ğ ³ëµåÀÇ ÀÎµ¦½º °è»ê */
+/* ë¶€ëª¨ ë…¸ë“œì˜ ì¸ë±ìŠ¤ ê³„ì‚° */
 #define PARENT(i) (((i) - 1) / 2)
 
-/* ¿ŞÂÊ ÀÚ½Ä ³ëµåÀÇ ÀÎµ¦½º °è»ê */
+/* ì™¼ìª½ ìì‹ ë…¸ë“œì˜ ì¸ë±ìŠ¤ ê³„ì‚° */
 #define LEFT_CHILD(i) (2 * (i) + 1)
 
-/* ¿À¸¥ÂÊ ÀÚ½Ä ³ëµåÀÇ ÀÎµ¦½º °è»ê */
+/* ì˜¤ë¥¸ìª½ ìì‹ ë…¸ë“œì˜ ì¸ë±ìŠ¤ ê³„ì‚° */
 #define RIGHT_CHILD(i) (2 * (i) + 2)
 
-/* µÎ ¿ø¼ÒÀÇ ±³È¯ */
+/* ë‘ ì›ì†Œì˜ êµí™˜ */
 void swap(ElementType* a, ElementType* b) {
     ElementType temp = *a;
     *a = *b;
     *b = temp;
 }
 
-/* Èü ÃÊ±âÈ­ */
+/* í™ ì´ˆê¸°í™” */
 void heap_init(MaxHeap* heap) {
     heap->size = 0;
 }
 
-/* ÈüÀÌ ºñ¾îÀÖ´ÂÁö È®ÀÎ */
+/* í™ì´ ë¹„ì–´ìˆëŠ”ì§€ í™•ì¸ */
 bool heap_is_empty(const MaxHeap* heap) {
     return heap->size == 0;
 }
 
-/* ÈüÀÌ °¡µæ Ã¡´ÂÁö È®ÀÎ */
+/* í™ì´ ê°€ë“ ì°¼ëŠ”ì§€ í™•ì¸ */
 bool heap_is_full(const MaxHeap* heap) {
     return heap->size == MAX_HEAP_SIZE;
 }
 
-/* ÈüÀÇ Å©±â ¹İÈ¯ */
+/* í™ì˜ í¬ê¸° ë°˜í™˜ */
 int heap_size(const MaxHeap* heap) {
     return heap->size;
 }
 
-/* »óÇâ ÀÌµ¿ (»ğÀÔ ½Ã »ç¿ë)
- * - »õ·Î »ğÀÔµÈ ¿ø¼Ò¸¦ ÀûÀıÇÑ À§Ä¡·Î ÀÌµ¿
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* ìƒí–¥ ì´ë™ (ì‚½ì… ì‹œ ì‚¬ìš©)
+ * - ìƒˆë¡œ ì‚½ì…ëœ ì›ì†Œë¥¼ ì ì ˆí•œ ìœ„ì¹˜ë¡œ ì´ë™
+ * - ì‹œê°„ë³µì¡ë„: O(log n)
  */
 void heapify_up(MaxHeap* heap, int index) {
     while (index > 0 && heap->elements[PARENT(index)] < heap->elements[index]) {
@@ -66,66 +66,66 @@ void heapify_up(MaxHeap* heap, int index) {
     }
 }
 
-/* ÇÏÇâ ÀÌµ¿ (»èÁ¦ ½Ã »ç¿ë)
- * - ·çÆ® ³ëµåºÎÅÍ ½ÃÀÛÇÏ¿© ÀûÀıÇÑ À§Ä¡·Î ÀÌµ¿
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* í•˜í–¥ ì´ë™ (ì‚­ì œ ì‹œ ì‚¬ìš©)
+ * - ë£¨íŠ¸ ë…¸ë“œë¶€í„° ì‹œì‘í•˜ì—¬ ì ì ˆí•œ ìœ„ì¹˜ë¡œ ì´ë™
+ * - ì‹œê°„ë³µì¡ë„: O(log n)
  */
 void heapify_down(MaxHeap* heap, int index) {
     int largest = index;
     int left = LEFT_CHILD(index);
     int right = RIGHT_CHILD(index);
 
-    // ¿ŞÂÊ ÀÚ½ÄÀÌ ´õ Å« °æ¿ì
+    // ì™¼ìª½ ìì‹ì´ ë” í° ê²½ìš°
     if (left < heap->size && heap->elements[left] > heap->elements[largest]) {
         largest = left;
     }
 
-    // ¿À¸¥ÂÊ ÀÚ½ÄÀÌ ´õ Å« °æ¿ì
+    // ì˜¤ë¥¸ìª½ ìì‹ì´ ë” í° ê²½ìš°
     if (right < heap->size && heap->elements[right] > heap->elements[largest]) {
         largest = right;
     }
 
-    // ±³È¯ÀÌ ÇÊ¿äÇÑ °æ¿ì
+    // êµí™˜ì´ í•„ìš”í•œ ê²½ìš°
     if (largest != index) {
         swap(&heap->elements[index], &heap->elements[largest]);
         heapify_down(heap, largest);
     }
 }
 
-/* ¿ø¼Ò »ğÀÔ
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* ì›ì†Œ ì‚½ì…
+ * - ì‹œê°„ë³µì¡ë„: O(log n)
  */
 bool heap_insert(MaxHeap* heap, ElementType value) {
     if (heap_is_full(heap)) {
         return false;
     }
 
-    // »õ ¿ø¼Ò¸¦ ¸¶Áö¸·¿¡ Ãß°¡
+    // ìƒˆ ì›ì†Œë¥¼ ë§ˆì§€ë§‰ì— ì¶”ê°€
     heap->elements[heap->size] = value;
 
-    // ÀûÀıÇÑ À§Ä¡·Î ÀÌµ¿
+    // ì ì ˆí•œ ìœ„ì¹˜ë¡œ ì´ë™
     heapify_up(heap, heap->size);
 
     heap->size++;
     return true;
 }
 
-/* ÃÖ´ë°ª »èÁ¦
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* ìµœëŒ€ê°’ ì‚­ì œ
+ * - ì‹œê°„ë³µì¡ë„: O(log n)
  */
 bool heap_delete_max(MaxHeap* heap, ElementType* value) {
     if (heap_is_empty(heap)) {
         return false;
     }
 
-    // ·çÆ® °ªÀ» ¹İÈ¯
+    // ë£¨íŠ¸ ê°’ì„ ë°˜í™˜
     *value = heap->elements[0];
 
-    // ¸¶Áö¸· ¿ø¼Ò¸¦ ·çÆ®·Î ÀÌµ¿
+    // ë§ˆì§€ë§‰ ì›ì†Œë¥¼ ë£¨íŠ¸ë¡œ ì´ë™
     heap->elements[0] = heap->elements[heap->size - 1];
     heap->size--;
 
-    // ·çÆ®ºÎÅÍ ÀçÁ¤·Ä
+    // ë£¨íŠ¸ë¶€í„° ì¬ì •ë ¬
     if (!heap_is_empty(heap)) {
         heapify_down(heap, 0);
     }
@@ -133,8 +133,8 @@ bool heap_delete_max(MaxHeap* heap, ElementType* value) {
     return true;
 }
 
-/* ÃÖ´ë°ª È®ÀÎ (»èÁ¦ÇÏÁö ¾ÊÀ½)
- * - ½Ã°£º¹Àâµµ: O(1)
+/* ìµœëŒ€ê°’ í™•ì¸ (ì‚­ì œí•˜ì§€ ì•ŠìŒ)
+ * - ì‹œê°„ë³µì¡ë„: O(1)
  */
 bool heap_peek_max(const MaxHeap* heap, ElementType* value) {
     if (heap_is_empty(heap)) {
@@ -144,8 +144,8 @@ bool heap_peek_max(const MaxHeap* heap, ElementType* value) {
     return true;
 }
 
-/* Èü ½Ã°¢È­ (Æ®¸® ÇüÅÂ·Î Ãâ·Â)
- * - ·¹º§ ¼øÈ¸ ¹æ½ÄÀ¸·Î Ãâ·Â
+/* í™ ì‹œê°í™” (íŠ¸ë¦¬ í˜•íƒœë¡œ ì¶œë ¥)
+ * - ë ˆë²¨ ìˆœíšŒ ë°©ì‹ìœ¼ë¡œ ì¶œë ¥
  */
 void heap_print(const MaxHeap* heap) {
     if (heap_is_empty(heap)) {
@@ -159,16 +159,16 @@ void heap_print(const MaxHeap* heap) {
     int printed_nodes = 0;
 
     while (printed_nodes < heap->size) {
-        // ÇöÀç ·¹º§ÀÇ µé¿©¾²±â
+        // í˜„ì¬ ë ˆë²¨ì˜ ë“¤ì—¬ì“°ê¸°
         for (int i = 0; i < (1 << (heap->size / 2 - level)); i++) {
             printf("  ");
         }
 
-        // ÇöÀç ·¹º§ÀÇ ³ëµåµé Ãâ·Â
+        // í˜„ì¬ ë ˆë²¨ì˜ ë…¸ë“œë“¤ ì¶œë ¥
         for (int i = 0; i < level_nodes && printed_nodes < heap->size; i++) {
             printf("%d ", heap->elements[printed_nodes++]);
 
-            // ³ëµå »çÀÌÀÇ °£°İ
+            // ë…¸ë“œ ì‚¬ì´ì˜ ê°„ê²©
             for (int j = 0; j < (1 << (heap->size / 2 - level + 1)); j++) {
                 printf(" ");
             }
@@ -180,8 +180,8 @@ void heap_print(const MaxHeap* heap) {
     }
 }
 
-/* Èü °ËÁõ
- * - ÃÖ´ë Èü ¼Ó¼ºÀÌ À¯ÁöµÇ´ÂÁö È®ÀÎ
+/* í™ ê²€ì¦
+ * - ìµœëŒ€ í™ ì†ì„±ì´ ìœ ì§€ë˜ëŠ”ì§€ í™•ì¸
  */
 bool heap_verify(const MaxHeap* heap) {
     for (int i = 1; i < heap->size; i++) {
@@ -192,12 +192,12 @@ bool heap_verify(const MaxHeap* heap) {
     return true;
 }
 
-/* ¼º´É ÃøÁ¤ */
+/* ì„±ëŠ¥ ì¸¡ì • */
 void measure_operations(MaxHeap* heap, int count) {
     clock_t start, end;
     double insert_time, delete_time;
 
-    // »ğÀÔ ¿¬»ê ÃøÁ¤
+    // ì‚½ì… ì—°ì‚° ì¸¡ì •
     start = clock();
     for (int i = 0; i < count; i++) {
         heap_insert(heap, rand() % 1000);
@@ -205,7 +205,7 @@ void measure_operations(MaxHeap* heap, int count) {
     end = clock();
     insert_time = ((double)(end - start)) / CLOCKS_PER_SEC;
 
-    // »èÁ¦ ¿¬»ê ÃøÁ¤
+    // ì‚­ì œ ì—°ì‚° ì¸¡ì •
     ElementType value;
     start = clock();
     for (int i = 0; i < count; i++) {
@@ -221,7 +221,7 @@ void measure_operations(MaxHeap* heap, int count) {
     printf("Average delete time: %.9f seconds\n", delete_time / count);
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Max Heap Menu ===\n");
     printf("1. Insert element\n");
@@ -320,83 +320,83 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ÃÖ´ë ÈüÀÇ Æ¯¼º
+1. ìµœëŒ€ í™ì˜ íŠ¹ì„±
 -------------
-- ¿ÏÀü ÀÌÁø Æ®¸®
-- ÃÖ´ë Èü ¼Ó¼º
-- ¹è¿­ ±â¹İ ±¸Çö
-- È¿À²ÀûÀÎ »ğÀÔ/»èÁ¦
+- ì™„ì „ ì´ì§„ íŠ¸ë¦¬
+- ìµœëŒ€ í™ ì†ì„±
+- ë°°ì—´ ê¸°ë°˜ êµ¬í˜„
+- íš¨ìœ¨ì ì¸ ì‚½ì…/ì‚­ì œ
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µì¡ë„
 -----------
-»ğÀÔ: O(log n)
-- ¸»´Ü »ğÀÔ ÈÄ »óÇâ ÀÌµ¿
+ì‚½ì…: O(log n)
+- ë§ë‹¨ ì‚½ì… í›„ ìƒí–¥ ì´ë™
 
-»èÁ¦: O(log n)
-- ·çÆ® »èÁ¦ ÈÄ ÇÏÇâ ÀÌµ¿
+ì‚­ì œ: O(log n)
+- ë£¨íŠ¸ ì‚­ì œ í›„ í•˜í–¥ ì´ë™
 
-Á¶È¸: O(1)
-- ÃÖ´ë°ªÀº Ç×»ó ·çÆ®
+ì¡°íšŒ: O(1)
+- ìµœëŒ€ê°’ì€ í•­ìƒ ë£¨íŠ¸
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µì¡ë„
 -----------
 O(n)
-- ¹è¿­ ±â¹İ
-- ¿ÏÀü ÀÌÁø Æ®¸®
-- Ãß°¡ °ø°£ ºÒÇÊ¿ä
+- ë°°ì—´ ê¸°ë°˜
+- ì™„ì „ ì´ì§„ íŠ¸ë¦¬
+- ì¶”ê°€ ê³µê°„ ë¶ˆí•„ìš”
 
-4. ÁÖ¿ä ¿¬»ê
+4. ì£¼ìš” ì—°ì‚°
 ----------
 Heapify Up:
-- »ğÀÔ ½Ã »ç¿ë
-- »óÇâ½Ä ÀçÁ¤·Ä
-- ºÎ¸ğ¿Í ºñ±³/±³È¯
+- ì‚½ì… ì‹œ ì‚¬ìš©
+- ìƒí–¥ì‹ ì¬ì •ë ¬
+- ë¶€ëª¨ì™€ ë¹„êµ/êµí™˜
 
 Heapify Down:
-- »èÁ¦ ½Ã »ç¿ë
-- ÇÏÇâ½Ä ÀçÁ¤·Ä
-- ÀÚ½Ä°ú ºñ±³/±³È¯
+- ì‚­ì œ ì‹œ ì‚¬ìš©
+- í•˜í–¥ì‹ ì¬ì •ë ¬
+- ìì‹ê³¼ ë¹„êµ/êµí™˜
 
-5. ±¸Çö Æ¯Â¡
+5. êµ¬í˜„ íŠ¹ì§•
 ----------
-- ÀÎµ¦½º °è»ê
-- Àç±ÍÀû ±¸Çö
-- ½Ã°¢Àû Ãâ·Â
-- °ËÁõ ±â´É
+- ì¸ë±ìŠ¤ ê³„ì‚°
+- ì¬ê·€ì  êµ¬í˜„
+- ì‹œê°ì  ì¶œë ¥
+- ê²€ì¦ ê¸°ëŠ¥
 
-6. Àå´ÜÁ¡
+6. ì¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- È¿À²ÀûÀÎ ¿ì¼±¼øÀ§ °ü¸®
-- ºü¸¥ ÃÖ´ë°ª Á¢±Ù
-- ¾ÈÁ¤ÀûÀÎ ¼º´É
-- ±¸Çö ´Ü¼ø
+ì¥ì :
+- íš¨ìœ¨ì ì¸ ìš°ì„ ìˆœìœ„ ê´€ë¦¬
+- ë¹ ë¥¸ ìµœëŒ€ê°’ ì ‘ê·¼
+- ì•ˆì •ì ì¸ ì„±ëŠ¥
+- êµ¬í˜„ ë‹¨ìˆœ
 
-´ÜÁ¡:
-- °íÁ¤ Å©±â
-- Ä³½Ã Áö¿ª¼º
-- ¿ÏÀü ÀÌÁø Æ®¸® À¯Áö
-- ºÒ¾ÈÁ¤ Á¤·Ä
+ë‹¨ì :
+- ê³ ì • í¬ê¸°
+- ìºì‹œ ì§€ì—­ì„±
+- ì™„ì „ ì´ì§„ íŠ¸ë¦¬ ìœ ì§€
+- ë¶ˆì•ˆì • ì •ë ¬
 
-7. ÀÀ¿ë ºĞ¾ß
+7. ì‘ìš© ë¶„ì•¼
 ----------
-- ¿ì¼±¼øÀ§ Å¥
-- Èü Á¤·Ä
-- ÀÌº¥Æ® Ã³¸®
-- ½ºÄÉÁÙ¸µ
+- ìš°ì„ ìˆœìœ„ í
+- í™ ì •ë ¬
+- ì´ë²¤íŠ¸ ì²˜ë¦¬
+- ìŠ¤ì¼€ì¤„ë§
 
-8. ÃÖÀûÈ­ ±â¹ı
+8. ìµœì í™” ê¸°ë²•
 -----------
-- ¹İº¹Àû ±¸Çö
-- Ä³½Ã È°¿ë
-- ¸Ş¸ğ¸® Á¤·Ä
-- ¿¬»ê ÃÖ¼ÒÈ­
+- ë°˜ë³µì  êµ¬í˜„
+- ìºì‹œ í™œìš©
+- ë©”ëª¨ë¦¬ ì •ë ¬
+- ì—°ì‚° ìµœì†Œí™”
 
-ÀÌ ±¸ÇöÀº ÃÖ´ë ÈüÀÇ ¸ğµç ÇÙ½É
-±â´ÉÀ» Æ÷ÇÔÇÏ¸ç, ´ÙÀ½ ´Ü°èÀÎ
-Èü ±â¹İ ¿ì¼±¼øÀ§ Å¥ ±¸ÇöÀÇ
-±âÃÊ°¡ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ ìµœëŒ€ í™ì˜ ëª¨ë“  í•µì‹¬
+ê¸°ëŠ¥ì„ í¬í•¨í•˜ë©°, ë‹¤ìŒ ë‹¨ê³„ì¸
+í™ ê¸°ë°˜ ìš°ì„ ìˆœìœ„ í êµ¬í˜„ì˜
+ê¸°ì´ˆê°€ ë©ë‹ˆë‹¤.
 */

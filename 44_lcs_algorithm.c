@@ -4,41 +4,41 @@
 #include <stdbool.h>
 
 /*
-ÃÖÀå °øÅë ºÎºĞ¼ö¿­ (LCS: Longest Common Subsequence)
+ìµœì¥ ê³µí†µ ë¶€ë¶„ìˆ˜ì—´ (LCS: Longest Common Subsequence)
 ================================================
 
-Æ¯Â¡:
-1. µÎ ¼ö¿­ÀÇ °øÅë ºÎºĞ¼ö¿­ Áß °¡Àå ±ä °ÍÀ» Ã£´Â ¹®Á¦
-2. ºÎºĞ¼ö¿­Àº ¿¬¼ÓÀûÀÏ ÇÊ¿ä ¾øÀ½ (Substring°ú ´Ù¸§)
-3. µ¿Àû °èÈ¹¹ıÀÇ ´ëÇ¥ÀûÀÎ ¿¹Á¦
+íŠ¹ì§•:
+1. ë‘ ìˆ˜ì—´ì˜ ê³µí†µ ë¶€ë¶„ìˆ˜ì—´ ì¤‘ ê°€ì¥ ê¸´ ê²ƒì„ ì°¾ëŠ” ë¬¸ì œ
+2. ë¶€ë¶„ìˆ˜ì—´ì€ ì—°ì†ì ì¼ í•„ìš” ì—†ìŒ (Substringê³¼ ë‹¤ë¦„)
+3. ë™ì  ê³„íšë²•ì˜ ëŒ€í‘œì ì¸ ì˜ˆì œ
 
-¿¹½Ã:
-- ¹®ÀÚ¿­ 1: "ABCDE"
-- ¹®ÀÚ¿­ 2: "ACE"
-- LCS: "ACE" (±æÀÌ 3)
+ì˜ˆì‹œ:
+- ë¬¸ìì—´ 1: "ABCDE"
+- ë¬¸ìì—´ 2: "ACE"
+- LCS: "ACE" (ê¸¸ì´ 3)
 */
 
-// === LCS °è»ê °á°ú¸¦ ÀúÀåÇÏ´Â ±¸Á¶Ã¼ ===
+// === LCS ê³„ì‚° ê²°ê³¼ë¥¼ ì €ì¥í•˜ëŠ” êµ¬ì¡°ì²´ ===
 typedef struct {
-    int** length;    // LCS ±æÀÌ Å×ÀÌºí
-    char** path;     // °æ·Î ÃßÀû¿ë ¹æÇâ Å×ÀÌºí
-    int rows;        // Çà ¼ö (Ã¹ ¹øÂ° ¹®ÀÚ¿­ ±æÀÌ + 1)
-    int cols;        // ¿­ ¼ö (µÎ ¹øÂ° ¹®ÀÚ¿­ ±æÀÌ + 1)
+    int** length;    // LCS ê¸¸ì´ í…Œì´ë¸”
+    char** path;     // ê²½ë¡œ ì¶”ì ìš© ë°©í–¥ í…Œì´ë¸”
+    int rows;        // í–‰ ìˆ˜ (ì²« ë²ˆì§¸ ë¬¸ìì—´ ê¸¸ì´ + 1)
+    int cols;        // ì—´ ìˆ˜ (ë‘ ë²ˆì§¸ ë¬¸ìì—´ ê¸¸ì´ + 1)
 } LCSTable;
 
-// === LCS °á°ú¸¦ ÀúÀåÇÏ´Â ±¸Á¶Ã¼ ===
+// === LCS ê²°ê³¼ë¥¼ ì €ì¥í•˜ëŠ” êµ¬ì¡°ì²´ ===
 typedef struct {
-    char* sequence;  // ½ÇÁ¦ LCS ¹®ÀÚ¿­
-    int length;      // LCS ±æÀÌ
+    char* sequence;  // ì‹¤ì œ LCS ë¬¸ìì—´
+    int length;      // LCS ê¸¸ì´
 } LCSResult;
 
-// === LCS Å×ÀÌºí »ı¼º ===
+// === LCS í…Œì´ë¸” ìƒì„± ===
 LCSTable* create_lcs_table(int rows, int cols) {
     LCSTable* table = (LCSTable*)malloc(sizeof(LCSTable));
     table->rows = rows;
     table->cols = cols;
 
-    // ±æÀÌ Å×ÀÌºí ÇÒ´ç
+    // ê¸¸ì´ í…Œì´ë¸” í• ë‹¹
     table->length = (int**)malloc(rows * sizeof(int*));
     table->path = (char**)malloc(rows * sizeof(char*));
 
@@ -50,7 +50,7 @@ LCSTable* create_lcs_table(int rows, int cols) {
     return table;
 }
 
-// === LCS Å×ÀÌºí ¸Ş¸ğ¸® ÇØÁ¦ ===
+// === LCS í…Œì´ë¸” ë©”ëª¨ë¦¬ í•´ì œ ===
 void destroy_lcs_table(LCSTable* table) {
     for (int i = 0; i < table->rows; i++) {
         free(table->length[i]);
@@ -61,9 +61,9 @@ void destroy_lcs_table(LCSTable* table) {
     free(table);
 }
 
-// === LCS Å×ÀÌºí Ãâ·Â (µğ¹ö±ë/±³À°¿ë) ===
+// === LCS í…Œì´ë¸” ì¶œë ¥ (ë””ë²„ê¹…/êµìœ¡ìš©) ===
 void print_lcs_table(LCSTable* table, const char* str1, const char* str2) {
-    printf("\n=== LCS Å×ÀÌºí ===\n");
+    printf("\n=== LCS í…Œì´ë¸” ===\n");
     printf("     ");
     for (int j = 0; j < strlen(str2); j++) {
         printf("%3c ", str2[j]);
@@ -81,17 +81,17 @@ void print_lcs_table(LCSTable* table, const char* str1, const char* str2) {
     }
 }
 
-// === LCS °è»ê ===
+// === LCS ê³„ì‚° ===
 LCSTable* compute_lcs(const char* str1, const char* str2, bool print_steps) {
     int m = strlen(str1);
     int n = strlen(str2);
     LCSTable* table = create_lcs_table(m + 1, n + 1);
 
     if (print_steps) {
-        printf("\n=== LCS °è»ê °úÁ¤ ===\n");
+        printf("\n=== LCS ê³„ì‚° ê³¼ì • ===\n");
     }
 
-    // Bottom-up ¹æ½ÄÀ¸·Î Å×ÀÌºí Ã¤¿ì±â
+    // Bottom-up ë°©ì‹ìœ¼ë¡œ í…Œì´ë¸” ì±„ìš°ê¸°
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
             if (str1[i - 1] == str2[j - 1]) {
@@ -134,7 +134,7 @@ LCSTable* compute_lcs(const char* str1, const char* str2, bool print_steps) {
     return table;
 }
 
-// === LCS ÃßÃâ (Àç±ÍÀû ¹æ¹ı) ===
+// === LCS ì¶”ì¶œ (ì¬ê·€ì  ë°©ë²•) ===
 void extract_lcs(LCSTable* table, const char* str1,
     int i, int j, char* result, int* pos) {
     if (i == 0 || j == 0) return;
@@ -151,7 +151,7 @@ void extract_lcs(LCSTable* table, const char* str1,
     }
 }
 
-// === LCS °á°ú »ı¼º ===
+// === LCS ê²°ê³¼ ìƒì„± ===
 LCSResult* get_lcs_result(LCSTable* table, const char* str1, const char* str2) {
     LCSResult* result = (LCSResult*)malloc(sizeof(LCSResult));
     result->length = table->length[table->rows - 1][table->cols - 1];
@@ -165,21 +165,21 @@ LCSResult* get_lcs_result(LCSTable* table, const char* str1, const char* str2) {
     return result;
 }
 
-// === LCS °á°ú ¸Ş¸ğ¸® ÇØÁ¦ ===
+// === LCS ê²°ê³¼ ë©”ëª¨ë¦¬ í•´ì œ ===
 void destroy_lcs_result(LCSResult* result) {
     free(result->sequence);
     free(result);
 }
 
-// === LCS °á°ú ½Ã°¢È­ ===
+// === LCS ê²°ê³¼ ì‹œê°í™” ===
 void visualize_lcs(const char* str1, const char* str2, LCSResult* result) {
-    printf("\n=== LCS ½Ã°¢È­ ===\n");
-    printf("¹®ÀÚ¿­ 1: %s\n", str1);
-    printf("¹®ÀÚ¿­ 2: %s\n", str2);
-    printf("LCS: %s (±æÀÌ: %d)\n\n", result->sequence, result->length);
+    printf("\n=== LCS ì‹œê°í™” ===\n");
+    printf("ë¬¸ìì—´ 1: %s\n", str1);
+    printf("ë¬¸ìì—´ 2: %s\n", str2);
+    printf("LCS: %s (ê¸¸ì´: %d)\n\n", result->sequence, result->length);
 
-    // ¹®ÀÚ¿­ 1¿¡¼­ LCS ¹®ÀÚ ÇÏÀÌ¶óÀÌÆ®
-    printf("¹®ÀÚ¿­ 1¿¡¼­ LCS: ");
+    // ë¬¸ìì—´ 1ì—ì„œ LCS ë¬¸ì í•˜ì´ë¼ì´íŠ¸
+    printf("ë¬¸ìì—´ 1ì—ì„œ LCS: ");
     int lcs_pos = 0;
     for (int i = 0; i < strlen(str1); i++) {
         if (lcs_pos < result->length &&
@@ -193,8 +193,8 @@ void visualize_lcs(const char* str1, const char* str2, LCSResult* result) {
     }
     printf("\n");
 
-    // ¹®ÀÚ¿­ 2¿¡¼­ LCS ¹®ÀÚ ÇÏÀÌ¶óÀÌÆ®
-    printf("¹®ÀÚ¿­ 2¿¡¼­ LCS: ");
+    // ë¬¸ìì—´ 2ì—ì„œ LCS ë¬¸ì í•˜ì´ë¼ì´íŠ¸
+    printf("ë¬¸ìì—´ 2ì—ì„œ LCS: ");
     lcs_pos = 0;
     for (int i = 0; i < strlen(str2); i++) {
         if (lcs_pos < result->length &&
@@ -210,42 +210,42 @@ void visualize_lcs(const char* str1, const char* str2, LCSResult* result) {
 }
 
 int main(void) {
-    printf("=== ÃÖÀå °øÅë ºÎºĞ¼ö¿­(LCS) °è»ê ÇÁ·Î±×·¥ ===\n");
+    printf("=== ìµœì¥ ê³µí†µ ë¶€ë¶„ìˆ˜ì—´(LCS) ê³„ì‚° í”„ë¡œê·¸ë¨ ===\n");
 
     char str1[100], str2[100];
     bool print_steps;
 
     while (1) {
-        printf("\n1. LCS °è»ê\n");
-        printf("2. Á¾·á\n");
-        printf("¼±ÅÃ: ");
+        printf("\n1. LCS ê³„ì‚°\n");
+        printf("2. ì¢…ë£Œ\n");
+        printf("ì„ íƒ: ");
 
         int choice;
         scanf("%d", &choice);
-        getchar();  // ¹öÆÛ ºñ¿ì±â
+        getchar();  // ë²„í¼ ë¹„ìš°ê¸°
 
         if (choice == 2) break;
 
         if (choice == 1) {
-            printf("\nÃ¹ ¹øÂ° ¹®ÀÚ¿­ ÀÔ·Â: ");
+            printf("\nì²« ë²ˆì§¸ ë¬¸ìì—´ ì…ë ¥: ");
             fgets(str1, sizeof(str1), stdin);
             str1[strcspn(str1, "\n")] = '\0';
 
-            printf("µÎ ¹øÂ° ¹®ÀÚ¿­ ÀÔ·Â: ");
+            printf("ë‘ ë²ˆì§¸ ë¬¸ìì—´ ì…ë ¥: ");
             fgets(str2, sizeof(str2), stdin);
             str2[strcspn(str2, "\n")] = '\0';
 
-            printf("°è»ê °úÁ¤À» Ãâ·ÂÇÏ½Ã°Ú½À´Ï±î? (1: ¿¹, 0: ¾Æ´Ï¿À): ");
+            printf("ê³„ì‚° ê³¼ì •ì„ ì¶œë ¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (1: ì˜ˆ, 0: ì•„ë‹ˆì˜¤): ");
             scanf("%d", &print_steps);
 
-            // LCS °è»ê
+            // LCS ê³„ì‚°
             LCSTable* table = compute_lcs(str1, str2, print_steps);
             LCSResult* result = get_lcs_result(table, str1, str2);
 
-            // °á°ú Ãâ·Â
+            // ê²°ê³¼ ì¶œë ¥
             visualize_lcs(str1, str2, result);
 
-            // ¸Ş¸ğ¸® ÇØÁ¦
+            // ë©”ëª¨ë¦¬ í•´ì œ
             destroy_lcs_table(table);
             destroy_lcs_result(result);
         }
@@ -255,59 +255,59 @@ int main(void) {
 }
 
 /*
-LCS ¾Ë°í¸®Áò ºĞ¼®
+LCS ì•Œê³ ë¦¬ì¦˜ ë¶„ì„
 ===============
 
-1. ½Ã°£ º¹Àâµµ
+1. ì‹œê°„ ë³µì¡ë„
 -----------
-- O(mn): m, nÀº °¢ ¹®ÀÚ¿­ÀÇ ±æÀÌ
-- 2Áß ·çÇÁ·Î ¸ğµç ºÎºĞ ¹®Á¦ ÇØ°á
-- °æ·Î ÃßÀûÀº O(m+n)
+- O(mn): m, nì€ ê° ë¬¸ìì—´ì˜ ê¸¸ì´
+- 2ì¤‘ ë£¨í”„ë¡œ ëª¨ë“  ë¶€ë¶„ ë¬¸ì œ í•´ê²°
+- ê²½ë¡œ ì¶”ì ì€ O(m+n)
 
-2. °ø°£ º¹Àâµµ
+2. ê³µê°„ ë³µì¡ë„
 -----------
-- O(mn): 2Â÷¿ø ¹è¿­ »ç¿ë
-- ±æÀÌ Å×ÀÌºí°ú °æ·Î Å×ÀÌºí ÇÊ¿ä
-- ÃÖÀûÈ­ °¡´É¼º ÀÖÀ½
+- O(mn): 2ì°¨ì› ë°°ì—´ ì‚¬ìš©
+- ê¸¸ì´ í…Œì´ë¸”ê³¼ ê²½ë¡œ í…Œì´ë¸” í•„ìš”
+- ìµœì í™” ê°€ëŠ¥ì„± ìˆìŒ
 
-3. ÃÖÀûÈ­ °¡´É¼º
+3. ìµœì í™” ê°€ëŠ¥ì„±
 ------------
-°ø°£ ÃÖÀûÈ­:
-- O(min(m,n)) °ø°£À¸·Î °³¼± °¡´É
-- ÇÑ Çà¸¸ ÀúÀåÇÏ´Â ¹æ½Ä
-- °æ·Î ÃßÀû Æ÷±â ½Ã °¡´É
+ê³µê°„ ìµœì í™”:
+- O(min(m,n)) ê³µê°„ìœ¼ë¡œ ê°œì„  ê°€ëŠ¥
+- í•œ í–‰ë§Œ ì €ì¥í•˜ëŠ” ë°©ì‹
+- ê²½ë¡œ ì¶”ì  í¬ê¸° ì‹œ ê°€ëŠ¥
 
-½Ã°£ ÃÖÀûÈ­:
-- º´·ÄÈ­ °¡´É
-- ºĞÇÒ Á¤º¹ Á¢±Ù
-- Æ¯¼ö ÄÉÀÌ½º ÃÖÀûÈ­
+ì‹œê°„ ìµœì í™”:
+- ë³‘ë ¬í™” ê°€ëŠ¥
+- ë¶„í•  ì •ë³µ ì ‘ê·¼
+- íŠ¹ìˆ˜ ì¼€ì´ìŠ¤ ìµœì í™”
 
-4. ÀÀ¿ë ºĞ¾ß
+4. ì‘ìš© ë¶„ì•¼
 ---------
-- À¯ÀüÀÚ ¼­¿­ ºĞ¼®
-- ÆÄÀÏ ºñ±³ (diff)
-- Ç¥Àı °Ë»ç
-- ÀÚ¿¬¾î Ã³¸®
-- ¹öÀü °ü¸® ½Ã½ºÅÛ
+- ìœ ì „ì ì„œì—´ ë¶„ì„
+- íŒŒì¼ ë¹„êµ (diff)
+- í‘œì ˆ ê²€ì‚¬
+- ìì—°ì–´ ì²˜ë¦¬
+- ë²„ì „ ê´€ë¦¬ ì‹œìŠ¤í…œ
 
-5. ±¸Çö ½Ã °í·Á»çÇ×
+5. êµ¬í˜„ ì‹œ ê³ ë ¤ì‚¬í•­
 --------------
-¸Ş¸ğ¸® °ü¸®:
-- µ¿Àû ÇÒ´ç/ÇØÁ¦ ÁÖÀÇ
-- Å« ¹®ÀÚ¿­ Ã³¸®
-- ¸Ş¸ğ¸® ´©¼ö ¹æÁö
+ë©”ëª¨ë¦¬ ê´€ë¦¬:
+- ë™ì  í• ë‹¹/í•´ì œ ì£¼ì˜
+- í° ë¬¸ìì—´ ì²˜ë¦¬
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
 
-¿¹¿Ü Ã³¸®:
-- ºó ¹®ÀÚ¿­ Ã³¸®
-- ¸Ş¸ğ¸® ÇÒ´ç ½ÇÆĞ
-- ÀÔ·Â Å©±â Á¦ÇÑ
+ì˜ˆì™¸ ì²˜ë¦¬:
+- ë¹ˆ ë¬¸ìì—´ ì²˜ë¦¬
+- ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨
+- ì…ë ¥ í¬ê¸° ì œí•œ
 
-½Ã°¢È­:
-- ´Ü°èº° ÁøÇà Ç¥½Ã
-- °á°ú ÇÏÀÌ¶óÀÌÆ®
-- ±³À°¿ë Ãâ·Â
+ì‹œê°í™”:
+- ë‹¨ê³„ë³„ ì§„í–‰ í‘œì‹œ
+- ê²°ê³¼ í•˜ì´ë¼ì´íŠ¸
+- êµìœ¡ìš© ì¶œë ¥
 
-ÀÌ ±¸ÇöÀº LCSÀÇ ±âº» °³³äºÎÅÍ
-½ÇÁ¦ ÀÀ¿ë±îÁö Æ÷°ıÇÏ¸ç, ±³À°°ú
-½Ç¹«¿¡¼­ ¸ğµÎ È°¿ë °¡´ÉÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ LCSì˜ ê¸°ë³¸ ê°œë…ë¶€í„°
+ì‹¤ì œ ì‘ìš©ê¹Œì§€ í¬ê´„í•˜ë©°, êµìœ¡ê³¼
+ì‹¤ë¬´ì—ì„œ ëª¨ë‘ í™œìš© ê°€ëŠ¥í•©ë‹ˆë‹¤.
 */

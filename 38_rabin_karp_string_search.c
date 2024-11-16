@@ -4,20 +4,20 @@
 #include <stdbool.h>
 
 /*
-Rabin-Karp ¾Ë°í¸®Áò:
-- ÇØ½Ã ÇÔ¼ö¸¦ »ç¿ëÇÑ ¹®ÀÚ¿­ °Ë»ö
-- ·Ñ¸µ ÇØ½Ã·Î ¿¬¼ÓµÈ ºÎºĞ ¹®ÀÚ¿­ÀÇ ÇØ½Ã°ªÀ» È¿À²ÀûÀ¸·Î °è»ê
-- ´ÙÁß ÆĞÅÏ °Ë»ö¿¡ È¿°úÀû
-- ÇØ½Ã Ãæµ¹ Ã³¸® ÇÊ¿ä
+Rabin-Karp ì•Œê³ ë¦¬ì¦˜:
+- í•´ì‹œ í•¨ìˆ˜ë¥¼ ì‚¬ìš©í•œ ë¬¸ìì—´ ê²€ìƒ‰
+- ë¡¤ë§ í•´ì‹œë¡œ ì—°ì†ëœ ë¶€ë¶„ ë¬¸ìì—´ì˜ í•´ì‹œê°’ì„ íš¨ìœ¨ì ìœ¼ë¡œ ê³„ì‚°
+- ë‹¤ì¤‘ íŒ¨í„´ ê²€ìƒ‰ì— íš¨ê³¼ì 
+- í•´ì‹œ ì¶©ëŒ ì²˜ë¦¬ í•„ìš”
 
-Æ¯Â¡:
-- ÇØ½Ã°ª ºñ±³ ÈÄ ½ÇÁ¦ ¹®ÀÚ¿­ ºñ±³
-- À©µµ¿ì¸¦ ÇÑ Ä­¾¿ ÀÌµ¿ÇÏ¸ç ÇØ½Ã°ª °»½Å
-- ¸ğµâ·¯ ¿¬»êÀ¸·Î ¿À¹öÇÃ·Î¿ì ¹æÁö
+íŠ¹ì§•:
+- í•´ì‹œê°’ ë¹„êµ í›„ ì‹¤ì œ ë¬¸ìì—´ ë¹„êµ
+- ìœˆë„ìš°ë¥¼ í•œ ì¹¸ì”© ì´ë™í•˜ë©° í•´ì‹œê°’ ê°±ì‹ 
+- ëª¨ë“ˆëŸ¬ ì—°ì‚°ìœ¼ë¡œ ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
 */
 
-#define PRIME 101  // ÇØ½Ã °è»êÀ» À§ÇÑ ¼Ò¼ö
-#define D 256     // ¹®ÀÚ¼Â Å©±â (ASCII)
+#define PRIME 101  // í•´ì‹œ ê³„ì‚°ì„ ìœ„í•œ ì†Œìˆ˜
+#define D 256     // ë¬¸ìì…‹ í¬ê¸° (ASCII)
 
 typedef struct {
     int* positions;
@@ -25,7 +25,7 @@ typedef struct {
     int capacity;
 } SearchResult;
 
-/* °Ë»ö °á°ú ÃÊ±âÈ­ */
+/* ê²€ìƒ‰ ê²°ê³¼ ì´ˆê¸°í™” */
 SearchResult* create_result(int initial_capacity) {
     SearchResult* result = (SearchResult*)malloc(sizeof(SearchResult));
     if (!result) return NULL;
@@ -41,7 +41,7 @@ SearchResult* create_result(int initial_capacity) {
     return result;
 }
 
-/* °Ë»ö °á°ú¿¡ »õ·Î¿î À§Ä¡ Ãß°¡ */
+/* ê²€ìƒ‰ ê²°ê³¼ì— ìƒˆë¡œìš´ ìœ„ì¹˜ ì¶”ê°€ */
 void add_position(SearchResult* result, int position) {
     if (result->count >= result->capacity) {
         int new_capacity = result->capacity * 2;
@@ -56,7 +56,7 @@ void add_position(SearchResult* result, int position) {
     result->positions[result->count++] = position;
 }
 
-/* °Ë»ö °á°ú ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê²€ìƒ‰ ê²°ê³¼ ë©”ëª¨ë¦¬ í•´ì œ */
 void destroy_result(SearchResult* result) {
     if (result) {
         free(result->positions);
@@ -64,8 +64,8 @@ void destroy_result(SearchResult* result) {
     }
 }
 
-/* °ÅµìÁ¦°ö °è»ê (¸ğµâ·¯ ¿¬»ê Æ÷ÇÔ)
- * - (a^b) % mod ¸¦ È¿À²ÀûÀ¸·Î °è»ê
+/* ê±°ë“­ì œê³± ê³„ì‚° (ëª¨ë“ˆëŸ¬ ì—°ì‚° í¬í•¨)
+ * - (a^b) % mod ë¥¼ íš¨ìœ¨ì ìœ¼ë¡œ ê³„ì‚°
  */
 unsigned long long mod_pow(int base, int exp, int mod) {
     unsigned long long result = 1;
@@ -81,8 +81,8 @@ unsigned long long mod_pow(int base, int exp, int mod) {
     return result;
 }
 
-/* Rabin-Karp ¹®ÀÚ¿­ °Ë»ö
- * - ½Ã°£º¹Àâµµ: Æò±Õ O(n+m), ÃÖ¾Ç O(nm)
+/* Rabin-Karp ë¬¸ìì—´ ê²€ìƒ‰
+ * - ì‹œê°„ë³µì¡ë„: í‰ê·  O(n+m), ìµœì•… O(nm)
  */
 SearchResult* rabin_karp_search(const char* text, const char* pattern, bool print_steps) {
     SearchResult* result = create_result(10);
@@ -93,9 +93,9 @@ SearchResult* rabin_karp_search(const char* text, const char* pattern, bool prin
     unsigned long long pattern_hash = 0;
     unsigned long long text_hash = 0;
     unsigned long long h = mod_pow(D, m - 1, PRIME);  // D^(m-1) % PRIME
-    int comparisons = 0;  // ºñ±³ È½¼ö Ä«¿îÆ®
+    int comparisons = 0;  // ë¹„êµ íšŸìˆ˜ ì¹´ìš´íŠ¸
 
-    // ÆĞÅÏ°ú Ã¹ À©µµ¿ìÀÇ ÇØ½Ã°ª °è»ê
+    // íŒ¨í„´ê³¼ ì²« ìœˆë„ìš°ì˜ í•´ì‹œê°’ ê³„ì‚°
     for (int i = 0; i < m; i++) {
         pattern_hash = (D * pattern_hash + pattern[i]) % PRIME;
         text_hash = (D * text_hash + text[i]) % PRIME;
@@ -107,7 +107,7 @@ SearchResult* rabin_karp_search(const char* text, const char* pattern, bool prin
         printf("First window hash: %llu\n", text_hash);
     }
 
-    // ½½¶óÀÌµù À©µµ¿ì·Î °Ë»ö
+    // ìŠ¬ë¼ì´ë”© ìœˆë„ìš°ë¡œ ê²€ìƒ‰
     for (int i = 0; i <= n - m; i++) {
         if (print_steps) {
             printf("\nWindow at position %d:\n", i);
@@ -117,7 +117,7 @@ SearchResult* rabin_karp_search(const char* text, const char* pattern, bool prin
             printf("Current window hash: %llu\n", text_hash);
         }
 
-        // ÇØ½Ã°ªÀÌ °°Àº °æ¿ì ½ÇÁ¦ ¹®ÀÚ¿­ ºñ±³
+        // í•´ì‹œê°’ì´ ê°™ì€ ê²½ìš° ì‹¤ì œ ë¬¸ìì—´ ë¹„êµ
         if (pattern_hash == text_hash) {
             bool match = true;
             for (int j = 0; j < m; j++) {
@@ -139,7 +139,7 @@ SearchResult* rabin_karp_search(const char* text, const char* pattern, bool prin
             }
         }
 
-        // ´ÙÀ½ À©µµ¿ìÀÇ ÇØ½Ã°ª °è»ê
+        // ë‹¤ìŒ ìœˆë„ìš°ì˜ í•´ì‹œê°’ ê³„ì‚°
         if (i < n - m) {
             text_hash = (D * (text_hash - text[i] * h) + text[i + m]) % PRIME;
             if (text_hash < 0) {
@@ -159,7 +159,7 @@ SearchResult* rabin_karp_search(const char* text, const char* pattern, bool prin
     return result;
 }
 
-/* °Ë»ö °á°ú Ãâ·Â */
+/* ê²€ìƒ‰ ê²°ê³¼ ì¶œë ¥ */
 void print_search_result(const SearchResult* result, const char* text, const char* pattern) {
     if (result->count == 0) {
         printf("Pattern not found in text.\n");
@@ -194,7 +194,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
     }
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Rabin-Karp String Search Menu ===\n");
     printf("1. Enter new text\n");
@@ -219,7 +219,7 @@ int main(void) {
     do {
         print_menu();
         scanf("%d", &choice);
-        getchar();  // ¹öÆÛ ºñ¿ì±â
+        getchar();  // ë²„í¼ ë¹„ìš°ê¸°
 
         switch (choice) {
         case 1:  // Enter text
@@ -269,69 +269,69 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. Rabin-Karp ¾Ë°í¸®ÁòÀÇ ¿ø¸®
+1. Rabin-Karp ì•Œê³ ë¦¬ì¦˜ì˜ ì›ë¦¬
 -----------------------
-- ÇØ½Ã ±â¹İ ¹®ÀÚ¿­ °Ë»ö
-- ·Ñ¸µ ÇØ½Ã ±â¹ı »ç¿ë
-- ÇØ½Ã°ª ºñ±³ ÈÄ ½ÇÁ¦ ºñ±³
-- ¸ğµâ·¯ ¿¬»êÀ¸·Î ¿À¹öÇÃ·Î¿ì ¹æÁö
+- í•´ì‹œ ê¸°ë°˜ ë¬¸ìì—´ ê²€ìƒ‰
+- ë¡¤ë§ í•´ì‹œ ê¸°ë²• ì‚¬ìš©
+- í•´ì‹œê°’ ë¹„êµ í›„ ì‹¤ì œ ë¹„êµ
+- ëª¨ë“ˆëŸ¬ ì—°ì‚°ìœ¼ë¡œ ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
 
-2. ÇØ½Ã ÇÔ¼ö
+2. í•´ì‹œ í•¨ìˆ˜
 ---------
-±¸¼º:
-- D: ±â¼ö(¹®ÀÚ¼Â Å©±â)
-- PRIME: ¸ğµâ·¯ ¿¬»ê¿ë ¼Ò¼ö
-- ·Ñ¸µ ÇØ½Ã·Î È¿À²Àû °è»ê
+êµ¬ì„±:
+- D: ê¸°ìˆ˜(ë¬¸ìì…‹ í¬ê¸°)
+- PRIME: ëª¨ë“ˆëŸ¬ ì—°ì‚°ìš© ì†Œìˆ˜
+- ë¡¤ë§ í•´ì‹œë¡œ íš¨ìœ¨ì  ê³„ì‚°
 
-Æ¯Â¡:
-- Ãæµ¹ °¡´É¼º Á¸Àç
-- ºü¸¥ °è»ê °¡´É
-- ¸ğµâ·¯ ¿¬»ê ÇÊ¿ä
+íŠ¹ì§•:
+- ì¶©ëŒ ê°€ëŠ¥ì„± ì¡´ì¬
+- ë¹ ë¥¸ ê³„ì‚° ê°€ëŠ¥
+- ëª¨ë“ˆëŸ¬ ì—°ì‚° í•„ìš”
 
-3. ½Ã°£ º¹Àâµµ
+3. ì‹œê°„ ë³µì¡ë„
 -----------
-ÀüÃ³¸®: O(m)
-- ÆĞÅÏ ÇØ½Ã°ª °è»ê
-- h = D^(m-1) °è»ê
+ì „ì²˜ë¦¬: O(m)
+- íŒ¨í„´ í•´ì‹œê°’ ê³„ì‚°
+- h = D^(m-1) ê³„ì‚°
 
-°Ë»ö:
-- Æò±Õ: O(n + m)
-- ÃÖ¾Ç: O(nm)
-- ½ÇÁ¦·Î´Â °ÅÀÇ ¼±Çü
+ê²€ìƒ‰:
+- í‰ê· : O(n + m)
+- ìµœì•…: O(nm)
+- ì‹¤ì œë¡œëŠ” ê±°ì˜ ì„ í˜•
 
-4. °ø°£ º¹Àâµµ
+4. ê³µê°„ ë³µì¡ë„
 -----------
 O(1)
-- »ó¼ö °ø°£¸¸ ÇÊ¿ä
-- Ãß°¡ ¸Ş¸ğ¸® ÃÖ¼ÒÈ­
-- ÇØ½Ã°ª ÀúÀå¸¸ ÇÊ¿ä
+- ìƒìˆ˜ ê³µê°„ë§Œ í•„ìš”
+- ì¶”ê°€ ë©”ëª¨ë¦¬ ìµœì†Œí™”
+- í•´ì‹œê°’ ì €ì¥ë§Œ í•„ìš”
 
-5. Æ¯Â¡°ú Àå´ÜÁ¡
+5. íŠ¹ì§•ê³¼ ì¥ë‹¨ì 
 ------------
-ÀåÁ¡:
-- ´ÙÁß ÆĞÅÏ °Ë»ö °¡´É
-- Æò±ÕÀûÀ¸·Î ºü¸§
-- Ãß°¡ ¸Ş¸ğ¸® ÀûÀ½
-- ÀüÃ³¸® °£´Ü
+ì¥ì :
+- ë‹¤ì¤‘ íŒ¨í„´ ê²€ìƒ‰ ê°€ëŠ¥
+- í‰ê· ì ìœ¼ë¡œ ë¹ ë¦„
+- ì¶”ê°€ ë©”ëª¨ë¦¬ ì ìŒ
+- ì „ì²˜ë¦¬ ê°„ë‹¨
 
-´ÜÁ¡:
-- ÇØ½Ã Ãæµ¹ °¡´É¼º
-- º¹ÀâÇÑ ¼ö½Ä »ç¿ë
-- ¿À¹öÇÃ·Î¿ì ÁÖÀÇ
-- ÃÖ¾ÇÀÇ °æ¿ì ´À¸²
+ë‹¨ì :
+- í•´ì‹œ ì¶©ëŒ ê°€ëŠ¥ì„±
+- ë³µì¡í•œ ìˆ˜ì‹ ì‚¬ìš©
+- ì˜¤ë²„í”Œë¡œìš° ì£¼ì˜
+- ìµœì•…ì˜ ê²½ìš° ëŠë¦¼
 
-6. È°¿ë ºĞ¾ß
+6. í™œìš© ë¶„ì•¼
 ----------
-- Ç¥Àı °Ë»ç
-- ´ÙÁß ÆĞÅÏ °Ë»ö
-- DNA ¼­¿­ ºĞ¼®
-- ÆÄÀÏ Áßº¹ °Ë»ç
+- í‘œì ˆ ê²€ì‚¬
+- ë‹¤ì¤‘ íŒ¨í„´ ê²€ìƒ‰
+- DNA ì„œì—´ ë¶„ì„
+- íŒŒì¼ ì¤‘ë³µ ê²€ì‚¬
 
-ÀÌ ±¸ÇöÀº Rabin-Karp ¾Ë°í¸®ÁòÀÇ
-ÇÙ½ÉÀÎ ·Ñ¸µ ÇØ½Ã ±â¹ıÀ» º¸¿©ÁÖ¸ç,
-ÇØ½Ã °è»ê °úÁ¤À» ´Ü°èº°·Î
-È®ÀÎÇÒ ¼ö ÀÖ½À´Ï´Ù.
+ì´ êµ¬í˜„ì€ Rabin-Karp ì•Œê³ ë¦¬ì¦˜ì˜
+í•µì‹¬ì¸ ë¡¤ë§ í•´ì‹œ ê¸°ë²•ì„ ë³´ì—¬ì£¼ë©°,
+í•´ì‹œ ê³„ì‚° ê³¼ì •ì„ ë‹¨ê³„ë³„ë¡œ
+í™•ì¸í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
 */

@@ -2,10 +2,10 @@
 #include <stdlib.h>
 
 /*
-AVL Æ®¸®:
-- ÀÚ°¡ ±ÕÇü ÀÌÁø Å½»ö Æ®¸®
-- ¸ğµç ³ëµåÀÇ ¿ŞÂÊ/¿À¸¥ÂÊ ¼­ºêÆ®¸® ³ôÀÌ Â÷ÀÌ°¡ ÃÖ´ë 1
-- »ğÀÔ/»èÁ¦ ½Ã ÀÚµ¿ Àç±ÕÇüÈ­
+AVL íŠ¸ë¦¬:
+- ìê°€ ê· í˜• ì´ì§„ íƒìƒ‰ íŠ¸ë¦¬
+- ëª¨ë“  ë…¸ë“œì˜ ì™¼ìª½/ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ ë†’ì´ ì°¨ì´ê°€ ìµœëŒ€ 1
+- ì‚½ì…/ì‚­ì œ ì‹œ ìë™ ì¬ê· í˜•í™”
 */
 
 typedef struct Node {
@@ -15,23 +15,23 @@ typedef struct Node {
     struct Node* right;
 } Node;
 
-// ³ëµå ³ôÀÌ ¹İÈ¯
+// ë…¸ë“œ ë†’ì´ ë°˜í™˜
 int get_height(Node* node) {
     return node ? node->height : -1;
 }
 
-// ±ÕÇü ÀÎ¼ö °è»ê
+// ê· í˜• ì¸ìˆ˜ ê³„ì‚°
 int get_balance(Node* node) {
     return node ? get_height(node->left) - get_height(node->right) : 0;
 }
 
-// ³ëµå ³ôÀÌ ¾÷µ¥ÀÌÆ®
+// ë…¸ë“œ ë†’ì´ ì—…ë°ì´íŠ¸
 void update_height(Node* node) {
     node->height = 1 + (get_height(node->left) > get_height(node->right) ?
         get_height(node->left) : get_height(node->right));
 }
 
-// ¿ìÈ¸Àü
+// ìš°íšŒì „
 Node* rotate_right(Node* y) {
     Node* x = y->left;
     Node* T2 = x->right;
@@ -45,7 +45,7 @@ Node* rotate_right(Node* y) {
     return x;
 }
 
-// ÁÂÈ¸Àü
+// ì¢ŒíšŒì „
 Node* rotate_left(Node* x) {
     Node* y = x->right;
     Node* T2 = y->left;
@@ -59,7 +59,7 @@ Node* rotate_left(Node* x) {
     return y;
 }
 
-// »õ ³ëµå »ı¼º
+// ìƒˆ ë…¸ë“œ ìƒì„±
 Node* create_node(int key) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->key = key;
@@ -69,7 +69,7 @@ Node* create_node(int key) {
     return node;
 }
 
-// ³ëµå »ğÀÔ
+// ë…¸ë“œ ì‚½ì…
 Node* insert(Node* node, int key, bool* height_changed) {
     if (!node) {
         *height_changed = true;
@@ -81,36 +81,36 @@ Node* insert(Node* node, int key, bool* height_changed) {
     else if (key > node->key)
         node->right = insert(node->right, key, height_changed);
     else
-        return node;  // Áßº¹ Å° Çã¿ëÇÏÁö ¾ÊÀ½
+        return node;  // ì¤‘ë³µ í‚¤ í—ˆìš©í•˜ì§€ ì•ŠìŒ
 
     update_height(node);
     int balance = get_balance(node);
 
-    printf("\n»ğÀÔ ÈÄ »óÅÂ (Å°: %d):\n", key);
-    printf("³ëµå: %d, ±ÕÇü: %d\n", node->key, balance);
+    printf("\nì‚½ì… í›„ ìƒíƒœ (í‚¤: %d):\n", key);
+    printf("ë…¸ë“œ: %d, ê· í˜•: %d\n", node->key, balance);
 
     // LL Case
     if (balance > 1 && key < node->left->key) {
-        printf("LL È¸Àü ¼öÇà (³ëµå %d)\n", node->key);
+        printf("LL íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", node->key);
         return rotate_right(node);
     }
 
     // RR Case
     if (balance < -1 && key > node->right->key) {
-        printf("RR È¸Àü ¼öÇà (³ëµå %d)\n", node->key);
+        printf("RR íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", node->key);
         return rotate_left(node);
     }
 
     // LR Case
     if (balance > 1 && key > node->left->key) {
-        printf("LR È¸Àü ¼öÇà (³ëµå %d)\n", node->key);
+        printf("LR íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", node->key);
         node->left = rotate_left(node->left);
         return rotate_right(node);
     }
 
     // RL Case
     if (balance < -1 && key < node->right->key) {
-        printf("RL È¸Àü ¼öÇà (³ëµå %d)\n", node->key);
+        printf("RL íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", node->key);
         node->right = rotate_right(node->right);
         return rotate_left(node);
     }
@@ -118,12 +118,12 @@ Node* insert(Node* node, int key, bool* height_changed) {
     return node;
 }
 
-// ÃÖ¼Ò°ª ³ëµå Ã£±â
+// ìµœì†Œê°’ ë…¸ë“œ ì°¾ê¸°
 Node* find_min(Node* node) {
     return node->left ? find_min(node->left) : node;
 }
 
-// ³ëµå »èÁ¦
+// ë…¸ë“œ ì‚­ì œ
 Node* delete(Node* root, int key, bool* height_changed) {
     if (!root) return NULL;
 
@@ -132,7 +132,7 @@ Node* delete(Node* root, int key, bool* height_changed) {
     else if (key > root->key)
         root->right = delete(root->right, key, height_changed);
     else {
-        // »èÁ¦ÇÒ ³ëµå Ã£À½
+        // ì‚­ì œí•  ë…¸ë“œ ì°¾ìŒ
         if (!root->left || !root->right) {
             Node* temp = root->left ? root->left : root->right;
             if (!temp) {
@@ -157,17 +157,17 @@ Node* delete(Node* root, int key, bool* height_changed) {
     update_height(root);
     int balance = get_balance(root);
 
-    printf("\n»èÁ¦ ÈÄ »óÅÂ (Å°: %d):\n", key);
-    printf("³ëµå: %d, ±ÕÇü: %d\n", root->key, balance);
+    printf("\nì‚­ì œ í›„ ìƒíƒœ (í‚¤: %d):\n", key);
+    printf("ë…¸ë“œ: %d, ê· í˜•: %d\n", root->key, balance);
 
-    // Àç±ÕÇüÈ­
+    // ì¬ê· í˜•í™”
     if (balance > 1) {
         if (get_balance(root->left) >= 0) {
-            printf("LL È¸Àü ¼öÇà (³ëµå %d)\n", root->key);
+            printf("LL íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", root->key);
             return rotate_right(root);
         }
         else {
-            printf("LR È¸Àü ¼öÇà (³ëµå %d)\n", root->key);
+            printf("LR íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", root->key);
             root->left = rotate_left(root->left);
             return rotate_right(root);
         }
@@ -175,11 +175,11 @@ Node* delete(Node* root, int key, bool* height_changed) {
 
     if (balance < -1) {
         if (get_balance(root->right) <= 0) {
-            printf("RR È¸Àü ¼öÇà (³ëµå %d)\n", root->key);
+            printf("RR íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", root->key);
             return rotate_left(root);
         }
         else {
-            printf("RL È¸Àü ¼öÇà (³ëµå %d)\n", root->key);
+            printf("RL íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", root->key);
             root->right = rotate_right(root->right);
             return rotate_left(root);
         }
@@ -188,7 +188,7 @@ Node* delete(Node* root, int key, bool* height_changed) {
     return root;
 }
 
-// Æ®¸® ½Ã°¢È­
+// íŠ¸ë¦¬ ì‹œê°í™”
 void print_tree(Node* root, int level) {
     if (!root) return;
 
@@ -201,14 +201,14 @@ void print_tree(Node* root, int level) {
     print_tree(root->left, level + 1);
 }
 
-// Æ®¸® »óÅÂ Ãâ·Â
+// íŠ¸ë¦¬ ìƒíƒœ ì¶œë ¥
 void print_tree_state(Node* root) {
-    printf("\n=== ÇöÀç Æ®¸® »óÅÂ ===\n");
+    printf("\n=== í˜„ì¬ íŠ¸ë¦¬ ìƒíƒœ ===\n");
     print_tree(root, 0);
     printf("\n");
 }
 
-// ¸Ş¸ğ¸® ÇØÁ¦
+// ë©”ëª¨ë¦¬ í•´ì œ
 void free_tree(Node* root) {
     if (root) {
         free_tree(root->left);
@@ -221,27 +221,27 @@ int main(void) {
     Node* root = NULL;
     bool height_changed = false;
 
-    printf("=== AVL Æ®¸® Å×½ºÆ® ===\n");
-    printf("1: »ğÀÔ\n");
-    printf("2: »èÁ¦\n");
-    printf("3: Æ®¸® Ãâ·Â\n");
-    printf("0: Á¾·á\n");
+    printf("=== AVL íŠ¸ë¦¬ í…ŒìŠ¤íŠ¸ ===\n");
+    printf("1: ì‚½ì…\n");
+    printf("2: ì‚­ì œ\n");
+    printf("3: íŠ¸ë¦¬ ì¶œë ¥\n");
+    printf("0: ì¢…ë£Œ\n");
 
     while (1) {
         int choice, value;
-        printf("\n¼±ÅÃ: ");
+        printf("\nì„ íƒ: ");
         scanf("%d", &choice);
 
         switch (choice) {
         case 1:
-            printf("»ğÀÔÇÒ °ª: ");
+            printf("ì‚½ì…í•  ê°’: ");
             scanf("%d", &value);
             root = insert(root, value, &height_changed);
             print_tree_state(root);
             break;
 
         case 2:
-            printf("»èÁ¦ÇÒ °ª: ");
+            printf("ì‚­ì œí•  ê°’: ");
             scanf("%d", &value);
             root = delete(root, value, &height_changed);
             print_tree_state(root);
@@ -256,7 +256,7 @@ int main(void) {
             return 0;
 
         default:
-            printf("Àß¸øµÈ ¼±ÅÃ\n");
+            printf("ì˜ëª»ëœ ì„ íƒ\n");
         }
     }
 
@@ -264,33 +264,33 @@ int main(void) {
 }
 
 /*
-AVL Æ®¸® ºĞ¼®
+AVL íŠ¸ë¦¬ ë¶„ì„
 ===========
 
-1. ½Ã°£ º¹Àâµµ
+1. ì‹œê°„ ë³µì¡ë„
 -----------
-- »ğÀÔ: O(log n)
-- »èÁ¦: O(log n)
-- °Ë»ö: O(log n)
+- ì‚½ì…: O(log n)
+- ì‚­ì œ: O(log n)
+- ê²€ìƒ‰: O(log n)
 
-2. °ø°£ º¹Àâµµ
+2. ê³µê°„ ë³µì¡ë„
 -----------
-- O(n) ÀúÀå °ø°£
-- O(log n) Àç±Í ½ºÅÃ
+- O(n) ì €ì¥ ê³µê°„
+- O(log n) ì¬ê·€ ìŠ¤íƒ
 
-3. ±ÕÇüÈ­ Àü·«
+3. ê· í˜•í™” ì „ëµ
 -----------
-- ´ÜÀÏ È¸Àü: LL, RR
-- ÀÌÁß È¸Àü: LR, RL
-- ³ôÀÌ Â÷ÀÌ ÃÖ´ë 1 À¯Áö
+- ë‹¨ì¼ íšŒì „: LL, RR
+- ì´ì¤‘ íšŒì „: LR, RL
+- ë†’ì´ ì°¨ì´ ìµœëŒ€ 1 ìœ ì§€
 
-4. È°¿ë ºĞ¾ß
+4. í™œìš© ë¶„ì•¼
 ---------
-- µ¥ÀÌÅÍº£ÀÌ½º ÀÎµ¦½Ì
-- ¸Ş¸ğ¸® °ü¸®
-- ½Ç½Ã°£ ½Ã½ºÅÛ
+- ë°ì´í„°ë² ì´ìŠ¤ ì¸ë±ì‹±
+- ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ì‹¤ì‹œê°„ ì‹œìŠ¤í…œ
 
-ÀÌ ±¸ÇöÀº ÀÚ°¡ ±ÕÇü Æ®¸®ÀÇ
-±âº» ¿ø¸®¿Í ½ÇÁ¦ ÀÀ¿ëÀ»
-º¸¿©Áİ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ìê°€ ê· í˜• íŠ¸ë¦¬ì˜
+ê¸°ë³¸ ì›ë¦¬ì™€ ì‹¤ì œ ì‘ìš©ì„
+ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

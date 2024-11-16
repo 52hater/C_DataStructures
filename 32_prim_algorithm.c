@@ -4,28 +4,28 @@
 #include <limits.h>
 
 /*
-ÃÖ¼Ò ½ÅÀå Æ®¸® (Minimum Spanning Tree, MST):
-- ±×·¡ÇÁÀÇ ¸ğµç Á¤Á¡À» ¿¬°áÇÏ´Â ºÎºĞ ±×·¡ÇÁ
-- »çÀÌÅ¬ÀÌ ¾ø´Â Æ®¸® ÇüÅÂ
-- °£¼±µéÀÇ °¡ÁßÄ¡ ÇÕÀÌ ÃÖ¼Ò
-- ³×Æ®¿öÅ© ¼³°è, ¹è°ü/µµ·Î ¼³°è µî¿¡ È°¿ë
+ìµœì†Œ ì‹ ì¥ íŠ¸ë¦¬ (Minimum Spanning Tree, MST):
+- ê·¸ë˜í”„ì˜ ëª¨ë“  ì •ì ì„ ì—°ê²°í•˜ëŠ” ë¶€ë¶„ ê·¸ë˜í”„
+- ì‚¬ì´í´ì´ ì—†ëŠ” íŠ¸ë¦¬ í˜•íƒœ
+- ê°„ì„ ë“¤ì˜ ê°€ì¤‘ì¹˜ í•©ì´ ìµœì†Œ
+- ë„¤íŠ¸ì›Œí¬ ì„¤ê³„, ë°°ê´€/ë„ë¡œ ì„¤ê³„ ë“±ì— í™œìš©
 
-Prim vs Kruskal ¾Ë°í¸®Áò:
-1. µ¿ÀÛ ¹æ½Ä
-   - Prim: Á¤Á¡ Áß½É, ÇÏ³ªÀÇ Æ®¸®¸¦ È®Àå
-   - Kruskal: °£¼± Áß½É, ¿©·¯ Æ®¸®¸¦ ÇÕº´
+Prim vs Kruskal ì•Œê³ ë¦¬ì¦˜:
+1. ë™ì‘ ë°©ì‹
+   - Prim: ì •ì  ì¤‘ì‹¬, í•˜ë‚˜ì˜ íŠ¸ë¦¬ë¥¼ í™•ì¥
+   - Kruskal: ê°„ì„  ì¤‘ì‹¬, ì—¬ëŸ¬ íŠ¸ë¦¬ë¥¼ í•©ë³‘
 
-2. ÀûÇÕÇÑ °æ¿ì
-   - Prim: ¹ĞÁı ±×·¡ÇÁ(°£¼±ÀÌ ¸¹Àº °æ¿ì)
-   - Kruskal: Èñ¼Ò ±×·¡ÇÁ(°£¼±ÀÌ ÀûÀº °æ¿ì)
+2. ì í•©í•œ ê²½ìš°
+   - Prim: ë°€ì§‘ ê·¸ë˜í”„(ê°„ì„ ì´ ë§ì€ ê²½ìš°)
+   - Kruskal: í¬ì†Œ ê·¸ë˜í”„(ê°„ì„ ì´ ì ì€ ê²½ìš°)
 
-3. ½Ã°£ º¹Àâµµ
-   - Prim: O(V©÷) ±âº» ±¸Çö, O(E log V) Èü »ç¿ë½Ã
-   - Kruskal: O(E log E) °£¼± Á¤·ÄÀÌ Áö¹èÀû
+3. ì‹œê°„ ë³µì¡ë„
+   - Prim: O(VÂ²) ê¸°ë³¸ êµ¬í˜„, O(E log V) í™ ì‚¬ìš©ì‹œ
+   - Kruskal: O(E log E) ê°„ì„  ì •ë ¬ì´ ì§€ë°°ì 
 
-4. ±¸Çö º¹Àâµµ
-   - Prim: ¿ì¼±¼øÀ§ Å¥ »ç¿ë
-   - Kruskal: Union-Find ÀÚ·á±¸Á¶ »ç¿ë
+4. êµ¬í˜„ ë³µì¡ë„
+   - Prim: ìš°ì„ ìˆœìœ„ í ì‚¬ìš©
+   - Kruskal: Union-Find ìë£Œêµ¬ì¡° ì‚¬ìš©
 */
 
 #define MAX_VERTICES 100
@@ -33,17 +33,17 @@ Prim vs Kruskal ¾Ë°í¸®Áò:
 
 typedef struct {
     int num_vertices;
-    int graph[MAX_VERTICES][MAX_VERTICES];  // ÀÎÁ¢ Çà·Ä
+    int graph[MAX_VERTICES][MAX_VERTICES];  // ì¸ì ‘ í–‰ë ¬
 } Graph;
 
-/* ±×·¡ÇÁ »ı¼º */
+/* ê·¸ë˜í”„ ìƒì„± */
 Graph* graph_create(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     if (!graph) return NULL;
 
     graph->num_vertices = vertices;
 
-    // ÀÎÁ¢ Çà·Ä ÃÊ±âÈ­
+    // ì¸ì ‘ í–‰ë ¬ ì´ˆê¸°í™”
     for (int i = 0; i < vertices; i++) {
         for (int j = 0; j < vertices; j++) {
             graph->graph[i][j] = i == j ? 0 : INF;
@@ -53,21 +53,21 @@ Graph* graph_create(int vertices) {
     return graph;
 }
 
-/* °£¼± Ãß°¡ */
+/* ê°„ì„  ì¶”ê°€ */
 bool graph_add_edge(Graph* graph, int src, int dest, int weight) {
     if (!graph || src < 0 || src >= graph->num_vertices ||
         dest < 0 || dest >= graph->num_vertices) {
         return false;
     }
 
-    // ¹«¹æÇâ ±×·¡ÇÁÀÌ¹Ç·Î ¾çÂÊ¿¡ Ãß°¡
+    // ë¬´ë°©í–¥ ê·¸ë˜í”„ì´ë¯€ë¡œ ì–‘ìª½ì— ì¶”ê°€
     graph->graph[src][dest] = weight;
     graph->graph[dest][src] = weight;
     return true;
 }
 
-/* ÃÖ¼Ò Å° °ªÀ» °¡Áø Á¤Á¡ Ã£±â
- * - ¾ÆÁ÷ MST¿¡ Æ÷ÇÔµÇÁö ¾ÊÀº Á¤Á¡ Áß¿¡¼­ Ã£À½
+/* ìµœì†Œ í‚¤ ê°’ì„ ê°€ì§„ ì •ì  ì°¾ê¸°
+ * - ì•„ì§ MSTì— í¬í•¨ë˜ì§€ ì•Šì€ ì •ì  ì¤‘ì—ì„œ ì°¾ìŒ
  */
 int find_min_key(int key[], bool included[], int vertices) {
     int min = INF, min_index;
@@ -82,33 +82,33 @@ int find_min_key(int key[], bool included[], int vertices) {
     return min_index;
 }
 
-/* Prim ¾Ë°í¸®Áò
- * - ½Ã°£º¹Àâµµ: O(V©÷)
- * - °ø°£º¹Àâµµ: O(V)
+/* Prim ì•Œê³ ë¦¬ì¦˜
+ * - ì‹œê°„ë³µì¡ë„: O(VÂ²)
+ * - ê³µê°„ë³µì¡ë„: O(V)
  */
 void prim_mst(Graph* graph, int start) {
     int vertices = graph->num_vertices;
-    int* parent = (int*)malloc(vertices * sizeof(int));  // MST¸¦ ÀúÀåÇÒ ¹è¿­
-    int* key = (int*)malloc(vertices * sizeof(int));     // ÃÖ¼Ò °¡ÁßÄ¡
-    bool* included = (bool*)malloc(vertices * sizeof(bool));  // MST Æ÷ÇÔ ¿©ºÎ
+    int* parent = (int*)malloc(vertices * sizeof(int));  // MSTë¥¼ ì €ì¥í•  ë°°ì—´
+    int* key = (int*)malloc(vertices * sizeof(int));     // ìµœì†Œ ê°€ì¤‘ì¹˜
+    bool* included = (bool*)malloc(vertices * sizeof(bool));  // MST í¬í•¨ ì—¬ë¶€
 
-    // ÃÊ±âÈ­
+    // ì´ˆê¸°í™”
     for (int i = 0; i < vertices; i++) {
         key[i] = INF;
         included[i] = false;
     }
 
-    // ½ÃÀÛ Á¤Á¡ ¼³Á¤
+    // ì‹œì‘ ì •ì  ì„¤ì •
     key[start] = 0;
-    parent[start] = -1;  // ½ÃÀÛ Á¤Á¡Àº ºÎ¸ğ°¡ ¾øÀ½
+    parent[start] = -1;  // ì‹œì‘ ì •ì ì€ ë¶€ëª¨ê°€ ì—†ìŒ
 
-    // MST ±¸¼º (Á¤Á¡ °³¼ö - 1°³ÀÇ °£¼± ¼±ÅÃ)
+    // MST êµ¬ì„± (ì •ì  ê°œìˆ˜ - 1ê°œì˜ ê°„ì„  ì„ íƒ)
     for (int count = 0; count < vertices - 1; count++) {
-        // ÃÖ¼Ò Å° °ªÀ» °¡Áø Á¤Á¡ ¼±ÅÃ
+        // ìµœì†Œ í‚¤ ê°’ì„ ê°€ì§„ ì •ì  ì„ íƒ
         int u = find_min_key(key, included, vertices);
         included[u] = true;
 
-        // ¼±ÅÃµÈ Á¤Á¡°ú ¿¬°áµÈ Á¤Á¡µéÀÇ Å° °ª °»½Å
+        // ì„ íƒëœ ì •ì ê³¼ ì—°ê²°ëœ ì •ì ë“¤ì˜ í‚¤ ê°’ ê°±ì‹ 
         for (int v = 0; v < vertices; v++) {
             if (graph->graph[u][v] && !included[v] &&
                 graph->graph[u][v] < key[v]) {
@@ -118,7 +118,7 @@ void prim_mst(Graph* graph, int start) {
         }
     }
 
-    // MST Ãâ·Â
+    // MST ì¶œë ¥
     int total_weight = 0;
     printf("\nMinimum Spanning Tree edges:\n");
     for (int i = 1; i < vertices; i++) {
@@ -128,12 +128,12 @@ void prim_mst(Graph* graph, int start) {
     }
     printf("Total MST weight: %d\n", total_weight);
 
-    // MSTÀÇ ·¹º§ ±¸Á¶ Ãâ·Â
+    // MSTì˜ ë ˆë²¨ êµ¬ì¡° ì¶œë ¥
     printf("\nMST Level Structure (from vertex %d):\n", start);
     int level[MAX_VERTICES] = { 0 };
     bool visited[MAX_VERTICES] = { false };
 
-    // BFS¸¦ »ç¿ëÇÏ¿© ·¹º§ °è»ê
+    // BFSë¥¼ ì‚¬ìš©í•˜ì—¬ ë ˆë²¨ ê³„ì‚°
     int queue[MAX_VERTICES];
     int front = 0, rear = 0;
 
@@ -159,7 +159,7 @@ void prim_mst(Graph* graph, int start) {
     free(included);
 }
 
-/* ±×·¡ÇÁ Ãâ·Â */
+/* ê·¸ë˜í”„ ì¶œë ¥ */
 void graph_print(const Graph* graph) {
     printf("\nGraph Adjacency Matrix:\n");
     printf("    ");
@@ -172,7 +172,7 @@ void graph_print(const Graph* graph) {
         printf("%2d: ", i);
         for (int j = 0; j < graph->num_vertices; j++) {
             if (graph->graph[i][j] == INF) {
-                printf("  ¡Ä ");
+                printf("  âˆ ");
             }
             else {
                 printf("%4d", graph->graph[i][j]);
@@ -182,12 +182,12 @@ void graph_print(const Graph* graph) {
     }
 }
 
-/* ±×·¡ÇÁ ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê·¸ë˜í”„ ë©”ëª¨ë¦¬ í•´ì œ */
 void graph_destroy(Graph* graph) {
     free(graph);
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Prim's Algorithm Menu ===\n");
     printf("1. Add edge\n");
@@ -265,63 +265,63 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. Prim ¾Ë°í¸®ÁòÀÇ Æ¯Â¡
+1. Prim ì•Œê³ ë¦¬ì¦˜ì˜ íŠ¹ì§•
 -------------------
-- Á¤Á¡ ±â¹İ Á¢±Ù
-- ÇÏ³ªÀÇ Æ®¸® È®Àå
-- ÀÎÁ¢ Á¤Á¡ Áß ÃÖ¼Ò °¡ÁßÄ¡ ¼±ÅÃ
-- Cut Property È°¿ë
+- ì •ì  ê¸°ë°˜ ì ‘ê·¼
+- í•˜ë‚˜ì˜ íŠ¸ë¦¬ í™•ì¥
+- ì¸ì ‘ ì •ì  ì¤‘ ìµœì†Œ ê°€ì¤‘ì¹˜ ì„ íƒ
+- Cut Property í™œìš©
 
-2. Kruskal°úÀÇ Â÷ÀÌÁ¡
+2. Kruskalê³¼ì˜ ì°¨ì´ì 
 -----------------
-¸Ş¸ğ¸® »ç¿ë:
-- Prim: ÀÎÁ¢ Çà·Ä/¸®½ºÆ®
-- Kruskal: °£¼± ¸®½ºÆ®
+ë©”ëª¨ë¦¬ ì‚¬ìš©:
+- Prim: ì¸ì ‘ í–‰ë ¬/ë¦¬ìŠ¤íŠ¸
+- Kruskal: ê°„ì„  ë¦¬ìŠ¤íŠ¸
 
-¼º´É Æ¯¼º:
-- Prim: ¹ĞÁı ±×·¡ÇÁ¿¡ À¯¸®
-- Kruskal: Èñ¼Ò ±×·¡ÇÁ¿¡ À¯¸®
+ì„±ëŠ¥ íŠ¹ì„±:
+- Prim: ë°€ì§‘ ê·¸ë˜í”„ì— ìœ ë¦¬
+- Kruskal: í¬ì†Œ ê·¸ë˜í”„ì— ìœ ë¦¬
 
-±¸Çö ¹æ½Ä:
-- Prim: ¿ì¼±¼øÀ§ Å¥
+êµ¬í˜„ ë°©ì‹:
+- Prim: ìš°ì„ ìˆœìœ„ í
 - Kruskal: Union-Find
 
-3. ½Ã°£ º¹Àâµµ
+3. ì‹œê°„ ë³µì¡ë„
 -----------
-±âº» ±¸Çö: O(V©÷)
-- Á¤Á¡ ¼±ÅÃ: O(V)
-- Å° °»½Å: O(V)
+ê¸°ë³¸ êµ¬í˜„: O(VÂ²)
+- ì •ì  ì„ íƒ: O(V)
+- í‚¤ ê°±ì‹ : O(V)
 
-°³¼±µÈ ±¸Çö: O(E log V)
-- ¿ì¼±¼øÀ§ Å¥ »ç¿ë
-- Èñ¼Ò ±×·¡ÇÁ¿¡¼­ È¿À²Àû
+ê°œì„ ëœ êµ¬í˜„: O(E log V)
+- ìš°ì„ ìˆœìœ„ í ì‚¬ìš©
+- í¬ì†Œ ê·¸ë˜í”„ì—ì„œ íš¨ìœ¨ì 
 
-4. È°¿ë ºĞ¾ß
+4. í™œìš© ë¶„ì•¼
 ----------
-- ³×Æ®¿öÅ© ¼³°è
-- ÆÄÀÌÇÁ¶óÀÎ ¼³°è
-- È¸·Î ¼³°è
-- Åë½Å¸Á ±¸Ãà
+- ë„¤íŠ¸ì›Œí¬ ì„¤ê³„
+- íŒŒì´í”„ë¼ì¸ ì„¤ê³„
+- íšŒë¡œ ì„¤ê³„
+- í†µì‹ ë§ êµ¬ì¶•
 
-5. Àå´ÜÁ¡
+5. ì¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ¹ĞÁı ±×·¡ÇÁ¿¡ È¿À²Àû
-- Áö¿ª¼º ÁÁÀ½
-- °£¼± Á¤·Ä ºÒÇÊ¿ä
-- ÁøÇà »óÈ² È®ÀÎ ¿ëÀÌ
+ì¥ì :
+- ë°€ì§‘ ê·¸ë˜í”„ì— íš¨ìœ¨ì 
+- ì§€ì—­ì„± ì¢‹ìŒ
+- ê°„ì„  ì •ë ¬ ë¶ˆí•„ìš”
+- ì§„í–‰ ìƒí™© í™•ì¸ ìš©ì´
 
-´ÜÁ¡:
-- Èñ¼Ò ±×·¡ÇÁ¿¡¼­ ºñÈ¿À²
-- ¸Ş¸ğ¸® »ç¿ë·® Òı
-- ºĞ»ê Ã³¸® ¾î·Á¿ò
-- ±¸Çö º¹Àâ
+ë‹¨ì :
+- í¬ì†Œ ê·¸ë˜í”„ì—ì„œ ë¹„íš¨ìœ¨
+- ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ å¤š
+- ë¶„ì‚° ì²˜ë¦¬ ì–´ë ¤ì›€
+- êµ¬í˜„ ë³µì¡
 
-ÀÌ ±¸ÇöÀº Prim ¾Ë°í¸®ÁòÀÇ ±âº»
-¹öÀüÀ» º¸¿©ÁÖ¸ç, ¿ì¼±¼øÀ§ Å¥¸¦
-»ç¿ëÇÑ °³¼±µÈ ¹öÀüÀ¸·ÎÀÇ È®ÀåÀÌ
-°¡´ÉÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ Prim ì•Œê³ ë¦¬ì¦˜ì˜ ê¸°ë³¸
+ë²„ì „ì„ ë³´ì—¬ì£¼ë©°, ìš°ì„ ìˆœìœ„ íë¥¼
+ì‚¬ìš©í•œ ê°œì„ ëœ ë²„ì „ìœ¼ë¡œì˜ í™•ì¥ì´
+ê°€ëŠ¥í•©ë‹ˆë‹¤.
 */

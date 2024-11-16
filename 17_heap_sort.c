@@ -5,8 +5,8 @@
 
 typedef int DataType;
 
-/* µÎ ¿ø¼ÒÀÇ ±³È¯
- * - ¸Å°³º¯¼ö: a, b - ±³È¯ÇÒ µÎ ¿ø¼ÒÀÇ Æ÷ÀÎÅÍ
+/* ë‘ ì›ì†Œì˜ êµí™˜
+ * - ë§¤ê°œë³€ìˆ˜: a, b - êµí™˜í•  ë‘ ì›ì†Œì˜ í¬ì¸í„°
  */
 void swap(DataType* a, DataType* b) {
     DataType temp = *a;
@@ -14,33 +14,33 @@ void swap(DataType* a, DataType* b) {
     *b = temp;
 }
 
-/* ÃÖ´ë Èü ¼Ó¼º À¯Áö (Àç±Í ¹öÀü)
- * - ¸Å°³º¯¼ö: arr - Èü ¹è¿­, size - Èü Å©±â, index - ÇöÀç ³ëµå
+/* ìµœëŒ€ í™ ì†ì„± ìœ ì§€ (ì¬ê·€ ë²„ì „)
+ * - ë§¤ê°œë³€ìˆ˜: arr - í™ ë°°ì—´, size - í™ í¬ê¸°, index - í˜„ì¬ ë…¸ë“œ
  */
 void heapify_recursive(DataType arr[], size_t size, size_t index) {
-    size_t largest = index;       // ÃÖ´ë°ª À§Ä¡
-    size_t left = 2 * index + 1;  // ¿ŞÂÊ ÀÚ½Ä
-    size_t right = 2 * index + 2; // ¿À¸¥ÂÊ ÀÚ½Ä
+    size_t largest = index;       // ìµœëŒ€ê°’ ìœ„ì¹˜
+    size_t left = 2 * index + 1;  // ì™¼ìª½ ìì‹
+    size_t right = 2 * index + 2; // ì˜¤ë¥¸ìª½ ìì‹
 
-    // ¿ŞÂÊ ÀÚ½ÄÀÌ ´õ Å©¸é largest °»½Å
+    // ì™¼ìª½ ìì‹ì´ ë” í¬ë©´ largest ê°±ì‹ 
     if (left < size && arr[left] > arr[largest]) {
         largest = left;
     }
 
-    // ¿À¸¥ÂÊ ÀÚ½ÄÀÌ ´õ Å©¸é largest °»½Å
+    // ì˜¤ë¥¸ìª½ ìì‹ì´ ë” í¬ë©´ largest ê°±ì‹ 
     if (right < size && arr[right] > arr[largest]) {
         largest = right;
     }
 
-    // largest°¡ º¯°æµÇ¾úÀ¸¸é ±³È¯ÇÏ°í Àç±Í È£Ãâ
+    // largestê°€ ë³€ê²½ë˜ì—ˆìœ¼ë©´ êµí™˜í•˜ê³  ì¬ê·€ í˜¸ì¶œ
     if (largest != index) {
         swap(&arr[index], &arr[largest]);
         heapify_recursive(arr, size, largest);
     }
 }
 
-/* ÃÖ´ë Èü ¼Ó¼º À¯Áö (¹İº¹ ¹öÀü)
- * - ¸Å°³º¯¼ö: arr - Èü ¹è¿­, size - Èü Å©±â, index - ÇöÀç ³ëµå
+/* ìµœëŒ€ í™ ì†ì„± ìœ ì§€ (ë°˜ë³µ ë²„ì „)
+ * - ë§¤ê°œë³€ìˆ˜: arr - í™ ë°°ì—´, size - í™ í¬ê¸°, index - í˜„ì¬ ë…¸ë“œ
  */
 void heapify_iterative(DataType arr[], size_t size, size_t index) {
     size_t current = index;
@@ -66,34 +66,34 @@ void heapify_iterative(DataType arr[], size_t size, size_t index) {
     }
 }
 
-/* Èü »ı¼º (»óÇâ½Ä)
- * - ¸Å°³º¯¼ö: arr - ¹è¿­, size - ¹è¿­ Å©±â
- * - ¼³¸í: ¸¶Áö¸· ºñ´Ü¸» ³ëµåºÎÅÍ ¿ª¼øÀ¸·Î heapify
+/* í™ ìƒì„± (ìƒí–¥ì‹)
+ * - ë§¤ê°œë³€ìˆ˜: arr - ë°°ì—´, size - ë°°ì—´ í¬ê¸°
+ * - ì„¤ëª…: ë§ˆì§€ë§‰ ë¹„ë‹¨ë§ ë…¸ë“œë¶€í„° ì—­ìˆœìœ¼ë¡œ heapify
  */
 void build_heap_bottom_up(DataType arr[], size_t size,
     void (*heapify)(DataType[], size_t, size_t)) {
-    // ¸¶Áö¸· ºñ´Ü¸» ³ëµåºÎÅÍ ¿ª¼øÀ¸·Î heapify ¼öÇà
+    // ë§ˆì§€ë§‰ ë¹„ë‹¨ë§ ë…¸ë“œë¶€í„° ì—­ìˆœìœ¼ë¡œ heapify ìˆ˜í–‰
     for (int i = (size / 2) - 1; i >= 0; i--) {
         heapify(arr, size, i);
     }
 }
 
-/* ±âº» Èü Á¤·Ä
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, size - ¹è¿­ Å©±â
+/* ê¸°ë³¸ í™ ì •ë ¬
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, size - ë°°ì—´ í¬ê¸°
  */
 void heap_sort_basic(DataType arr[], size_t size) {
-    // ÃÖ´ë Èü »ı¼º
+    // ìµœëŒ€ í™ ìƒì„±
     build_heap_bottom_up(arr, size, heapify_recursive);
 
-    // Èü¿¡¼­ ÇÏ³ª¾¿ ÃßÃâÇÏ¸ç Á¤·Ä
+    // í™ì—ì„œ í•˜ë‚˜ì”© ì¶”ì¶œí•˜ë©° ì •ë ¬
     for (size_t i = size - 1; i > 0; i--) {
-        swap(&arr[0], &arr[i]);  // ÃÖ´ë°ªÀ» ³¡À¸·Î ÀÌµ¿
-        heapify_recursive(arr, i, 0);  // Èü Å©±â¸¦ ÁÙÀÌ°í heapify
+        swap(&arr[0], &arr[i]);  // ìµœëŒ€ê°’ì„ ëìœ¼ë¡œ ì´ë™
+        heapify_recursive(arr, i, 0);  // í™ í¬ê¸°ë¥¼ ì¤„ì´ê³  heapify
     }
 }
 
-/* ÃÖÀûÈ­µÈ Èü Á¤·Ä (¹İº¹Àû heapify »ç¿ë)
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, size - ¹è¿­ Å©±â
+/* ìµœì í™”ëœ í™ ì •ë ¬ (ë°˜ë³µì  heapify ì‚¬ìš©)
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, size - ë°°ì—´ í¬ê¸°
  */
 void heap_sort_optimized(DataType arr[], size_t size) {
     build_heap_bottom_up(arr, size, heapify_iterative);
@@ -104,8 +104,8 @@ void heap_sort_optimized(DataType arr[], size_t size) {
     }
 }
 
-/* ¹è¿­ Ãâ·Â
- * - ¸Å°³º¯¼ö: arr - Ãâ·ÂÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* ë°°ì—´ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì¶œë ¥í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void print_array(const DataType arr[], size_t size) {
     for (size_t i = 0; i < size; i++) {
@@ -114,9 +114,9 @@ void print_array(const DataType arr[], size_t size) {
     printf("\n");
 }
 
-/* Èü ±¸Á¶ ½Ã°¢È­
- * - ¸Å°³º¯¼ö: arr - Èü ¹è¿­, size - Èü Å©±â, index - ÇöÀç ³ëµå
- *            level - ÇöÀç ·¹º§, prefix - Ãâ·Â Á¢µÎ»ç
+/* í™ êµ¬ì¡° ì‹œê°í™”
+ * - ë§¤ê°œë³€ìˆ˜: arr - í™ ë°°ì—´, size - í™ í¬ê¸°, index - í˜„ì¬ ë…¸ë“œ
+ *            level - í˜„ì¬ ë ˆë²¨, prefix - ì¶œë ¥ ì ‘ë‘ì‚¬
  */
 void print_heap_recursive(const DataType arr[], size_t size, size_t index,
     int level, char* prefix) {
@@ -125,27 +125,27 @@ void print_heap_recursive(const DataType arr[], size_t size, size_t index,
     }
 
     printf("%s", prefix);
-    printf("%s", level ? "¦§¦¡¦¡ " : "");
+    printf("%s", level ? "â”œâ”€â”€ " : "");
     printf("%d\n", arr[index]);
 
     char new_prefix[256];
-    sprintf(new_prefix, "%s%s", prefix, level ? "¦¢   " : "");
+    sprintf(new_prefix, "%s%s", prefix, level ? "â”‚   " : "");
 
-    print_heap_recursive(arr, size, 2 * index + 1, 1, new_prefix); // ¿ŞÂÊ ÀÚ½Ä
-    print_heap_recursive(arr, size, 2 * index + 2, 1, new_prefix); // ¿À¸¥ÂÊ ÀÚ½Ä
+    print_heap_recursive(arr, size, 2 * index + 1, 1, new_prefix); // ì™¼ìª½ ìì‹
+    print_heap_recursive(arr, size, 2 * index + 2, 1, new_prefix); // ì˜¤ë¥¸ìª½ ìì‹
 }
 
-/* Èü ±¸Á¶ Ãâ·Â
- * - ¸Å°³º¯¼ö: arr - Èü ¹è¿­, size - Èü Å©±â
+/* í™ êµ¬ì¡° ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: arr - í™ ë°°ì—´, size - í™ í¬ê¸°
  */
 void print_heap(const DataType arr[], size_t size) {
     printf("Heap Structure:\n");
     print_heap_recursive(arr, size, 0, 0, "");
 }
 
-/* ¹è¿­ÀÌ Á¤·ÄµÇ¾ú´ÂÁö °ËÁõ
- * - ¸Å°³º¯¼ö: arr - °ËÁõÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
- * - ¹İÈ¯°ª: Á¤·ÄµÇ¾úÀ¸¸é true, ¾Æ´Ï¸é false
+/* ë°°ì—´ì´ ì •ë ¬ë˜ì—ˆëŠ”ì§€ ê²€ì¦
+ * - ë§¤ê°œë³€ìˆ˜: arr - ê²€ì¦í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
+ * - ë°˜í™˜ê°’: ì •ë ¬ë˜ì—ˆìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool is_sorted(const DataType arr[], size_t size) {
     for (size_t i = 0; i < size - 1; i++) {
@@ -156,9 +156,9 @@ bool is_sorted(const DataType arr[], size_t size) {
     return true;
 }
 
-/* ¹è¿­ÀÌ Èü ¼Ó¼ºÀ» ¸¸Á·ÇÏ´ÂÁö °ËÁõ
- * - ¸Å°³º¯¼ö: arr - °ËÁõÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
- * - ¹İÈ¯°ª: Èü ¼Ó¼ºÀ» ¸¸Á·ÇÏ¸é true, ¾Æ´Ï¸é false
+/* ë°°ì—´ì´ í™ ì†ì„±ì„ ë§Œì¡±í•˜ëŠ”ì§€ ê²€ì¦
+ * - ë§¤ê°œë³€ìˆ˜: arr - ê²€ì¦í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
+ * - ë°˜í™˜ê°’: í™ ì†ì„±ì„ ë§Œì¡±í•˜ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool is_heap(const DataType arr[], size_t size) {
     for (size_t i = 0; i < size / 2; i++) {
@@ -175,8 +175,8 @@ bool is_heap(const DataType arr[], size_t size) {
     return true;
 }
 
-/* ¹è¿­ º¹»ç
- * - ¸Å°³º¯¼ö: dest - ¸ñÀûÁö ¹è¿­, src - ¿øº» ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* ë°°ì—´ ë³µì‚¬
+ * - ë§¤ê°œë³€ìˆ˜: dest - ëª©ì ì§€ ë°°ì—´, src - ì›ë³¸ ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void copy_array(DataType dest[], const DataType src[], size_t size) {
     for (size_t i = 0; i < size; i++) {
@@ -184,9 +184,9 @@ void copy_array(DataType dest[], const DataType src[], size_t size) {
     }
 }
 
-/* ¾Ë°í¸®Áò ½ÇÇà ½Ã°£ ÃøÁ¤
- * - ¸Å°³º¯¼ö: sort_func - Á¤·Ä ÇÔ¼ö Æ÷ÀÎÅÍ, arr - Á¤·ÄÇÒ ¹è¿­,
- *            size - ¹è¿­ÀÇ Å©±â, name - ¾Ë°í¸®Áò ÀÌ¸§
+/* ì•Œê³ ë¦¬ì¦˜ ì‹¤í–‰ ì‹œê°„ ì¸¡ì •
+ * - ë§¤ê°œë³€ìˆ˜: sort_func - ì •ë ¬ í•¨ìˆ˜ í¬ì¸í„°, arr - ì •ë ¬í•  ë°°ì—´,
+ *            size - ë°°ì—´ì˜ í¬ê¸°, name - ì•Œê³ ë¦¬ì¦˜ ì´ë¦„
  */
 void measure_time(void (*sort_func)(DataType[], size_t),
     DataType arr[], size_t size, const char* name) {
@@ -198,16 +198,16 @@ void measure_time(void (*sort_func)(DataType[], size_t),
     printf("%s: %.6f seconds\n", name, cpu_time);
 }
 
-/* »õ·Î¿î ¹«ÀÛÀ§ ¹è¿­ »ı¼º
- * - ¸Å°³º¯¼ö: arr - »ı¼ºÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* ìƒˆë¡œìš´ ë¬´ì‘ìœ„ ë°°ì—´ ìƒì„±
+ * - ë§¤ê°œë³€ìˆ˜: arr - ìƒì„±í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void generate_random_array(DataType arr[], size_t size) {
     for (size_t i = 0; i < size; i++) {
-        arr[i] = rand() % 1000;  // 0-999 ¹üÀ§ÀÇ ¹«ÀÛÀ§ °ª
+        arr[i] = rand() % 1000;  // 0-999 ë²”ìœ„ì˜ ë¬´ì‘ìœ„ ê°’
     }
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Heap Sort Menu ===\n");
     printf("1. Run basic heap sort\n");
@@ -221,7 +221,7 @@ void print_menu(void) {
 }
 
 int main(void) {
-    srand((unsigned int)time(NULL));  // ³­¼ö ¹ß»ı±â ÃÊ±âÈ­
+    srand((unsigned int)time(NULL));  // ë‚œìˆ˜ ë°œìƒê¸° ì´ˆê¸°í™”
 
     size_t size;
     printf("Enter array size: ");
@@ -282,12 +282,12 @@ int main(void) {
         case 3:  // Compare both versions
             printf("\nComparing both versions with the same input:\n");
 
-            // ±âº» Èü Á¤·Ä
+            // ê¸°ë³¸ í™ ì •ë ¬
             copy_array(temp_arr, arr, size);
             measure_time(heap_sort_basic, temp_arr, size,
                 "Basic heap sort");
 
-            // ÃÖÀûÈ­µÈ Èü Á¤·Ä
+            // ìµœì í™”ëœ í™ ì •ë ¬
             copy_array(temp_arr, arr, size);
             measure_time(heap_sort_optimized, temp_arr, size,
                 "Optimized heap sort");
@@ -329,100 +329,100 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. Èü Á¤·ÄÀÇ ±âº» ¿ø¸®
+1. í™ ì •ë ¬ì˜ ê¸°ë³¸ ì›ë¦¬
 -----------------
-- ÃÖ´ë Èü ±¸¼º
-- ·çÆ® ÃßÃâ
-- Èü Àç±¸¼º
-- Á¦ÀÚ¸® Á¤·Ä
+- ìµœëŒ€ í™ êµ¬ì„±
+- ë£¨íŠ¸ ì¶”ì¶œ
+- í™ ì¬êµ¬ì„±
+- ì œìë¦¬ ì •ë ¬
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µì¡ë„
 -----------
-Èü »ı¼º: O(n)
-Á¤·Ä: O(n log n)
-ÀüÃ¼: O(n log n)
-- ¸ğµç °æ¿ì µ¿ÀÏ
-- ÀÔ·Â¿¡ µ¶¸³Àû
+í™ ìƒì„±: O(n)
+ì •ë ¬: O(n log n)
+ì „ì²´: O(n log n)
+- ëª¨ë“  ê²½ìš° ë™ì¼
+- ì…ë ¥ì— ë…ë¦½ì 
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µì¡ë„
 -----------
 O(1)
-- Ãß°¡ ¸Ş¸ğ¸® ºÒÇÊ¿ä
-- Á¦ÀÚ¸® Á¤·Ä
-- ½ºÅÃ °ø°£¸¸ »ç¿ë
+- ì¶”ê°€ ë©”ëª¨ë¦¬ ë¶ˆí•„ìš”
+- ì œìë¦¬ ì •ë ¬
+- ìŠ¤íƒ ê³µê°„ë§Œ ì‚¬ìš©
 
-4. ±¸Çö ¹æ½Ä
+4. êµ¬í˜„ ë°©ì‹
 ----------
-Àç±ÍÀû ±¸Çö:
-- Á÷°üÀû ÀÌÇØ
-- Äİ ½ºÅÃ »ç¿ë
-- °£´ÜÇÑ ±¸Çö
+ì¬ê·€ì  êµ¬í˜„:
+- ì§ê´€ì  ì´í•´
+- ì½œ ìŠ¤íƒ ì‚¬ìš©
+- ê°„ë‹¨í•œ êµ¬í˜„
 
-¹İº¹Àû ±¸Çö:
-- ½ºÅÃ ¿À¹öÇìµå ¾øÀ½
-- ¼º´É Çâ»ó
-- º¹ÀâÇÑ ±¸Çö
+ë°˜ë³µì  êµ¬í˜„:
+- ìŠ¤íƒ ì˜¤ë²„í—¤ë“œ ì—†ìŒ
+- ì„±ëŠ¥ í–¥ìƒ
+- ë³µì¡í•œ êµ¬í˜„
 
-5. ÃÖÀûÈ­ ±â¹ı
+5. ìµœì í™” ê¸°ë²•
 -----------
-¹İº¹Àû heapify:
-- ½ºÅÃ ¿À¹öÇìµå Á¦°Å
-- Ä³½Ã Áö¿ª¼º Çâ»ó
-- ÇÔ¼ö È£Ãâ °¨¼Ò
+ë°˜ë³µì  heapify:
+- ìŠ¤íƒ ì˜¤ë²„í—¤ë“œ ì œê±°
+- ìºì‹œ ì§€ì—­ì„± í–¥ìƒ
+- í•¨ìˆ˜ í˜¸ì¶œ ê°ì†Œ
 
-Èü »ı¼º ÃÖÀûÈ­:
-- »óÇâ½Ä Á¢±Ù
-- ºÒÇÊ¿äÇÑ ºñ±³ °¨¼Ò
-- È¿À²ÀûÀÎ ±¸¼º
+í™ ìƒì„± ìµœì í™”:
+- ìƒí–¥ì‹ ì ‘ê·¼
+- ë¶ˆí•„ìš”í•œ ë¹„êµ ê°ì†Œ
+- íš¨ìœ¨ì ì¸ êµ¬ì„±
 
-6. Àå´ÜÁ¡
+6. ì¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ÃÖÀû ¼º´É º¸Àå
-- Á¦ÀÚ¸® Á¤·Ä
-- ¾ÈÁ¤Àû ¼º´É
-- ¿ì¼±¼øÀ§ Å¥ ÀÀ¿ë
+ì¥ì :
+- ìµœì  ì„±ëŠ¥ ë³´ì¥
+- ì œìë¦¬ ì •ë ¬
+- ì•ˆì •ì  ì„±ëŠ¥
+- ìš°ì„ ìˆœìœ„ í ì‘ìš©
 
-´ÜÁ¡:
-- ºÒ¾ÈÁ¤ Á¤·Ä
-- Ä³½Ã Áö¿ª¼º ³·À½
-- ½ÇÁ¦ ±¸Çö º¹Àâ
-- ºĞ±â ¿¹Ãø ¾î·Á¿ò
-- ¿¬¼Ó ¸Ş¸ğ¸® Á¢±Ù ºÒ±ÔÄ¢
+ë‹¨ì :
+- ë¶ˆì•ˆì • ì •ë ¬
+- ìºì‹œ ì§€ì—­ì„± ë‚®ìŒ
+- ì‹¤ì œ êµ¬í˜„ ë³µì¡
+- ë¶„ê¸° ì˜ˆì¸¡ ì–´ë ¤ì›€
+- ì—°ì† ë©”ëª¨ë¦¬ ì ‘ê·¼ ë¶ˆê·œì¹™
 
-7. ÀÀ¿ë ºĞ¾ß
+7. ì‘ìš© ë¶„ì•¼
 ----------
-- ¿ì¼±¼øÀ§ Å¥ ±¸Çö
-- K°³ ÃÖ´ë/ÃÖ¼Ò°ª Ã£±â
-- ½Ã½ºÅÛ ÇÁ·Î±×·¡¹Ö
-- ½Ç½Ã°£ ½ºÄÉÁÙ¸µ
+- ìš°ì„ ìˆœìœ„ í êµ¬í˜„
+- Kê°œ ìµœëŒ€/ìµœì†Œê°’ ì°¾ê¸°
+- ì‹œìŠ¤í…œ í”„ë¡œê·¸ë˜ë°
+- ì‹¤ì‹œê°„ ìŠ¤ì¼€ì¤„ë§
 
-8. ±¸Çö Æ¯Â¡
+8. êµ¬í˜„ íŠ¹ì§•
 ----------
-- Àç±Í/¹İº¹ µÎ °¡Áö ¹æ½Ä
-- Èü ¼Ó¼º °ËÁõ
-- ½Ã°¢Àû Ç¥Çö
-- ¼º´É ÃøÁ¤
+- ì¬ê·€/ë°˜ë³µ ë‘ ê°€ì§€ ë°©ì‹
+- í™ ì†ì„± ê²€ì¦
+- ì‹œê°ì  í‘œí˜„
+- ì„±ëŠ¥ ì¸¡ì •
 
-9. °³¼± °¡´É¼º
+9. ê°œì„  ê°€ëŠ¥ì„±
 -----------
-- º´·ÄÈ­
-- Ä³½Ã ÃÖÀûÈ­
-- ºĞ±â ¿¹Ãø °³¼±
-- ¸Ş¸ğ¸® Á¢±Ù ÆĞÅÏ ÃÖÀûÈ­
+- ë³‘ë ¬í™”
+- ìºì‹œ ìµœì í™”
+- ë¶„ê¸° ì˜ˆì¸¡ ê°œì„ 
+- ë©”ëª¨ë¦¬ ì ‘ê·¼ íŒ¨í„´ ìµœì í™”
 
-10. ±³À°Àû °¡Ä¡
+10. êµìœ¡ì  ê°€ì¹˜
 ------------
-- ¿ÏÀü ÀÌÁø Æ®¸® ÀÌÇØ
-- Èü ÀÚ·á±¸Á¶ ÇĞ½À
-- Àç±Í/¹İº¹ ºñ±³
-- ÃÖÀûÈ­ ±â¹ı ÇĞ½À
+- ì™„ì „ ì´ì§„ íŠ¸ë¦¬ ì´í•´
+- í™ ìë£Œêµ¬ì¡° í•™ìŠµ
+- ì¬ê·€/ë°˜ë³µ ë¹„êµ
+- ìµœì í™” ê¸°ë²• í•™ìŠµ
 
-ÀÌ ±¸ÇöÀº Èü Á¤·ÄÀÇ ±âº» °³³ä°ú
-´Ù¾çÇÑ ÃÖÀûÈ­ ±â¹ıÀ» Æ÷ÇÔÇÏ¸ç,
-Èü ±¸Á¶ÀÇ ½Ã°¢È­ ±â´Éµµ Á¦°øÇÏ´Â
-±³À°¿ë ÇÁ·Î±×·¥ÀÔ´Ï´Ù.
+ì´ êµ¬í˜„ì€ í™ ì •ë ¬ì˜ ê¸°ë³¸ ê°œë…ê³¼
+ë‹¤ì–‘í•œ ìµœì í™” ê¸°ë²•ì„ í¬í•¨í•˜ë©°,
+í™ êµ¬ì¡°ì˜ ì‹œê°í™” ê¸°ëŠ¥ë„ ì œê³µí•˜ëŠ”
+êµìœ¡ìš© í”„ë¡œê·¸ë¨ì…ë‹ˆë‹¤.
 */

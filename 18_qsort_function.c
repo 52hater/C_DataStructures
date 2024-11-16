@@ -4,7 +4,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-// ´Ù¾çÇÑ µ¥ÀÌÅÍ Å¸ÀÔÀ» À§ÇÑ ±¸Á¶Ã¼ Á¤ÀÇ
+// ë‹¤ì–‘í•œ ë°ì´í„° íƒ€ìž…ì„ ìœ„í•œ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct {
     int id;
     char name[50];
@@ -16,16 +16,16 @@ typedef struct {
     int y;
 } Point;
 
-/* Á¤¼ö ºñ±³ ÇÔ¼ö
- * - ¸Å°³º¯¼ö: a, b - ºñ±³ÇÒ µÎ ¿ä¼ÒÀÇ Æ÷ÀÎÅÍ
- * - ¹ÝÈ¯°ª: À½¼ö(a<b), 0(a=b), ¾ç¼ö(a>b)
+/* ì •ìˆ˜ ë¹„êµ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: a, b - ë¹„êµí•  ë‘ ìš”ì†Œì˜ í¬ì¸í„°
+ * - ë°˜í™˜ê°’: ìŒìˆ˜(a<b), 0(a=b), ì–‘ìˆ˜(a>b)
  */
 int compare_int(const void* a, const void* b) {
     return (*(int*)a - *(int*)b);
 }
 
-/* ½Ç¼ö ºñ±³ ÇÔ¼ö
- * - ¸Å°³º¯¼ö: a, b - ºñ±³ÇÒ µÎ ¿ä¼ÒÀÇ Æ÷ÀÎÅÍ
+/* ì‹¤ìˆ˜ ë¹„êµ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: a, b - ë¹„êµí•  ë‘ ìš”ì†Œì˜ í¬ì¸í„°
  */
 int compare_float(const void* a, const void* b) {
     float diff = (*(float*)a - *(float*)b);
@@ -34,29 +34,29 @@ int compare_float(const void* a, const void* b) {
     return 0;
 }
 
-/* ¹®ÀÚ¿­ ºñ±³ ÇÔ¼ö
- * - ¸Å°³º¯¼ö: a, b - ºñ±³ÇÒ µÎ ¿ä¼ÒÀÇ Æ÷ÀÎÅÍ
+/* ë¬¸ìžì—´ ë¹„êµ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: a, b - ë¹„êµí•  ë‘ ìš”ì†Œì˜ í¬ì¸í„°
  */
 int compare_string(const void* a, const void* b) {
     return strcmp(*(const char**)a, *(const char**)b);
 }
 
-/* ÇÐ»ý ID ±âÁØ ºñ±³ ÇÔ¼ö
- * - ¸Å°³º¯¼ö: a, b - ºñ±³ÇÒ µÎ ¿ä¼ÒÀÇ Æ÷ÀÎÅÍ
+/* í•™ìƒ ID ê¸°ì¤€ ë¹„êµ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: a, b - ë¹„êµí•  ë‘ ìš”ì†Œì˜ í¬ì¸í„°
  */
 int compare_student_by_id(const void* a, const void* b) {
     return ((Student*)a)->id - ((Student*)b)->id;
 }
 
-/* ÇÐ»ý ÀÌ¸§ ±âÁØ ºñ±³ ÇÔ¼ö
- * - ¸Å°³º¯¼ö: a, b - ºñ±³ÇÒ µÎ ¿ä¼ÒÀÇ Æ÷ÀÎÅÍ
+/* í•™ìƒ ì´ë¦„ ê¸°ì¤€ ë¹„êµ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: a, b - ë¹„êµí•  ë‘ ìš”ì†Œì˜ í¬ì¸í„°
  */
 int compare_student_by_name(const void* a, const void* b) {
     return strcmp(((Student*)a)->name, ((Student*)b)->name);
 }
 
-/* ÇÐ»ý ¼ºÀû ±âÁØ ºñ±³ ÇÔ¼ö (³»¸²Â÷¼ø)
- * - ¸Å°³º¯¼ö: a, b - ºñ±³ÇÒ µÎ ¿ä¼ÒÀÇ Æ÷ÀÎÅÍ
+/* í•™ìƒ ì„±ì  ê¸°ì¤€ ë¹„êµ í•¨ìˆ˜ (ë‚´ë¦¼ì°¨ìˆœ)
+ * - ë§¤ê°œë³€ìˆ˜: a, b - ë¹„êµí•  ë‘ ìš”ì†Œì˜ í¬ì¸í„°
  */
 int compare_student_by_score_desc(const void* a, const void* b) {
     float diff = ((Student*)b)->score - ((Student*)a)->score;
@@ -65,8 +65,8 @@ int compare_student_by_score_desc(const void* a, const void* b) {
     return 0;
 }
 
-/* Á¡ °Å¸® ±âÁØ ºñ±³ ÇÔ¼ö (¿øÁ¡À¸·ÎºÎÅÍ)
- * - ¸Å°³º¯¼ö: a, b - ºñ±³ÇÒ µÎ ¿ä¼ÒÀÇ Æ÷ÀÎÅÍ
+/* ì  ê±°ë¦¬ ê¸°ì¤€ ë¹„êµ í•¨ìˆ˜ (ì›ì ìœ¼ë¡œë¶€í„°)
+ * - ë§¤ê°œë³€ìˆ˜: a, b - ë¹„êµí•  ë‘ ìš”ì†Œì˜ í¬ì¸í„°
  */
 int compare_point_distance(const void* a, const void* b) {
     Point* p1 = (Point*)a;
@@ -76,7 +76,7 @@ int compare_point_distance(const void* a, const void* b) {
     return dist1 - dist2;
 }
 
-/* ¹è¿­ Ãâ·Â ÇÔ¼öµé */
+/* ë°°ì—´ ì¶œë ¥ í•¨ìˆ˜ë“¤ */
 void print_int_array(const int arr[], size_t size) {
     for (size_t i = 0; i < size; i++) {
         printf("%d ", arr[i]);
@@ -115,9 +115,9 @@ void print_point_array(const Point arr[], size_t size) {
     printf("\n");
 }
 
-/* ¾Ë°í¸®Áò ½ÇÇà ½Ã°£ ÃøÁ¤
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, size - ¹è¿­ Å©±â,
- *            elem_size - ¿ä¼Ò Å©±â, compare - ºñ±³ ÇÔ¼ö
+/* ì•Œê³ ë¦¬ì¦˜ ì‹¤í–‰ ì‹œê°„ ì¸¡ì •
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, size - ë°°ì—´ í¬ê¸°,
+ *            elem_size - ìš”ì†Œ í¬ê¸°, compare - ë¹„êµ í•¨ìˆ˜
  */
 void measure_sort_time(void* arr, size_t size, size_t elem_size,
     int (*compare)(const void*, const void*)) {
@@ -129,7 +129,7 @@ void measure_sort_time(void* arr, size_t size, size_t elem_size,
     printf("Sorting time: %.6f seconds\n", cpu_time);
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Qsort Examples Menu ===\n");
     printf("1. Sort integers\n");
@@ -147,7 +147,7 @@ int main(void) {
     int choice;
     srand((unsigned int)time(NULL));
 
-    // Å×½ºÆ® µ¥ÀÌÅÍ ÁØºñ
+    // í…ŒìŠ¤íŠ¸ ë°ì´í„° ì¤€ë¹„
     int int_arr[] = { 64, 34, 25, 12, 22, 11, 90 };
     float float_arr[] = { 64.5, 34.2, 25.7, 12.3, 22.8, 11.1, 90.9 };
     char* string_arr[] = { "banana", "apple", "orange", "grape", "kiwi" };
@@ -270,84 +270,84 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. qsort ÇÔ¼öÀÇ ¿øÇü
+1. qsort í•¨ìˆ˜ì˜ ì›í˜•
 -----------------
 void qsort(void* base,
            size_t nmemb,
            size_t size,
            int (*compar)(const void*, const void*));
 
-- base: Á¤·ÄÇÒ ¹è¿­ÀÇ ½ÃÀÛ ÁÖ¼Ò
-- nmemb: ¹è¿­ÀÇ ¿ä¼Ò °³¼ö
-- size: °¢ ¿ä¼ÒÀÇ Å©±â (¹ÙÀÌÆ®)
-- compar: ºñ±³ ÇÔ¼ö Æ÷ÀÎÅÍ
+- base: ì •ë ¬í•  ë°°ì—´ì˜ ì‹œìž‘ ì£¼ì†Œ
+- nmemb: ë°°ì—´ì˜ ìš”ì†Œ ê°œìˆ˜
+- size: ê° ìš”ì†Œì˜ í¬ê¸° (ë°”ì´íŠ¸)
+- compar: ë¹„êµ í•¨ìˆ˜ í¬ì¸í„°
 
-2. ºñ±³ ÇÔ¼ö ¿ä±¸»çÇ×
+2. ë¹„êµ í•¨ìˆ˜ ìš”êµ¬ì‚¬í•­
 -----------------
-¹ÝÈ¯°ª:
-< 0: Ã¹ ¹øÂ° ¿ä¼Ò°¡ ÀÛÀ½
-= 0: µÎ ¿ä¼Ò°¡ °°À½
-> 0: Ã¹ ¹øÂ° ¿ä¼Ò°¡ Å­
+ë°˜í™˜ê°’:
+< 0: ì²« ë²ˆì§¸ ìš”ì†Œê°€ ìž‘ìŒ
+= 0: ë‘ ìš”ì†Œê°€ ê°™ìŒ
+> 0: ì²« ë²ˆì§¸ ìš”ì†Œê°€ í¼
 
-ÁÖÀÇ»çÇ×:
-- ÀÏ°üµÈ °á°ú ¹ÝÈ¯
-- ´ëÄª¼º À¯Áö
-- ¹ÝÈ¯°ªÀÇ ºÎÈ£¸¸ Áß¿ä
+ì£¼ì˜ì‚¬í•­:
+- ì¼ê´€ëœ ê²°ê³¼ ë°˜í™˜
+- ëŒ€ì¹­ì„± ìœ ì§€
+- ë°˜í™˜ê°’ì˜ ë¶€í˜¸ë§Œ ì¤‘ìš”
 
-3. ÁÖ¿ä Æ¯Â¡
+3. ì£¼ìš” íŠ¹ì§•
 ----------
-ÀåÁ¡:
-- Å¸ÀÔ µ¶¸³Àû
-- Ç¥ÁØ ¶óÀÌºê·¯¸® Á¦°ø
-- ÃÖÀûÈ­µÈ ±¸Çö
-- ¹ü¿ë¼º
+ìž¥ì :
+- íƒ€ìž… ë…ë¦½ì 
+- í‘œì¤€ ë¼ì´ë¸ŒëŸ¬ë¦¬ ì œê³µ
+- ìµœì í™”ëœ êµ¬í˜„
+- ë²”ìš©ì„±
 
-´ÜÁ¡:
-- ºñ±³ ÇÔ¼ö ¿À¹öÇìµå
-- void* Ä³½ºÆÃ ÇÊ¿ä
-- ºÒ¾ÈÁ¤ Á¤·Ä
-- Æ¯¼öÈ­ ¾î·Á¿ò
+ë‹¨ì :
+- ë¹„êµ í•¨ìˆ˜ ì˜¤ë²„í—¤ë“œ
+- void* ìºìŠ¤íŒ… í•„ìš”
+- ë¶ˆì•ˆì • ì •ë ¬
+- íŠ¹ìˆ˜í™” ì–´ë ¤ì›€
 
-4. È°¿ë ºÐ¾ß
+4. í™œìš© ë¶„ì•¼
 ----------
-- ¹ü¿ë Á¤·Ä
-- º¹ÇÕ µ¥ÀÌÅÍ Á¤·Ä
-- ´ÙÁß ±âÁØ Á¤·Ä
-- Ç¥ÁØ ¶óÀÌºê·¯¸® È°¿ë
+- ë²”ìš© ì •ë ¬
+- ë³µí•© ë°ì´í„° ì •ë ¬
+- ë‹¤ì¤‘ ê¸°ì¤€ ì •ë ¬
+- í‘œì¤€ ë¼ì´ë¸ŒëŸ¬ë¦¬ í™œìš©
 
-5. ±¸Çö Æ¯Â¡
+5. êµ¬í˜„ íŠ¹ì§•
 ----------
-- ´Ù¾çÇÑ µ¥ÀÌÅÍ Å¸ÀÔ Áö¿ø
-- ¿©·¯ Á¤·Ä ±âÁØ Á¦°ø
-- ¼º´É ÃøÁ¤ ±â´É
-- ½Ã°¢Àû °á°ú È®ÀÎ
+- ë‹¤ì–‘í•œ ë°ì´í„° íƒ€ìž… ì§€ì›
+- ì—¬ëŸ¬ ì •ë ¬ ê¸°ì¤€ ì œê³µ
+- ì„±ëŠ¥ ì¸¡ì • ê¸°ëŠ¥
+- ì‹œê°ì  ê²°ê³¼ í™•ì¸
 
-6. ±³À°Àû °¡Ä¡
+6. êµìœ¡ì  ê°€ì¹˜
 -----------
-- ÇÔ¼ö Æ÷ÀÎÅÍ ÀÌÇØ
-- void Æ÷ÀÎÅÍ È°¿ë
-- Å¸ÀÔ µ¶¸³Àû ÇÁ·Î±×·¡¹Ö
-- Ç¥ÁØ ¶óÀÌºê·¯¸® »ç¿ë¹ý
+- í•¨ìˆ˜ í¬ì¸í„° ì´í•´
+- void í¬ì¸í„° í™œìš©
+- íƒ€ìž… ë…ë¦½ì  í”„ë¡œê·¸ëž˜ë°
+- í‘œì¤€ ë¼ì´ë¸ŒëŸ¬ë¦¬ ì‚¬ìš©ë²•
 
-7. ½Ç¹«Àû Æ¯Â¡
+7. ì‹¤ë¬´ì  íŠ¹ì§•
 -----------
-- Àç»ç¿ë¼º ³ôÀ½
-- À¯Áöº¸¼ö ¿ëÀÌ
-- Ç¥ÁØ ÁØ¼ö
-- ÀÌ½Ä¼º ÁÁÀ½
+- ìž¬ì‚¬ìš©ì„± ë†’ìŒ
+- ìœ ì§€ë³´ìˆ˜ ìš©ì´
+- í‘œì¤€ ì¤€ìˆ˜
+- ì´ì‹ì„± ì¢‹ìŒ
 
-8. ÁÖÀÇ»çÇ×
+8. ì£¼ì˜ì‚¬í•­
 ---------
-- Æ÷ÀÎÅÍ Å¸ÀÔ ÁÖÀÇ
-- ¸Þ¸ð¸® Á¤·Ä °í·Á
-- ºñ±³ ÇÔ¼ö Á¤È®¼º
-- ¾ÈÁ¤¼º ºÒº¸Àå
+- í¬ì¸í„° íƒ€ìž… ì£¼ì˜
+- ë©”ëª¨ë¦¬ ì •ë ¬ ê³ ë ¤
+- ë¹„êµ í•¨ìˆ˜ ì •í™•ì„±
+- ì•ˆì •ì„± ë¶ˆë³´ìž¥
 
-ÀÌ ±¸ÇöÀº qsort ÇÔ¼öÀÇ ´Ù¾çÇÑ
-È°¿ë ¿¹Á¦¸¦ Á¦°øÇÏ¸ç, ½ÇÁ¦
-ÇÁ·Î±×·¡¹Ö¿¡¼­ ÀÚÁÖ »ç¿ëµÇ´Â
-Á¤·Ä ½Ã³ª¸®¿À¸¦ ´Ù·ì´Ï´Ù.
+ì´ êµ¬í˜„ì€ qsort í•¨ìˆ˜ì˜ ë‹¤ì–‘í•œ
+í™œìš© ì˜ˆì œë¥¼ ì œê³µí•˜ë©°, ì‹¤ì œ
+í”„ë¡œê·¸ëž˜ë°ì—ì„œ ìžì£¼ ì‚¬ìš©ë˜ëŠ”
+ì •ë ¬ ì‹œë‚˜ë¦¬ì˜¤ë¥¼ ë‹¤ë£¹ë‹ˆë‹¤.
 */

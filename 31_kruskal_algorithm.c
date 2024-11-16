@@ -3,34 +3,34 @@
 #include <stdbool.h>
 
 /*
-Kruskal ¾Ë°í¸®Áò:
-- ÃÖ¼Ò ½ÅÀå Æ®¸®(MST) ±¸Çö
-- Union-Find ÀÚ·á±¸Á¶ »ç¿ë
-- °£¼±À» °¡ÁßÄ¡ ¼øÀ¸·Î Á¤·Ä
-- »çÀÌÅ¬ ¾øÀÌ °£¼± ¼±ÅÃ
+Kruskal ì•Œê³ ë¦¬ì¦˜:
+- ìµœì†Œ ì‹ ì¥ íŠ¸ë¦¬(MST) êµ¬í˜„
+- Union-Find ìë£Œêµ¬ì¡° ì‚¬ìš©
+- ê°„ì„ ì„ ê°€ì¤‘ì¹˜ ìˆœìœ¼ë¡œ ì •ë ¬
+- ì‚¬ì´í´ ì—†ì´ ê°„ì„  ì„ íƒ
 */
 
-// °£¼± ±¸Á¶Ã¼
+// ê°„ì„  êµ¬ì¡°ì²´
 typedef struct {
-    int src;      // ½ÃÀÛ Á¤Á¡
-    int dest;     // µµÂø Á¤Á¡
-    int weight;   // °¡ÁßÄ¡
+    int src;      // ì‹œì‘ ì •ì 
+    int dest;     // ë„ì°© ì •ì 
+    int weight;   // ê°€ì¤‘ì¹˜
 } Edge;
 
-// ±×·¡ÇÁ ±¸Á¶Ã¼
+// ê·¸ë˜í”„ êµ¬ì¡°ì²´
 typedef struct {
     int num_vertices;
     int num_edges;
     Edge* edges;
 } Graph;
 
-// Union-Find¸¦ À§ÇÑ ºÎ¸ğ ¹è¿­°ú ·©Å© ¹è¿­
+// Union-Findë¥¼ ìœ„í•œ ë¶€ëª¨ ë°°ì—´ê³¼ ë­í¬ ë°°ì—´
 typedef struct {
     int* parent;
     int* rank;
 } DisjointSet;
 
-/* Union-Find ÃÊ±âÈ­ */
+/* Union-Find ì´ˆê¸°í™” */
 DisjointSet* disjoint_set_create(int size) {
     DisjointSet* set = (DisjointSet*)malloc(sizeof(DisjointSet));
     if (!set) return NULL;
@@ -45,7 +45,7 @@ DisjointSet* disjoint_set_create(int size) {
         return NULL;
     }
 
-    // ÃÊ±âÈ­: °¢ ¿ø¼Ò´Â ÀÚ½ÅÀÌ ´ëÇ¥
+    // ì´ˆê¸°í™”: ê° ì›ì†ŒëŠ” ìì‹ ì´ ëŒ€í‘œ
     for (int i = 0; i < size; i++) {
         set->parent[i] = i;
         set->rank[i] = 0;
@@ -54,18 +54,18 @@ DisjointSet* disjoint_set_create(int size) {
     return set;
 }
 
-/* Find ¿¬»ê (°æ·Î ¾ĞÃà Æ÷ÇÔ)
- * - ½Ã°£º¹Àâµµ: O(¥á(n)) (°ÅÀÇ »ó¼ö ½Ã°£)
+/* Find ì—°ì‚° (ê²½ë¡œ ì••ì¶• í¬í•¨)
+ * - ì‹œê°„ë³µì¡ë„: O(Î±(n)) (ê±°ì˜ ìƒìˆ˜ ì‹œê°„)
  */
 int find_set(DisjointSet* set, int x) {
     if (set->parent[x] != x) {
-        set->parent[x] = find_set(set, set->parent[x]);  // °æ·Î ¾ĞÃà
+        set->parent[x] = find_set(set, set->parent[x]);  // ê²½ë¡œ ì••ì¶•
     }
     return set->parent[x];
 }
 
-/* Union ¿¬»ê (·©Å©¿¡ µû¸¥ ÇÕº´)
- * - ½Ã°£º¹Àâµµ: O(¥á(n))
+/* Union ì—°ì‚° (ë­í¬ì— ë”°ë¥¸ í•©ë³‘)
+ * - ì‹œê°„ë³µì¡ë„: O(Î±(n))
  */
 void union_sets(DisjointSet* set, int x, int y) {
     int root_x = find_set(set, x);
@@ -85,7 +85,7 @@ void union_sets(DisjointSet* set, int x, int y) {
     }
 }
 
-/* ±×·¡ÇÁ »ı¼º */
+/* ê·¸ë˜í”„ ìƒì„± */
 Graph* graph_create(int vertices, int edges) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     if (!graph) return NULL;
@@ -102,23 +102,23 @@ Graph* graph_create(int vertices, int edges) {
     return graph;
 }
 
-/* °£¼± ºñ±³ ÇÔ¼ö (qsort¿ë) */
+/* ê°„ì„  ë¹„êµ í•¨ìˆ˜ (qsortìš©) */
 int compare_edges(const void* a, const void* b) {
     return ((Edge*)a)->weight - ((Edge*)b)->weight;
 }
 
-/* Kruskal ¾Ë°í¸®Áò
- * - ½Ã°£º¹Àâµµ: O(E log E)
- * - °ø°£º¹Àâµµ: O(V)
+/* Kruskal ì•Œê³ ë¦¬ì¦˜
+ * - ì‹œê°„ë³µì¡ë„: O(E log E)
+ * - ê³µê°„ë³µì¡ë„: O(V)
  */
 Edge* kruskal_mst(Graph* graph, int* mst_size) {
     Edge* mst = (Edge*)malloc((graph->num_vertices - 1) * sizeof(Edge));
     if (!mst) return NULL;
 
-    // °£¼±À» °¡ÁßÄ¡ ±âÁØÀ¸·Î Á¤·Ä
+    // ê°„ì„ ì„ ê°€ì¤‘ì¹˜ ê¸°ì¤€ìœ¼ë¡œ ì •ë ¬
     qsort(graph->edges, graph->num_edges, sizeof(Edge), compare_edges);
 
-    // Union-Find ÀÚ·á±¸Á¶ ÃÊ±âÈ­
+    // Union-Find ìë£Œêµ¬ì¡° ì´ˆê¸°í™”
     DisjointSet* set = disjoint_set_create(graph->num_vertices);
     if (!set) {
         free(mst);
@@ -126,21 +126,21 @@ Edge* kruskal_mst(Graph* graph, int* mst_size) {
     }
 
     *mst_size = 0;
-    int mst_weight = 0;  // MST ÀüÃ¼ °¡ÁßÄ¡
+    int mst_weight = 0;  // MST ì „ì²´ ê°€ì¤‘ì¹˜
 
-    // °¡ÁßÄ¡°¡ ÀÛÀº °£¼±ºÎÅÍ ¼±ÅÃ
+    // ê°€ì¤‘ì¹˜ê°€ ì‘ì€ ê°„ì„ ë¶€í„° ì„ íƒ
     for (int i = 0; i < graph->num_edges && *mst_size < graph->num_vertices - 1; i++) {
         int src = graph->edges[i].src;
         int dest = graph->edges[i].dest;
 
-        // »çÀÌÅ¬À» Çü¼ºÇÏÁö ¾Ê´Â °æ¿ì¿¡¸¸ ¼±ÅÃ
+        // ì‚¬ì´í´ì„ í˜•ì„±í•˜ì§€ ì•ŠëŠ” ê²½ìš°ì—ë§Œ ì„ íƒ
         if (find_set(set, src) != find_set(set, dest)) {
             mst[*mst_size] = graph->edges[i];
             mst_weight += graph->edges[i].weight;
             (*mst_size)++;
             union_sets(set, src, dest);
 
-            // ¼±ÅÃµÈ °£¼± Ãâ·Â
+            // ì„ íƒëœ ê°„ì„  ì¶œë ¥
             printf("Selected edge: %d -- %d (weight: %d)\n",
                 src, dest, graph->edges[i].weight);
         }
@@ -148,7 +148,7 @@ Edge* kruskal_mst(Graph* graph, int* mst_size) {
 
     printf("Total MST weight: %d\n", mst_weight);
 
-    // ¸Ş¸ğ¸® ÇØÁ¦
+    // ë©”ëª¨ë¦¬ í•´ì œ
     free(set->parent);
     free(set->rank);
     free(set);
@@ -156,7 +156,7 @@ Edge* kruskal_mst(Graph* graph, int* mst_size) {
     return mst;
 }
 
-/* ±×·¡ÇÁ¿Í MST ½Ã°¢È­ */
+/* ê·¸ë˜í”„ì™€ MST ì‹œê°í™” */
 void print_graph_and_mst(const Graph* graph, const Edge* mst, int mst_size) {
     printf("\nOriginal Graph Edges:\n");
     for (int i = 0; i < graph->num_edges; i++) {
@@ -178,7 +178,7 @@ void print_graph_and_mst(const Graph* graph, const Edge* mst, int mst_size) {
     printf("Total MST weight: %d\n", total_weight);
 }
 
-/* ±×·¡ÇÁ ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê·¸ë˜í”„ ë©”ëª¨ë¦¬ í•´ì œ */
 void graph_destroy(Graph* graph) {
     if (graph) {
         free(graph->edges);
@@ -186,7 +186,7 @@ void graph_destroy(Graph* graph) {
     }
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Kruskal's Algorithm Menu ===\n");
     printf("1. Add edge\n");
@@ -201,7 +201,7 @@ int main(void) {
     printf("Enter number of vertices: ");
     scanf("%d", &vertices);
 
-    max_edges = vertices * (vertices - 1) / 2;  // ÃÖ´ë °£¼± ¼ö
+    max_edges = vertices * (vertices - 1) / 2;  // ìµœëŒ€ ê°„ì„  ìˆ˜
     Graph* graph = graph_create(vertices, max_edges);
     if (!graph) {
         printf("Failed to create graph\n");
@@ -287,59 +287,59 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. Kruskal ¾Ë°í¸®ÁòÀÇ ¿ø¸®
+1. Kruskal ì•Œê³ ë¦¬ì¦˜ì˜ ì›ë¦¬
 ----------------------
-- Å½¿åÀû(Greedy) Á¢±Ù
-- ÃÖ¼Ò °¡ÁßÄ¡ °£¼± ¼±ÅÃ
-- »çÀÌÅ¬ Çü¼º ¹æÁö
-- Union-Find È°¿ë
+- íƒìš•ì (Greedy) ì ‘ê·¼
+- ìµœì†Œ ê°€ì¤‘ì¹˜ ê°„ì„  ì„ íƒ
+- ì‚¬ì´í´ í˜•ì„± ë°©ì§€
+- Union-Find í™œìš©
 
-2. Union-Find ÀÚ·á±¸Á¶
+2. Union-Find ìë£Œêµ¬ì¡°
 -------------------
-- ºĞ¸® ÁıÇÕ Ç¥Çö
-- °æ·Î ¾ĞÃà
-- ·©Å© ±â¹İ ÇÕº´
-- °ÅÀÇ »ó¼ö ½Ã°£ ¿¬»ê
+- ë¶„ë¦¬ ì§‘í•© í‘œí˜„
+- ê²½ë¡œ ì••ì¶•
+- ë­í¬ ê¸°ë°˜ í•©ë³‘
+- ê±°ì˜ ìƒìˆ˜ ì‹œê°„ ì—°ì‚°
 
-3. ½Ã°£ º¹Àâµµ
+3. ì‹œê°„ ë³µì¡ë„
 -----------
-- °£¼± Á¤·Ä: O(E log E)
-- Union-Find: O(¥á(V))
-- ÀüÃ¼: O(E log E)
-- ¥á(n)Àº ¾ÖÄ¿¸¸ ÇÔ¼öÀÇ ¿ªÇÔ¼ö
+- ê°„ì„  ì •ë ¬: O(E log E)
+- Union-Find: O(Î±(V))
+- ì „ì²´: O(E log E)
+- Î±(n)ì€ ì• ì»¤ë§Œ í•¨ìˆ˜ì˜ ì—­í•¨ìˆ˜
 
-4. °ø°£ º¹Àâµµ
+4. ê³µê°„ ë³µì¡ë„
 -----------
-- °£¼± ¹è¿­: O(E)
+- ê°„ì„  ë°°ì—´: O(E)
 - Union-Find: O(V)
-- ÀüÃ¼: O(E)
+- ì „ì²´: O(E)
 
-5. ±¸Çö Æ¯Â¡
+5. êµ¬í˜„ íŠ¹ì§•
 ----------
-- °£¼± ¸®½ºÆ® »ç¿ë
-- °¡ÁßÄ¡ ±â¹İ Á¤·Ä
-- »çÀÌÅ¬ °Ë»ç
-- Á¡ÁøÀû ±¸¼º
+- ê°„ì„  ë¦¬ìŠ¤íŠ¸ ì‚¬ìš©
+- ê°€ì¤‘ì¹˜ ê¸°ë°˜ ì •ë ¬
+- ì‚¬ì´í´ ê²€ì‚¬
+- ì ì§„ì  êµ¬ì„±
 
-6. Àå´ÜÁ¡
+6. ì¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ±¸Çö ´Ü¼ø
-- Èñ¼Ò ±×·¡ÇÁ¿¡ È¿À²Àû
-- ÃÖÀûÇØ º¸Àå
-- °£¼± Áß½É Á¢±Ù
+ì¥ì :
+- êµ¬í˜„ ë‹¨ìˆœ
+- í¬ì†Œ ê·¸ë˜í”„ì— íš¨ìœ¨ì 
+- ìµœì í•´ ë³´ì¥
+- ê°„ì„  ì¤‘ì‹¬ ì ‘ê·¼
 
-´ÜÁ¡:
-- °£¼± Á¤·Ä ÇÊ¿ä
-- ¹ĞÁı ±×·¡ÇÁ¿¡ ºñÈ¿À²
-- Ãß°¡ ÀÚ·á±¸Á¶ ÇÊ¿ä
-- ¸Ş¸ğ¸® »ç¿ë·®
+ë‹¨ì :
+- ê°„ì„  ì •ë ¬ í•„ìš”
+- ë°€ì§‘ ê·¸ë˜í”„ì— ë¹„íš¨ìœ¨
+- ì¶”ê°€ ìë£Œêµ¬ì¡° í•„ìš”
+- ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰
 
-ÀÌ ±¸ÇöÀº Kruskal ¾Ë°í¸®ÁòÀÇ
-±âº» ¿ø¸®¿Í Union-Find ÀÚ·á±¸Á¶¸¦
-¸íÈ®ÇÏ°Ô º¸¿©ÁÖ¸ç, ÃÖ¼Ò ½ÅÀå Æ®¸®ÀÇ
-°³³äÀ» ÀÌÇØÇÏ´Â µ¥ µµ¿òÀÌ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ Kruskal ì•Œê³ ë¦¬ì¦˜ì˜
+ê¸°ë³¸ ì›ë¦¬ì™€ Union-Find ìë£Œêµ¬ì¡°ë¥¼
+ëª…í™•í•˜ê²Œ ë³´ì—¬ì£¼ë©°, ìµœì†Œ ì‹ ì¥ íŠ¸ë¦¬ì˜
+ê°œë…ì„ ì´í•´í•˜ëŠ” ë° ë„ì›€ì´ ë©ë‹ˆë‹¤.
 */

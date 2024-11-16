@@ -4,23 +4,23 @@
 
 typedef int DataType;
 
-// ³ëµå ±¸Á¶Ã¼ Á¤ÀÇ
+// ë…¸ë“œ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct Node {
     DataType data;
-    struct Node* prev;  // ÀÌÀü ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ
-    struct Node* next;  // ´ÙÀ½ ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ
+    struct Node* prev;  // ì´ì „ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°
+    struct Node* next;  // ë‹¤ìŒ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°
 } Node;
 
-// ÀÌÁß ¿¬°á ¸®½ºÆ® ±¸Á¶Ã¼ Á¤ÀÇ
+// ì´ì¤‘ ì—°ê²° ë¦¬ìŠ¤íŠ¸ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct {
-    Node* head;     // Ã¹ ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ
-    Node* tail;     // ¸¶Áö¸· ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ
-    size_t size;    // ÇöÀç ¸®½ºÆ®ÀÇ Å©±â
+    Node* head;     // ì²« ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°
+    Node* tail;     // ë§ˆì§€ë§‰ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°
+    size_t size;    // í˜„ìž¬ ë¦¬ìŠ¤íŠ¸ì˜ í¬ê¸°
 } DoublyLinkedList;
 
-/* ¸®½ºÆ® ÃÊ±âÈ­ ÇÔ¼ö
- * - »õ·Î¿î ºó ÀÌÁß ¿¬°á ¸®½ºÆ®¸¦ »ý¼ºÇÏ°í ÃÊ±âÈ­
- * - ¹ÝÈ¯°ª: ÃÊ±âÈ­µÈ DoublyLinkedList ±¸Á¶Ã¼ÀÇ Æ÷ÀÎÅÍ
+/* ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™” í•¨ìˆ˜
+ * - ìƒˆë¡œìš´ ë¹ˆ ì´ì¤‘ ì—°ê²° ë¦¬ìŠ¤íŠ¸ë¥¼ ìƒì„±í•˜ê³  ì´ˆê¸°í™”
+ * - ë°˜í™˜ê°’: ì´ˆê¸°í™”ëœ DoublyLinkedList êµ¬ì¡°ì²´ì˜ í¬ì¸í„°
  */
 DoublyLinkedList* list_create(void) {
     DoublyLinkedList* list = (DoublyLinkedList*)malloc(sizeof(DoublyLinkedList));
@@ -33,10 +33,10 @@ DoublyLinkedList* list_create(void) {
     return list;
 }
 
-/* »õ·Î¿î ³ëµå »ý¼º ÇÔ¼ö
- * - µ¥ÀÌÅÍ¸¦ ´ãÀº »õ·Î¿î ³ëµå¸¦ µ¿Àû ÇÒ´ç
- * - ¸Å°³º¯¼ö: data - ÀúÀåÇÒ µ¥ÀÌÅÍ °ª
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ »õ ³ëµåÀÇ Æ÷ÀÎÅÍ
+/* ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„± í•¨ìˆ˜
+ * - ë°ì´í„°ë¥¼ ë‹´ì€ ìƒˆë¡œìš´ ë…¸ë“œë¥¼ ë™ì  í• ë‹¹
+ * - ë§¤ê°œë³€ìˆ˜: data - ì €ìž¥í•  ë°ì´í„° ê°’
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ ìƒˆ ë…¸ë“œì˜ í¬ì¸í„°
  */
 Node* node_create(DataType data) {
     Node* new_node = (Node*)malloc(sizeof(Node));
@@ -49,25 +49,25 @@ Node* node_create(DataType data) {
     return new_node;
 }
 
-/* ¸®½ºÆ®°¡ ºñ¾îÀÖ´ÂÁö È®ÀÎ
- * - ¸Å°³º¯¼ö: list - È®ÀÎÇÒ ¸®½ºÆ®
- * - ¹ÝÈ¯°ª: ºñ¾îÀÖÀ¸¸é true, ¾Æ´Ï¸é false
+/* ë¦¬ìŠ¤íŠ¸ê°€ ë¹„ì–´ìžˆëŠ”ì§€ í™•ì¸
+ * - ë§¤ê°œë³€ìˆ˜: list - í™•ì¸í•  ë¦¬ìŠ¤íŠ¸
+ * - ë°˜í™˜ê°’: ë¹„ì–´ìžˆìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool list_is_empty(const DoublyLinkedList* list) {
     return (list->size == 0);
 }
 
-/* ¸®½ºÆ®ÀÇ Å©±â ¹ÝÈ¯
- * - ¸Å°³º¯¼ö: list - ´ë»ó ¸®½ºÆ®
- * - ¹ÝÈ¯°ª: ¸®½ºÆ®ÀÇ ÇöÀç ³ëµå °³¼ö
+/* ë¦¬ìŠ¤íŠ¸ì˜ í¬ê¸° ë°˜í™˜
+ * - ë§¤ê°œë³€ìˆ˜: list - ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸
+ * - ë°˜í™˜ê°’: ë¦¬ìŠ¤íŠ¸ì˜ í˜„ìž¬ ë…¸ë“œ ê°œìˆ˜
  */
 size_t list_size(const DoublyLinkedList* list) {
     return list->size;
 }
 
-/* ¸®½ºÆ®ÀÇ ¸Ç ¾Õ¿¡ ³ëµå »ðÀÔ
- * - ¸Å°³º¯¼ö: list - ´ë»ó ¸®½ºÆ®, data - ÀúÀåÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: ¼º°ø ½Ã true, ½ÇÆÐ ½Ã false
+/* ë¦¬ìŠ¤íŠ¸ì˜ ë§¨ ì•žì— ë…¸ë“œ ì‚½ìž…
+ * - ë§¤ê°œë³€ìˆ˜: list - ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸, data - ì €ìž¥í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ì„±ê³µ ì‹œ true, ì‹¤íŒ¨ ì‹œ false
  */
 bool list_push_front(DoublyLinkedList* list, DataType data) {
     Node* new_node = node_create(data);
@@ -88,9 +88,9 @@ bool list_push_front(DoublyLinkedList* list, DataType data) {
     return true;
 }
 
-/* ¸®½ºÆ®ÀÇ ¸Ç µÚ¿¡ ³ëµå »ðÀÔ
- * - ¸Å°³º¯¼ö: list - ´ë»ó ¸®½ºÆ®, data - ÀúÀåÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: ¼º°ø ½Ã true, ½ÇÆÐ ½Ã false
+/* ë¦¬ìŠ¤íŠ¸ì˜ ë§¨ ë’¤ì— ë…¸ë“œ ì‚½ìž…
+ * - ë§¤ê°œë³€ìˆ˜: list - ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸, data - ì €ìž¥í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ì„±ê³µ ì‹œ true, ì‹¤íŒ¨ ì‹œ false
  */
 bool list_push_back(DoublyLinkedList* list, DataType data) {
     Node* new_node = node_create(data);
@@ -111,9 +111,9 @@ bool list_push_back(DoublyLinkedList* list, DataType data) {
     return true;
 }
 
-/* Æ¯Á¤ À§Ä¡¿¡ ³ëµå »ðÀÔ
- * - ¸Å°³º¯¼ö: list - ´ë»ó ¸®½ºÆ®, position - »ðÀÔÇÒ À§Ä¡(0-based), data - ÀúÀåÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: ¼º°ø ½Ã true, ½ÇÆÐ ½Ã false
+/* íŠ¹ì • ìœ„ì¹˜ì— ë…¸ë“œ ì‚½ìž…
+ * - ë§¤ê°œë³€ìˆ˜: list - ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸, position - ì‚½ìž…í•  ìœ„ì¹˜(0-based), data - ì €ìž¥í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ì„±ê³µ ì‹œ true, ì‹¤íŒ¨ ì‹œ false
  */
 bool list_insert_at(DoublyLinkedList* list, size_t position, DataType data) {
     if (position > list->size) {
@@ -146,9 +146,9 @@ bool list_insert_at(DoublyLinkedList* list, size_t position, DataType data) {
     return true;
 }
 
-/* Æ¯Á¤ À§Ä¡ÀÇ ³ëµå »èÁ¦
- * - ¸Å°³º¯¼ö: list - ´ë»ó ¸®½ºÆ®, position - »èÁ¦ÇÒ À§Ä¡(0-based)
- * - ¹ÝÈ¯°ª: ¼º°ø ½Ã true, ½ÇÆÐ ½Ã false
+/* íŠ¹ì • ìœ„ì¹˜ì˜ ë…¸ë“œ ì‚­ì œ
+ * - ë§¤ê°œë³€ìˆ˜: list - ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸, position - ì‚­ì œí•  ìœ„ì¹˜(0-based)
+ * - ë°˜í™˜ê°’: ì„±ê³µ ì‹œ true, ì‹¤íŒ¨ ì‹œ false
  */
 bool list_remove_at(DoublyLinkedList* list, size_t position) {
     if (list_is_empty(list) || position >= list->size) {
@@ -185,9 +185,9 @@ bool list_remove_at(DoublyLinkedList* list, size_t position) {
     return true;
 }
 
-/* Æ¯Á¤ °ªÀ» °¡Áø ³ëµå °Ë»ö
- * - ¸Å°³º¯¼ö: list - ´ë»ó ¸®½ºÆ®, data - Ã£À» °ª
- * - ¹ÝÈ¯°ª: Ã£Àº ³ëµåÀÇ ÀÎµ¦½º, ¾øÀ¸¸é -1
+/* íŠ¹ì • ê°’ì„ ê°€ì§„ ë…¸ë“œ ê²€ìƒ‰
+ * - ë§¤ê°œë³€ìˆ˜: list - ëŒ€ìƒ ë¦¬ìŠ¤íŠ¸, data - ì°¾ì„ ê°’
+ * - ë°˜í™˜ê°’: ì°¾ì€ ë…¸ë“œì˜ ì¸ë±ìŠ¤, ì—†ìœ¼ë©´ -1
  */
 int list_find(const DoublyLinkedList* list, DataType data) {
     Node* current = list->head;
@@ -203,8 +203,8 @@ int list_find(const DoublyLinkedList* list, DataType data) {
     return -1;
 }
 
-/* ¸®½ºÆ® Ãâ·Â ÇÔ¼ö
- * - ¸Å°³º¯¼ö: list - Ãâ·ÂÇÒ ¸®½ºÆ®
+/* ë¦¬ìŠ¤íŠ¸ ì¶œë ¥ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: list - ì¶œë ¥í•  ë¦¬ìŠ¤íŠ¸
  */
 void list_print(const DoublyLinkedList* list) {
     if (list_is_empty(list)) {
@@ -221,8 +221,8 @@ void list_print(const DoublyLinkedList* list) {
     printf("\n");
 }
 
-/* ¸®½ºÆ® ¸Þ¸ð¸® ÇØÁ¦
- * - ¸Å°³º¯¼ö: list - »èÁ¦ÇÒ ¸®½ºÆ®
+/* ë¦¬ìŠ¤íŠ¸ ë©”ëª¨ë¦¬ í•´ì œ
+ * - ë§¤ê°œë³€ìˆ˜: list - ì‚­ì œí•  ë¦¬ìŠ¤íŠ¸
  */
 void list_destroy(DoublyLinkedList* list) {
     Node* current = list->head;
@@ -234,7 +234,7 @@ void list_destroy(DoublyLinkedList* list) {
     free(list);
 }
 
-/* ¸Þ´º Ãâ·Â ÇÔ¼ö */
+/* ë©”ë‰´ ì¶œë ¥ í•¨ìˆ˜ */
 void print_menu(void) {
     printf("\n=== Doubly Linked List Menu ===\n");
     printf("1. Insert at front\n");
@@ -264,7 +264,7 @@ int main(void) {
         print_menu();
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input\n");
-            while (getchar() != '\n');  // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+            while (getchar() != '\n');  // ìž…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
             continue;
         }
 
@@ -354,87 +354,87 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ÀÌÁß ¿¬°á ¸®½ºÆ®ÀÇ Æ¯Â¡
+1. ì´ì¤‘ ì—°ê²° ë¦¬ìŠ¤íŠ¸ì˜ íŠ¹ì§•
 ------------------------
-- °¢ ³ëµå°¡ ÀÌÀü ³ëµå¿Í ´ÙÀ½ ³ëµåÀÇ Æ÷ÀÎÅÍ¸¦ ¸ðµÎ °¡Áü
-- ¾ç¹æÇâ ¼øÈ¸ °¡´É
-- »ðÀÔ/»èÁ¦ ¿¬»êÀÌ ´ÜÀÏ ¿¬°á ¸®½ºÆ®º¸´Ù È¿À²Àû
-- tail Æ÷ÀÎÅÍ·Î ³¡ ³ëµå¿¡ Áï½Ã Á¢±Ù °¡´É
+- ê° ë…¸ë“œê°€ ì´ì „ ë…¸ë“œì™€ ë‹¤ìŒ ë…¸ë“œì˜ í¬ì¸í„°ë¥¼ ëª¨ë‘ ê°€ì§
+- ì–‘ë°©í–¥ ìˆœíšŒ ê°€ëŠ¥
+- ì‚½ìž…/ì‚­ì œ ì—°ì‚°ì´ ë‹¨ì¼ ì—°ê²° ë¦¬ìŠ¤íŠ¸ë³´ë‹¤ íš¨ìœ¨ì 
+- tail í¬ì¸í„°ë¡œ ë ë…¸ë“œì— ì¦‰ì‹œ ì ‘ê·¼ ê°€ëŠ¥
 
-2. ÁÖ¿ä ±¸Á¶Ã¼
+2. ì£¼ìš” êµ¬ì¡°ì²´
 ------------
 Node:
-- data: ½ÇÁ¦ µ¥ÀÌÅÍ ÀúÀå
-- prev: ÀÌÀü ³ëµå Æ÷ÀÎÅÍ
-- next: ´ÙÀ½ ³ëµå Æ÷ÀÎÅÍ
+- data: ì‹¤ì œ ë°ì´í„° ì €ìž¥
+- prev: ì´ì „ ë…¸ë“œ í¬ì¸í„°
+- next: ë‹¤ìŒ ë…¸ë“œ í¬ì¸í„°
 
 DoublyLinkedList:
-- head: Ã¹ ³ëµå Æ÷ÀÎÅÍ
-- tail: ¸¶Áö¸· ³ëµå Æ÷ÀÎÅÍ
-- size: ÇöÀç ³ëµå °³¼ö
+- head: ì²« ë…¸ë“œ í¬ì¸í„°
+- tail: ë§ˆì§€ë§‰ ë…¸ë“œ í¬ì¸í„°
+- size: í˜„ìž¬ ë…¸ë“œ ê°œìˆ˜
 
-3. ±¸ÇöµÈ ÁÖ¿ä ±â´É
+3. êµ¬í˜„ëœ ì£¼ìš” ê¸°ëŠ¥
 ----------------
-- ³ëµå »ðÀÔ: ¾Õ/µÚ/Áß°£ À§Ä¡
-- ³ëµå »èÁ¦: À§Ä¡ ±â¹Ý
-- °ª °Ë»ö
-- ¸®½ºÆ® Ãâ·Â
-- ºó ¸®½ºÆ® È®ÀÎ
-- Å©±â È®ÀÎ
+- ë…¸ë“œ ì‚½ìž…: ì•ž/ë’¤/ì¤‘ê°„ ìœ„ì¹˜
+- ë…¸ë“œ ì‚­ì œ: ìœ„ì¹˜ ê¸°ë°˜
+- ê°’ ê²€ìƒ‰
+- ë¦¬ìŠ¤íŠ¸ ì¶œë ¥
+- ë¹ˆ ë¦¬ìŠ¤íŠ¸ í™•ì¸
+- í¬ê¸° í™•ì¸
 
-4. ¸Þ¸ð¸® °ü¸®
+4. ë©”ëª¨ë¦¬ ê´€ë¦¬
 ------------
-- µ¿Àû ÇÒ´ç: malloc() »ç¿ë
-- ÇÒ´ç ½ÇÆÐ Ã³¸®: NULL Ã¼Å©
-- ¸Þ¸ð¸® ÇØÁ¦: free() »ç¿ë
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
+- ë™ì  í• ë‹¹: malloc() ì‚¬ìš©
+- í• ë‹¹ ì‹¤íŒ¨ ì²˜ë¦¬: NULL ì²´í¬
+- ë©”ëª¨ë¦¬ í•´ì œ: free() ì‚¬ìš©
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
 
-5. ¿¡·¯ Ã³¸®
+5. ì—ëŸ¬ ì²˜ë¦¬
 ----------
-- °æ°è Á¶°Ç °Ë»ç
-- ¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ Ã³¸®
-- Àß¸øµÈ À§Ä¡ Á¢±Ù ¹æÁö
-- ºó ¸®½ºÆ® Ã³¸®
+- ê²½ê³„ ì¡°ê±´ ê²€ì‚¬
+- ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨ ì²˜ë¦¬
+- ìž˜ëª»ëœ ìœ„ì¹˜ ì ‘ê·¼ ë°©ì§€
+- ë¹ˆ ë¦¬ìŠ¤íŠ¸ ì²˜ë¦¬
 
-6. »ç¿ëÀÚ ÀÎÅÍÆäÀÌ½º
+6. ì‚¬ìš©ìž ì¸í„°íŽ˜ì´ìŠ¤
 -----------------
-- ¸Þ´º ±â¹Ý ´ëÈ­Çü ÀÎÅÍÆäÀÌ½º
-- ÀÔ·Â °ËÁõ
-- ¸íÈ®ÇÑ ÇÇµå¹é Á¦°ø
-- Àß¸øµÈ ÀÔ·Â Ã³¸®
+- ë©”ë‰´ ê¸°ë°˜ ëŒ€í™”í˜• ì¸í„°íŽ˜ì´ìŠ¤
+- ìž…ë ¥ ê²€ì¦
+- ëª…í™•í•œ í”¼ë“œë°± ì œê³µ
+- ìž˜ëª»ëœ ìž…ë ¥ ì²˜ë¦¬
 
-7. ÃÖÀûÈ­ Æ¯Â¡
+7. ìµœì í™” íŠ¹ì§•
 ------------
-- O(1) ½Ã°£ º¹Àâµµ:
-  * ¾Õ/µÚ »ðÀÔ
-  * Å©±â È®ÀÎ
-  * ºó ¸®½ºÆ® È®ÀÎ
-- O(n) ½Ã°£ º¹Àâµµ:
-  * Áß°£ »ðÀÔ/»èÁ¦
-  * °ª °Ë»ö
+- O(1) ì‹œê°„ ë³µìž¡ë„:
+  * ì•ž/ë’¤ ì‚½ìž…
+  * í¬ê¸° í™•ì¸
+  * ë¹ˆ ë¦¬ìŠ¤íŠ¸ í™•ì¸
+- O(n) ì‹œê°„ ë³µìž¡ë„:
+  * ì¤‘ê°„ ì‚½ìž…/ì‚­ì œ
+  * ê°’ ê²€ìƒ‰
 
-8. ÄÚµå ½ºÅ¸ÀÏ
+8. ì½”ë“œ ìŠ¤íƒ€ì¼
 ------------
-- ÀÏ°üµÈ ¸í¸í ±ÔÄ¢
-- ÀÚ¼¼ÇÑ ÁÖ¼®
-- ¸ðµâÈ­µÈ ¼³°è
-- Á÷°üÀûÀÎ ÀÎÅÍÆäÀÌ½º
+- ì¼ê´€ëœ ëª…ëª… ê·œì¹™
+- ìžì„¸í•œ ì£¼ì„
+- ëª¨ë“ˆí™”ëœ ì„¤ê³„
+- ì§ê´€ì ì¸ ì¸í„°íŽ˜ì´ìŠ¤
 
-9. ¾ÈÀü¼º °í·Á»çÇ×
+9. ì•ˆì „ì„± ê³ ë ¤ì‚¬í•­
 ---------------
-- NULL Æ÷ÀÎÅÍ °Ë»ç
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- °æ°è Á¶°Ç Ã³¸®
-- »ç¿ëÀÚ ÀÔ·Â °ËÁõ
+- NULL í¬ì¸í„° ê²€ì‚¬
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- ê²½ê³„ ì¡°ê±´ ì²˜ë¦¬
+- ì‚¬ìš©ìž ìž…ë ¥ ê²€ì¦
 
-10. ±³À°Àû °¡Ä¡
+10. êµìœ¡ì  ê°€ì¹˜
 -------------
-- Æ÷ÀÎÅÍ °³³ä ÇÐ½À
-- ¸Þ¸ð¸® °ü¸® ½Ç½À
-- ÀÚ·á±¸Á¶ ÀÌÇØ
-- »ç¿ëÀÚ ÀÎÅÍÆä
+- í¬ì¸í„° ê°œë… í•™ìŠµ
+- ë©”ëª¨ë¦¬ ê´€ë¦¬ ì‹¤ìŠµ
+- ìžë£Œêµ¬ì¡° ì´í•´
+- ì‚¬ìš©ìž ì¸í„°íŽ˜
 
 */

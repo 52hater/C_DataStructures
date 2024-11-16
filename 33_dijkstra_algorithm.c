@@ -4,21 +4,21 @@
 #include <limits.h>
 
 /*
-ÃÖ´Ü °æ·Î (Shortest Path):
-- µÎ Á¤Á¡ »çÀÌÀÇ °æ·Î Áß °£¼±ÀÇ °¡ÁßÄ¡ ÇÕÀÌ ÃÖ¼ÒÀÎ °æ·Î
-- ³×ºñ°ÔÀÌ¼Ç, ³×Æ®¿öÅ© ¶ó¿ìÆÃ µî¿¡¼­ ÇÙ½É °³³ä
-- ´Ù¾çÇÑ º¯Çü: ´ÜÀÏ Ãâ¹ßÁ¡, ¸ğµç ½Ö, À½¼ö °¡ÁßÄ¡ µî
+ìµœë‹¨ ê²½ë¡œ (Shortest Path):
+- ë‘ ì •ì  ì‚¬ì´ì˜ ê²½ë¡œ ì¤‘ ê°„ì„ ì˜ ê°€ì¤‘ì¹˜ í•©ì´ ìµœì†Œì¸ ê²½ë¡œ
+- ë„¤ë¹„ê²Œì´ì…˜, ë„¤íŠ¸ì›Œí¬ ë¼ìš°íŒ… ë“±ì—ì„œ í•µì‹¬ ê°œë…
+- ë‹¤ì–‘í•œ ë³€í˜•: ë‹¨ì¼ ì¶œë°œì , ëª¨ë“  ìŒ, ìŒìˆ˜ ê°€ì¤‘ì¹˜ ë“±
 
-Dijkstra ¾Ë°í¸®Áò:
-- ´ÜÀÏ Ãâ¹ßÁ¡ ÃÖ´Ü °æ·Î ¾Ë°í¸®Áò
-- ±×¸®µğ(Greedy) ¹æ½ÄÀ¸·Î µ¿ÀÛ
-- À½¼ö °¡ÁßÄ¡°¡ ¾ø´Â ±×·¡ÇÁ¿¡¼­¸¸ »ç¿ë °¡´É
-- ¿ì¼±¼øÀ§ Å¥¸¦ »ç¿ëÇÏ¿© ÃÖÀûÈ­ °¡´É
+Dijkstra ì•Œê³ ë¦¬ì¦˜:
+- ë‹¨ì¼ ì¶œë°œì  ìµœë‹¨ ê²½ë¡œ ì•Œê³ ë¦¬ì¦˜
+- ê·¸ë¦¬ë””(Greedy) ë°©ì‹ìœ¼ë¡œ ë™ì‘
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ê°€ ì—†ëŠ” ê·¸ë˜í”„ì—ì„œë§Œ ì‚¬ìš© ê°€ëŠ¥
+- ìš°ì„ ìˆœìœ„ íë¥¼ ì‚¬ìš©í•˜ì—¬ ìµœì í™” ê°€ëŠ¥
 
-´Ù¸¥ ÃÖ´Ü °æ·Î ¾Ë°í¸®Áò°úÀÇ ºñ±³:
-1. Bellman-Ford: À½¼ö °¡ÁßÄ¡ Ã³¸® °¡´É, ´õ ´À¸²
-2. Floyd-Warshall: ¸ğµç Á¤Á¡ ½ÖÀÇ ÃÖ´Ü °æ·Î, O(V©ø)
-3. A*: ÈŞ¸®½ºÆ½À» »ç¿ëÇÑ ¹æÇâ¼º ÀÖ´Â Å½»ö
+ë‹¤ë¥¸ ìµœë‹¨ ê²½ë¡œ ì•Œê³ ë¦¬ì¦˜ê³¼ì˜ ë¹„êµ:
+1. Bellman-Ford: ìŒìˆ˜ ê°€ì¤‘ì¹˜ ì²˜ë¦¬ ê°€ëŠ¥, ë” ëŠë¦¼
+2. Floyd-Warshall: ëª¨ë“  ì •ì  ìŒì˜ ìµœë‹¨ ê²½ë¡œ, O(VÂ³)
+3. A*: íœ´ë¦¬ìŠ¤í‹±ì„ ì‚¬ìš©í•œ ë°©í–¥ì„± ìˆëŠ” íƒìƒ‰
 */
 
 #define MAX_VERTICES 100
@@ -26,17 +26,17 @@ Dijkstra ¾Ë°í¸®Áò:
 
 typedef struct {
     int num_vertices;
-    int graph[MAX_VERTICES][MAX_VERTICES];  // ÀÎÁ¢ Çà·Ä
+    int graph[MAX_VERTICES][MAX_VERTICES];  // ì¸ì ‘ í–‰ë ¬
 } Graph;
 
-/* ±×·¡ÇÁ »ı¼º */
+/* ê·¸ë˜í”„ ìƒì„± */
 Graph* graph_create(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     if (!graph) return NULL;
 
     graph->num_vertices = vertices;
 
-    // ÀÎÁ¢ Çà·Ä ÃÊ±âÈ­
+    // ì¸ì ‘ í–‰ë ¬ ì´ˆê¸°í™”
     for (int i = 0; i < vertices; i++) {
         for (int j = 0; j < vertices; j++) {
             graph->graph[i][j] = i == j ? 0 : INF;
@@ -46,7 +46,7 @@ Graph* graph_create(int vertices) {
     return graph;
 }
 
-/* °£¼± Ãß°¡ */
+/* ê°„ì„  ì¶”ê°€ */
 bool graph_add_edge(Graph* graph, int src, int dest, int weight) {
     if (!graph || src < 0 || src >= graph->num_vertices ||
         dest < 0 || dest >= graph->num_vertices || weight < 0) {
@@ -57,8 +57,8 @@ bool graph_add_edge(Graph* graph, int src, int dest, int weight) {
     return true;
 }
 
-/* ÃÖ¼Ò °Å¸® Á¤Á¡ Ã£±â
- * - ¾ÆÁ÷ ¹æ¹®ÇÏÁö ¾ÊÀº Á¤Á¡ Áß ÃÖ¼Ò °Å¸®¸¦ °¡Áø Á¤Á¡ ¹İÈ¯
+/* ìµœì†Œ ê±°ë¦¬ ì •ì  ì°¾ê¸°
+ * - ì•„ì§ ë°©ë¬¸í•˜ì§€ ì•Šì€ ì •ì  ì¤‘ ìµœì†Œ ê±°ë¦¬ë¥¼ ê°€ì§„ ì •ì  ë°˜í™˜
  */
 int find_min_distance(const int dist[], const bool visited[], int vertices) {
     int min = INF;
@@ -74,8 +74,8 @@ int find_min_distance(const int dist[], const bool visited[], int vertices) {
     return min_index;
 }
 
-/* °æ·Î Ãâ·Â
- * - ½ÃÀÛÁ¡¿¡¼­ ¸ñÀûÁö±îÁöÀÇ °æ·Î¸¦ Àç±ÍÀûÀ¸·Î Ãâ·Â
+/* ê²½ë¡œ ì¶œë ¥
+ * - ì‹œì‘ì ì—ì„œ ëª©ì ì§€ê¹Œì§€ì˜ ê²½ë¡œë¥¼ ì¬ê·€ì ìœ¼ë¡œ ì¶œë ¥
  */
 void print_path(const int parent[], int dest) {
     if (parent[dest] == -1) {
@@ -86,38 +86,38 @@ void print_path(const int parent[], int dest) {
     printf(" -> %d", dest);
 }
 
-/* Dijkstra ¾Ë°í¸®Áò
- * - ½Ã°£º¹Àâµµ: O(V©÷)
- * - °ø°£º¹Àâµµ: O(V)
+/* Dijkstra ì•Œê³ ë¦¬ì¦˜
+ * - ì‹œê°„ë³µì¡ë„: O(VÂ²)
+ * - ê³µê°„ë³µì¡ë„: O(V)
  */
 void dijkstra(Graph* graph, int start) {
     int vertices = graph->num_vertices;
-    int* dist = (int*)malloc(vertices * sizeof(int));     // ÃÖ´Ü °Å¸®
-    bool* visited = (bool*)malloc(vertices * sizeof(bool)); // ¹æ¹® ¿©ºÎ
-    int* parent = (int*)malloc(vertices * sizeof(int));    // °æ·Î ÃßÀû¿ë
+    int* dist = (int*)malloc(vertices * sizeof(int));     // ìµœë‹¨ ê±°ë¦¬
+    bool* visited = (bool*)malloc(vertices * sizeof(bool)); // ë°©ë¬¸ ì—¬ë¶€
+    int* parent = (int*)malloc(vertices * sizeof(int));    // ê²½ë¡œ ì¶”ì ìš©
 
-    // ÃÊ±âÈ­
+    // ì´ˆê¸°í™”
     for (int i = 0; i < vertices; i++) {
         dist[i] = INF;
         visited[i] = false;
         parent[i] = -1;
     }
 
-    // ½ÃÀÛ Á¤Á¡ ¼³Á¤
+    // ì‹œì‘ ì •ì  ì„¤ì •
     dist[start] = 0;
 
-    // ¸ğµç Á¤Á¡¿¡ ´ëÇØ
+    // ëª¨ë“  ì •ì ì— ëŒ€í•´
     for (int count = 0; count < vertices - 1; count++) {
-        // ÃÖ¼Ò °Å¸® Á¤Á¡ Ã£±â
+        // ìµœì†Œ ê±°ë¦¬ ì •ì  ì°¾ê¸°
         int u = find_min_distance(dist, visited, vertices);
-        if (u == -1) break;  // ¿¬°áµÇÁö ¾ÊÀº Á¤Á¡ÀÌ ÀÖ´Â °æ¿ì
+        if (u == -1) break;  // ì—°ê²°ë˜ì§€ ì•Šì€ ì •ì ì´ ìˆëŠ” ê²½ìš°
 
         visited[u] = true;
 
-        // ¼±ÅÃµÈ Á¤Á¡ÀÇ ÀÎÁ¢ Á¤Á¡µéÀÇ °Å¸® °»½Å
+        // ì„ íƒëœ ì •ì ì˜ ì¸ì ‘ ì •ì ë“¤ì˜ ê±°ë¦¬ ê°±ì‹ 
         for (int v = 0; v < vertices; v++) {
-            // ¹æ¹®ÇÏÁö ¾ÊÀº Á¤Á¡ÀÌ°í, °£¼±ÀÌ Á¸ÀçÇÏ°í
-            // ÇöÀç±îÁöÀÇ °æ·Îº¸´Ù »õ·Î¿î °æ·Î°¡ ´õ ÂªÀº °æ¿ì
+            // ë°©ë¬¸í•˜ì§€ ì•Šì€ ì •ì ì´ê³ , ê°„ì„ ì´ ì¡´ì¬í•˜ê³ 
+            // í˜„ì¬ê¹Œì§€ì˜ ê²½ë¡œë³´ë‹¤ ìƒˆë¡œìš´ ê²½ë¡œê°€ ë” ì§§ì€ ê²½ìš°
             if (!visited[v] &&
                 graph->graph[u][v] != INF &&
                 dist[u] != INF &&
@@ -127,7 +127,7 @@ void dijkstra(Graph* graph, int start) {
             }
         }
 
-        // ÇöÀç »óÅÂ Ãâ·Â
+        // í˜„ì¬ ìƒíƒœ ì¶œë ¥
         printf("\nIteration %d:\n", count + 1);
         printf("Selected vertex: %d\n", u);
         printf("Current distances: ");
@@ -140,7 +140,7 @@ void dijkstra(Graph* graph, int start) {
         printf("\n");
     }
 
-    // °á°ú Ãâ·Â
+    // ê²°ê³¼ ì¶œë ¥
     printf("\nFinal Shortest Paths from vertex %d:\n", start);
     for (int i = 0; i < vertices; i++) {
         if (i != start && dist[i] != INF) {
@@ -155,7 +155,7 @@ void dijkstra(Graph* graph, int start) {
     free(parent);
 }
 
-/* ±×·¡ÇÁ Ãâ·Â */
+/* ê·¸ë˜í”„ ì¶œë ¥ */
 void graph_print(const Graph* graph) {
     printf("\nGraph Adjacency Matrix:\n");
     printf("    ");
@@ -168,7 +168,7 @@ void graph_print(const Graph* graph) {
         printf("%2d: ", i);
         for (int j = 0; j < graph->num_vertices; j++) {
             if (graph->graph[i][j] == INF) {
-                printf("  ¡Ä ");
+                printf("  âˆ ");
             }
             else {
                 printf("%4d", graph->graph[i][j]);
@@ -178,12 +178,12 @@ void graph_print(const Graph* graph) {
     }
 }
 
-/* ±×·¡ÇÁ ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê·¸ë˜í”„ ë©”ëª¨ë¦¬ í•´ì œ */
 void graph_destroy(Graph* graph) {
     free(graph);
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Dijkstra's Algorithm Menu ===\n");
     printf("1. Add edge\n");
@@ -193,7 +193,7 @@ void print_menu(void) {
     printf("Choice: ");
 }
 
-/* ¸ŞÀÎ ÇÔ¼ö */
+/* ë©”ì¸ í•¨ìˆ˜ */
 int main(void) {
     int vertices;
     printf("Enter number of vertices: ");
@@ -262,56 +262,56 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ÃÖ´Ü °æ·ÎÀÇ Æ¯¼º
+1. ìµœë‹¨ ê²½ë¡œì˜ íŠ¹ì„±
 ----------------
-- ÃÖÀû ºÎºĞ ±¸Á¶
-- »ï°¢ ºÎµî½Ä ¼ºÁú
-- À½¼ö »çÀÌÅ¬ ¾ø¾î¾ß ÇÔ
-- À¯ÀÏ¼ºÀº º¸ÀåµÇÁö ¾ÊÀ½
+- ìµœì  ë¶€ë¶„ êµ¬ì¡°
+- ì‚¼ê° ë¶€ë“±ì‹ ì„±ì§ˆ
+- ìŒìˆ˜ ì‚¬ì´í´ ì—†ì–´ì•¼ í•¨
+- ìœ ì¼ì„±ì€ ë³´ì¥ë˜ì§€ ì•ŠìŒ
 
-2. Dijkstra ¾Ë°í¸®Áò ¿ø¸®
+2. Dijkstra ì•Œê³ ë¦¬ì¦˜ ì›ë¦¬
 ---------------------
-- ±×¸®µğ ¼±ÅÃ ¼Ó¼º
-- Á¡ÁøÀû °æ·Î È®Àå
-- ÃÖ´Ü °Å¸® È®Á¤
-- °æ·Î °»½Å
+- ê·¸ë¦¬ë”” ì„ íƒ ì†ì„±
+- ì ì§„ì  ê²½ë¡œ í™•ì¥
+- ìµœë‹¨ ê±°ë¦¬ í™•ì •
+- ê²½ë¡œ ê°±ì‹ 
 
-3. ½Ã°£ º¹Àâµµ ºĞ¼®
+3. ì‹œê°„ ë³µì¡ë„ ë¶„ì„
 ---------------
-±âº» ±¸Çö: O(V©÷)
-- Á¤Á¡ ¼±ÅÃ: O(V)
-- °Å¸® °»½Å: O(V)
+ê¸°ë³¸ êµ¬í˜„: O(VÂ²)
+- ì •ì  ì„ íƒ: O(V)
+- ê±°ë¦¬ ê°±ì‹ : O(V)
 
-°³¼±µÈ ±¸Çö: O(E log V)
-- ¿ì¼±¼øÀ§ Å¥ »ç¿ë
-- Èñ¼Ò ±×·¡ÇÁ¿¡ È¿°úÀû
+ê°œì„ ëœ êµ¬í˜„: O(E log V)
+- ìš°ì„ ìˆœìœ„ í ì‚¬ìš©
+- í¬ì†Œ ê·¸ë˜í”„ì— íš¨ê³¼ì 
 
-4. È°¿ë ºĞ¾ß
+4. í™œìš© ë¶„ì•¼
 ----------
-- ³×Æ®¿öÅ© ¶ó¿ìÆÃ
-- ³×ºñ°ÔÀÌ¼Ç
-- ¼Ò¼È ³×Æ®¿öÅ©
-- °ÔÀÓ AI °æ·ÎÃ£±â
+- ë„¤íŠ¸ì›Œí¬ ë¼ìš°íŒ…
+- ë„¤ë¹„ê²Œì´ì…˜
+- ì†Œì…œ ë„¤íŠ¸ì›Œí¬
+- ê²Œì„ AI ê²½ë¡œì°¾ê¸°
 
-5. ¾Ë°í¸®ÁòÀÇ Á¦¾à»çÇ×
+5. ì•Œê³ ë¦¬ì¦˜ì˜ ì œì•½ì‚¬í•­
 ------------------
-- À½¼ö °¡ÁßÄ¡ ºÒ°¡
-- ¹ĞÁı ±×·¡ÇÁ¿¡¼­ ºñÈ¿À²
-- ¸Ş¸ğ¸® »ç¿ë·® Òı
-- º´·ÄÈ­ ¾î·Á¿ò
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ ë¶ˆê°€
+- ë°€ì§‘ ê·¸ë˜í”„ì—ì„œ ë¹„íš¨ìœ¨
+- ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ å¤š
+- ë³‘ë ¬í™” ì–´ë ¤ì›€
 
-6. ÃÖÀûÈ­ ±â¹ı
+6. ìµœì í™” ê¸°ë²•
 -----------
-- ¿ì¼±¼øÀ§ Å¥ »ç¿ë
-- ¾ç¹æÇâ °Ë»ö
-- ¸ñÀûÁö ±â¹İ °¡ÁöÄ¡±â
-- ÈŞ¸®½ºÆ½ È°¿ë °¡´É
+- ìš°ì„ ìˆœìœ„ í ì‚¬ìš©
+- ì–‘ë°©í–¥ ê²€ìƒ‰
+- ëª©ì ì§€ ê¸°ë°˜ ê°€ì§€ì¹˜ê¸°
+- íœ´ë¦¬ìŠ¤í‹± í™œìš© ê°€ëŠ¥
 
-ÀÌ ±¸ÇöÀº Dijkstra ¾Ë°í¸®ÁòÀÇ
-±âº» ¹öÀüÀ» º¸¿©ÁÖ¸ç, ½ÇÁ¦
-°æ·Î¿Í ÁøÇà °úÁ¤À» ½Ã°¢ÀûÀ¸·Î
-È®ÀÎÇÒ ¼ö ÀÖµµ·Ï Çß½À´Ï´Ù.
+ì´ êµ¬í˜„ì€ Dijkstra ì•Œê³ ë¦¬ì¦˜ì˜
+ê¸°ë³¸ ë²„ì „ì„ ë³´ì—¬ì£¼ë©°, ì‹¤ì œ
+ê²½ë¡œì™€ ì§„í–‰ ê³¼ì •ì„ ì‹œê°ì ìœ¼ë¡œ
+í™•ì¸í•  ìˆ˜ ìˆë„ë¡ í–ˆìŠµë‹ˆë‹¤.
 */

@@ -5,11 +5,11 @@
 #include <stdbool.h>
 
 /*
-bsearch() ÇÔ¼ö:
-- C Ç¥ÁØ ¶óÀÌºê·¯¸®ÀÇ ÀÌÁø Å½»ö ±¸Çö
-- Á¤·ÄµÈ ¹è¿­¿¡¼­ Å° °ªÀ» °Ë»ö
-- ´Ù¾çÇÑ µ¥ÀÌÅÍ Å¸ÀÔ Áö¿ø
-- void Æ÷ÀÎÅÍ¿Í ºñ±³ ÇÔ¼ö »ç¿ë
+bsearch() í•¨ìˆ˜:
+- C í‘œì¤€ ë¼ì´ë¸ŒëŸ¬ë¦¬ì˜ ì´ì§„ íƒìƒ‰ êµ¬í˜„
+- ì •ë ¬ëœ ë°°ì—´ì—ì„œ í‚¤ ê°’ì„ ê²€ìƒ‰
+- ë‹¤ì–‘í•œ ë°ì´í„° íƒ€ìž… ì§€ì›
+- void í¬ì¸í„°ì™€ ë¹„êµ í•¨ìˆ˜ ì‚¬ìš©
 */
 
 typedef struct {
@@ -23,15 +23,15 @@ typedef struct {
     int y;
 } Point;
 
-/* Á¤¼ö ºñ±³ ÇÔ¼ö
- * - bsearch()¿¡¼­ »ç¿ëÇÒ ±âº» Å¸ÀÔ ºñ±³
+/* ì •ìˆ˜ ë¹„êµ í•¨ìˆ˜
+ * - bsearch()ì—ì„œ ì‚¬ìš©í•  ê¸°ë³¸ íƒ€ìž… ë¹„êµ
  */
 int compare_int(const void* a, const void* b) {
     return (*(const int*)a - *(const int*)b);
 }
 
-/* ½Ç¼ö ºñ±³ ÇÔ¼ö
- * - ºÎµ¿¼Ò¼öÁ¡ ºñ±³¸¦ À§ÇÑ ¾ÈÀüÇÑ ±¸Çö
+/* ì‹¤ìˆ˜ ë¹„êµ í•¨ìˆ˜
+ * - ë¶€ë™ì†Œìˆ˜ì  ë¹„êµë¥¼ ìœ„í•œ ì•ˆì „í•œ êµ¬í˜„
  */
 int compare_float(const void* a, const void* b) {
     float fa = *(const float*)a;
@@ -41,15 +41,15 @@ int compare_float(const void* a, const void* b) {
     return 0;
 }
 
-/* ¹®ÀÚ¿­ ºñ±³ ÇÔ¼ö
- * - ¹®ÀÚ¿­ Æ÷ÀÎÅÍ ¹è¿­À» À§ÇÑ ºñ±³
+/* ë¬¸ìžì—´ ë¹„êµ í•¨ìˆ˜
+ * - ë¬¸ìžì—´ í¬ì¸í„° ë°°ì—´ì„ ìœ„í•œ ë¹„êµ
  */
 int compare_string(const void* a, const void* b) {
     return strcmp(*(const char**)a, *(const char**)b);
 }
 
-/* ÇÐ»ý ID ºñ±³ ÇÔ¼ö
- * - ±¸Á¶Ã¼ÀÇ Æ¯Á¤ ÇÊµå(ID) ±âÁØ ºñ±³
+/* í•™ìƒ ID ë¹„êµ í•¨ìˆ˜
+ * - êµ¬ì¡°ì²´ì˜ íŠ¹ì • í•„ë“œ(ID) ê¸°ì¤€ ë¹„êµ
  */
 int compare_student_by_id(const void* a, const void* b) {
     const Student* sa = (const Student*)a;
@@ -57,8 +57,8 @@ int compare_student_by_id(const void* a, const void* b) {
     return (sa->id - sb->id);
 }
 
-/* ÇÐ»ý ÀÌ¸§ ºñ±³ ÇÔ¼ö
- * - ±¸Á¶Ã¼ÀÇ ¹®ÀÚ¿­ ÇÊµå ºñ±³
+/* í•™ìƒ ì´ë¦„ ë¹„êµ í•¨ìˆ˜
+ * - êµ¬ì¡°ì²´ì˜ ë¬¸ìžì—´ í•„ë“œ ë¹„êµ
  */
 int compare_student_by_name(const void* a, const void* b) {
     const Student* sa = (const Student*)a;
@@ -66,8 +66,8 @@ int compare_student_by_name(const void* a, const void* b) {
     return strcmp(sa->name, sb->name);
 }
 
-/* Á¡ °Å¸® ºñ±³ ÇÔ¼ö (¿øÁ¡À¸·ÎºÎÅÍ)
- * - º¹ÇÕ °è»êÀ» ÅëÇÑ ºñ±³
+/* ì  ê±°ë¦¬ ë¹„êµ í•¨ìˆ˜ (ì›ì ìœ¼ë¡œë¶€í„°)
+ * - ë³µí•© ê³„ì‚°ì„ í†µí•œ ë¹„êµ
  */
 int compare_point_distance(const void* a, const void* b) {
     const Point* pa = (const Point*)a;
@@ -77,7 +77,7 @@ int compare_point_distance(const void* a, const void* b) {
     return dist_a - dist_b;
 }
 
-/* ¹è¿­ Á¤·Ä »óÅÂ Ãâ·Â ÇÔ¼öµé */
+/* ë°°ì—´ ì •ë ¬ ìƒíƒœ ì¶œë ¥ í•¨ìˆ˜ë“¤ */
 void print_int_array(const int arr[], size_t size) {
     for (size_t i = 0; i < size; i++) {
         printf("%d ", arr[i]);
@@ -116,8 +116,8 @@ void print_point_array(const Point arr[], size_t size) {
     printf("\n");
 }
 
-/* ½Ã°£ ÃøÁ¤À» À§ÇÑ ÇÔ¼ö
- * - Å¸ÀÔ¿¡ µû¸¥ bsearch ¼öÇà ½Ã°£ ÃøÁ¤
+/* ì‹œê°„ ì¸¡ì •ì„ ìœ„í•œ í•¨ìˆ˜
+ * - íƒ€ìž…ì— ë”°ë¥¸ bsearch ìˆ˜í–‰ ì‹œê°„ ì¸¡ì •
  */
 void measure_search_time(const void* key, const void* array, size_t size,
     size_t elem_size, int (*compare)(const void*, const void*),
@@ -137,7 +137,7 @@ void measure_search_time(const void* key, const void* array, size_t size,
     }
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Bsearch Examples Menu ===\n");
     printf("1. Search in integer array\n");
@@ -151,19 +151,19 @@ void print_menu(void) {
 }
 
 int main(void) {
-    // Á¤¼ö ¹è¿­
+    // ì •ìˆ˜ ë°°ì—´
     int int_arr[] = { 1, 3, 5, 7, 9, 11, 13, 15, 17, 19 };
     size_t int_size = sizeof(int_arr) / sizeof(int_arr[0]);
 
-    // ½Ç¼ö ¹è¿­
+    // ì‹¤ìˆ˜ ë°°ì—´
     float float_arr[] = { 1.1, 2.2, 3.3, 4.4, 5.5, 6.6, 7.7, 8.8, 9.9 };
     size_t float_size = sizeof(float_arr) / sizeof(float_arr[0]);
 
-    // ¹®ÀÚ¿­ ¹è¿­
+    // ë¬¸ìžì—´ ë°°ì—´
     char* string_arr[] = { "apple", "banana", "grape", "orange", "pear" };
     size_t string_size = sizeof(string_arr) / sizeof(string_arr[0]);
 
-    // ÇÐ»ý ¹è¿­
+    // í•™ìƒ ë°°ì—´
     Student student_arr[] = {
         {101, "Alice", 92.3},
         {102, "Bob", 78.9},
@@ -173,13 +173,13 @@ int main(void) {
     };
     size_t student_size = sizeof(student_arr) / sizeof(student_arr[0]);
 
-    // Á¡ ¹è¿­
+    // ì  ë°°ì—´
     Point point_arr[] = {
         {1, 1}, {2, 2}, {3, 3}, {4, 4}, {5, 5}
     };
     size_t point_size = sizeof(point_arr) / sizeof(point_arr[0]);
 
-    // ¸ðµç ¹è¿­À» ¹Ì¸® Á¤·Ä
+    // ëª¨ë“  ë°°ì—´ì„ ë¯¸ë¦¬ ì •ë ¬
     qsort(int_arr, int_size, sizeof(int), compare_int);
     qsort(float_arr, float_size, sizeof(float), compare_float);
     qsort(string_arr, string_size, sizeof(char*), compare_string);
@@ -291,10 +291,10 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. bsearch ÇÔ¼öÀÇ ¿øÇü
+1. bsearch í•¨ìˆ˜ì˜ ì›í˜•
 ------------------
 void* bsearch(const void* key,
               const void* base,
@@ -302,54 +302,54 @@ void* bsearch(const void* key,
               size_t size,
               int (*compar)(const void*, const void*));
 
-- key: Ã£À» °ªÀÇ Æ÷ÀÎÅÍ
-- base: °Ë»öÇÒ ¹è¿­ÀÇ Æ÷ÀÎÅÍ
-- nmemb: ¹è¿­ÀÇ ¿ä¼Ò °³¼ö
-- size: °¢ ¿ä¼ÒÀÇ Å©±â
-- compar: ºñ±³ ÇÔ¼ö Æ÷ÀÎÅÍ
+- key: ì°¾ì„ ê°’ì˜ í¬ì¸í„°
+- base: ê²€ìƒ‰í•  ë°°ì—´ì˜ í¬ì¸í„°
+- nmemb: ë°°ì—´ì˜ ìš”ì†Œ ê°œìˆ˜
+- size: ê° ìš”ì†Œì˜ í¬ê¸°
+- compar: ë¹„êµ í•¨ìˆ˜ í¬ì¸í„°
 
-2. ºñ±³ ÇÔ¼ö ¿ä±¸»çÇ×
+2. ë¹„êµ í•¨ìˆ˜ ìš”êµ¬ì‚¬í•­
 -----------------
-¹ÝÈ¯°ª:
-< 0: Ã¹ ¹øÂ° ¿ä¼Ò°¡ ÀÛÀ½
-= 0: µÎ ¿ä¼Ò°¡ °°À½
-> 0: Ã¹ ¹øÂ° ¿ä¼Ò°¡ Å­
+ë°˜í™˜ê°’:
+< 0: ì²« ë²ˆì§¸ ìš”ì†Œê°€ ìž‘ìŒ
+= 0: ë‘ ìš”ì†Œê°€ ê°™ìŒ
+> 0: ì²« ë²ˆì§¸ ìš”ì†Œê°€ í¼
 
-ÁÖÀÇ»çÇ×:
-- ÀÏ°üµÈ °á°ú ¹ÝÈ¯
-- ´ëÄª¼º À¯Áö
-- ÀüÀÌ¼º À¯Áö
+ì£¼ì˜ì‚¬í•­:
+- ì¼ê´€ëœ ê²°ê³¼ ë°˜í™˜
+- ëŒ€ì¹­ì„± ìœ ì§€
+- ì „ì´ì„± ìœ ì§€
 
-3. ÁÖ¿ä Æ¯Â¡
+3. ì£¼ìš” íŠ¹ì§•
 ----------
-ÀåÁ¡:
-- Ç¥ÁØ ¶óÀÌºê·¯¸® Á¦°ø
-- Å¸ÀÔ µ¶¸³Àû
-- ÃÖÀûÈ­µÈ ±¸Çö
-- ¹ü¿ë¼º
+ìž¥ì :
+- í‘œì¤€ ë¼ì´ë¸ŒëŸ¬ë¦¬ ì œê³µ
+- íƒ€ìž… ë…ë¦½ì 
+- ìµœì í™”ëœ êµ¬í˜„
+- ë²”ìš©ì„±
 
-´ÜÁ¡:
-- void* Ä³½ºÆÃ ÇÊ¿ä
-- ºñ±³ ÇÔ¼ö ¿À¹öÇìµå
-- Á¤·ÄµÈ ¹è¿­ ÇÊ¿ä
-- ºÒ¾ÈÁ¤ °Ë»ö
+ë‹¨ì :
+- void* ìºìŠ¤íŒ… í•„ìš”
+- ë¹„êµ í•¨ìˆ˜ ì˜¤ë²„í—¤ë“œ
+- ì •ë ¬ëœ ë°°ì—´ í•„ìš”
+- ë¶ˆì•ˆì • ê²€ìƒ‰
 
-4. ±¸Çö Æ¯Â¡
+4. êµ¬í˜„ íŠ¹ì§•
 ----------
-- ´Ù¾çÇÑ µ¥ÀÌÅÍ Å¸ÀÔ
-- ±¸Á¶Ã¼ °Ë»ö
-- º¹ÇÕ Á¶°Ç °Ë»ö
-- ¼º´É ÃøÁ¤
+- ë‹¤ì–‘í•œ ë°ì´í„° íƒ€ìž…
+- êµ¬ì¡°ì²´ ê²€ìƒ‰
+- ë³µí•© ì¡°ê±´ ê²€ìƒ‰
+- ì„±ëŠ¥ ì¸¡ì •
 
-5. È°¿ë ºÐ¾ß
+5. í™œìš© ë¶„ì•¼
 ----------
-- Á¤·ÄµÈ µ¥ÀÌÅÍ °Ë»ö
-- µ¥ÀÌÅÍº£ÀÌ½º ÀÎµ¦½Ì
-- ±¸Á¶Ã¼ ¹è¿­ °Ë»ö
-- Ç¥ÁØ ¶óÀÌºê·¯¸® È°¿ë
+- ì •ë ¬ëœ ë°ì´í„° ê²€ìƒ‰
+- ë°ì´í„°ë² ì´ìŠ¤ ì¸ë±ì‹±
+- êµ¬ì¡°ì²´ ë°°ì—´ ê²€ìƒ‰
+- í‘œì¤€ ë¼ì´ë¸ŒëŸ¬ë¦¬ í™œìš©
 
-ÀÌ ±¸ÇöÀº bsearch ÇÔ¼öÀÇ ´Ù¾çÇÑ
-È°¿ë ¿¹Á¦¸¦ Á¦°øÇÏ¸ç, ½ÇÁ¦
-ÇÁ·Î±×·¡¹Ö¿¡¼­ ÀÚÁÖ »ç¿ëµÇ´Â
-°Ë»ö ½Ã³ª¸®¿À¸¦ ´Ù·ì´Ï´Ù.
+ì´ êµ¬í˜„ì€ bsearch í•¨ìˆ˜ì˜ ë‹¤ì–‘í•œ
+í™œìš© ì˜ˆì œë¥¼ ì œê³µí•˜ë©°, ì‹¤ì œ
+í”„ë¡œê·¸ëž˜ë°ì—ì„œ ìžì£¼ ì‚¬ìš©ë˜ëŠ”
+ê²€ìƒ‰ ì‹œë‚˜ë¦¬ì˜¤ë¥¼ ë‹¤ë£¹ë‹ˆë‹¤.
 */

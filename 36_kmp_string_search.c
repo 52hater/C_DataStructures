@@ -4,25 +4,25 @@
 #include <stdbool.h>
 
 /*
-KMP(Knuth-Morris-Pratt) ¾Ë°í¸®Áò:
-- Á¢µÎ»ç¿Í Á¢¹Ì»çÀÇ Á¤º¸¸¦ È°¿ë
-- ½ÇÆĞ ÇÔ¼ö(ºÎºĞÀÏÄ¡ Å×ÀÌºí)¸¦ ¹Ì¸® °è»ê
-- ºÒÀÏÄ¡ ¹ß»ı ½Ã ÆĞÅÏÀ» È¿À²ÀûÀ¸·Î ÀÌµ¿
-- Áßº¹ ºñ±³¸¦ ÇÇÇÏ¿© ¼º´É Çâ»ó
+KMP(Knuth-Morris-Pratt) ì•Œê³ ë¦¬ì¦˜:
+- ì ‘ë‘ì‚¬ì™€ ì ‘ë¯¸ì‚¬ì˜ ì •ë³´ë¥¼ í™œìš©
+- ì‹¤íŒ¨ í•¨ìˆ˜(ë¶€ë¶„ì¼ì¹˜ í…Œì´ë¸”)ë¥¼ ë¯¸ë¦¬ ê³„ì‚°
+- ë¶ˆì¼ì¹˜ ë°œìƒ ì‹œ íŒ¨í„´ì„ íš¨ìœ¨ì ìœ¼ë¡œ ì´ë™
+- ì¤‘ë³µ ë¹„êµë¥¼ í”¼í•˜ì—¬ ì„±ëŠ¥ í–¥ìƒ
 
-ºÎºĞÀÏÄ¡ Å×ÀÌºí(failure function):
-- °¢ À§Ä¡¿¡¼­ ÀÏÄ¡ÇÏ´Â Á¢µÎ»ç=Á¢¹Ì»ç ±æÀÌ
-- ºÒÀÏÄ¡ ¹ß»ı ½Ã ¾îµğ·Î µ¹¾Æ°¥Áö °áÁ¤
-- ¿¹: "ABCDABD"ÀÇ Å×ÀÌºí: [0,0,0,0,1,2,0]
+ë¶€ë¶„ì¼ì¹˜ í…Œì´ë¸”(failure function):
+- ê° ìœ„ì¹˜ì—ì„œ ì¼ì¹˜í•˜ëŠ” ì ‘ë‘ì‚¬=ì ‘ë¯¸ì‚¬ ê¸¸ì´
+- ë¶ˆì¼ì¹˜ ë°œìƒ ì‹œ ì–´ë””ë¡œ ëŒì•„ê°ˆì§€ ê²°ì •
+- ì˜ˆ: "ABCDABD"ì˜ í…Œì´ë¸”: [0,0,0,0,1,2,0]
 */
 
 typedef struct {
-    int* positions;    // ¹ß°ßµÈ À§Ä¡µéÀÇ ¹è¿­
-    int count;         // ¹ß°ßµÈ ÃÑ È½¼ö
-    int capacity;      // positions ¹è¿­ÀÇ Å©±â
+    int* positions;    // ë°œê²¬ëœ ìœ„ì¹˜ë“¤ì˜ ë°°ì—´
+    int count;         // ë°œê²¬ëœ ì´ íšŸìˆ˜
+    int capacity;      // positions ë°°ì—´ì˜ í¬ê¸°
 } SearchResult;
 
-/* °Ë»ö °á°ú ÃÊ±âÈ­ */
+/* ê²€ìƒ‰ ê²°ê³¼ ì´ˆê¸°í™” */
 SearchResult* create_result(int initial_capacity) {
     SearchResult* result = (SearchResult*)malloc(sizeof(SearchResult));
     if (!result) return NULL;
@@ -38,7 +38,7 @@ SearchResult* create_result(int initial_capacity) {
     return result;
 }
 
-/* °Ë»ö °á°ú¿¡ »õ·Î¿î À§Ä¡ Ãß°¡ */
+/* ê²€ìƒ‰ ê²°ê³¼ì— ìƒˆë¡œìš´ ìœ„ì¹˜ ì¶”ê°€ */
 void add_position(SearchResult* result, int position) {
     if (result->count >= result->capacity) {
         int new_capacity = result->capacity * 2;
@@ -52,7 +52,7 @@ void add_position(SearchResult* result, int position) {
     result->positions[result->count++] = position;
 }
 
-/* °Ë»ö °á°ú ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê²€ìƒ‰ ê²°ê³¼ ë©”ëª¨ë¦¬ í•´ì œ */
 void destroy_result(SearchResult* result) {
     if (result) {
         free(result->positions);
@@ -60,15 +60,15 @@ void destroy_result(SearchResult* result) {
     }
 }
 
-/* ºÎºĞÀÏÄ¡ Å×ÀÌºí °è»ê
- * - ½Ã°£º¹Àâµµ: O(m), m: ÆĞÅÏÀÇ ±æÀÌ
+/* ë¶€ë¶„ì¼ì¹˜ í…Œì´ë¸” ê³„ì‚°
+ * - ì‹œê°„ë³µì¡ë„: O(m), m: íŒ¨í„´ì˜ ê¸¸ì´
  */
 void compute_failure_function(const char* pattern, int* failure, bool print_steps) {
     int m = strlen(pattern);
-    failure[0] = 0;  // Ã¹ ¹øÂ° ¹®ÀÚ´Â Ç×»ó 0
+    failure[0] = 0;  // ì²« ë²ˆì§¸ ë¬¸ìëŠ” í•­ìƒ 0
 
-    // j: ÇöÀç±îÁö ÀÏÄ¡ÇÑ ±æÀÌ
-    // i: ´ÙÀ½ ºñ±³ÇÒ À§Ä¡
+    // j: í˜„ì¬ê¹Œì§€ ì¼ì¹˜í•œ ê¸¸ì´
+    // i: ë‹¤ìŒ ë¹„êµí•  ìœ„ì¹˜
     int j = 0;
     int i = 1;
 
@@ -125,8 +125,8 @@ void compute_failure_function(const char* pattern, int* failure, bool print_step
     }
 }
 
-/* KMP ¹®ÀÚ¿­ °Ë»ö
- * - ½Ã°£º¹Àâµµ: O(n + m), n: ÅØ½ºÆ® ±æÀÌ, m: ÆĞÅÏ ±æÀÌ
+/* KMP ë¬¸ìì—´ ê²€ìƒ‰
+ * - ì‹œê°„ë³µì¡ë„: O(n + m), n: í…ìŠ¤íŠ¸ ê¸¸ì´, m: íŒ¨í„´ ê¸¸ì´
  */
 SearchResult* kmp_search(const char* text, const char* pattern, bool print_steps) {
     SearchResult* result = create_result(10);
@@ -134,9 +134,9 @@ SearchResult* kmp_search(const char* text, const char* pattern, bool print_steps
 
     int n = strlen(text);
     int m = strlen(pattern);
-    int comparisons = 0;  // ºñ±³ È½¼ö Ä«¿îÆ®
+    int comparisons = 0;  // ë¹„êµ íšŸìˆ˜ ì¹´ìš´íŠ¸
 
-    // ºÎºĞÀÏÄ¡ Å×ÀÌºí °è»ê
+    // ë¶€ë¶„ì¼ì¹˜ í…Œì´ë¸” ê³„ì‚°
     int* failure = (int*)malloc(m * sizeof(int));
     if (!failure) {
         destroy_result(result);
@@ -149,8 +149,8 @@ SearchResult* kmp_search(const char* text, const char* pattern, bool print_steps
         printf("\nStarting KMP search:\n");
     }
 
-    int i = 0;  // ÅØ½ºÆ® ÀÎµ¦½º
-    int j = 0;  // ÆĞÅÏ ÀÎµ¦½º
+    int i = 0;  // í…ìŠ¤íŠ¸ ì¸ë±ìŠ¤
+    int j = 0;  // íŒ¨í„´ ì¸ë±ìŠ¤
 
     while (i < n) {
         comparisons++;
@@ -167,7 +167,7 @@ SearchResult* kmp_search(const char* text, const char* pattern, bool print_steps
                 printf("Match!\n");
             }
 
-            if (j == m - 1) {  // ÆĞÅÏÀ» Ã£À½
+            if (j == m - 1) {  // íŒ¨í„´ì„ ì°¾ìŒ
                 add_position(result, i - m + 1);
                 if (print_steps) {
                     printf("Pattern found at position %d\n", i - m + 1);
@@ -202,7 +202,7 @@ SearchResult* kmp_search(const char* text, const char* pattern, bool print_steps
     return result;
 }
 
-/* °Ë»ö °á°ú Ãâ·Â */
+/* ê²€ìƒ‰ ê²°ê³¼ ì¶œë ¥ */
 void print_search_result(const SearchResult* result, const char* text, const char* pattern) {
     if (result->count == 0) {
         printf("Pattern not found in text.\n");
@@ -214,7 +214,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
         int pos = result->positions[i];
         printf("Position %d: ", pos);
 
-        // ¸ÅÄªµÈ ºÎºĞ ÀüÃ¼ ¹®ÀÚ¿­ Ãâ·Â
+        // ë§¤ì¹­ëœ ë¶€ë¶„ ì „ì²´ ë¬¸ìì—´ ì¶œë ¥
         printf("....");
         for (int j = pos - 4 >= 0 ? pos - 4 : 0; j < pos; j++) {
             printf("%c", text[j]);
@@ -225,7 +225,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
         }
         printf("....\n");
 
-        // À§Ä¡ Ç¥½Ã
+        // ìœ„ì¹˜ í‘œì‹œ
         printf("         ");
         for (int j = pos - 4 >= 0 ? pos - 4 : 0; j < pos; j++) {
             printf(" ");
@@ -238,7 +238,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
     }
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== KMP String Search Menu ===\n");
     printf("1. Enter new text\n");
@@ -263,7 +263,7 @@ int main(void) {
     do {
         print_menu();
         scanf("%d", &choice);
-        getchar();  // ¹öÆÛ ºñ¿ì±â
+        getchar();  // ë²„í¼ ë¹„ìš°ê¸°
 
         switch (choice) {
         case 1:  // Enter text
@@ -313,72 +313,72 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. KMP ¾Ë°í¸®ÁòÀÇ ÇÙ½É ¾ÆÀÌµğ¾î
+1. KMP ì•Œê³ ë¦¬ì¦˜ì˜ í•µì‹¬ ì•„ì´ë””ì–´
 --------------------------
-- ÀÌ¹Ì ºñ±³ÇÑ Á¤º¸ ÀçÈ°¿ë
-- Á¢µÎ»ç-Á¢¹Ì»ç °ü°è È°¿ë
-- ½ÇÆĞ ÇÔ¼ö·Î Áßº¹ ºñ±³ Á¦°Å
-- È¿À²ÀûÀÎ ÆĞÅÏ ÀÌµ¿
+- ì´ë¯¸ ë¹„êµí•œ ì •ë³´ ì¬í™œìš©
+- ì ‘ë‘ì‚¬-ì ‘ë¯¸ì‚¬ ê´€ê³„ í™œìš©
+- ì‹¤íŒ¨ í•¨ìˆ˜ë¡œ ì¤‘ë³µ ë¹„êµ ì œê±°
+- íš¨ìœ¨ì ì¸ íŒ¨í„´ ì´ë™
 
-2. ½ÇÆĞ ÇÔ¼ö(ºÎºĞÀÏÄ¡ Å×ÀÌºí)
+2. ì‹¤íŒ¨ í•¨ìˆ˜(ë¶€ë¶„ì¼ì¹˜ í…Œì´ë¸”)
 -------------------------
-¸ñÀû:
-- ºÒÀÏÄ¡ ¹ß»ı ½Ã ÀÌµ¿ÇÒ À§Ä¡ °áÁ¤
-- ÀÌÀü ºñ±³ °á°ú È°¿ë
-- Áßº¹ ºñ±³ È¸ÇÇ
+ëª©ì :
+- ë¶ˆì¼ì¹˜ ë°œìƒ ì‹œ ì´ë™í•  ìœ„ì¹˜ ê²°ì •
+- ì´ì „ ë¹„êµ ê²°ê³¼ í™œìš©
+- ì¤‘ë³µ ë¹„êµ íšŒí”¼
 
-°è»ê ¹æ¹ı:
-- Á¢µÎ»ç=Á¢¹Ì»ç ±æÀÌ °è»ê
-- Á¡ÁøÀû È®Àå
-- O(m) ½Ã°£ ¼Ò¿ä
+ê³„ì‚° ë°©ë²•:
+- ì ‘ë‘ì‚¬=ì ‘ë¯¸ì‚¬ ê¸¸ì´ ê³„ì‚°
+- ì ì§„ì  í™•ì¥
+- O(m) ì‹œê°„ ì†Œìš”
 
-3. ½Ã°£ º¹Àâµµ ºĞ¼®
+3. ì‹œê°„ ë³µì¡ë„ ë¶„ì„
 ---------------
-ÀüÃ³¸®: O(m)
-- ½ÇÆĞ ÇÔ¼ö °è»ê
-- ÆĞÅÏ ±æÀÌ¿¡ ºñ·Ê
+ì „ì²˜ë¦¬: O(m)
+- ì‹¤íŒ¨ í•¨ìˆ˜ ê³„ì‚°
+- íŒ¨í„´ ê¸¸ì´ì— ë¹„ë¡€
 
-°Ë»ö: O(n)
-- ÅØ½ºÆ® ±æÀÌ¿¡ ºñ·Ê
-- °¢ ¹®ÀÚ ÃÖ´ë 1¹ø ºñ±³
+ê²€ìƒ‰: O(n)
+- í…ìŠ¤íŠ¸ ê¸¸ì´ì— ë¹„ë¡€
+- ê° ë¬¸ì ìµœëŒ€ 1ë²ˆ ë¹„êµ
 
-ÀüÃ¼: O(n + m)
-- ¼±Çü ½Ã°£ º¹Àâµµ
-- ºê·çÆ® Æ÷½ºº¸´Ù È¿À²Àû
+ì „ì²´: O(n + m)
+- ì„ í˜• ì‹œê°„ ë³µì¡ë„
+- ë¸Œë£¨íŠ¸ í¬ìŠ¤ë³´ë‹¤ íš¨ìœ¨ì 
 
-4. °ø°£ º¹Àâµµ
+4. ê³µê°„ ë³µì¡ë„
 -----------
 O(m)
-- ½ÇÆĞ ÇÔ¼ö ÀúÀå
-- ÆĞÅÏ ±æÀÌ¿¡ ºñ·Ê
-- Ãß°¡ °ø°£ ÇÊ¿ä
+- ì‹¤íŒ¨ í•¨ìˆ˜ ì €ì¥
+- íŒ¨í„´ ê¸¸ì´ì— ë¹„ë¡€
+- ì¶”ê°€ ê³µê°„ í•„ìš”
 
-5. Àå´ÜÁ¡
+5. ì¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ¼±Çü ½Ã°£ º¹Àâµµ
-- ÃÖ¾ÇÀÇ °æ¿ìµµ º¸Àå
-- ¾ÈÁ¤ÀûÀÎ ¼º´É
-- ÅØ½ºÆ® ¼öÁ¤ ºÒÇÊ¿ä
+ì¥ì :
+- ì„ í˜• ì‹œê°„ ë³µì¡ë„
+- ìµœì•…ì˜ ê²½ìš°ë„ ë³´ì¥
+- ì•ˆì •ì ì¸ ì„±ëŠ¥
+- í…ìŠ¤íŠ¸ ìˆ˜ì • ë¶ˆí•„ìš”
 
-´ÜÁ¡:
-- ÀüÃ³¸® ÇÊ¿ä
-- Ãß°¡ ¸Ş¸ğ¸® »ç¿ë
-- ±¸Çö º¹Àâ
-- ÂªÀº ÆĞÅÏ¿¡ ¿À¹öÇìµå
+ë‹¨ì :
+- ì „ì²˜ë¦¬ í•„ìš”
+- ì¶”ê°€ ë©”ëª¨ë¦¬ ì‚¬ìš©
+- êµ¬í˜„ ë³µì¡
+- ì§§ì€ íŒ¨í„´ì— ì˜¤ë²„í—¤ë“œ
 
-6. È°¿ë ºĞ¾ß
+6. í™œìš© ë¶„ì•¼
 ----------
-- ÅØ½ºÆ® ÆíÁı±â
-- ¹ÙÀÌ³Ê¸® ÆÄÀÏ °Ë»ö
-- DNA ¼­¿­ ºĞ¼®
-- ³×Æ®¿öÅ© ÆĞÅ¶ °Ë»ç
+- í…ìŠ¤íŠ¸ í¸ì§‘ê¸°
+- ë°”ì´ë„ˆë¦¬ íŒŒì¼ ê²€ìƒ‰
+- DNA ì„œì—´ ë¶„ì„
+- ë„¤íŠ¸ì›Œí¬ íŒ¨í‚· ê²€ì‚¬
 
-ÀÌ ±¸ÇöÀº KMP ¾Ë°í¸®ÁòÀÇ ÇÙ½ÉÀÎ
-½ÇÆĞ ÇÔ¼ö °è»ê°ú °Ë»ö °úÁ¤À»
-´Ü°èº°·Î º¸¿©ÁÖ¸ç, ºê·çÆ® Æ÷½º
-´ëºñ ¼º´É Çâ»óÀ» ¼³¸íÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ KMP ì•Œê³ ë¦¬ì¦˜ì˜ í•µì‹¬ì¸
+ì‹¤íŒ¨ í•¨ìˆ˜ ê³„ì‚°ê³¼ ê²€ìƒ‰ ê³¼ì •ì„
+ë‹¨ê³„ë³„ë¡œ ë³´ì—¬ì£¼ë©°, ë¸Œë£¨íŠ¸ í¬ìŠ¤
+ëŒ€ë¹„ ì„±ëŠ¥ í–¥ìƒì„ ì„¤ëª…í•©ë‹ˆë‹¤.
 */

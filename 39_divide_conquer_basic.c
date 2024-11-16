@@ -3,63 +3,63 @@
 #include <time.h>
 
 /*
-ºÐÇÒ Á¤º¹(Divide and Conquer):
-- ¹®Á¦¸¦ ´õ ÀÛÀº ÇÏÀ§ ¹®Á¦·Î ºÐÇÒ(Divide)
-- ÇÏÀ§ ¹®Á¦µéÀ» Àç±ÍÀûÀ¸·Î ÇØ°á(Conquer)
-- ÇØ°áµÈ °á°ú¸¦ °áÇÕ(Combine)
+ë¶„í•  ì •ë³µ(Divide and Conquer):
+- ë¬¸ì œë¥¼ ë” ìž‘ì€ í•˜ìœ„ ë¬¸ì œë¡œ ë¶„í• (Divide)
+- í•˜ìœ„ ë¬¸ì œë“¤ì„ ìž¬ê·€ì ìœ¼ë¡œ í•´ê²°(Conquer)
+- í•´ê²°ëœ ê²°ê³¼ë¥¼ ê²°í•©(Combine)
 
-ÀÏ¹ÝÀûÀÎ ÇüÅÂ:
-if (¹®Á¦°¡ ÃæºÐÈ÷ ÀÛÀ½) {
-    Á÷Á¢ ÇØ°á
+ì¼ë°˜ì ì¸ í˜•íƒœ:
+if (ë¬¸ì œê°€ ì¶©ë¶„ížˆ ìž‘ìŒ) {
+    ì§ì ‘ í•´ê²°
 } else {
-    ºÐÇÒ: ¹®Á¦¸¦ ¿©·¯ ÇÏÀ§ ¹®Á¦·Î ³ª´®
-    Á¤º¹: ÇÏÀ§ ¹®Á¦µéÀ» Àç±ÍÀûÀ¸·Î ÇØ°á
-    °áÇÕ: ÇØ°áµÈ ÇÏÀ§ ¹®Á¦µéÀ» °áÇÕ
+    ë¶„í• : ë¬¸ì œë¥¼ ì—¬ëŸ¬ í•˜ìœ„ ë¬¸ì œë¡œ ë‚˜ëˆ”
+    ì •ë³µ: í•˜ìœ„ ë¬¸ì œë“¤ì„ ìž¬ê·€ì ìœ¼ë¡œ í•´ê²°
+    ê²°í•©: í•´ê²°ëœ í•˜ìœ„ ë¬¸ì œë“¤ì„ ê²°í•©
 }
 */
 
-/* ±âº»ÀûÀÎ ºÐÇÒ Á¤º¹ ¿¹Á¦µé */
+/* ê¸°ë³¸ì ì¸ ë¶„í•  ì •ë³µ ì˜ˆì œë“¤ */
 
-/* 1. ÃÖ´ë°ª Ã£±â
- * - ¹è¿­À» µÑ·Î ³ª´©¾î °¢°¢ÀÇ ÃÖ´ë°ªÀ» Ã£°í ºñ±³
- * - ½Ã°£º¹Àâµµ: O(n)
- * - ºÐÇÒ Á¤º¹ÀÇ ±âº» ÆÐÅÏÀ» º¸¿©ÁÖ´Â °£´ÜÇÑ ¿¹Á¦
+/* 1. ìµœëŒ€ê°’ ì°¾ê¸°
+ * - ë°°ì—´ì„ ë‘˜ë¡œ ë‚˜ëˆ„ì–´ ê°ê°ì˜ ìµœëŒ€ê°’ì„ ì°¾ê³  ë¹„êµ
+ * - ì‹œê°„ë³µìž¡ë„: O(n)
+ * - ë¶„í•  ì •ë³µì˜ ê¸°ë³¸ íŒ¨í„´ì„ ë³´ì—¬ì£¼ëŠ” ê°„ë‹¨í•œ ì˜ˆì œ
  */
 int find_max(int arr[], int left, int right) {
-    // ±âÀú »ç·Ê: ¿ø¼Ò°¡ ÇÏ³ªÀÎ °æ¿ì
+    // ê¸°ì € ì‚¬ë¡€: ì›ì†Œê°€ í•˜ë‚˜ì¸ ê²½ìš°
     if (left == right) {
         return arr[left];
     }
 
-    // ºÐÇÒ: ¹è¿­À» µÑ·Î ³ª´®
+    // ë¶„í• : ë°°ì—´ì„ ë‘˜ë¡œ ë‚˜ëˆ”
     int mid = (left + right) / 2;
 
-    // Á¤º¹: °¢ ºÎºÐÀÇ ÃÖ´ë°ªÀ» Àç±ÍÀûÀ¸·Î Ã£À½
+    // ì •ë³µ: ê° ë¶€ë¶„ì˜ ìµœëŒ€ê°’ì„ ìž¬ê·€ì ìœ¼ë¡œ ì°¾ìŒ
     int left_max = find_max(arr, left, mid);
     int right_max = find_max(arr, mid + 1, right);
 
-    // °áÇÕ: µÎ ÃÖ´ë°ªÀ» ºñ±³ÇÏ¿© ´õ Å« °ª ¹ÝÈ¯
+    // ê²°í•©: ë‘ ìµœëŒ€ê°’ì„ ë¹„êµí•˜ì—¬ ë” í° ê°’ ë°˜í™˜
     return (left_max > right_max) ? left_max : right_max;
 }
 
-/* 2. ÀÌÁø °Ë»ö (ºÐÇÒ Á¤º¹ ¹öÀü)
- * - Á¤·ÄµÈ ¹è¿­¿¡¼­ Áß°£°ª°ú ºñ±³ÇÏ¿© Å½»ö ¹üÀ§¸¦ Àý¹ÝÀ¸·Î ÁÙÀÓ
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* 2. ì´ì§„ ê²€ìƒ‰ (ë¶„í•  ì •ë³µ ë²„ì „)
+ * - ì •ë ¬ëœ ë°°ì—´ì—ì„œ ì¤‘ê°„ê°’ê³¼ ë¹„êµí•˜ì—¬ íƒìƒ‰ ë²”ìœ„ë¥¼ ì ˆë°˜ìœ¼ë¡œ ì¤„ìž„
+ * - ì‹œê°„ë³µìž¡ë„: O(log n)
  */
 int binary_search(int arr[], int left, int right, int target) {
     if (left > right) {
-        return -1;  // Ã£Áö ¸øÇÔ
+        return -1;  // ì°¾ì§€ ëª»í•¨
     }
 
-    // ºÐÇÒ: Áß°£ ÁöÁ¡ °è»ê
-    int mid = left + (right - left) / 2;  // ¿À¹öÇÃ·Î¿ì ¹æÁö
+    // ë¶„í• : ì¤‘ê°„ ì§€ì  ê³„ì‚°
+    int mid = left + (right - left) / 2;  // ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
 
-    // ±âÀú »ç·Ê: Ã£Àº °æ¿ì
+    // ê¸°ì € ì‚¬ë¡€: ì°¾ì€ ê²½ìš°
     if (arr[mid] == target) {
         return mid;
     }
 
-    // Á¤º¹: ÀûÀýÇÑ Àý¹Ý¿¡¼­ Àç±ÍÀûÀ¸·Î °Ë»ö
+    // ì •ë³µ: ì ì ˆí•œ ì ˆë°˜ì—ì„œ ìž¬ê·€ì ìœ¼ë¡œ ê²€ìƒ‰
     if (arr[mid] > target) {
         return binary_search(arr, left, mid - 1, target);
     }
@@ -68,29 +68,29 @@ int binary_search(int arr[], int left, int right, int target) {
     }
 }
 
-/* 3. ¹è¿­ÀÇ ÇÕ °è»ê
- * - ¹è¿­À» µÑ·Î ³ª´©¾î °¢°¢ÀÇ ÇÕÀ» °è»êÇÏ°í ´õÇÔ
- * - ½Ã°£º¹Àâµµ: O(n)
- * - º´·Ä Ã³¸®ÀÇ °¡´É¼ºÀ» º¸¿©ÁÖ´Â ¿¹Á¦
+/* 3. ë°°ì—´ì˜ í•© ê³„ì‚°
+ * - ë°°ì—´ì„ ë‘˜ë¡œ ë‚˜ëˆ„ì–´ ê°ê°ì˜ í•©ì„ ê³„ì‚°í•˜ê³  ë”í•¨
+ * - ì‹œê°„ë³µìž¡ë„: O(n)
+ * - ë³‘ë ¬ ì²˜ë¦¬ì˜ ê°€ëŠ¥ì„±ì„ ë³´ì—¬ì£¼ëŠ” ì˜ˆì œ
  */
 int array_sum(int arr[], int left, int right) {
-    // ±âÀú »ç·Ê: ¿ø¼Ò°¡ ÇÏ³ªÀÎ °æ¿ì
+    // ê¸°ì € ì‚¬ë¡€: ì›ì†Œê°€ í•˜ë‚˜ì¸ ê²½ìš°
     if (left == right) {
         return arr[left];
     }
 
-    // ºÐÇÒ: ¹è¿­À» µÑ·Î ³ª´®
+    // ë¶„í• : ë°°ì—´ì„ ë‘˜ë¡œ ë‚˜ëˆ”
     int mid = (left + right) / 2;
 
-    // Á¤º¹: °¢ ºÎºÐÀÇ ÇÕÀ» Àç±ÍÀûÀ¸·Î °è»ê
+    // ì •ë³µ: ê° ë¶€ë¶„ì˜ í•©ì„ ìž¬ê·€ì ìœ¼ë¡œ ê³„ì‚°
     int left_sum = array_sum(arr, left, mid);
     int right_sum = array_sum(arr, mid + 1, right);
 
-    // °áÇÕ: µÎ ºÎºÐÀÇ ÇÕÀ» ´õÇÔ
+    // ê²°í•©: ë‘ ë¶€ë¶„ì˜ í•©ì„ ë”í•¨
     return left_sum + right_sum;
 }
 
-/* ½ÇÇà ½Ã°£ ÃøÁ¤ ÇÔ¼ö */
+/* ì‹¤í–‰ ì‹œê°„ ì¸¡ì • í•¨ìˆ˜ */
 double measure_time(void (*func)(), void* args) {
     clock_t start = clock();
     func(args);
@@ -98,7 +98,7 @@ double measure_time(void (*func)(), void* args) {
     return ((double)(end - start)) / CLOCKS_PER_SEC;
 }
 
-/* ¹è¿­ Ãâ·Â */
+/* ë°°ì—´ ì¶œë ¥ */
 void print_array(int arr[], int size) {
     printf("[");
     for (int i = 0; i < size; i++) {
@@ -108,7 +108,7 @@ void print_array(int arr[], int size) {
     printf("]\n");
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Divide and Conquer Examples ===\n");
     printf("1. Find maximum value\n");
@@ -130,9 +130,9 @@ int main(void) {
         return 1;
     }
 
-    // ÃÊ±â ¹è¿­ »ý¼º
+    // ì´ˆê¸° ë°°ì—´ ìƒì„±
     for (int i = 0; i < size; i++) {
-        arr[i] = rand() % 100;  // 0-99 ¹üÀ§ÀÇ ³­¼ö
+        arr[i] = rand() % 100;  // 0-99 ë²”ìœ„ì˜ ë‚œìˆ˜
     }
 
     int choice;
@@ -156,7 +156,7 @@ int main(void) {
         }
 
         case 2: {  // Binary search
-            // ÀÌÁø °Ë»öÀ» À§ÇØ ¹è¿­ Á¤·Ä
+            // ì´ì§„ ê²€ìƒ‰ì„ ìœ„í•´ ë°°ì—´ ì •ë ¬
             for (int i = 0; i < size - 1; i++) {
                 for (int j = 0; j < size - i - 1; j++) {
                     if (arr[j] > arr[j + 1]) {
@@ -227,68 +227,68 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ºÐÇÒ Á¤º¹ÀÇ ±âº» ¿ø¸®
+1. ë¶„í•  ì •ë³µì˜ ê¸°ë³¸ ì›ë¦¬
 -------------------
-ºÐÇÒ(Divide):
-- ¹®Á¦¸¦ ´õ ÀÛÀº ÇÏÀ§ ¹®Á¦·Î ³ª´®
-- º¸Åë Å©±â°¡ ºñ½ÁÇÑ ºÎºÐµé·Î ºÐÇÒ
-- Àç±ÍÀû ÇØ°áÀÌ °¡´ÉÇØ¾ß ÇÔ
+ë¶„í• (Divide):
+- ë¬¸ì œë¥¼ ë” ìž‘ì€ í•˜ìœ„ ë¬¸ì œë¡œ ë‚˜ëˆ”
+- ë³´í†µ í¬ê¸°ê°€ ë¹„ìŠ·í•œ ë¶€ë¶„ë“¤ë¡œ ë¶„í• 
+- ìž¬ê·€ì  í•´ê²°ì´ ê°€ëŠ¥í•´ì•¼ í•¨
 
-Á¤º¹(Conquer):
-- ÇÏÀ§ ¹®Á¦µéÀ» Àç±ÍÀûÀ¸·Î ÇØ°á
-- ±âÀú »ç·Ê(base case) ÇÊ¿ä
-- µ¶¸³Àû ÇØ°á °¡´ÉÇØ¾ß ÇÔ
+ì •ë³µ(Conquer):
+- í•˜ìœ„ ë¬¸ì œë“¤ì„ ìž¬ê·€ì ìœ¼ë¡œ í•´ê²°
+- ê¸°ì € ì‚¬ë¡€(base case) í•„ìš”
+- ë…ë¦½ì  í•´ê²° ê°€ëŠ¥í•´ì•¼ í•¨
 
-°áÇÕ(Combine):
-- ÇÏÀ§ ¹®Á¦ÀÇ ÇØ´äÀ» °áÇÕ
-- ÀüÃ¼ ¹®Á¦ÀÇ ÇØ´ä »ý¼º
-- È¿À²ÀûÀÎ °áÇÕ ¹æ¹ý ÇÊ¿ä
+ê²°í•©(Combine):
+- í•˜ìœ„ ë¬¸ì œì˜ í•´ë‹µì„ ê²°í•©
+- ì „ì²´ ë¬¸ì œì˜ í•´ë‹µ ìƒì„±
+- íš¨ìœ¨ì ì¸ ê²°í•© ë°©ë²• í•„ìš”
 
-2. ½Ã°£ º¹Àâµµ ºÐ¼®
+2. ì‹œê°„ ë³µìž¡ë„ ë¶„ì„
 ---------------
-¸¶½ºÅÍ Á¤¸® »ç¿ë:
+ë§ˆìŠ¤í„° ì •ë¦¬ ì‚¬ìš©:
 T(n) = aT(n/b) + f(n)
-- a: ÇÏÀ§ ¹®Á¦ °³¼ö
-- b: Å©±â °¨¼Ò ºñÀ²
-- f(n): ºÐÇÒ°ú °áÇÕ ºñ¿ë
+- a: í•˜ìœ„ ë¬¸ì œ ê°œìˆ˜
+- b: í¬ê¸° ê°ì†Œ ë¹„ìœ¨
+- f(n): ë¶„í• ê³¼ ê²°í•© ë¹„ìš©
 
-ÀÏ¹ÝÀûÀÎ °æ¿ì:
-- ÀÌÁø ºÐÇÒ: O(n log n)
-- »ïÁø ºÐÇÒ: O(n log©ý n)
-- ¼±Çü °áÇÕ: O(n)
+ì¼ë°˜ì ì¸ ê²½ìš°:
+- ì´ì§„ ë¶„í• : O(n log n)
+- ì‚¼ì§„ ë¶„í• : O(n logâ‚ƒ n)
+- ì„ í˜• ê²°í•©: O(n)
 
-3. Àå´ÜÁ¡
+3. ìž¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- º´·Ä Ã³¸® °¡´É
-- Ä³½Ã È¿À²Àû
-- ¹®Á¦ Å©±â °¨¼Ò
-- Á÷°üÀûÀÎ ¼³°è
+ìž¥ì :
+- ë³‘ë ¬ ì²˜ë¦¬ ê°€ëŠ¥
+- ìºì‹œ íš¨ìœ¨ì 
+- ë¬¸ì œ í¬ê¸° ê°ì†Œ
+- ì§ê´€ì ì¸ ì„¤ê³„
 
-´ÜÁ¡:
-- Àç±Í È£Ãâ ¿À¹öÇìµå
-- ½ºÅÃ °ø°£ »ç¿ë
-- ÄÚµå º¹Àâµµ Áõ°¡
-- ±âÀú »ç·Ê ÁÖÀÇ
+ë‹¨ì :
+- ìž¬ê·€ í˜¸ì¶œ ì˜¤ë²„í—¤ë“œ
+- ìŠ¤íƒ ê³µê°„ ì‚¬ìš©
+- ì½”ë“œ ë³µìž¡ë„ ì¦ê°€
+- ê¸°ì € ì‚¬ë¡€ ì£¼ì˜
 
-4. ÃÖÀûÈ­ ±â¹ý
+4. ìµœì í™” ê¸°ë²•
 -----------
-- ±âÀú »ç·Ê Å©±â Á¶Á¤
-- ¹Ýº¹Àû ±¸Çö ÀüÈ¯
-- Ä³½Ã Áö¿ª¼º È°¿ë
-- º´·Ä Ã³¸® Àû¿ë
+- ê¸°ì € ì‚¬ë¡€ í¬ê¸° ì¡°ì •
+- ë°˜ë³µì  êµ¬í˜„ ì „í™˜
+- ìºì‹œ ì§€ì—­ì„± í™œìš©
+- ë³‘ë ¬ ì²˜ë¦¬ ì ìš©
 
-5. ÀÀ¿ë ºÐ¾ß
+5. ì‘ìš© ë¶„ì•¼
 ----------
-- Á¤·Ä ¾Ë°í¸®Áò
-- ¼öÄ¡ °è»ê
-- ±âÇÏ ¾Ë°í¸®Áò
-- º¯È¯ ¾Ë°í¸®Áò
+- ì •ë ¬ ì•Œê³ ë¦¬ì¦˜
+- ìˆ˜ì¹˜ ê³„ì‚°
+- ê¸°í•˜ ì•Œê³ ë¦¬ì¦˜
+- ë³€í™˜ ì•Œê³ ë¦¬ì¦˜
 
-ÀÌ ±¸ÇöÀº ºÐÇÒ Á¤º¹ÀÇ ±âº» °³³äÀ»
-½ÇÁ¦ ¿¹Á¦¸¦ ÅëÇØ º¸¿©ÁÖ¸ç, ´ÙÀ½
-´Ü°èÀÎ º´ÇÕ Á¤·ÄÀÇ ±âÃÊ°¡ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë¶„í•  ì •ë³µì˜ ê¸°ë³¸ ê°œë…ì„
+ì‹¤ì œ ì˜ˆì œë¥¼ í†µí•´ ë³´ì—¬ì£¼ë©°, ë‹¤ìŒ
+ë‹¨ê³„ì¸ ë³‘í•© ì •ë ¬ì˜ ê¸°ì´ˆê°€ ë©ë‹ˆë‹¤.
 */

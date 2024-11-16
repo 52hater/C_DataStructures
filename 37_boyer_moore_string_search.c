@@ -4,16 +4,16 @@
 #include <stdbool.h>
 
 /*
-Boyer-Moore ¾Ë°í¸®Áò:
-- ½ÇÁ¦·Î °¡Àå ºü¸¥ ¹®ÀÚ¿­ °Ë»ö ¾Ë°í¸®Áò
-- µÚ¿¡¼­ºÎÅÍ ¾ÕÀ¸·Î ºñ±³
-- µÎ °¡Áö ÈÞ¸®½ºÆ½ »ç¿ë:
-  1. Bad Character Rule (³ª»Û ¹®ÀÚ ±ÔÄ¢)
-     - ºÒÀÏÄ¡ ¹®ÀÚ°¡ ÆÐÅÏ¿¡ ¾øÀ¸¸é ÆÐÅÏ ±æÀÌ¸¸Å­ ÀÌµ¿
-     - ÀÖ´Ù¸é ¸¶Áö¸· À§Ä¡±îÁö ÀÌµ¿
-  2. Good Suffix Rule (ÂøÇÑ Á¢¹ÌºÎ ±ÔÄ¢)
-     - ÀÏÄ¡ÇÏ´Â Á¢¹ÌºÎ¸¦ ±â¹ÝÀ¸·Î ÀÌµ¿
-     - ´õ ±ä ÀÌµ¿ °Å¸® ¼±ÅÃ
+Boyer-Moore ì•Œê³ ë¦¬ì¦˜:
+- ì‹¤ì œë¡œ ê°€ìž¥ ë¹ ë¥¸ ë¬¸ìžì—´ ê²€ìƒ‰ ì•Œê³ ë¦¬ì¦˜
+- ë’¤ì—ì„œë¶€í„° ì•žìœ¼ë¡œ ë¹„êµ
+- ë‘ ê°€ì§€ íœ´ë¦¬ìŠ¤í‹± ì‚¬ìš©:
+  1. Bad Character Rule (ë‚˜ìœ ë¬¸ìž ê·œì¹™)
+     - ë¶ˆì¼ì¹˜ ë¬¸ìžê°€ íŒ¨í„´ì— ì—†ìœ¼ë©´ íŒ¨í„´ ê¸¸ì´ë§Œí¼ ì´ë™
+     - ìžˆë‹¤ë©´ ë§ˆì§€ë§‰ ìœ„ì¹˜ê¹Œì§€ ì´ë™
+  2. Good Suffix Rule (ì°©í•œ ì ‘ë¯¸ë¶€ ê·œì¹™)
+     - ì¼ì¹˜í•˜ëŠ” ì ‘ë¯¸ë¶€ë¥¼ ê¸°ë°˜ìœ¼ë¡œ ì´ë™
+     - ë” ê¸´ ì´ë™ ê±°ë¦¬ ì„ íƒ
 */
 
 #define NO_OF_CHARS 256
@@ -25,7 +25,7 @@ typedef struct {
     int capacity;
 } SearchResult;
 
-/* °Ë»ö °á°ú ÃÊ±âÈ­ */
+/* ê²€ìƒ‰ ê²°ê³¼ ì´ˆê¸°í™” */
 SearchResult* create_result(int initial_capacity) {
     SearchResult* result = (SearchResult*)malloc(sizeof(SearchResult));
     if (!result) return NULL;
@@ -41,7 +41,7 @@ SearchResult* create_result(int initial_capacity) {
     return result;
 }
 
-/* °Ë»ö °á°ú¿¡ »õ·Î¿î À§Ä¡ Ãß°¡ */
+/* ê²€ìƒ‰ ê²°ê³¼ì— ìƒˆë¡œìš´ ìœ„ì¹˜ ì¶”ê°€ */
 void add_position(SearchResult* result, int position) {
     if (result->count >= result->capacity) {
         int new_capacity = result->capacity * 2;
@@ -56,7 +56,7 @@ void add_position(SearchResult* result, int position) {
     result->positions[result->count++] = position;
 }
 
-/* °Ë»ö °á°ú ¸Þ¸ð¸® ÇØÁ¦ */
+/* ê²€ìƒ‰ ê²°ê³¼ ë©”ëª¨ë¦¬ í•´ì œ */
 void destroy_result(SearchResult* result) {
     if (result) {
         free(result->positions);
@@ -64,66 +64,66 @@ void destroy_result(SearchResult* result) {
     }
 }
 
-/* Bad Character ±ÔÄ¢ Å×ÀÌºí »ý¼º
- * - °¢ ¹®ÀÚÀÇ ÆÐÅÏ ³» ¸¶Áö¸· À§Ä¡ ÀúÀå
+/* Bad Character ê·œì¹™ í…Œì´ë¸” ìƒì„±
+ * - ê° ë¬¸ìžì˜ íŒ¨í„´ ë‚´ ë§ˆì§€ë§‰ ìœ„ì¹˜ ì €ìž¥
  */
 void compute_bad_char(const char* pattern, int m, int bad_char[NO_OF_CHARS]) {
-    // ¸ðµç ¹®ÀÚ¸¦ -1·Î ÃÊ±âÈ­
+    // ëª¨ë“  ë¬¸ìžë¥¼ -1ë¡œ ì´ˆê¸°í™”
     for (int i = 0; i < NO_OF_CHARS; i++)
         bad_char[i] = -1;
 
-    // ÆÐÅÏÀÇ °¢ ¹®ÀÚÀÇ ¸¶Áö¸· À§Ä¡ ÀúÀå
+    // íŒ¨í„´ì˜ ê° ë¬¸ìžì˜ ë§ˆì§€ë§‰ ìœ„ì¹˜ ì €ìž¥
     for (int i = 0; i < m; i++)
         bad_char[(unsigned char)pattern[i]] = i;
 }
 
-/* Á¢¹ÌºÎ Å×ÀÌºí »ý¼º
- * - ÆÐÅÏÀÇ Á¢¹ÌºÎ¿Í ÀÏÄ¡ÇÏ´Â ´Ù¸¥ ºÎºÐÀ» Ã£À½
+/* ì ‘ë¯¸ë¶€ í…Œì´ë¸” ìƒì„±
+ * - íŒ¨í„´ì˜ ì ‘ë¯¸ë¶€ì™€ ì¼ì¹˜í•˜ëŠ” ë‹¤ë¥¸ ë¶€ë¶„ì„ ì°¾ìŒ
  */
 void compute_good_suffix(const char* pattern, int m, int suffix[], bool prefix[]) {
-    // ÃÊ±âÈ­
+    // ì´ˆê¸°í™”
     for (int i = 0; i < m; i++) {
         suffix[i] = -1;
         prefix[i] = false;
     }
 
-    // Case 1: Á¢¹ÌºÎ°¡ ´Ù½Ã ³ªÅ¸³ª´Â °æ¿ì
+    // Case 1: ì ‘ë¯¸ë¶€ê°€ ë‹¤ì‹œ ë‚˜íƒ€ë‚˜ëŠ” ê²½ìš°
     for (int i = 0; i < m - 1; i++) {
         int j = i;
         int len = 0;
 
-        // ÆÐÅÏÀÇ Á¢¹ÌºÎ¿Í ÀÏÄ¡ÇÏ´Â ºÎºÐ Ã£±â
+        // íŒ¨í„´ì˜ ì ‘ë¯¸ë¶€ì™€ ì¼ì¹˜í•˜ëŠ” ë¶€ë¶„ ì°¾ê¸°
         while (j >= 0 && pattern[j] == pattern[m - 1 - len]) {
             len++;
             suffix[len] = j;
             j--;
         }
 
-        if (j == -1)  // ÀüÃ¼°¡ ÀÏÄ¡ÇÏ´Â °æ¿ì
+        if (j == -1)  // ì „ì²´ê°€ ì¼ì¹˜í•˜ëŠ” ê²½ìš°
             prefix[len] = true;
     }
 }
 
-/* Good Suffix ±ÔÄ¢¿¡ µû¸¥ ÀÌµ¿ °Å¸® °è»ê */
+/* Good Suffix ê·œì¹™ì— ë”°ë¥¸ ì´ë™ ê±°ë¦¬ ê³„ì‚° */
 int get_good_suffix_shift(int pos, int m, const int suffix[], const bool prefix[]) {
-    int len = m - 1 - pos;  // ÀÏÄ¡ÇÏ´Â Á¢¹ÌºÎ ±æÀÌ
+    int len = m - 1 - pos;  // ì¼ì¹˜í•˜ëŠ” ì ‘ë¯¸ë¶€ ê¸¸ì´
 
-    // Case 1: Á¢¹ÌºÎ°¡ ´Ù½Ã ³ªÅ¸³ª´Â °æ¿ì
+    // Case 1: ì ‘ë¯¸ë¶€ê°€ ë‹¤ì‹œ ë‚˜íƒ€ë‚˜ëŠ” ê²½ìš°
     if (suffix[len] != -1)
         return pos - suffix[len] + 1;
 
-    // Case 2: ´õ ÂªÀº Á¢¹ÌºÎ°¡ Á¢µÎºÎ·Î ³ªÅ¸³ª´Â °æ¿ì
+    // Case 2: ë” ì§§ì€ ì ‘ë¯¸ë¶€ê°€ ì ‘ë‘ë¶€ë¡œ ë‚˜íƒ€ë‚˜ëŠ” ê²½ìš°
     for (int r = pos + 2; r < m; r++) {
         if (prefix[m - r])
             return r;
     }
 
-    // Case 3: ¾Æ¹«°Íµµ Ã£Áö ¸øÇÑ °æ¿ì
+    // Case 3: ì•„ë¬´ê²ƒë„ ì°¾ì§€ ëª»í•œ ê²½ìš°
     return m;
 }
 
-/* Boyer-Moore ¹®ÀÚ¿­ °Ë»ö
- * - ½Ã°£º¹Àâµµ: ÃÖ¼± O(n/m), Æò±Õ O(n), ÃÖ¾Ç O(nm)
+/* Boyer-Moore ë¬¸ìžì—´ ê²€ìƒ‰
+ * - ì‹œê°„ë³µìž¡ë„: ìµœì„  O(n/m), í‰ê·  O(n), ìµœì•… O(nm)
  */
 SearchResult* boyer_moore_search(const char* text, const char* pattern, bool print_steps) {
     SearchResult* result = create_result(10);
@@ -133,11 +133,11 @@ SearchResult* boyer_moore_search(const char* text, const char* pattern, bool pri
     int m = strlen(pattern);
     int comparisons = 0;
 
-    // Bad Character ±ÔÄ¢ Å×ÀÌºí »ý¼º
+    // Bad Character ê·œì¹™ í…Œì´ë¸” ìƒì„±
     int bad_char[NO_OF_CHARS];
     compute_bad_char(pattern, m, bad_char);
 
-    // Good Suffix ±ÔÄ¢ Å×ÀÌºí »ý¼º
+    // Good Suffix ê·œì¹™ í…Œì´ë¸” ìƒì„±
     int* suffix = (int*)malloc(m * sizeof(int));
     bool* prefix = (bool*)malloc(m * sizeof(bool));
     if (!suffix || !prefix) {
@@ -158,9 +158,9 @@ SearchResult* boyer_moore_search(const char* text, const char* pattern, bool pri
         }
     }
 
-    int s = 0;  // ÆÐÅÏÀÇ ½ÃÀÛ À§Ä¡
+    int s = 0;  // íŒ¨í„´ì˜ ì‹œìž‘ ìœ„ì¹˜
     while (s <= n - m) {
-        int j = m - 1;  // ÆÐÅÏÀÇ ¸¶Áö¸· ¹®ÀÚºÎÅÍ ºñ±³
+        int j = m - 1;  // íŒ¨í„´ì˜ ë§ˆì§€ë§‰ ë¬¸ìžë¶€í„° ë¹„êµ
 
         if (print_steps) {
             printf("\nCurrent position: %d\n", s);
@@ -168,7 +168,7 @@ SearchResult* boyer_moore_search(const char* text, const char* pattern, bool pri
             printf("Pattern: %*s%s\n", s, "", pattern);
         }
 
-        // ÆÐÅÏ°ú ÅØ½ºÆ® ºñ±³
+        // íŒ¨í„´ê³¼ í…ìŠ¤íŠ¸ ë¹„êµ
         while (j >= 0 && pattern[j] == text[s + j]) {
             comparisons++;
             if (print_steps) {
@@ -177,7 +177,7 @@ SearchResult* boyer_moore_search(const char* text, const char* pattern, bool pri
             j--;
         }
 
-        if (j < 0) {  // ÆÐÅÏÀ» Ã£À½
+        if (j < 0) {  // íŒ¨í„´ì„ ì°¾ìŒ
             add_position(result, s);
             if (print_steps) {
                 printf("Pattern found at position %d\n", s);
@@ -190,7 +190,7 @@ SearchResult* boyer_moore_search(const char* text, const char* pattern, bool pri
                 printf("Mismatch at position %d\n", s + j);
             }
 
-            // Bad Character¿Í Good Suffix ±ÔÄ¢ Áß ´õ Å« ÀÌµ¿ °Å¸® ¼±ÅÃ
+            // Bad Characterì™€ Good Suffix ê·œì¹™ ì¤‘ ë” í° ì´ë™ ê±°ë¦¬ ì„ íƒ
             int bc_shift = j - bad_char[text[s + j]];
             int gs_shift = get_good_suffix_shift(j, m, suffix, prefix);
             int shift = MAX(bc_shift, gs_shift);
@@ -214,7 +214,7 @@ SearchResult* boyer_moore_search(const char* text, const char* pattern, bool pri
     return result;
 }
 
-/* °Ë»ö °á°ú Ãâ·Â */
+/* ê²€ìƒ‰ ê²°ê³¼ ì¶œë ¥ */
 void print_search_result(const SearchResult* result, const char* text, const char* pattern) {
     if (result->count == 0) {
         printf("Pattern not found in text.\n");
@@ -249,7 +249,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
     }
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Boyer-Moore String Search Menu ===\n");
     printf("1. Enter new text\n");
@@ -274,7 +274,7 @@ int main(void) {
     do {
         print_menu();
         scanf("%d", &choice);
-        getchar();  // ¹öÆÛ ºñ¿ì±â
+        getchar();  // ë²„í¼ ë¹„ìš°ê¸°
 
         switch (choice) {
         case 1:  // Enter text
@@ -324,73 +324,73 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. Boyer-Moore ¾Ë°í¸®ÁòÀÇ Æ¯Â¡
+1. Boyer-Moore ì•Œê³ ë¦¬ì¦˜ì˜ íŠ¹ì§•
 ------------------------
-- µÚ¿¡¼­ ¾ÕÀ¸·Î ºñ±³
-- µÎ °¡Áö ÀÌµ¿ ±ÔÄ¢ »ç¿ë
-- ½ÇÁ¦ ÀÀ¿ë¿¡¼­ °¡Àå ºü¸§
-- ÀüÃ³¸® ´Ü°è ÇÊ¿ä
+- ë’¤ì—ì„œ ì•žìœ¼ë¡œ ë¹„êµ
+- ë‘ ê°€ì§€ ì´ë™ ê·œì¹™ ì‚¬ìš©
+- ì‹¤ì œ ì‘ìš©ì—ì„œ ê°€ìž¥ ë¹ ë¦„
+- ì „ì²˜ë¦¬ ë‹¨ê³„ í•„ìš”
 
-2. Bad Character ±ÔÄ¢
+2. Bad Character ê·œì¹™
 -----------------
-¿ø¸®:
-- ºÒÀÏÄ¡ ¹®ÀÚÀÇ ¸¶Áö¸· À§Ä¡ È°¿ë
-- ÆÐÅÏ¿¡ ¾ø´Â ¹®ÀÚ´Â ÆÐÅÏ ±æÀÌ¸¸Å­ ÀÌµ¿
-- ÀÖ´Ù¸é ¸¶Áö¸· À§Ä¡±îÁö ÀÌµ¿
+ì›ë¦¬:
+- ë¶ˆì¼ì¹˜ ë¬¸ìžì˜ ë§ˆì§€ë§‰ ìœ„ì¹˜ í™œìš©
+- íŒ¨í„´ì— ì—†ëŠ” ë¬¸ìžëŠ” íŒ¨í„´ ê¸¸ì´ë§Œí¼ ì´ë™
+- ìžˆë‹¤ë©´ ë§ˆì§€ë§‰ ìœ„ì¹˜ê¹Œì§€ ì´ë™
 
-ÀåÁ¡:
-- ±¸ÇöÀÌ ´Ü¼ø
-- Å« ¾ËÆÄºª¿¡¼­ È¿°úÀû
-- ºü¸¥ ÀÌµ¿ °¡´É
+ìž¥ì :
+- êµ¬í˜„ì´ ë‹¨ìˆœ
+- í° ì•ŒíŒŒë²³ì—ì„œ íš¨ê³¼ì 
+- ë¹ ë¥¸ ì´ë™ ê°€ëŠ¥
 
-3. Good Suffix ±ÔÄ¢
+3. Good Suffix ê·œì¹™
 ---------------
-¿ø¸®:
-- ÀÏÄ¡ÇÑ Á¢¹ÌºÎ È°¿ë
-- ´Ù½Ã ³ªÅ¸³ª´Â À§Ä¡·Î ÀÌµ¿
-- ´õ ÂªÀº Á¢¹ÌºÎµµ °í·Á
+ì›ë¦¬:
+- ì¼ì¹˜í•œ ì ‘ë¯¸ë¶€ í™œìš©
+- ë‹¤ì‹œ ë‚˜íƒ€ë‚˜ëŠ” ìœ„ì¹˜ë¡œ ì´ë™
+- ë” ì§§ì€ ì ‘ë¯¸ë¶€ë„ ê³ ë ¤
 
-ÀåÁ¡:
-- Ãß°¡ÀûÀÎ ÀÌµ¿ ±âÈ¸ Á¦°ø
-- ÆÐÅÏ ³»ºÎ Á¤º¸ È°¿ë
-- Bad Character º¸¿Ï
+ìž¥ì :
+- ì¶”ê°€ì ì¸ ì´ë™ ê¸°íšŒ ì œê³µ
+- íŒ¨í„´ ë‚´ë¶€ ì •ë³´ í™œìš©
+- Bad Character ë³´ì™„
 
-4. ½Ã°£ º¹Àâµµ
+4. ì‹œê°„ ë³µìž¡ë„
 -----------
-ÀüÃ³¸®: O(m + ¥ò)
-- m: ÆÐÅÏ ±æÀÌ
-- ¥ò: ¾ËÆÄºª Å©±â
+ì „ì²˜ë¦¬: O(m + Ïƒ)
+- m: íŒ¨í„´ ê¸¸ì´
+- Ïƒ: ì•ŒíŒŒë²³ í¬ê¸°
 
-°Ë»ö:
-- ÃÖ¼±: O(n/m)
-- Æò±Õ: O(n)
-- ÃÖ¾Ç: O(nm)
+ê²€ìƒ‰:
+- ìµœì„ : O(n/m)
+- í‰ê· : O(n)
+- ìµœì•…: O(nm)
 
-5. °ø°£ º¹Àâµµ
+5. ê³µê°„ ë³µìž¡ë„
 -----------
-O(m + ¥ò)
-- Bad Character Å×ÀÌºí
-- Good Suffix Å×ÀÌºí
-- Ãß°¡ ¸Þ¸ð¸® ÇÊ¿ä
+O(m + Ïƒ)
+- Bad Character í…Œì´ë¸”
+- Good Suffix í…Œì´ë¸”
+- ì¶”ê°€ ë©”ëª¨ë¦¬ í•„ìš”
 
-6. Àå´ÜÁ¡
+6. ìž¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ½ÇÁ¦·Î °¡Àå ºü¸§
-- ±ä ÆÐÅÏ¿¡ È¿À²Àû
-- ¼­ºê¸®´Ï¾î ¼º´É °¡´É
+ìž¥ì :
+- ì‹¤ì œë¡œ ê°€ìž¥ ë¹ ë¦„
+- ê¸´ íŒ¨í„´ì— íš¨ìœ¨ì 
+- ì„œë¸Œë¦¬ë‹ˆì–´ ì„±ëŠ¥ ê°€ëŠ¥
 
-´ÜÁ¡:
-- ±¸ÇöÀÌ º¹Àâ
-- ÀüÃ³¸® ¿À¹öÇìµå
-- ÂªÀº ÆÐÅÏ¿¡ ºñÈ¿À²
-- Ãß°¡ ¸Þ¸ð¸® ÇÊ¿ä
+ë‹¨ì :
+- êµ¬í˜„ì´ ë³µìž¡
+- ì „ì²˜ë¦¬ ì˜¤ë²„í—¤ë“œ
+- ì§§ì€ íŒ¨í„´ì— ë¹„íš¨ìœ¨
+- ì¶”ê°€ ë©”ëª¨ë¦¬ í•„ìš”
 
-ÀÌ ±¸ÇöÀº Boyer-Moore ¾Ë°í¸®ÁòÀÇ
-µÎ °¡Áö ÁÖ¿ä ±ÔÄ¢À» ¸ðµÎ Æ÷ÇÔÇÏ¸ç,
-½ÇÁ¦ °Ë»ö °úÁ¤À» ´Ü°èº°·Î
-È®ÀÎÇÒ ¼ö ÀÖ½À´Ï´Ù.
+ì´ êµ¬í˜„ì€ Boyer-Moore ì•Œê³ ë¦¬ì¦˜ì˜
+ë‘ ê°€ì§€ ì£¼ìš” ê·œì¹™ì„ ëª¨ë‘ í¬í•¨í•˜ë©°,
+ì‹¤ì œ ê²€ìƒ‰ ê³¼ì •ì„ ë‹¨ê³„ë³„ë¡œ
+í™•ì¸í•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤.
 */

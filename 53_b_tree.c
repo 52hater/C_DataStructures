@@ -3,24 +3,24 @@
 #include <stdbool.h>
 
 /*
-B-Æ®¸®:
-- ÀÚ°¡ ±ÕÇü ´ÙÁø Å½»ö Æ®¸®
-- ÇÑ ³ëµå°¡ ¿©·¯ Å°¸¦ °¡Áü
-- ¸ğµç ¸®ÇÁ ³ëµå°¡ °°Àº ·¹º§
-- µğ½ºÅ© ±â¹İ ÀÚ·á±¸Á¶ÀÇ ±âÃÊ
+B-íŠ¸ë¦¬:
+- ìê°€ ê· í˜• ë‹¤ì§„ íƒìƒ‰ íŠ¸ë¦¬
+- í•œ ë…¸ë“œê°€ ì—¬ëŸ¬ í‚¤ë¥¼ ê°€ì§
+- ëª¨ë“  ë¦¬í”„ ë…¸ë“œê°€ ê°™ì€ ë ˆë²¨
+- ë””ìŠ¤í¬ ê¸°ë°˜ ìë£Œêµ¬ì¡°ì˜ ê¸°ì´ˆ
 */
 
-#define MAX_KEYS 3  // ÃÖ´ë Å° °³¼ö (Â÷¼ö = 4)
-#define MIN_KEYS MAX_KEYS/2  // ÃÖ¼Ò Å° °³¼ö
+#define MAX_KEYS 3  // ìµœëŒ€ í‚¤ ê°œìˆ˜ (ì°¨ìˆ˜ = 4)
+#define MIN_KEYS MAX_KEYS/2  // ìµœì†Œ í‚¤ ê°œìˆ˜
 
 typedef struct BTreeNode {
-    int keys[MAX_KEYS];         // Å° ¹è¿­
-    struct BTreeNode* children[MAX_KEYS + 1];  // ÀÚ½Ä Æ÷ÀÎÅÍ ¹è¿­
-    int num_keys;               // ÇöÀç Å° °³¼ö
-    bool is_leaf;              // ¸®ÇÁ ³ëµå ¿©ºÎ
+    int keys[MAX_KEYS];         // í‚¤ ë°°ì—´
+    struct BTreeNode* children[MAX_KEYS + 1];  // ìì‹ í¬ì¸í„° ë°°ì—´
+    int num_keys;               // í˜„ì¬ í‚¤ ê°œìˆ˜
+    bool is_leaf;              // ë¦¬í”„ ë…¸ë“œ ì—¬ë¶€
 } BTreeNode;
 
-// »õ ³ëµå »ı¼º
+// ìƒˆ ë…¸ë“œ ìƒì„±
 BTreeNode* create_node(bool is_leaf) {
     BTreeNode* node = (BTreeNode*)malloc(sizeof(BTreeNode));
     node->num_keys = 0;
@@ -33,16 +33,16 @@ BTreeNode* create_node(bool is_leaf) {
     return node;
 }
 
-// ³ëµå ºĞÇÒ
+// ë…¸ë“œ ë¶„í• 
 void split_child(BTreeNode* parent, int index, BTreeNode* child) {
     BTreeNode* new_node = create_node(child->is_leaf);
 
-    // »õ ³ëµå·Î Å° ÀÌµ¿
+    // ìƒˆ ë…¸ë“œë¡œ í‚¤ ì´ë™
     for (int j = 0; j < MIN_KEYS; j++) {
         new_node->keys[j] = child->keys[j + MIN_KEYS + 1];
     }
 
-    // ÀÚ½Ä Æ÷ÀÎÅÍ ÀÌµ¿ (¸®ÇÁ°¡ ¾Æ´Ñ °æ¿ì)
+    // ìì‹ í¬ì¸í„° ì´ë™ (ë¦¬í”„ê°€ ì•„ë‹Œ ê²½ìš°)
     if (!child->is_leaf) {
         for (int j = 0; j <= MIN_KEYS; j++) {
             new_node->children[j] = child->children[j + MIN_KEYS + 1];
@@ -52,7 +52,7 @@ void split_child(BTreeNode* parent, int index, BTreeNode* child) {
     new_node->num_keys = MIN_KEYS;
     child->num_keys = MIN_KEYS;
 
-    // ºÎ¸ğ ³ëµå Á¶Á¤
+    // ë¶€ëª¨ ë…¸ë“œ ì¡°ì •
     for (int j = parent->num_keys; j >= index + 1; j--) {
         parent->children[j + 1] = parent->children[j];
     }
@@ -66,11 +66,11 @@ void split_child(BTreeNode* parent, int index, BTreeNode* child) {
     parent->keys[index] = child->keys[MIN_KEYS];
     parent->num_keys++;
 
-    printf("\n³ëµå ºĞÇÒ ¹ß»ı:\n");
-    printf("Áß°£ Å° %d¸¦ ºÎ¸ğ·Î ÀÌµ¿\n", child->keys[MIN_KEYS]);
+    printf("\në…¸ë“œ ë¶„í•  ë°œìƒ:\n");
+    printf("ì¤‘ê°„ í‚¤ %dë¥¼ ë¶€ëª¨ë¡œ ì´ë™\n", child->keys[MIN_KEYS]);
 }
 
-// Å° »ğÀÔ (ºñÀç±Í)
+// í‚¤ ì‚½ì… (ë¹„ì¬ê·€)
 void insert_non_full(BTreeNode* node, int key) {
     int i = node->num_keys - 1;
 
@@ -82,7 +82,7 @@ void insert_non_full(BTreeNode* node, int key) {
 
         node->keys[i + 1] = key;
         node->num_keys++;
-        printf("Å° %d¸¦ ¸®ÇÁ ³ëµå¿¡ »ğÀÔ\n", key);
+        printf("í‚¤ %dë¥¼ ë¦¬í”„ ë…¸ë“œì— ì‚½ì…\n", key);
     }
     else {
         while (i >= 0 && node->keys[i] > key) {
@@ -101,11 +101,11 @@ void insert_non_full(BTreeNode* node, int key) {
     }
 }
 
-// Æ®¸®¿¡ Å° »ğÀÔ
+// íŠ¸ë¦¬ì— í‚¤ ì‚½ì…
 BTreeNode* insert(BTreeNode* root, int key) {
-    printf("\nÅ° %d »ğÀÔ ½ÃÀÛ\n", key);
+    printf("\ní‚¤ %d ì‚½ì… ì‹œì‘\n", key);
 
-    // ·çÆ®°¡ °¡µæ Âù °æ¿ì
+    // ë£¨íŠ¸ê°€ ê°€ë“ ì°¬ ê²½ìš°
     if (root->num_keys == MAX_KEYS) {
         BTreeNode* new_root = create_node(false);
         new_root->children[0] = root;
@@ -117,7 +117,7 @@ BTreeNode* insert(BTreeNode* root, int key) {
         }
         insert_non_full(new_root->children[i], key);
 
-        printf("»õ·Î¿î ·çÆ® »ı¼º\n");
+        printf("ìƒˆë¡œìš´ ë£¨íŠ¸ ìƒì„±\n");
         return new_root;
     }
 
@@ -125,7 +125,7 @@ BTreeNode* insert(BTreeNode* root, int key) {
     return root;
 }
 
-// Æ®¸® Ãâ·Â
+// íŠ¸ë¦¬ ì¶œë ¥
 void print_tree(BTreeNode* root, int level) {
     if (!root) return;
 
@@ -142,7 +142,7 @@ void print_tree(BTreeNode* root, int level) {
     }
 }
 
-// Å° °Ë»ö
+// í‚¤ ê²€ìƒ‰
 bool search(BTreeNode* root, int key, int* level) {
     int i = 0;
     (*level)++;
@@ -152,19 +152,19 @@ bool search(BTreeNode* root, int key, int* level) {
     }
 
     if (i < root->num_keys && key == root->keys[i]) {
-        printf("Å° %d¸¦ ·¹º§ %d¿¡¼­ Ã£À½\n", key, *level);
+        printf("í‚¤ %dë¥¼ ë ˆë²¨ %dì—ì„œ ì°¾ìŒ\n", key, *level);
         return true;
     }
 
     if (root->is_leaf) {
-        printf("Å° %d¸¦ Ã£Áö ¸øÇÔ\n", key);
+        printf("í‚¤ %dë¥¼ ì°¾ì§€ ëª»í•¨\n", key);
         return false;
     }
 
     return search(root->children[i], key, level);
 }
 
-// ¸Ş¸ğ¸® ÇØÁ¦
+// ë©”ëª¨ë¦¬ í•´ì œ
 void free_tree(BTreeNode* root) {
     if (!root) return;
 
@@ -177,7 +177,7 @@ void free_tree(BTreeNode* root) {
     free(root);
 }
 
-// Æ®¸® Åë°è Ãâ·Â
+// íŠ¸ë¦¬ í†µê³„ ì¶œë ¥
 void print_tree_stats(BTreeNode* root, int* total_nodes, int* total_keys, int* height, int current_height) {
     if (!root) return;
 
@@ -195,47 +195,47 @@ void print_tree_stats(BTreeNode* root, int* total_nodes, int* total_keys, int* h
 int main(void) {
     BTreeNode* root = create_node(true);
 
-    printf("=== B-Æ®¸® Å×½ºÆ® (Â÷¼ö %d) ===\n", MAX_KEYS + 1);
-    printf("1: Å° »ğÀÔ\n");
-    printf("2: Å° °Ë»ö\n");
-    printf("3: Æ®¸® Ãâ·Â\n");
-    printf("4: Æ®¸® Åë°è\n");
-    printf("0: Á¾·á\n");
+    printf("=== B-íŠ¸ë¦¬ í…ŒìŠ¤íŠ¸ (ì°¨ìˆ˜ %d) ===\n", MAX_KEYS + 1);
+    printf("1: í‚¤ ì‚½ì…\n");
+    printf("2: í‚¤ ê²€ìƒ‰\n");
+    printf("3: íŠ¸ë¦¬ ì¶œë ¥\n");
+    printf("4: íŠ¸ë¦¬ í†µê³„\n");
+    printf("0: ì¢…ë£Œ\n");
 
     while (1) {
         int choice, value;
-        printf("\n¼±ÅÃ: ");
+        printf("\nì„ íƒ: ");
         scanf("%d", &choice);
 
         switch (choice) {
         case 1:
-            printf("»ğÀÔÇÒ Å°: ");
+            printf("ì‚½ì…í•  í‚¤: ");
             scanf("%d", &value);
             root = insert(root, value);
-            printf("\nÇöÀç Æ®¸® »óÅÂ:\n");
+            printf("\ní˜„ì¬ íŠ¸ë¦¬ ìƒíƒœ:\n");
             print_tree(root, 0);
             break;
 
         case 2:
-            printf("°Ë»öÇÒ Å°: ");
+            printf("ê²€ìƒ‰í•  í‚¤: ");
             scanf("%d", &value);
             int level = 0;
             search(root, value, &level);
             break;
 
         case 3:
-            printf("\nÇöÀç Æ®¸® »óÅÂ:\n");
+            printf("\ní˜„ì¬ íŠ¸ë¦¬ ìƒíƒœ:\n");
             print_tree(root, 0);
             break;
 
         case 4: {
             int total_nodes = 0, total_keys = 0, height = 0;
             print_tree_stats(root, &total_nodes, &total_keys, &height, 0);
-            printf("\n=== Æ®¸® Åë°è ===\n");
-            printf("ÃÑ ³ëµå ¼ö: %d\n", total_nodes);
-            printf("ÃÑ Å° ¼ö: %d\n", total_keys);
-            printf("Æ®¸® ³ôÀÌ: %d\n", height);
-            printf("Æò±Õ Å°/³ëµå: %.2f\n", (float)total_keys / total_nodes);
+            printf("\n=== íŠ¸ë¦¬ í†µê³„ ===\n");
+            printf("ì´ ë…¸ë“œ ìˆ˜: %d\n", total_nodes);
+            printf("ì´ í‚¤ ìˆ˜: %d\n", total_keys);
+            printf("íŠ¸ë¦¬ ë†’ì´: %d\n", height);
+            printf("í‰ê·  í‚¤/ë…¸ë“œ: %.2f\n", (float)total_keys / total_nodes);
             break;
         }
 
@@ -244,7 +244,7 @@ int main(void) {
             return 0;
 
         default:
-            printf("Àß¸øµÈ ¼±ÅÃ\n");
+            printf("ì˜ëª»ëœ ì„ íƒ\n");
         }
     }
 
@@ -252,34 +252,34 @@ int main(void) {
 }
 
 /*
-B-Æ®¸® ºĞ¼®
+B-íŠ¸ë¦¬ ë¶„ì„
 ========
 
-1. ½Ã°£ º¹Àâµµ
+1. ì‹œê°„ ë³µì¡ë„
 -----------
-- °Ë»ö: O(log_t n), t´Â Â÷¼ö
-- »ğÀÔ: O(log_t n)
-- »èÁ¦: O(log_t n)
+- ê²€ìƒ‰: O(log_t n), tëŠ” ì°¨ìˆ˜
+- ì‚½ì…: O(log_t n)
+- ì‚­ì œ: O(log_t n)
 
-2. °ø°£ È°¿ë
+2. ê³µê°„ í™œìš©
 ---------
-- ÃÖ¼Ò 50% °ø°£ È°¿ë
-- ³ëµå´ç t-1 ~ 2t-1°³ Å°
-- ±ÕÇü À¯Áö·Î ÀÏÁ¤ÇÑ ¼º´É
+- ìµœì†Œ 50% ê³µê°„ í™œìš©
+- ë…¸ë“œë‹¹ t-1 ~ 2t-1ê°œ í‚¤
+- ê· í˜• ìœ ì§€ë¡œ ì¼ì •í•œ ì„±ëŠ¥
 
-3. µğ½ºÅ© ÃÖÀûÈ­
+3. ë””ìŠ¤í¬ ìµœì í™”
 ------------
-- ³ëµå Å©±â = µğ½ºÅ© ºí·Ï
-- IO È½¼ö ÃÖ¼ÒÈ­
-- ¼øÂ÷ Á¢±Ù È¿À²Àû
+- ë…¸ë“œ í¬ê¸° = ë””ìŠ¤í¬ ë¸”ë¡
+- IO íšŸìˆ˜ ìµœì†Œí™”
+- ìˆœì°¨ ì ‘ê·¼ íš¨ìœ¨ì 
 
-4. È°¿ë ºĞ¾ß
+4. í™œìš© ë¶„ì•¼
 ---------
-- µ¥ÀÌÅÍº£ÀÌ½º ÀÎµ¦½Ì
-- ÆÄÀÏ ½Ã½ºÅÛ
-- ´ë¿ë·® µ¥ÀÌÅÍ Ã³¸®
+- ë°ì´í„°ë² ì´ìŠ¤ ì¸ë±ì‹±
+- íŒŒì¼ ì‹œìŠ¤í…œ
+- ëŒ€ìš©ëŸ‰ ë°ì´í„° ì²˜ë¦¬
 
-ÀÌ ±¸ÇöÀº ½ÇÁ¦ µ¥ÀÌÅÍº£ÀÌ½º
-½Ã½ºÅÛ¿¡¼­ »ç¿ëµÇ´Â ÀÎµ¦½ÌÀÇ
-±âº» ¿ø¸®¸¦ º¸¿©Áİ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ì‹¤ì œ ë°ì´í„°ë² ì´ìŠ¤
+ì‹œìŠ¤í…œì—ì„œ ì‚¬ìš©ë˜ëŠ” ì¸ë±ì‹±ì˜
+ê¸°ë³¸ ì›ë¦¬ë¥¼ ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

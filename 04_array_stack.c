@@ -3,22 +3,22 @@
 #include <stdbool.h>
 #include <string.h>
 
-// ½ºÅÃÀÇ ±âº» Å©±â¿Í È®Àå ºñÀ² ¼³Á¤
+// ìŠ¤íƒì˜ ê¸°ë³¸ í¬ê¸°ì™€ í™•ìž¥ ë¹„ìœ¨ ì„¤ì •
 #define INITIAL_CAPACITY 8
 #define GROWTH_FACTOR 2
 #define SHRINK_THRESHOLD 0.25
 
 typedef int ElementType;
 
-// ½ºÅÃ ±¸Á¶Ã¼ Á¤ÀÇ
+// ìŠ¤íƒ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct {
-    ElementType* elements;  // ¿ä¼Ò¸¦ ÀúÀåÇÒ µ¿Àû ¹è¿­
-    size_t size;           // ÇöÀç ÀúÀåµÈ ¿ä¼ÒÀÇ ¼ö
-    size_t capacity;       // ÇöÀç ÇÒ´çµÈ ¹è¿­ÀÇ Å©±â
+    ElementType* elements;  // ìš”ì†Œë¥¼ ì €ìž¥í•  ë™ì  ë°°ì—´
+    size_t size;           // í˜„ìž¬ ì €ìž¥ëœ ìš”ì†Œì˜ ìˆ˜
+    size_t capacity;       // í˜„ìž¬ í• ë‹¹ëœ ë°°ì—´ì˜ í¬ê¸°
 } Stack;
 
-/* ¿À·ù Ã³¸®¸¦ À§ÇÑ ¿­°ÅÇü Á¤ÀÇ
- * - ½ºÅÃ ¿¬»êÀÇ ´Ù¾çÇÑ °á°ú »óÅÂ¸¦ Ç¥Çö
+/* ì˜¤ë¥˜ ì²˜ë¦¬ë¥¼ ìœ„í•œ ì—´ê±°í˜• ì •ì˜
+ * - ìŠ¤íƒ ì—°ì‚°ì˜ ë‹¤ì–‘í•œ ê²°ê³¼ ìƒíƒœë¥¼ í‘œí˜„
  */
 typedef enum {
     STACK_OK,
@@ -27,9 +27,9 @@ typedef enum {
     STACK_MEMORY_ERROR
 } StackResult;
 
-/* ½ºÅÃ »ý¼º ÇÔ¼ö
- * - ÃÊ±â Å©±âÀÇ ½ºÅÃÀ» µ¿ÀûÀ¸·Î ÇÒ´çÇÏ°í ÃÊ±âÈ­
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ ½ºÅÃÀÇ Æ÷ÀÎÅÍ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* ìŠ¤íƒ ìƒì„± í•¨ìˆ˜
+ * - ì´ˆê¸° í¬ê¸°ì˜ ìŠ¤íƒì„ ë™ì ìœ¼ë¡œ í• ë‹¹í•˜ê³  ì´ˆê¸°í™”
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ ìŠ¤íƒì˜ í¬ì¸í„° ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 Stack* stack_create(void) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
@@ -48,41 +48,41 @@ Stack* stack_create(void) {
     return stack;
 }
 
-/* ½ºÅÃÀÌ ºñ¾îÀÖ´ÂÁö È®ÀÎ
- * - ¸Å°³º¯¼ö: stack - °Ë»çÇÒ ½ºÅÃ
- * - ¹ÝÈ¯°ª: ºñ¾îÀÖÀ¸¸é true, ¾Æ´Ï¸é false
+/* ìŠ¤íƒì´ ë¹„ì–´ìžˆëŠ”ì§€ í™•ì¸
+ * - ë§¤ê°œë³€ìˆ˜: stack - ê²€ì‚¬í•  ìŠ¤íƒ
+ * - ë°˜í™˜ê°’: ë¹„ì–´ìžˆìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool stack_is_empty(const Stack* stack) {
     return (stack->size == 0);
 }
 
-/* ½ºÅÃÀÌ °¡µæ Ã¡´ÂÁö È®ÀÎ
- * - ¸Å°³º¯¼ö: stack - °Ë»çÇÒ ½ºÅÃ
- * - ¹ÝÈ¯°ª: °¡µæ Ã¡À¸¸é true, ¾Æ´Ï¸é false
+/* ìŠ¤íƒì´ ê°€ë“ ì°¼ëŠ”ì§€ í™•ì¸
+ * - ë§¤ê°œë³€ìˆ˜: stack - ê²€ì‚¬í•  ìŠ¤íƒ
+ * - ë°˜í™˜ê°’: ê°€ë“ ì°¼ìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool stack_is_full(const Stack* stack) {
     return (stack->size == stack->capacity);
 }
 
-/* ½ºÅÃÀÇ ÇöÀç Å©±â ¹ÝÈ¯
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ
- * - ¹ÝÈ¯°ª: ½ºÅÃ¿¡ ÀúÀåµÈ ¿ä¼ÒÀÇ ¼ö
+/* ìŠ¤íƒì˜ í˜„ìž¬ í¬ê¸° ë°˜í™˜
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ
+ * - ë°˜í™˜ê°’: ìŠ¤íƒì— ì €ìž¥ëœ ìš”ì†Œì˜ ìˆ˜
  */
 size_t stack_size(const Stack* stack) {
     return stack->size;
 }
 
-/* ½ºÅÃÀÇ ¿ë·® ¹ÝÈ¯
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ
- * - ¹ÝÈ¯°ª: ½ºÅÃÀÇ ÇöÀç ÃÖ´ë ¿ë·®
+/* ìŠ¤íƒì˜ ìš©ëŸ‰ ë°˜í™˜
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ
+ * - ë°˜í™˜ê°’: ìŠ¤íƒì˜ í˜„ìž¬ ìµœëŒ€ ìš©ëŸ‰
  */
 size_t stack_capacity(const Stack* stack) {
     return stack->capacity;
 }
 
-/* ½ºÅÃ ¹è¿­ Å©±â Á¶Á¤
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ, new_capacity - »õ·Î¿î ¿ë·®
- * - ¹ÝÈ¯°ª: ¼º°ø ½Ã true, ½ÇÆÐ ½Ã false
+/* ìŠ¤íƒ ë°°ì—´ í¬ê¸° ì¡°ì •
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ, new_capacity - ìƒˆë¡œìš´ ìš©ëŸ‰
+ * - ë°˜í™˜ê°’: ì„±ê³µ ì‹œ true, ì‹¤íŒ¨ ì‹œ false
  */
 static bool stack_resize(Stack* stack, size_t new_capacity) {
     ElementType* new_elements = (ElementType*)realloc(stack->elements,
@@ -96,9 +96,9 @@ static bool stack_resize(Stack* stack, size_t new_capacity) {
     return true;
 }
 
-/* ½ºÅÃ¿¡ ¿ä¼Ò Ãß°¡ (push)
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ, value - Ãß°¡ÇÒ °ª
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â StackResult
+/* ìŠ¤íƒì— ìš”ì†Œ ì¶”ê°€ (push)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ, value - ì¶”ê°€í•  ê°’
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” StackResult
  */
 StackResult stack_push(Stack* stack, ElementType value) {
     if (stack_is_full(stack)) {
@@ -112,9 +112,9 @@ StackResult stack_push(Stack* stack, ElementType value) {
     return STACK_OK;
 }
 
-/* ½ºÅÃ¿¡¼­ ¿ä¼Ò Á¦°Å (pop)
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ, value - Á¦°ÅµÈ °ªÀ» ÀúÀåÇÒ Æ÷ÀÎÅÍ
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â StackResult
+/* ìŠ¤íƒì—ì„œ ìš”ì†Œ ì œê±° (pop)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ, value - ì œê±°ëœ ê°’ì„ ì €ìž¥í•  í¬ì¸í„°
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” StackResult
  */
 StackResult stack_pop(Stack* stack, ElementType* value) {
     if (stack_is_empty(stack)) {
@@ -123,22 +123,22 @@ StackResult stack_pop(Stack* stack, ElementType* value) {
 
     *value = stack->elements[--stack->size];
 
-    // ½ºÅÃ Å©±â°¡ ÃæºÐÈ÷ ÀÛ¾ÆÁö¸é ¹è¿­ Å©±â Ãà¼Ò
+    // ìŠ¤íƒ í¬ê¸°ê°€ ì¶©ë¶„ížˆ ìž‘ì•„ì§€ë©´ ë°°ì—´ í¬ê¸° ì¶•ì†Œ
     if (stack->size < stack->capacity * SHRINK_THRESHOLD &&
         stack->capacity > INITIAL_CAPACITY) {
         size_t new_capacity = stack->capacity / GROWTH_FACTOR;
         if (new_capacity < INITIAL_CAPACITY) {
             new_capacity = INITIAL_CAPACITY;
         }
-        stack_resize(stack, new_capacity);  // ½ÇÆÐÇØµµ °è¼Ó ÁøÇà
+        stack_resize(stack, new_capacity);  // ì‹¤íŒ¨í•´ë„ ê³„ì† ì§„í–‰
     }
 
     return STACK_OK;
 }
 
-/* ½ºÅÃÀÇ ¸Ç À§ ¿ä¼Ò È®ÀÎ (peek)
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ, value - °ªÀ» ÀúÀåÇÒ Æ÷ÀÎÅÍ
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â StackResult
+/* ìŠ¤íƒì˜ ë§¨ ìœ„ ìš”ì†Œ í™•ì¸ (peek)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ, value - ê°’ì„ ì €ìž¥í•  í¬ì¸í„°
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” StackResult
  */
 StackResult stack_peek(const Stack* stack, ElementType* value) {
     if (stack_is_empty(stack)) {
@@ -149,26 +149,26 @@ StackResult stack_peek(const Stack* stack, ElementType* value) {
     return STACK_OK;
 }
 
-/* ½ºÅÃ ÃÊ±âÈ­ (clear)
- * - ¸Å°³º¯¼ö: stack - ÃÊ±âÈ­ÇÒ ½ºÅÃ
+/* ìŠ¤íƒ ì´ˆê¸°í™” (clear)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ì´ˆê¸°í™”í•  ìŠ¤íƒ
  */
 void stack_clear(Stack* stack) {
     stack->size = 0;
     if (stack->capacity > INITIAL_CAPACITY) {
-        stack_resize(stack, INITIAL_CAPACITY);  // ½ÇÆÐÇØµµ °è¼Ó ÁøÇà
+        stack_resize(stack, INITIAL_CAPACITY);  // ì‹¤íŒ¨í•´ë„ ê³„ì† ì§„í–‰
     }
 }
 
-/* ½ºÅÃ ¸Þ¸ð¸® ÇØÁ¦
- * - ¸Å°³º¯¼ö: stack - ÇØÁ¦ÇÒ ½ºÅÃ
+/* ìŠ¤íƒ ë©”ëª¨ë¦¬ í•´ì œ
+ * - ë§¤ê°œë³€ìˆ˜: stack - í•´ì œí•  ìŠ¤íƒ
  */
 void stack_destroy(Stack* stack) {
     free(stack->elements);
     free(stack);
 }
 
-/* ½ºÅÃÀÇ ¸ðµç ¿ä¼Ò Ãâ·Â
- * - ¸Å°³º¯¼ö: stack - Ãâ·ÂÇÒ ½ºÅÃ
+/* ìŠ¤íƒì˜ ëª¨ë“  ìš”ì†Œ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: stack - ì¶œë ¥í•  ìŠ¤íƒ
  */
 void stack_print(const Stack* stack) {
     if (stack_is_empty(stack)) {
@@ -184,8 +184,8 @@ void stack_print(const Stack* stack) {
     printf("] BOTTOM\n");
 }
 
-/* ½ºÅÃÀÇ »óÅÂ Á¤º¸ Ãâ·Â
- * - ¸Å°³º¯¼ö: stack - »óÅÂ¸¦ È®ÀÎÇÒ ½ºÅÃ
+/* ìŠ¤íƒì˜ ìƒíƒœ ì •ë³´ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: stack - ìƒíƒœë¥¼ í™•ì¸í•  ìŠ¤íƒ
  */
 void stack_status(const Stack* stack) {
     printf("\nStack Status:\n");
@@ -197,7 +197,7 @@ void stack_status(const Stack* stack) {
     printf("- Usage: %.1f%%\n", usage);
 }
 
-/* ¸Þ´º Ãâ·Â ÇÔ¼ö */
+/* ë©”ë‰´ ì¶œë ¥ í•¨ìˆ˜ */
 void print_menu(void) {
     printf("\n=== Array-based Stack Menu ===\n");
     printf("1. Push\n");
@@ -212,8 +212,8 @@ void print_menu(void) {
     printf("Choice: ");
 }
 
-/* ¿¡·¯ ¸Þ½ÃÁö Ãâ·Â ÇÔ¼ö
- * - ¸Å°³º¯¼ö: result - ½ºÅÃ ¿¬»ê °á°ú
+/* ì—ëŸ¬ ë©”ì‹œì§€ ì¶œë ¥ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: result - ìŠ¤íƒ ì—°ì‚° ê²°ê³¼
  */
 void print_error(StackResult result) {
     switch (result) {
@@ -246,7 +246,7 @@ int main(void) {
         print_menu();
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input\n");
-            while (getchar() != '\n');  // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+            while (getchar() != '\n');  // ìž…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
             continue;
         }
 
@@ -319,85 +319,85 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ¹è¿­ ±â¹Ý ½ºÅÃÀÇ Æ¯Â¡
+1. ë°°ì—´ ê¸°ë°˜ ìŠ¤íƒì˜ íŠ¹ì§•
 ----------------------
-- ¿¬¼ÓµÈ ¸Þ¸ð¸® °ø°£ »ç¿ë
-- µ¿Àû Å©±â Á¶Á¤ °¡´É
-- ÀÎµ¦½º ±â¹Ý ºü¸¥ Á¢±Ù
-- ¸Þ¸ð¸® È¿À²Àû °ü¸®
+- ì—°ì†ëœ ë©”ëª¨ë¦¬ ê³µê°„ ì‚¬ìš©
+- ë™ì  í¬ê¸° ì¡°ì • ê°€ëŠ¥
+- ì¸ë±ìŠ¤ ê¸°ë°˜ ë¹ ë¥¸ ì ‘ê·¼
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì  ê´€ë¦¬
 
-2. ÁÖ¿ä ±¸Çö Æ¯Â¡
+2. ì£¼ìš” êµ¬í˜„ íŠ¹ì§•
 --------------
-- µ¿Àû ¹è¿­ »ç¿ë
-- ÀÚµ¿ Å©±â Á¶Á¤
-- È¿À²ÀûÀÎ ¸Þ¸ð¸® °ü¸®
-- »ó¼¼ÇÑ ¿À·ù Ã³¸®
+- ë™ì  ë°°ì—´ ì‚¬ìš©
+- ìžë™ í¬ê¸° ì¡°ì •
+- íš¨ìœ¨ì ì¸ ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ìƒì„¸í•œ ì˜¤ë¥˜ ì²˜ë¦¬
 
-3. ÇÙ½É µ¥ÀÌÅÍ ±¸Á¶
+3. í•µì‹¬ ë°ì´í„° êµ¬ì¡°
 ----------------
-Stack ±¸Á¶Ã¼:
-- elements: ¿ä¼Ò ÀúÀå ¹è¿­
-- size: ÇöÀç ¿ä¼Ò ¼ö
-- capacity: ÇöÀç ¿ë·®
+Stack êµ¬ì¡°ì²´:
+- elements: ìš”ì†Œ ì €ìž¥ ë°°ì—´
+- size: í˜„ìž¬ ìš”ì†Œ ìˆ˜
+- capacity: í˜„ìž¬ ìš©ëŸ‰
 
-4. ÁÖ¿ä ¿¬»ê
+4. ì£¼ìš” ì—°ì‚°
 ----------
-±âº» ¿¬»ê:
-- Push: O(1) - ÃÖ¾ÇÀÇ °æ¿ì O(n)
-- Pop: O(1) - ÃÖ¾ÇÀÇ °æ¿ì O(n)
+ê¸°ë³¸ ì—°ì‚°:
+- Push: O(1) - ìµœì•…ì˜ ê²½ìš° O(n)
+- Pop: O(1) - ìµœì•…ì˜ ê²½ìš° O(n)
 - Peek: O(1)
-º¸Á¶ ¿¬»ê:
+ë³´ì¡° ì—°ì‚°:
 - Clear: O(1)
 - IsEmpty: O(1)
 - IsFull: O(1)
 
-5. ¸Þ¸ð¸® °ü¸® Àü·«
+5. ë©”ëª¨ë¦¬ ê´€ë¦¬ ì „ëžµ
 ----------------
-- µ¿Àû Å©±â Á¶Á¤
-  * ¼ºÀå °è¼ö: 2¹è
-  * Ãà¼Ò ÀÓ°è°ª: 25%
-- ÃÊ±â ¿ë·®: 8
-- ÃÖ¼Ò ¿ë·® À¯Áö
+- ë™ì  í¬ê¸° ì¡°ì •
+  * ì„±ìž¥ ê³„ìˆ˜: 2ë°°
+  * ì¶•ì†Œ ìž„ê³„ê°’: 25%
+- ì´ˆê¸° ìš©ëŸ‰: 8
+- ìµœì†Œ ìš©ëŸ‰ ìœ ì§€
 
-6. ¿À·ù Ã³¸®
+6. ì˜¤ë¥˜ ì²˜ë¦¬
 ----------
-- ¼¼ºÐÈ­µÈ ¿À·ù »óÅÂ
-- NULL Æ÷ÀÎÅÍ °Ë»ç
-- ¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ Ã³¸®
-- °æ°è Á¶°Ç Ã³¸®
+- ì„¸ë¶„í™”ëœ ì˜¤ë¥˜ ìƒíƒœ
+- NULL í¬ì¸í„° ê²€ì‚¬
+- ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨ ì²˜ë¦¬
+- ê²½ê³„ ì¡°ê±´ ì²˜ë¦¬
 
-7. ÃÖÀûÈ­ Æ¯Â¡
+7. ìµœì í™” íŠ¹ì§•
 ------------
-- »ó¼ö ½Ã°£ Á¢±Ù
-- È¿À²ÀûÀÎ ¸Þ¸ð¸® »ç¿ë
-- ÀÚµ¿ Å©±â Á¶Á¤
-- Ä³½Ã Ä£È­Àû ±¸Á¶
+- ìƒìˆ˜ ì‹œê°„ ì ‘ê·¼
+- íš¨ìœ¨ì ì¸ ë©”ëª¨ë¦¬ ì‚¬ìš©
+- ìžë™ í¬ê¸° ì¡°ì •
+- ìºì‹œ ì¹œí™”ì  êµ¬ì¡°
 
-8. ¾ÈÀü¼º °í·Á»çÇ×
+8. ì•ˆì „ì„± ê³ ë ¤ì‚¬í•­
 ---------------
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- ¹è¿­ °æ°è °Ë»ç
-- Æ÷ÀÎÅÍ À¯È¿¼º °Ë»ç
-- ÀÚ¿ø Á¤¸® º¸Àå
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- ë°°ì—´ ê²½ê³„ ê²€ì‚¬
+- í¬ì¸í„° ìœ íš¨ì„± ê²€ì‚¬
+- ìžì› ì •ë¦¬ ë³´ìž¥
 
-9. ±³À°Àû °¡Ä¡
+9. êµìœ¡ì  ê°€ì¹˜
 ------------
-- ¹è¿­ µ¿ÀÛ ÀÌÇØ
-- ¸Þ¸ð¸® °ü¸® ÇÐ½À
-- LIFO ¿ø¸® ÇÐ½À
-- µ¿Àû ÇÒ´ç ÀÌÇØ
+- ë°°ì—´ ë™ìž‘ ì´í•´
+- ë©”ëª¨ë¦¬ ê´€ë¦¬ í•™ìŠµ
+- LIFO ì›ë¦¬ í•™ìŠµ
+- ë™ì  í• ë‹¹ ì´í•´
 
-10. ½Ç¹«Àû Æ¯Â¡
+10. ì‹¤ë¬´ì  íŠ¹ì§•
 -------------
-- °ß°íÇÑ ±¸Çö
-- È®Àå °¡´ÉÇÑ ±¸Á¶
-- ¼º´É ÃÖÀûÈ­
-- À¯Áöº¸¼ö ¿ëÀÌ¼º
+- ê²¬ê³ í•œ êµ¬í˜„
+- í™•ìž¥ ê°€ëŠ¥í•œ êµ¬ì¡°
+- ì„±ëŠ¥ ìµœì í™”
+- ìœ ì§€ë³´ìˆ˜ ìš©ì´ì„±
 
-ÀÌ ±¸ÇöÀº ±³À°¿ëÀ¸·Îµµ ÀûÇÕÇÏ¸ç,
-½ÇÁ¦ ÇÁ·ÎÁ§Æ®¿¡¼­µµ È°¿ëÇÒ ¼ö ÀÖ´Â
-¾ÈÁ¤ÀûÀÌ°í È¿À²ÀûÀÎ ½ºÅÃÀ» Á¦°øÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ êµìœ¡ìš©ìœ¼ë¡œë„ ì í•©í•˜ë©°,
+ì‹¤ì œ í”„ë¡œì íŠ¸ì—ì„œë„ í™œìš©í•  ìˆ˜ ìžˆëŠ”
+ì•ˆì •ì ì´ê³  íš¨ìœ¨ì ì¸ ìŠ¤íƒì„ ì œê³µí•©ë‹ˆë‹¤.
 */

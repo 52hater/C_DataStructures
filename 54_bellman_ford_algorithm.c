@@ -3,31 +3,31 @@
 #include <limits.h>
 
 /*
-¾Ë°í¸®Áò ºÐ·ù: ±×·¡ÇÁ ¾Ë°í¸®Áò
-ÇÏÀ§ ºÐ·ù: ÃÖ´Ü °æ·Î ¾Ë°í¸®Áò
-³­ÀÌµµ: Áß»ó
-°ü·Ã ¾Ë°í¸®Áò: ´ÙÀÍ½ºÆ®¶ó, ÇÃ·ÎÀÌµå-¿ö¼È
+ì•Œê³ ë¦¬ì¦˜ ë¶„ë¥˜: ê·¸ëž˜í”„ ì•Œê³ ë¦¬ì¦˜
+í•˜ìœ„ ë¶„ë¥˜: ìµœë‹¨ ê²½ë¡œ ì•Œê³ ë¦¬ì¦˜
+ë‚œì´ë„: ì¤‘ìƒ
+ê´€ë ¨ ì•Œê³ ë¦¬ì¦˜: ë‹¤ìµìŠ¤íŠ¸ë¼, í”Œë¡œì´ë“œ-ì›Œì…œ
 
-º§¸¸-Æ÷µå ¾Ë°í¸®Áò:
-- À½¼ö °¡ÁßÄ¡ Çã¿ë
-- À½¼ö »çÀÌÅ¬ °¨Áö °¡´É
-- ´ÜÀÏ Ãâ¹ßÁ¡ ÃÖ´Ü °æ·Î
-- O(VE) ½Ã°£º¹Àâµµ
+ë²¨ë§Œ-í¬ë“œ ì•Œê³ ë¦¬ì¦˜:
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ í—ˆìš©
+- ìŒìˆ˜ ì‚¬ì´í´ ê°ì§€ ê°€ëŠ¥
+- ë‹¨ì¼ ì¶œë°œì  ìµœë‹¨ ê²½ë¡œ
+- O(VE) ì‹œê°„ë³µìž¡ë„
 */
 
 typedef struct {
-    int source;     // ½ÃÀÛ Á¤Á¡
-    int dest;       // µµÂø Á¤Á¡
-    int weight;     // °¡ÁßÄ¡
+    int source;     // ì‹œìž‘ ì •ì 
+    int dest;       // ë„ì°© ì •ì 
+    int weight;     // ê°€ì¤‘ì¹˜
 } Edge;
 
 typedef struct {
-    Edge* edges;    // °£¼± ¹è¿­
-    int V;          // Á¤Á¡ ¼ö
-    int E;          // °£¼± ¼ö
+    Edge* edges;    // ê°„ì„  ë°°ì—´
+    int V;          // ì •ì  ìˆ˜
+    int E;          // ê°„ì„  ìˆ˜
 } Graph;
 
-// ±×·¡ÇÁ »ý¼º
+// ê·¸ëž˜í”„ ìƒì„±
 Graph* create_graph(int V, int E) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     graph->V = V;
@@ -36,7 +36,7 @@ Graph* create_graph(int V, int E) {
     return graph;
 }
 
-// °Å¸® ¹è¿­°ú °æ·Î ¹è¿­ ÃÊ±âÈ­
+// ê±°ë¦¬ ë°°ì—´ê³¼ ê²½ë¡œ ë°°ì—´ ì´ˆê¸°í™”
 void initialize_single_source(Graph* graph, int* dist, int* prev, int source) {
     for (int i = 0; i < graph->V; i++) {
         dist[i] = INT_MAX;
@@ -45,30 +45,30 @@ void initialize_single_source(Graph* graph, int* dist, int* prev, int source) {
     dist[source] = 0;
 }
 
-// °æ·Î Ãâ·Â
+// ê²½ë¡œ ì¶œë ¥
 void print_path(int* prev, int vertex) {
     if (vertex == -1) return;
     print_path(prev, prev[vertex]);
     printf("%d ", vertex);
 }
 
-// º§¸¸-Æ÷µå ¾Ë°í¸®Áò
+// ë²¨ë§Œ-í¬ë“œ ì•Œê³ ë¦¬ì¦˜
 bool bellman_ford(Graph* graph, int source, bool print_steps) {
     int* dist = (int*)malloc(graph->V * sizeof(int));
     int* prev = (int*)malloc(graph->V * sizeof(int));
 
     initialize_single_source(graph, dist, prev, source);
 
-    printf("\n=== º§¸¸-Æ÷µå ¾Ë°í¸®Áò ½ÇÇà ===\n");
-    printf("Ãâ¹ß Á¤Á¡: %d\n", source);
+    printf("\n=== ë²¨ë§Œ-í¬ë“œ ì•Œê³ ë¦¬ì¦˜ ì‹¤í–‰ ===\n");
+    printf("ì¶œë°œ ì •ì : %d\n", source);
 
-    // Á¤Á¡ ¼ö - 1¹ø ¹Ýº¹
+    // ì •ì  ìˆ˜ - 1ë²ˆ ë°˜ë³µ
     for (int i = 1; i <= graph->V - 1; i++) {
         if (print_steps) {
-            printf("\n¹Ýº¹ %d:\n", i);
+            printf("\në°˜ë³µ %d:\n", i);
         }
 
-        // ¸ðµç °£¼±¿¡ ´ëÇØ ¿ÏÈ­(relax) ¼öÇà
+        // ëª¨ë“  ê°„ì„ ì— ëŒ€í•´ ì™„í™”(relax) ìˆ˜í–‰
         for (int j = 0; j < graph->E; j++) {
             int u = graph->edges[j].source;
             int v = graph->edges[j].dest;
@@ -80,14 +80,14 @@ bool bellman_ford(Graph* graph, int source, bool print_steps) {
                 prev[v] = u;
 
                 if (print_steps) {
-                    printf("°£¼± %d->%d ¿ÏÈ­: °Å¸®[%d] = %d\n",
+                    printf("ê°„ì„  %d->%d ì™„í™”: ê±°ë¦¬[%d] = %d\n",
                         u, v, v, dist[v]);
                 }
             }
         }
     }
 
-    // À½¼ö »çÀÌÅ¬ °Ë»ç
+    // ìŒìˆ˜ ì‚¬ì´í´ ê²€ì‚¬
     for (int i = 0; i < graph->E; i++) {
         int u = graph->edges[i].source;
         int v = graph->edges[i].dest;
@@ -95,18 +95,18 @@ bool bellman_ford(Graph* graph, int source, bool print_steps) {
 
         if (dist[u] != INT_MAX &&
             dist[u] + weight < dist[v]) {
-            printf("\n°æ°í: À½¼ö »çÀÌÅ¬ ¹ß°ß!\n");
+            printf("\nê²½ê³ : ìŒìˆ˜ ì‚¬ì´í´ ë°œê²¬!\n");
             free(dist);
             free(prev);
             return false;
         }
     }
 
-    // °á°ú Ãâ·Â
-    printf("\n=== ÃÖ´Ü °æ·Î °á°ú ===\n");
+    // ê²°ê³¼ ì¶œë ¥
+    printf("\n=== ìµœë‹¨ ê²½ë¡œ ê²°ê³¼ ===\n");
     for (int i = 0; i < graph->V; i++) {
         if (i != source && dist[i] != INT_MAX) {
-            printf("\n%d¿¡¼­ %d±îÁöÀÇ ÃÖ´Ü °æ·Î (°Å¸®: %d):\n",
+            printf("\n%dì—ì„œ %dê¹Œì§€ì˜ ìµœë‹¨ ê²½ë¡œ (ê±°ë¦¬: %d):\n",
                 source, i, dist[i]);
             print_path(prev, i);
             printf("\n");
@@ -118,7 +118,7 @@ bool bellman_ford(Graph* graph, int source, bool print_steps) {
     return true;
 }
 
-// ¸Þ¸ð¸® ÇØÁ¦
+// ë©”ëª¨ë¦¬ í•´ì œ
 void free_graph(Graph* graph) {
     free(graph->edges);
     free(graph);
@@ -127,14 +127,14 @@ void free_graph(Graph* graph) {
 int main(void) {
     int V, E, source;
 
-    printf("Á¤Á¡ ¼ö ÀÔ·Â: ");
+    printf("ì •ì  ìˆ˜ ìž…ë ¥: ");
     scanf("%d", &V);
-    printf("°£¼± ¼ö ÀÔ·Â: ");
+    printf("ê°„ì„  ìˆ˜ ìž…ë ¥: ");
     scanf("%d", &E);
 
     Graph* graph = create_graph(V, E);
 
-    printf("\n°£¼± Á¤º¸ ÀÔ·Â (½ÃÀÛÁ¡ µµÂøÁ¡ °¡ÁßÄ¡):\n");
+    printf("\nê°„ì„  ì •ë³´ ìž…ë ¥ (ì‹œìž‘ì  ë„ì°©ì  ê°€ì¤‘ì¹˜):\n");
     for (int i = 0; i < E; i++) {
         scanf("%d %d %d",
             &graph->edges[i].source,
@@ -142,18 +142,18 @@ int main(void) {
             &graph->edges[i].weight);
     }
 
-    printf("\n½ÃÀÛ Á¤Á¡ ÀÔ·Â: ");
+    printf("\nì‹œìž‘ ì •ì  ìž…ë ¥: ");
     scanf("%d", &source);
 
     bool print_steps;
-    printf("°úÁ¤À» Ãâ·ÂÇÏ½Ã°Ú½À´Ï±î? (1/0): ");
+    printf("ê³¼ì •ì„ ì¶œë ¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (1/0): ");
     scanf("%d", &print_steps);
 
     if (bellman_ford(graph, source, print_steps)) {
-        printf("\n¸ðµç ÃÖ´Ü °æ·Î¸¦ Ã£¾Ò½À´Ï´Ù.\n");
+        printf("\nëª¨ë“  ìµœë‹¨ ê²½ë¡œë¥¼ ì°¾ì•˜ìŠµë‹ˆë‹¤.\n");
     }
     else {
-        printf("\nÀ½¼ö »çÀÌÅ¬ÀÌ Á¸ÀçÇÏ¿© ÃÖ´Ü °æ·Î¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.\n");
+        printf("\nìŒìˆ˜ ì‚¬ì´í´ì´ ì¡´ìž¬í•˜ì—¬ ìµœë‹¨ ê²½ë¡œë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.\n");
     }
 
     free_graph(graph);
@@ -161,54 +161,54 @@ int main(void) {
 }
 
 /*
-º§¸¸-Æ÷µå ¾Ë°í¸®Áò ºÐ¼®
+ë²¨ë§Œ-í¬ë“œ ì•Œê³ ë¦¬ì¦˜ ë¶„ì„
 ===================
 
-1. ÀÛµ¿ ¿ø¸®
+1. ìž‘ë™ ì›ë¦¬
 ----------
-- ¸ðµç °£¼±¿¡ ´ëÇØ V-1¹ø ¹Ýº¹
-- ¸Å ¹Ýº¹¸¶´Ù ¸ðµç °£¼± ¿ÏÈ­
-- À½¼ö »çÀÌÅ¬ °ËÃâ °¡´É
+- ëª¨ë“  ê°„ì„ ì— ëŒ€í•´ V-1ë²ˆ ë°˜ë³µ
+- ë§¤ ë°˜ë³µë§ˆë‹¤ ëª¨ë“  ê°„ì„  ì™„í™”
+- ìŒìˆ˜ ì‚¬ì´í´ ê²€ì¶œ ê°€ëŠ¥
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µìž¡ë„
 -----------
-- ±âº» µ¿ÀÛ: O(VE)
-- À½¼ö »çÀÌÅ¬ °Ë»ç: O(E)
-- ÃÑ º¹Àâµµ: O(VE)
+- ê¸°ë³¸ ë™ìž‘: O(VE)
+- ìŒìˆ˜ ì‚¬ì´í´ ê²€ì‚¬: O(E)
+- ì´ ë³µìž¡ë„: O(VE)
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µìž¡ë„
 -----------
-- °Å¸® ¹è¿­: O(V)
-- ÀÌÀü Á¤Á¡ ¹è¿­: O(V)
-- ÃÑ °ø°£: O(V)
+- ê±°ë¦¬ ë°°ì—´: O(V)
+- ì´ì „ ì •ì  ë°°ì—´: O(V)
+- ì´ ê³µê°„: O(V)
 
-4. ´ÙÀÍ½ºÆ®¶ó¿ÍÀÇ Â÷ÀÌ
+4. ë‹¤ìµìŠ¤íŠ¸ë¼ì™€ì˜ ì°¨ì´
 -----------------
-º§¸¸-Æ÷µå:
-- À½¼ö °¡ÁßÄ¡ Ã³¸® °¡´É
-- À½¼ö »çÀÌÅ¬ °¨Áö
-- O(VE) ½Ã°£º¹Àâµµ
+ë²¨ë§Œ-í¬ë“œ:
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ ì²˜ë¦¬ ê°€ëŠ¥
+- ìŒìˆ˜ ì‚¬ì´í´ ê°ì§€
+- O(VE) ì‹œê°„ë³µìž¡ë„
 
-´ÙÀÍ½ºÆ®¶ó:
-- À½¼ö °¡ÁßÄ¡ ºÒ°¡
-- ´õ ºü¸¥ O(E log V)
-- ¿ì¼±¼øÀ§ Å¥ »ç¿ë
+ë‹¤ìµìŠ¤íŠ¸ë¼:
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ ë¶ˆê°€
+- ë” ë¹ ë¥¸ O(E log V)
+- ìš°ì„ ìˆœìœ„ í ì‚¬ìš©
 
-5. ½ÇÁ¦ ÀÀ¿ë
+5. ì‹¤ì œ ì‘ìš©
 ---------
-- ³×Æ®¿öÅ© ¶ó¿ìÆÃ
-- °Å¸® º¤ÅÍ ÇÁ·ÎÅäÄÝ
-- À½¼ö ºñ¿ëÀÌ ÀÖ´Â ½Ã½ºÅÛ
-- ÀçÁ¤ °Å·¡ ½Ã½ºÅÛ
+- ë„¤íŠ¸ì›Œí¬ ë¼ìš°íŒ…
+- ê±°ë¦¬ ë²¡í„° í”„ë¡œí† ì½œ
+- ìŒìˆ˜ ë¹„ìš©ì´ ìžˆëŠ” ì‹œìŠ¤í…œ
+- ìž¬ì • ê±°ëž˜ ì‹œìŠ¤í…œ
 
-6. ÃÖÀûÈ­ ±â¹ý
+6. ìµœì í™” ê¸°ë²•
 -----------
-- Á¶±â Á¾·á Á¶°Ç
-- SPFA ¾Ë°í¸®Áò
-- º´·ÄÈ­ °¡´É¼º
+- ì¡°ê¸° ì¢…ë£Œ ì¡°ê±´
+- SPFA ì•Œê³ ë¦¬ì¦˜
+- ë³‘ë ¬í™” ê°€ëŠ¥ì„±
 
-ÀÌ ±¸ÇöÀº À½¼ö °¡ÁßÄ¡¸¦
-Æ÷ÇÔÇÏ´Â ±×·¡ÇÁ¿¡¼­ÀÇ
-ÃÖ´Ü °æ·Î Ã£±âÀÇ ±âº»À»
-º¸¿©ÁÝ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ìŒìˆ˜ ê°€ì¤‘ì¹˜ë¥¼
+í¬í•¨í•˜ëŠ” ê·¸ëž˜í”„ì—ì„œì˜
+ìµœë‹¨ ê²½ë¡œ ì°¾ê¸°ì˜ ê¸°ë³¸ì„
+ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

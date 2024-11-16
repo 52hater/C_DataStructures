@@ -3,19 +3,19 @@
 #include <stdbool.h>
 
 /*
-8-Queen ¹®Á¦:
-- 8x8 Ã¼½ºÆÇ¿¡ 8°³ÀÇ ÄıÀ» ¹èÄ¡
-- ¼­·Î °ø°İÇÒ ¼ö ¾ø´Â À§Ä¡ Ã£±â
-- ¹éÆ®·¡Å·ÀÇ ´ëÇ¥Àû ¿¹Á¦
+8-Queen ë¬¸ì œ:
+- 8x8 ì²´ìŠ¤íŒì— 8ê°œì˜ í€¸ì„ ë°°ì¹˜
+- ì„œë¡œ ê³µê²©í•  ìˆ˜ ì—†ëŠ” ìœ„ì¹˜ ì°¾ê¸°
+- ë°±íŠ¸ë˜í‚¹ì˜ ëŒ€í‘œì  ì˜ˆì œ
 */
 
 typedef struct {
-    int* board;       // Ã¼½ºÆÇ (°¢ ¿­ÀÇ Äı À§Ä¡)
-    int size;         // º¸µå Å©±â
-    int solutions;    // Ã£Àº ÇØ´ä ¼ö
+    int* board;       // ì²´ìŠ¤íŒ (ê° ì—´ì˜ í€¸ ìœ„ì¹˜)
+    int size;         // ë³´ë“œ í¬ê¸°
+    int solutions;    // ì°¾ì€ í•´ë‹µ ìˆ˜
 } ChessBoard;
 
-// Ã¼½ºÆÇ »ı¼º
+// ì²´ìŠ¤íŒ ìƒì„±
 ChessBoard* create_board(int size) {
     ChessBoard* board = (ChessBoard*)malloc(sizeof(ChessBoard));
     board->board = (int*)calloc(size, sizeof(int));
@@ -24,9 +24,9 @@ ChessBoard* create_board(int size) {
     return board;
 }
 
-// Ã¼½ºÆÇ Ãâ·Â
+// ì²´ìŠ¤íŒ ì¶œë ¥
 void print_board(ChessBoard* board, int solution_number) {
-    printf("\n=== ÇØ´ä #%d ===\n", solution_number);
+    printf("\n=== í•´ë‹µ #%d ===\n", solution_number);
     printf("   ");
     for (int i = 0; i < board->size; i++)
         printf(" %d", i);
@@ -41,23 +41,23 @@ void print_board(ChessBoard* board, int solution_number) {
     }
 }
 
-// À¯È¿¼º °Ë»ç
+// ìœ íš¨ì„± ê²€ì‚¬
 bool is_safe(ChessBoard* board, int row, int col) {
-    // °°Àº Çà °Ë»ç´Â ºÒÇÊ¿ä (°¢ Çà¿¡ ÇÏ³ªÀÇ Äı¸¸ ¹èÄ¡)
+    // ê°™ì€ í–‰ ê²€ì‚¬ëŠ” ë¶ˆí•„ìš” (ê° í–‰ì— í•˜ë‚˜ì˜ í€¸ë§Œ ë°°ì¹˜)
 
-    // °°Àº ¿­ °Ë»ç
+    // ê°™ì€ ì—´ ê²€ì‚¬
     for (int i = 0; i < row; i++) {
         if (board->board[i] == col)
             return false;
     }
 
-    // ¿ŞÂÊ ´ë°¢¼± °Ë»ç
+    // ì™¼ìª½ ëŒ€ê°ì„  ê²€ì‚¬
     for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--) {
         if (board->board[i] == j)
             return false;
     }
 
-    // ¿À¸¥ÂÊ ´ë°¢¼± °Ë»ç
+    // ì˜¤ë¥¸ìª½ ëŒ€ê°ì„  ê²€ì‚¬
     for (int i = row - 1, j = col + 1; i >= 0 && j < board->size; i--, j++) {
         if (board->board[i] == j)
             return false;
@@ -66,64 +66,64 @@ bool is_safe(ChessBoard* board, int row, int col) {
     return true;
 }
 
-// ¸ğµç ÇØ Ã£±â
+// ëª¨ë“  í•´ ì°¾ê¸°
 void solve_n_queens_util(ChessBoard* board, int row, bool show_steps) {
-    // ¸ğµç ÇàÀ» Ã³¸®ÇßÀ¸¸é ÇØ´ä Ãâ·Â
+    // ëª¨ë“  í–‰ì„ ì²˜ë¦¬í–ˆìœ¼ë©´ í•´ë‹µ ì¶œë ¥
     if (row == board->size) {
         board->solutions++;
         print_board(board, board->solutions);
         return;
     }
 
-    // ÇöÀç ÇàÀÇ °¢ ¿­¿¡ Äı ¹èÄ¡ ½Ãµµ
+    // í˜„ì¬ í–‰ì˜ ê° ì—´ì— í€¸ ë°°ì¹˜ ì‹œë„
     for (int col = 0; col < board->size; col++) {
         if (is_safe(board, row, col)) {
             board->board[row] = col;
 
             if (show_steps) {
-                printf("\nÇöÀç »óÅÂ (Çà %d, ¿­ %d):\n", row, col);
+                printf("\ní˜„ì¬ ìƒíƒœ (í–‰ %d, ì—´ %d):\n", row, col);
                 print_board(board, 0);
             }
 
             solve_n_queens_util(board, row + 1, show_steps);
 
-            // ¹éÆ®·¡Å·
+            // ë°±íŠ¸ë˜í‚¹
             board->board[row] = 0;
 
             if (show_steps) {
-                printf("\n¹éÆ®·¡Å· (Çà %d¿¡¼­):\n", row);
+                printf("\në°±íŠ¸ë˜í‚¹ (í–‰ %dì—ì„œ):\n", row);
                 print_board(board, 0);
             }
         }
     }
 }
 
-// N-Queen ¹®Á¦ ÇØ°á
+// N-Queen ë¬¸ì œ í•´ê²°
 void solve_n_queens(ChessBoard* board, bool show_steps) {
     solve_n_queens_util(board, 0, show_steps);
-    printf("\nÃÑ %d°³ÀÇ ÇØ´äÀ» Ã£¾Ò½À´Ï´Ù.\n", board->solutions);
+    printf("\nì´ %dê°œì˜ í•´ë‹µì„ ì°¾ì•˜ìŠµë‹ˆë‹¤.\n", board->solutions);
 }
 
-// ¸Ş¸ğ¸® ÇØÁ¦
+// ë©”ëª¨ë¦¬ í•´ì œ
 void destroy_board(ChessBoard* board) {
     free(board->board);
     free(board);
 }
 
-// ´ëÄª ÇØ »ı¼º
+// ëŒ€ì¹­ í•´ ìƒì„±
 void generate_symmetric_solutions(ChessBoard* board) {
-    printf("\n=== ´ëÄª ÇØ´ä »ı¼º ===\n");
+    printf("\n=== ëŒ€ì¹­ í•´ë‹µ ìƒì„± ===\n");
 
-    // ¼öÆò ´ëÄª
-    printf("\n¼öÆò ´ëÄª:\n");
+    // ìˆ˜í‰ ëŒ€ì¹­
+    printf("\nìˆ˜í‰ ëŒ€ì¹­:\n");
     for (int i = 0; i < board->size; i++) {
         int temp = board->board[i];
         board->board[i] = board->size - 1 - temp;
     }
     print_board(board, board->solutions + 1);
 
-    // ¼öÁ÷ ´ëÄª
-    printf("\n¼öÁ÷ ´ëÄª:\n");
+    // ìˆ˜ì§ ëŒ€ì¹­
+    printf("\nìˆ˜ì§ ëŒ€ì¹­:\n");
     for (int i = 0; i < board->size / 2; i++) {
         int temp = board->board[i];
         board->board[i] = board->board[board->size - 1 - i];
@@ -136,20 +136,20 @@ int main(void) {
     int size;
     bool show_steps;
 
-    printf("Ã¼½ºÆÇ Å©±â ÀÔ·Â (N-Queen ¹®Á¦): ");
+    printf("ì²´ìŠ¤íŒ í¬ê¸° ì…ë ¥ (N-Queen ë¬¸ì œ): ");
     scanf("%d", &size);
 
-    printf("Ç®ÀÌ °úÁ¤À» º¸½Ã°Ú½À´Ï±î? (1: ¿¹, 0: ¾Æ´Ï¿À): ");
+    printf("í’€ì´ ê³¼ì •ì„ ë³´ì‹œê² ìŠµë‹ˆê¹Œ? (1: ì˜ˆ, 0: ì•„ë‹ˆì˜¤): ");
     scanf("%d", &show_steps);
 
     ChessBoard* board = create_board(size);
 
-    printf("\n=== %d-Queen ¹®Á¦ ÇØ°á ½ÃÀÛ ===\n", size);
+    printf("\n=== %d-Queen ë¬¸ì œ í•´ê²° ì‹œì‘ ===\n", size);
     solve_n_queens(board, show_steps);
 
     if (board->solutions > 0) {
         char generate_sym;
-        printf("\nÃ¹ ¹øÂ° ÇØ´ä¿¡ ´ëÇÑ ´ëÄª ÇØ´äÀ» »ı¼ºÇÏ½Ã°Ú½À´Ï±î? (y/n): ");
+        printf("\nì²« ë²ˆì§¸ í•´ë‹µì— ëŒ€í•œ ëŒ€ì¹­ í•´ë‹µì„ ìƒì„±í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (y/n): ");
         scanf(" %c", &generate_sym);
 
         if (generate_sym == 'y' || generate_sym == 'Y') {
@@ -162,38 +162,38 @@ int main(void) {
 }
 
 /*
-N-Queen ¹®Á¦ÀÇ Æ¯¼º
+N-Queen ë¬¸ì œì˜ íŠ¹ì„±
 ===============
 
-1. ¹®Á¦ÀÇ Æ¯Â¡
+1. ë¬¸ì œì˜ íŠ¹ì§•
 ----------
-- Á¦¾à ÃæÁ· ¹®Á¦
-- ´ëÄª¼º Á¸Àç
-- ÇØÀÇ °³¼ö: 8-QueenÀÇ °æ¿ì 92°³
-- ºê·çÆ® Æ÷½º·Î´Â ºÒ°¡´É
+- ì œì•½ ì¶©ì¡± ë¬¸ì œ
+- ëŒ€ì¹­ì„± ì¡´ì¬
+- í•´ì˜ ê°œìˆ˜: 8-Queenì˜ ê²½ìš° 92ê°œ
+- ë¸Œë£¨íŠ¸ í¬ìŠ¤ë¡œëŠ” ë¶ˆê°€ëŠ¥
 
-2. ¹éÆ®·¡Å· Àû¿ë
+2. ë°±íŠ¸ë˜í‚¹ ì ìš©
 ------------
-- ¿­ ´ÜÀ§ ¹èÄ¡
-- À¯¸Á¼º °Ë»ç
-- Áï°¢ÀûÀÎ °¡ÁöÄ¡±â
-- »óÅÂ º¹¿ø
+- ì—´ ë‹¨ìœ„ ë°°ì¹˜
+- ìœ ë§ì„± ê²€ì‚¬
+- ì¦‰ê°ì ì¸ ê°€ì§€ì¹˜ê¸°
+- ìƒíƒœ ë³µì›
 
-3. ½Ã°£ º¹Àâµµ
+3. ì‹œê°„ ë³µì¡ë„
 ----------
-- ÃÖ¾Ç: O(N!)
-- °¡ÁöÄ¡±â·Î ½ÇÁ¦·Î´Â ´õ È¿À²Àû
-- Å©±â¿¡ µû¶ó ±âÇÏ±Ş¼öÀû Áõ°¡
+- ìµœì•…: O(N!)
+- ê°€ì§€ì¹˜ê¸°ë¡œ ì‹¤ì œë¡œëŠ” ë” íš¨ìœ¨ì 
+- í¬ê¸°ì— ë”°ë¼ ê¸°í•˜ê¸‰ìˆ˜ì  ì¦ê°€
 
-4. ÃÖÀûÈ­ ±â¹ı
+4. ìµœì í™” ê¸°ë²•
 ----------
-- ´ëÄª¼º È°¿ë
-- Ã¹ Çà ÃÖÀûÈ­
-- ºñÆ®¸¶½ºÅ© È°¿ë
-- º´·ÄÈ­ °¡´É
+- ëŒ€ì¹­ì„± í™œìš©
+- ì²« í–‰ ìµœì í™”
+- ë¹„íŠ¸ë§ˆìŠ¤í¬ í™œìš©
+- ë³‘ë ¬í™” ê°€ëŠ¥
 
-ÀÌ ±¸ÇöÀº ¹éÆ®·¡Å·ÀÇ °í±Ş
-ÀÀ¿ëÀ» º¸¿©ÁÖ¸ç, Á¦¾à Á¶°Ç°ú
-»óÅÂ °ø°£ Å½»öÀÇ È¿À²¼ºÀ»
-ÀÌÇØÇÏ´Â µ¥ µµ¿òÀÌ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë°±íŠ¸ë˜í‚¹ì˜ ê³ ê¸‰
+ì‘ìš©ì„ ë³´ì—¬ì£¼ë©°, ì œì•½ ì¡°ê±´ê³¼
+ìƒíƒœ ê³µê°„ íƒìƒ‰ì˜ íš¨ìœ¨ì„±ì„
+ì´í•´í•˜ëŠ” ë° ë„ì›€ì´ ë©ë‹ˆë‹¤.
 */

@@ -6,18 +6,18 @@
 #include <time.h>
 
 /*
-¾Ë°í¸®Áò ºĞ·ù: ¾Ë°í¸®Áò ¼³°è ±â¹ı
-ÇÏÀ§ ºĞ·ù: ºĞÇÒ Á¤º¹
-³­ÀÌµµ: »ó
-°ü·Ã ¾Ë°í¸®Áò: º´ÇÕ Á¤·Ä, Äü Á¤·Ä
+ì•Œê³ ë¦¬ì¦˜ ë¶„ë¥˜: ì•Œê³ ë¦¬ì¦˜ ì„¤ê³„ ê¸°ë²•
+í•˜ìœ„ ë¶„ë¥˜: ë¶„í•  ì •ë³µ
+ë‚œì´ë„: ìƒ
+ê´€ë ¨ ì•Œê³ ë¦¬ì¦˜: ë³‘í•© ì •ë ¬, í€µ ì •ë ¬
 
-ºĞÇÒ Á¤º¹ ½ÉÈ­ ¿¹Á¦:
-1. °¡Àå °¡±î¿î Á¡ÀÇ ½Ö Ã£±â
-2. ½ºÆ®¶ó¼¾ Çà·Ä °ö¼À
-3. ºĞÇÒ Á¤º¹À» ÀÌ¿ëÇÑ °ÅµìÁ¦°ö
+ë¶„í•  ì •ë³µ ì‹¬í™” ì˜ˆì œ:
+1. ê°€ì¥ ê°€ê¹Œìš´ ì ì˜ ìŒ ì°¾ê¸°
+2. ìŠ¤íŠ¸ë¼ì„¼ í–‰ë ¬ ê³±ì…ˆ
+3. ë¶„í•  ì •ë³µì„ ì´ìš©í•œ ê±°ë“­ì œê³±
 */
 
-// === °¡Àå °¡±î¿î Á¡ÀÇ ½Ö Ã£±â ===
+// === ê°€ì¥ ê°€ê¹Œìš´ ì ì˜ ìŒ ì°¾ê¸° ===
 typedef struct {
     double x, y;
 } Point;
@@ -27,23 +27,23 @@ typedef struct {
     double distance;
 } PointPair;
 
-// µÎ Á¡ »çÀÌÀÇ °Å¸® °è»ê
+// ë‘ ì  ì‚¬ì´ì˜ ê±°ë¦¬ ê³„ì‚°
 double dist(Point p1, Point p2) {
     return sqrt((p1.x - p2.x) * (p1.x - p2.x) +
         (p1.y - p2.y) * (p1.y - p2.y));
 }
 
-// xÁÂÇ¥ ±âÁØ Á¤·Ä
+// xì¢Œí‘œ ê¸°ì¤€ ì •ë ¬
 int compare_x(const void* a, const void* b) {
     return ((Point*)a)->x > ((Point*)b)->x;
 }
 
-// yÁÂÇ¥ ±âÁØ Á¤·Ä
+// yì¢Œí‘œ ê¸°ì¤€ ì •ë ¬
 int compare_y(const void* a, const void* b) {
     return ((Point*)a)->y > ((Point*)b)->y;
 }
 
-// ºê·çÆ® Æ÷½º·Î ÃÖ±ÙÁ¢ ½Ö Ã£±â
+// ë¸Œë£¨íŠ¸ í¬ìŠ¤ë¡œ ìµœê·¼ì ‘ ìŒ ì°¾ê¸°
 PointPair brute_force(Point* points, int n) {
     PointPair result;
     result.distance = INFINITY;
@@ -61,7 +61,7 @@ PointPair brute_force(Point* points, int n) {
     return result;
 }
 
-// Áß°£ ¿µ¿ª¿¡¼­ ÃÖ±ÙÁ¢ ½Ö Ã£±â
+// ì¤‘ê°„ ì˜ì—­ì—ì„œ ìµœê·¼ì ‘ ìŒ ì°¾ê¸°
 PointPair strip_closest(Point* strip, int size, double d) {
     PointPair result;
     result.distance = d;
@@ -81,7 +81,7 @@ PointPair strip_closest(Point* strip, int size, double d) {
     return result;
 }
 
-// ºĞÇÒ Á¤º¹À¸·Î ÃÖ±ÙÁ¢ ½Ö Ã£±â
+// ë¶„í•  ì •ë³µìœ¼ë¡œ ìµœê·¼ì ‘ ìŒ ì°¾ê¸°
 PointPair closest_pair_recursive(Point* points, int n) {
     if (n <= 3)
         return brute_force(points, n);
@@ -110,13 +110,13 @@ PointPair closest_pair_recursive(Point* points, int n) {
     return (strip_result.distance < result.distance) ? strip_result : result;
 }
 
-// ÃÖ±ÙÁ¢ ½Ö Ã£±â ¸ŞÀÎ ÇÔ¼ö
+// ìµœê·¼ì ‘ ìŒ ì°¾ê¸° ë©”ì¸ í•¨ìˆ˜
 PointPair find_closest_pair(Point* points, int n) {
     qsort(points, n, sizeof(Point), compare_x);
     return closest_pair_recursive(points, n);
 }
 
-// === ½ºÆ®¶ó¼¾ Çà·Ä °ö¼À ===
+// === ìŠ¤íŠ¸ë¼ì„¼ í–‰ë ¬ ê³±ì…ˆ ===
 void add_matrix(int** A, int** B, int** C, int n) {
     for (int i = 0; i < n; i++)
         for (int j = 0; j < n; j++)
@@ -143,7 +143,7 @@ void free_matrix(int** matrix, int n) {
 }
 
 void strassen_multiply(int** A, int** B, int** C, int n) {
-    if (n <= 64) {  // ÀÛÀº Å©±â´Â ÀÏ¹İ °ö¼À
+    if (n <= 64) {  // ì‘ì€ í¬ê¸°ëŠ” ì¼ë°˜ ê³±ì…ˆ
         for (int i = 0; i < n; i++)
             for (int j = 0; j < n; j++) {
                 C[i][j] = 0;
@@ -155,7 +155,7 @@ void strassen_multiply(int** A, int** B, int** C, int n) {
 
     int k = n / 2;
 
-    // ºÎºĞ Çà·Äµé ÇÒ´ç
+    // ë¶€ë¶„ í–‰ë ¬ë“¤ í• ë‹¹
     int** A11 = allocate_matrix(k);
     int** A12 = allocate_matrix(k);
     int** A21 = allocate_matrix(k);
@@ -165,7 +165,7 @@ void strassen_multiply(int** A, int** B, int** C, int n) {
     int** B21 = allocate_matrix(k);
     int** B22 = allocate_matrix(k);
 
-    // ºÎºĞ Çà·Ä·Î ºĞÇÒ
+    // ë¶€ë¶„ í–‰ë ¬ë¡œ ë¶„í• 
     for (int i = 0; i < k; i++) {
         for (int j = 0; j < k; j++) {
             A11[i][j] = A[i][j];
@@ -179,7 +179,7 @@ void strassen_multiply(int** A, int** B, int** C, int n) {
         }
     }
 
-    // ÀÓ½Ã Çà·Äµé ÇÒ´ç
+    // ì„ì‹œ í–‰ë ¬ë“¤ í• ë‹¹
     int** P1 = allocate_matrix(k);
     int** P2 = allocate_matrix(k);
     int** P3 = allocate_matrix(k);
@@ -190,7 +190,7 @@ void strassen_multiply(int** A, int** B, int** C, int n) {
     int** temp1 = allocate_matrix(k);
     int** temp2 = allocate_matrix(k);
 
-    // Strassen ¾Ë°í¸®Áò ¼öÇà
+    // Strassen ì•Œê³ ë¦¬ì¦˜ ìˆ˜í–‰
     add_matrix(A11, A22, temp1, k);
     add_matrix(B11, B22, temp2, k);
     strassen_multiply(temp1, temp2, P1, k);      // P1 = (A11+A22)(B11+B22)
@@ -243,7 +243,7 @@ void strassen_multiply(int** A, int** B, int** C, int n) {
         for (int j = 0; j < k; j++)
             C[i + k][j + k] = temp1[i][j];
 
-    // ¸Ş¸ğ¸® ÇØÁ¦
+    // ë©”ëª¨ë¦¬ í•´ì œ
     free_matrix(A11, k); free_matrix(A12, k);
     free_matrix(A21, k); free_matrix(A22, k);
     free_matrix(B11, k); free_matrix(B12, k);
@@ -255,7 +255,7 @@ void strassen_multiply(int** A, int** B, int** C, int n) {
     free_matrix(temp1, k); free_matrix(temp2, k);
 }
 
-// === ºĞÇÒ Á¤º¹ °ÅµìÁ¦°ö ===
+// === ë¶„í•  ì •ë³µ ê±°ë“­ì œê³± ===
 typedef unsigned long long ull;
 
 ull power_recursive(ull base, ull exponent, ull modulus) {
@@ -273,33 +273,33 @@ ull power_recursive(ull base, ull exponent, ull modulus) {
 
 int main(void) {
     int choice;
-    printf("=== ºĞÇÒ Á¤º¹ ½ÉÈ­ ¾Ë°í¸®Áò ===\n");
+    printf("=== ë¶„í•  ì •ë³µ ì‹¬í™” ì•Œê³ ë¦¬ì¦˜ ===\n");
 
     while (1) {
-        printf("\n1. ÃÖ±ÙÁ¢ Á¡ÀÇ ½Ö Ã£±â\n");
-        printf("2. ½ºÆ®¶ó¼¾ Çà·Ä °ö¼À\n");
-        printf("3. ºĞÇÒ Á¤º¹ °ÅµìÁ¦°ö\n");
-        printf("0. Á¾·á\n");
-        printf("¼±ÅÃ: ");
+        printf("\n1. ìµœê·¼ì ‘ ì ì˜ ìŒ ì°¾ê¸°\n");
+        printf("2. ìŠ¤íŠ¸ë¼ì„¼ í–‰ë ¬ ê³±ì…ˆ\n");
+        printf("3. ë¶„í•  ì •ë³µ ê±°ë“­ì œê³±\n");
+        printf("0. ì¢…ë£Œ\n");
+        printf("ì„ íƒ: ");
         scanf("%d", &choice);
 
         switch (choice) {
         case 1: {
             int n;
-            printf("Á¡ÀÇ °³¼ö ÀÔ·Â: ");
+            printf("ì ì˜ ê°œìˆ˜ ì…ë ¥: ");
             scanf("%d", &n);
 
             Point* points = (Point*)malloc(n * sizeof(Point));
-            printf("Á¡µéÀÇ ÁÂÇ¥ ÀÔ·Â (x y):\n");
+            printf("ì ë“¤ì˜ ì¢Œí‘œ ì…ë ¥ (x y):\n");
             for (int i = 0; i < n; i++) {
                 scanf("%lf %lf", &points[i].x, &points[i].y);
             }
 
             PointPair result = find_closest_pair(points, n);
-            printf("\n°¡Àå °¡±î¿î µÎ Á¡:\n");
-            printf("Á¡1: (%.2f, %.2f)\n", result.p1.x, result.p1.y);
-            printf("Á¡2: (%.2f, %.2f)\n", result.p2.x, result.p2.y);
-            printf("°Å¸®: %.2f\n", result.distance);
+            printf("\nê°€ì¥ ê°€ê¹Œìš´ ë‘ ì :\n");
+            printf("ì 1: (%.2f, %.2f)\n", result.p1.x, result.p1.y);
+            printf("ì 2: (%.2f, %.2f)\n", result.p2.x, result.p2.y);
+            printf("ê±°ë¦¬: %.2f\n", result.distance);
 
             free(points);
             break;
@@ -307,26 +307,26 @@ int main(void) {
 
         case 2: {
             int n;
-            printf("Çà·Ä Å©±â ÀÔ·Â (2ÀÇ °ÅµìÁ¦°ö): ");
+            printf("í–‰ë ¬ í¬ê¸° ì…ë ¥ (2ì˜ ê±°ë“­ì œê³±): ");
             scanf("%d", &n);
 
             int** A = allocate_matrix(n);
             int** B = allocate_matrix(n);
             int** C = allocate_matrix(n);
 
-            printf("Ã¹ ¹øÂ° Çà·Ä ÀÔ·Â:\n");
+            printf("ì²« ë²ˆì§¸ í–‰ë ¬ ì…ë ¥:\n");
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                     scanf("%d", &A[i][j]);
 
-            printf("µÎ ¹øÂ° Çà·Ä ÀÔ·Â:\n");
+            printf("ë‘ ë²ˆì§¸ í–‰ë ¬ ì…ë ¥:\n");
             for (int i = 0; i < n; i++)
                 for (int j = 0; j < n; j++)
                     scanf("%d", &B[i][j]);
 
             strassen_multiply(A, B, C, n);
 
-            printf("\n°á°ú Çà·Ä:\n");
+            printf("\nê²°ê³¼ í–‰ë ¬:\n");
             for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++)
                     printf("%d ", C[i][j]);
@@ -341,15 +341,15 @@ int main(void) {
 
         case 3: {
             ull base, exponent, modulus;
-            printf("¹Ø¼ö ÀÔ·Â: ");
+            printf("ë°‘ìˆ˜ ì…ë ¥: ");
             scanf("%llu", &base);
-            printf("Áö¼ö ÀÔ·Â: ");
+            printf("ì§€ìˆ˜ ì…ë ¥: ");
             scanf("%llu", &exponent);
-            printf("¸ğµâ·¯ ÀÔ·Â: ");
+            printf("ëª¨ë“ˆëŸ¬ ì…ë ¥: ");
             scanf("%llu", &modulus);
 
             ull result = power_recursive(base, exponent, modulus);
-            printf("\n°á°ú: %llu\n", result);
+            printf("\nê²°ê³¼: %llu\n", result);
             break;
         }
 
@@ -357,7 +357,7 @@ int main(void) {
             return 0;
 
         default:
-            printf("Àß¸øµÈ ¼±ÅÃ\n");
+            printf("ì˜ëª»ëœ ì„ íƒ\n");
         }
     }
 
@@ -365,61 +365,61 @@ int main(void) {
 }
 
 /*
-ºĞÇÒ Á¤º¹ ½ÉÈ­ ºĞ¼®
+ë¶„í•  ì •ë³µ ì‹¬í™” ë¶„ì„
 ===============
 
-1. ÃÖ±ÙÁ¢ Á¡ÀÇ ½Ö Ã£±â
+1. ìµœê·¼ì ‘ ì ì˜ ìŒ ì°¾ê¸°
 ------------------
-½Ã°£ º¹Àâµµ:
-- ºê·çÆ® Æ÷½º: O(n©÷)
-- ºĞÇÒ Á¤º¹: O(n log n)
-- Á¤·Ä ´Ü°è: O(n log n)
+ì‹œê°„ ë³µì¡ë„:
+- ë¸Œë£¨íŠ¸ í¬ìŠ¤: O(nÂ²)
+- ë¶„í•  ì •ë³µ: O(n log n)
+- ì •ë ¬ ë‹¨ê³„: O(n log n)
 
-°ø°£ º¹Àâµµ:
-- O(n) Ãß°¡ °ø°£
+ê³µê°„ ë³µì¡ë„:
+- O(n) ì¶”ê°€ ê³µê°„
 
-ÃÖÀûÈ­:
-- Æò¸é ºĞÇÒ
-- ½ºÆ®¸³ Ã³¸®
-- Á¤·Ä »óÅÂ À¯Áö
+ìµœì í™”:
+- í‰ë©´ ë¶„í• 
+- ìŠ¤íŠ¸ë¦½ ì²˜ë¦¬
+- ì •ë ¬ ìƒíƒœ ìœ ì§€
 
-2. ½ºÆ®¶ó¼¾ Çà·Ä °ö¼À
+2. ìŠ¤íŠ¸ë¼ì„¼ í–‰ë ¬ ê³±ì…ˆ
 -----------------
-½Ã°£ º¹Àâµµ:
-- ÀÏ¹İ °ö¼À: O(n©ø)
-- ½ºÆ®¶ó¼¾: O(n^2.807)
+ì‹œê°„ ë³µì¡ë„:
+- ì¼ë°˜ ê³±ì…ˆ: O(nÂ³)
+- ìŠ¤íŠ¸ë¼ì„¼: O(n^2.807)
 
-°ø°£ º¹Àâµµ:
-- O(n©÷) Ãß°¡ °ø°£
+ê³µê°„ ë³µì¡ë„:
+- O(nÂ²) ì¶”ê°€ ê³µê°„
 
-Æ¯Â¡:
-- Å« Çà·Ä¿¡¼­¸¸ È¿À²Àû
-- Ä³½Ã ¼º´É °í·Á ÇÊ¿ä
-- ¼öÄ¡ ¾ÈÁ¤¼º ¹®Á¦
+íŠ¹ì§•:
+- í° í–‰ë ¬ì—ì„œë§Œ íš¨ìœ¨ì 
+- ìºì‹œ ì„±ëŠ¥ ê³ ë ¤ í•„ìš”
+- ìˆ˜ì¹˜ ì•ˆì •ì„± ë¬¸ì œ
 
-3. ºĞÇÒ Á¤º¹ °ÅµìÁ¦°ö
+3. ë¶„í•  ì •ë³µ ê±°ë“­ì œê³±
 -----------------
-½Ã°£ º¹Àâµµ:
+ì‹œê°„ ë³µì¡ë„:
 - O(log n)
 
-°ø°£ º¹Àâµµ:
-- O(log n) Àç±Í ½ºÅÃ
+ê³µê°„ ë³µì¡ë„:
+- O(log n) ì¬ê·€ ìŠ¤íƒ
 
-Æ¯Â¡:
-- ¸ğµâ·¯ ¿¬»ê Æ÷ÇÔ
-- ¿À¹öÇÃ·Î¿ì ¹æÁö
-- Å« ¼ö Ã³¸® °¡´É
+íŠ¹ì§•:
+- ëª¨ë“ˆëŸ¬ ì—°ì‚° í¬í•¨
+- ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
+- í° ìˆ˜ ì²˜ë¦¬ ê°€ëŠ¥
 
-ÀÏ¹İÀû ±³ÈÆ
+ì¼ë°˜ì  êµí›ˆ
 =========
-1. ¹®Á¦ ºĞÇÒ Àü·«
-2. Àç°áÇÕ È¿À²¼º
-3. ±âÀú »ç·Ê Ã³¸®
-4. ¸Ş¸ğ¸® °ü¸®
-5. ¼öÄ¡ ¾ÈÁ¤¼º
+1. ë¬¸ì œ ë¶„í•  ì „ëµ
+2. ì¬ê²°í•© íš¨ìœ¨ì„±
+3. ê¸°ì € ì‚¬ë¡€ ì²˜ë¦¬
+4. ë©”ëª¨ë¦¬ ê´€ë¦¬
+5. ìˆ˜ì¹˜ ì•ˆì •ì„±
 
-ÀÌ ±¸ÇöµéÀº ºĞÇÒ Á¤º¹ÀÇ
-°í±Ş ÀÀ¿ëÀ» º¸¿©ÁÖ¸ç,
-½ÇÁ¦ ¹®Á¦ ÇØ°á¿¡ »ç¿ëµÇ´Â
-ÃÖÀûÈ­ ±â¹ıµéÀ» Æ÷ÇÔÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ë“¤ì€ ë¶„í•  ì •ë³µì˜
+ê³ ê¸‰ ì‘ìš©ì„ ë³´ì—¬ì£¼ë©°,
+ì‹¤ì œ ë¬¸ì œ í•´ê²°ì— ì‚¬ìš©ë˜ëŠ”
+ìµœì í™” ê¸°ë²•ë“¤ì„ í¬í•¨í•©ë‹ˆë‹¤.
 */

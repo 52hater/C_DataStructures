@@ -4,15 +4,15 @@
 
 /*
 DFS (Depth First Search):
-- ±íÀÌ ¿ì¼± Å½»ö
-- Àç±Í ¶Ç´Â ½ºÅÃÀ¸·Î ±¸Çö
-- ÇÑ °æ·Î¸¦ ³¡±îÁö Å½»ö
-- ¹éÆ®·¡Å·ÀÇ ±âº»ÀÌ µÇ´Â ¾Ë°í¸®Áò
+- ê¹Šì´ ìš°ì„  íƒìƒ‰
+- ì¬ê·€ ë˜ëŠ” ìŠ¤íƒìœ¼ë¡œ êµ¬í˜„
+- í•œ ê²½ë¡œë¥¼ ëê¹Œì§€ íƒìƒ‰
+- ë°±íŠ¸ë˜í‚¹ì˜ ê¸°ë³¸ì´ ë˜ëŠ” ì•Œê³ ë¦¬ì¦˜
 */
 
 #define MAX_VERTICES 100
 
-// ¾Õ¼­ ±¸ÇöÇÑ ÀÎÁ¢ ¸®½ºÆ® ±â¹İ ±×·¡ÇÁ ±¸Á¶ Àç»ç¿ë
+// ì•ì„œ êµ¬í˜„í•œ ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ ê¸°ë°˜ ê·¸ë˜í”„ êµ¬ì¡° ì¬ì‚¬ìš©
 typedef struct Node {
     int vertex;
     struct Node* next;
@@ -20,11 +20,11 @@ typedef struct Node {
 
 typedef struct {
     Node* adj_list[MAX_VERTICES];
-    bool visited[MAX_VERTICES];  // ¹æ¹® ¿©ºÎ ¹è¿­ Ãß°¡
+    bool visited[MAX_VERTICES];  // ë°©ë¬¸ ì—¬ë¶€ ë°°ì—´ ì¶”ê°€
     int num_vertices;
 } Graph;
 
-/* »õ·Î¿î ³ëµå »ı¼º */
+/* ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„± */
 Node* create_node(int v) {
     Node* new_node = (Node*)malloc(sizeof(Node));
     if (new_node) {
@@ -34,14 +34,14 @@ Node* create_node(int v) {
     return new_node;
 }
 
-/* ±×·¡ÇÁ »ı¼º */
+/* ê·¸ë˜í”„ ìƒì„± */
 Graph* graph_create(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     if (!graph) return NULL;
 
     graph->num_vertices = vertices;
 
-    // ÀÎÁ¢ ¸®½ºÆ®¿Í ¹æ¹® ¹è¿­ ÃÊ±âÈ­
+    // ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ì™€ ë°©ë¬¸ ë°°ì—´ ì´ˆê¸°í™”
     for (int i = 0; i < vertices; i++) {
         graph->adj_list[i] = NULL;
         graph->visited[i] = false;
@@ -50,16 +50,16 @@ Graph* graph_create(int vertices) {
     return graph;
 }
 
-/* °£¼± Ãß°¡ */
+/* ê°„ì„  ì¶”ê°€ */
 bool graph_add_edge(Graph* graph, int src, int dest) {
-    // src¿¡¼­ dest·ÎÀÇ °£¼± Ãß°¡
+    // srcì—ì„œ destë¡œì˜ ê°„ì„  ì¶”ê°€
     Node* new_node = create_node(dest);
     if (!new_node) return false;
 
     new_node->next = graph->adj_list[src];
     graph->adj_list[src] = new_node;
 
-    // ¹«¹æÇâ ±×·¡ÇÁ¸¦ À§ÇÑ ¹İ´ë ¹æÇâ °£¼± Ãß°¡
+    // ë¬´ë°©í–¥ ê·¸ë˜í”„ë¥¼ ìœ„í•œ ë°˜ëŒ€ ë°©í–¥ ê°„ì„  ì¶”ê°€
     new_node = create_node(src);
     if (!new_node) return false;
 
@@ -69,22 +69,22 @@ bool graph_add_edge(Graph* graph, int src, int dest) {
     return true;
 }
 
-/* ¹æ¹® ¹è¿­ ÃÊ±âÈ­ */
+/* ë°©ë¬¸ ë°°ì—´ ì´ˆê¸°í™” */
 void reset_visited(Graph* graph) {
     for (int i = 0; i < graph->num_vertices; i++) {
         graph->visited[i] = false;
     }
 }
 
-/* DFS Àç±Í ±¸Çö
- * - ½Ã°£º¹Àâµµ: O(V + E)
- * - °ø°£º¹Àâµµ: O(V) (Àç±Í ½ºÅÃ)
+/* DFS ì¬ê·€ êµ¬í˜„
+ * - ì‹œê°„ë³µì¡ë„: O(V + E)
+ * - ê³µê°„ë³µì¡ë„: O(V) (ì¬ê·€ ìŠ¤íƒ)
  */
 void dfs_recursive(Graph* graph, int vertex) {
-    printf("%d ", vertex);  // ÇöÀç Á¤Á¡ ¹æ¹®
+    printf("%d ", vertex);  // í˜„ì¬ ì •ì  ë°©ë¬¸
     graph->visited[vertex] = true;
 
-    // ÀÎÁ¢ÇÑ ¸ğµç Á¤Á¡¿¡ ´ëÇØ Àç±ÍÀûÀ¸·Î DFS ¼öÇà
+    // ì¸ì ‘í•œ ëª¨ë“  ì •ì ì— ëŒ€í•´ ì¬ê·€ì ìœ¼ë¡œ DFS ìˆ˜í–‰
     for (Node* temp = graph->adj_list[vertex]; temp != NULL; temp = temp->next) {
         if (!graph->visited[temp->vertex]) {
             dfs_recursive(graph, temp->vertex);
@@ -92,42 +92,42 @@ void dfs_recursive(Graph* graph, int vertex) {
     }
 }
 
-/* ½ºÅÃ ±¸Çö (¹İº¹Àû DFS¿ë) */
+/* ìŠ¤íƒ êµ¬í˜„ (ë°˜ë³µì  DFSìš©) */
 typedef struct {
     int items[MAX_VERTICES];
     int top;
 } Stack;
 
-/* ½ºÅÃ ÃÊ±âÈ­ */
+/* ìŠ¤íƒ ì´ˆê¸°í™” */
 void stack_init(Stack* s) {
     s->top = -1;
 }
 
-/* ½ºÅÃÀÌ ºñ¾îÀÖ´ÂÁö È®ÀÎ */
+/* ìŠ¤íƒì´ ë¹„ì–´ìˆëŠ”ì§€ í™•ì¸ */
 bool stack_is_empty(Stack* s) {
     return s->top == -1;
 }
 
-/* ½ºÅÃ¿¡ ¿ø¼Ò Ãß°¡ */
+/* ìŠ¤íƒì— ì›ì†Œ ì¶”ê°€ */
 void stack_push(Stack* s, int value) {
     s->items[++s->top] = value;
 }
 
-/* ½ºÅÃ¿¡¼­ ¿ø¼Ò Á¦°Å */
+/* ìŠ¤íƒì—ì„œ ì›ì†Œ ì œê±° */
 int stack_pop(Stack* s) {
     return s->items[s->top--];
 }
 
-/* DFS ¹İº¹ ±¸Çö (½ºÅÃ »ç¿ë)
- * - ½Ã°£º¹Àâµµ: O(V + E)
- * - °ø°£º¹Àâµµ: O(V)
+/* DFS ë°˜ë³µ êµ¬í˜„ (ìŠ¤íƒ ì‚¬ìš©)
+ * - ì‹œê°„ë³µì¡ë„: O(V + E)
+ * - ê³µê°„ë³µì¡ë„: O(V)
  */
 void dfs_iterative(Graph* graph, int start) {
     Stack stack;
     stack_init(&stack);
     reset_visited(graph);
 
-    // ½ÃÀÛ Á¤Á¡ Ã³¸®
+    // ì‹œì‘ ì •ì  ì²˜ë¦¬
     stack_push(&stack, start);
 
     while (!stack_is_empty(&stack)) {
@@ -137,7 +137,7 @@ void dfs_iterative(Graph* graph, int start) {
             printf("%d ", vertex);
             graph->visited[vertex] = true;
 
-            // ÀÎÁ¢ÇÑ Á¤Á¡µéÀ» ½ºÅÃ¿¡ Ãß°¡ (¿ª¼øÀ¸·Î)
+            // ì¸ì ‘í•œ ì •ì ë“¤ì„ ìŠ¤íƒì— ì¶”ê°€ (ì—­ìˆœìœ¼ë¡œ)
             for (Node* temp = graph->adj_list[vertex]; temp != NULL; temp = temp->next) {
                 if (!graph->visited[temp->vertex]) {
                     stack_push(&stack, temp->vertex);
@@ -148,8 +148,8 @@ void dfs_iterative(Graph* graph, int start) {
     printf("\n");
 }
 
-/* ¿¬°á ¿ä¼Ò Ã£±â
- * - DFS¸¦ »ç¿ëÇÏ¿© ±×·¡ÇÁÀÇ ¿¬°á ¿ä¼Ò °³¼ö °è»ê
+/* ì—°ê²° ìš”ì†Œ ì°¾ê¸°
+ * - DFSë¥¼ ì‚¬ìš©í•˜ì—¬ ê·¸ë˜í”„ì˜ ì—°ê²° ìš”ì†Œ ê°œìˆ˜ ê³„ì‚°
  */
 int find_connected_components(Graph* graph) {
     reset_visited(graph);
@@ -167,7 +167,7 @@ int find_connected_components(Graph* graph) {
     return components;
 }
 
-/* ±×·¡ÇÁ Ãâ·Â */
+/* ê·¸ë˜í”„ ì¶œë ¥ */
 void graph_print(const Graph* graph) {
     printf("\nGraph Adjacency List:\n");
     for (int i = 0; i < graph->num_vertices; i++) {
@@ -179,7 +179,7 @@ void graph_print(const Graph* graph) {
     }
 }
 
-/* ±×·¡ÇÁ ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê·¸ë˜í”„ ë©”ëª¨ë¦¬ í•´ì œ */
 void graph_destroy(Graph* graph) {
     if (!graph) return;
 
@@ -195,7 +195,7 @@ void graph_destroy(Graph* graph) {
     free(graph);
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Graph DFS Menu ===\n");
     printf("1. Add edge\n");
@@ -287,60 +287,60 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. DFSÀÇ ±âº» ¿ø¸®
+1. DFSì˜ ê¸°ë³¸ ì›ë¦¬
 --------------
-- °¡´ÉÇÑ ±íÀÌ ¸ÕÀú Å½»ö
-- ¸·´Ù¸¥ ±æ¿¡¼­ ¹éÆ®·¡Å·
-- ¸ğµç °æ·Î Å½»ö º¸Àå
-- ½ºÅÃ/Àç±Í È°¿ë
+- ê°€ëŠ¥í•œ ê¹Šì´ ë¨¼ì € íƒìƒ‰
+- ë§‰ë‹¤ë¥¸ ê¸¸ì—ì„œ ë°±íŠ¸ë˜í‚¹
+- ëª¨ë“  ê²½ë¡œ íƒìƒ‰ ë³´ì¥
+- ìŠ¤íƒ/ì¬ê·€ í™œìš©
 
-2. ±¸Çö ¹æ½Ä
+2. êµ¬í˜„ ë°©ì‹
 ----------
-Àç±ÍÀû ±¸Çö:
-- ½Ã½ºÅÛ ½ºÅÃ È°¿ë
-- ±¸ÇöÀÌ ´Ü¼ø
-- Á÷°üÀûÀÎ ÀÌÇØ
-- ±íÀº Àç±Í ÁÖÀÇ
+ì¬ê·€ì  êµ¬í˜„:
+- ì‹œìŠ¤í…œ ìŠ¤íƒ í™œìš©
+- êµ¬í˜„ì´ ë‹¨ìˆœ
+- ì§ê´€ì ì¸ ì´í•´
+- ê¹Šì€ ì¬ê·€ ì£¼ì˜
 
-¹İº¹Àû ±¸Çö:
-- ¸í½ÃÀû ½ºÅÃ »ç¿ë
-- ¸Ş¸ğ¸® Á¦¾î ¿ëÀÌ
-- ½ºÅÃ ¿À¹öÇÃ·Î¿ì ¹æÁö
-- ¾à°£ º¹ÀâÇÑ ±¸Çö
+ë°˜ë³µì  êµ¬í˜„:
+- ëª…ì‹œì  ìŠ¤íƒ ì‚¬ìš©
+- ë©”ëª¨ë¦¬ ì œì–´ ìš©ì´
+- ìŠ¤íƒ ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
+- ì•½ê°„ ë³µì¡í•œ êµ¬í˜„
 
-3. ½Ã°£ º¹Àâµµ
+3. ì‹œê°„ ë³µì¡ë„
 -----------
-- ÀüÃ¼: O(V + E)
-- Á¤Á¡ ¹æ¹®: O(V)
-- °£¼± Å½»ö: O(E)
-- ¿¬°á ¿ä¼Ò: O(V + E)
+- ì „ì²´: O(V + E)
+- ì •ì  ë°©ë¬¸: O(V)
+- ê°„ì„  íƒìƒ‰: O(E)
+- ì—°ê²° ìš”ì†Œ: O(V + E)
 
-4. °ø°£ º¹Àâµµ
+4. ê³µê°„ ë³µì¡ë„
 -----------
-- ¹æ¹® ¹è¿­: O(V)
-- ½ºÅÃ °ø°£: O(V)
-- ÀÎÁ¢ ¸®½ºÆ®: O(E)
-- ÀüÃ¼: O(V + E)
+- ë°©ë¬¸ ë°°ì—´: O(V)
+- ìŠ¤íƒ ê³µê°„: O(V)
+- ì¸ì ‘ ë¦¬ìŠ¤íŠ¸: O(E)
+- ì „ì²´: O(V + E)
 
-5. È°¿ë ºĞ¾ß
+5. í™œìš© ë¶„ì•¼
 ----------
-- À§»ó Á¤·Ä
-- ¿¬°á ¿ä¼Ò Ã£±â
-- »çÀÌÅ¬ Å½Áö
-- °æ·Î Å½»ö
+- ìœ„ìƒ ì •ë ¬
+- ì—°ê²° ìš”ì†Œ ì°¾ê¸°
+- ì‚¬ì´í´ íƒì§€
+- ê²½ë¡œ íƒìƒ‰
 
-6. ÁÖ¿ä Æ¯Â¡
+6. ì£¼ìš” íŠ¹ì§•
 ----------
-- ¿ÏÀü Å½»ö
-- ¹éÆ®·¡Å· ±â¹İ
-- ¸Ş¸ğ¸® È¿À²Àû
-- ºĞÇÒ Á¤º¹ ¼ºÁú
+- ì™„ì „ íƒìƒ‰
+- ë°±íŠ¸ë˜í‚¹ ê¸°ë°˜
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì 
+- ë¶„í•  ì •ë³µ ì„±ì§ˆ
 
-ÀÌ ±¸ÇöÀº DFSÀÇ µÎ °¡Áö ¹æ½ÄÀ»
-¸ğµÎ Á¦°øÇÏ¸ç, ½ÇÁ¦ ÀÀ¿ë¿¡¼­
-ÀÚÁÖ »ç¿ëµÇ´Â ¿¬°á ¿ä¼Ò Ã£±â
-±â´Éµµ Æ÷ÇÔÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ DFSì˜ ë‘ ê°€ì§€ ë°©ì‹ì„
+ëª¨ë‘ ì œê³µí•˜ë©°, ì‹¤ì œ ì‘ìš©ì—ì„œ
+ìì£¼ ì‚¬ìš©ë˜ëŠ” ì—°ê²° ìš”ì†Œ ì°¾ê¸°
+ê¸°ëŠ¥ë„ í¬í•¨í•©ë‹ˆë‹¤.
 */

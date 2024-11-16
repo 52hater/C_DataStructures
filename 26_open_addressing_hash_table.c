@@ -4,37 +4,37 @@
 #include <stdbool.h>
 
 /*
-°³¹æ ÁÖ¼Ò¹ý ÇØ½Ã Å×ÀÌºí:
-- Ãæµ¹ ½Ã ´Ù¸¥ ¹öÅ¶À» Å½»ö
-- ¼±Çü Á¶»ç¹ý, ÀÌÂ÷ Á¶»ç¹ý, ÀÌÁß ÇØ½Ì ±¸Çö
-- »èÁ¦ Ã³¸®¸¦ À§ÇÑ Ç¥½Ã(Tombstone) »ç¿ë
-- ´õ ³ªÀº Ä³½Ã Áö¿ª¼º
+ê°œë°© ì£¼ì†Œë²• í•´ì‹œ í…Œì´ë¸”:
+- ì¶©ëŒ ì‹œ ë‹¤ë¥¸ ë²„í‚·ì„ íƒìƒ‰
+- ì„ í˜• ì¡°ì‚¬ë²•, ì´ì°¨ ì¡°ì‚¬ë²•, ì´ì¤‘ í•´ì‹± êµ¬í˜„
+- ì‚­ì œ ì²˜ë¦¬ë¥¼ ìœ„í•œ í‘œì‹œ(Tombstone) ì‚¬ìš©
+- ë” ë‚˜ì€ ìºì‹œ ì§€ì—­ì„±
 */
 
-#define INITIAL_SIZE 7  // ¼Ò¼ö »ç¿ë
+#define INITIAL_SIZE 7  // ì†Œìˆ˜ ì‚¬ìš©
 #define MAX_LOAD_FACTOR 0.75
-#define DELETED_NODE (void*)(~0)  // Tombstone °ª
+#define DELETED_NODE (void*)(~0)  // Tombstone ê°’
 
 typedef enum {
-    PROBE_LINEAR,      // ¼±Çü Á¶»ç¹ý
-    PROBE_QUADRATIC,   // ÀÌÂ÷ Á¶»ç¹ý
-    PROBE_DOUBLE_HASH  // ÀÌÁß ÇØ½Ì
+    PROBE_LINEAR,      // ì„ í˜• ì¡°ì‚¬ë²•
+    PROBE_QUADRATIC,   // ì´ì°¨ ì¡°ì‚¬ë²•
+    PROBE_DOUBLE_HASH  // ì´ì¤‘ í•´ì‹±
 } ProbeType;
 
 typedef struct {
-    char* key;    // Å° (NULL: ºó ¹öÅ¶, DELETED_NODE: »èÁ¦µÈ ¹öÅ¶)
-    int value;    // °ª
+    char* key;    // í‚¤ (NULL: ë¹ˆ ë²„í‚·, DELETED_NODE: ì‚­ì œëœ ë²„í‚·)
+    int value;    // ê°’
 } Entry;
 
 typedef struct {
-    Entry* entries;     // ¿£Æ®¸® ¹è¿­
-    size_t capacity;   // Å×ÀÌºí Å©±â
-    size_t size;       // ÀúÀåµÈ ¿ä¼Ò ¼ö
-    size_t tombstones; // »èÁ¦ Ç¥½Ã ¼ö
-    ProbeType type;    // Á¶»ç ¹æ½Ä
+    Entry* entries;     // ì—”íŠ¸ë¦¬ ë°°ì—´
+    size_t capacity;   // í…Œì´ë¸” í¬ê¸°
+    size_t size;       // ì €ìž¥ëœ ìš”ì†Œ ìˆ˜
+    size_t tombstones; // ì‚­ì œ í‘œì‹œ ìˆ˜
+    ProbeType type;    // ì¡°ì‚¬ ë°©ì‹
 } HashTable;
 
-/* ¹®ÀÚ¿­ ÇØ½Ã ÇÔ¼ö (djb2) */
+/* ë¬¸ìžì—´ í•´ì‹œ í•¨ìˆ˜ (djb2) */
 unsigned long hash_function(const char* str) {
     unsigned long hash = 5381;
     int c;
@@ -44,17 +44,17 @@ unsigned long hash_function(const char* str) {
     return hash;
 }
 
-/* º¸Á¶ ÇØ½Ã ÇÔ¼ö (ÀÌÁß ÇØ½Ì¿ë) */
+/* ë³´ì¡° í•´ì‹œ í•¨ìˆ˜ (ì´ì¤‘ í•´ì‹±ìš©) */
 unsigned long hash_function2(const char* str) {
     unsigned long hash = 0;
     int c;
     while ((c = *str++)) {
         hash = hash * 31 + c;
     }
-    return hash | 1;  // Ç×»ó È¦¼ö ¹ÝÈ¯
+    return hash | 1;  // í•­ìƒ í™€ìˆ˜ ë°˜í™˜
 }
 
-/* ÇØ½Ã Å×ÀÌºí »ý¼º */
+/* í•´ì‹œ í…Œì´ë¸” ìƒì„± */
 HashTable* hash_table_create(size_t capacity, ProbeType type) {
     HashTable* table = (HashTable*)malloc(sizeof(HashTable));
     if (!table) return NULL;
@@ -72,23 +72,23 @@ HashTable* hash_table_create(size_t capacity, ProbeType type) {
     return table;
 }
 
-/* ÇöÀç ·Îµå ÆÑÅÍ °è»ê */
+/* í˜„ìž¬ ë¡œë“œ íŒ©í„° ê³„ì‚° */
 double get_load_factor(const HashTable* table) {
     return (double)(table->size + table->tombstones) / table->capacity;
 }
 
-/* Å½»ç À§Ä¡ °è»ê */
+/* íƒì‚¬ ìœ„ì¹˜ ê³„ì‚° */
 size_t get_probe_position(const HashTable* table, const char* key, size_t i) {
     unsigned long hash = hash_function(key);
 
     switch (table->type) {
-    case PROBE_LINEAR:  // ¼±Çü Á¶»ç¹ý
+    case PROBE_LINEAR:  // ì„ í˜• ì¡°ì‚¬ë²•
         return (hash + i) % table->capacity;
 
-    case PROBE_QUADRATIC:  // ÀÌÂ÷ Á¶»ç¹ý
+    case PROBE_QUADRATIC:  // ì´ì°¨ ì¡°ì‚¬ë²•
         return (hash + i * i) % table->capacity;
 
-    case PROBE_DOUBLE_HASH:  // ÀÌÁß ÇØ½Ì
+    case PROBE_DOUBLE_HASH:  // ì´ì¤‘ í•´ì‹±
         unsigned long hash2 = hash_function2(key);
         return (hash + i * hash2) % table->capacity;
 
@@ -97,12 +97,12 @@ size_t get_probe_position(const HashTable* table, const char* key, size_t i) {
     }
 }
 
-/* ÇØ½Ã Å×ÀÌºí ÀçÇØ½Ì */
+/* í•´ì‹œ í…Œì´ë¸” ìž¬í•´ì‹± */
 bool hash_table_resize(HashTable* table) {
     size_t old_capacity = table->capacity;
     Entry* old_entries = table->entries;
 
-    // »õ·Î¿î Å©±âÀÇ Å×ÀÌºí »ý¼º
+    // ìƒˆë¡œìš´ í¬ê¸°ì˜ í…Œì´ë¸” ìƒì„±
     size_t new_capacity = old_capacity * 2;
     table->entries = (Entry*)calloc(new_capacity, sizeof(Entry));
     if (!table->entries) {
@@ -114,7 +114,7 @@ bool hash_table_resize(HashTable* table) {
     table->size = 0;
     table->tombstones = 0;
 
-    // ÀÌÀü ¿£Æ®¸®µéÀ» »õ Å×ÀÌºí·Î º¹»ç
+    // ì´ì „ ì—”íŠ¸ë¦¬ë“¤ì„ ìƒˆ í…Œì´ë¸”ë¡œ ë³µì‚¬
     for (size_t i = 0; i < old_capacity; i++) {
         if (old_entries[i].key && old_entries[i].key != DELETED_NODE) {
             hash_table_insert(table, old_entries[i].key, old_entries[i].value);
@@ -126,8 +126,8 @@ bool hash_table_resize(HashTable* table) {
     return true;
 }
 
-/* »ðÀÔ ¿¬»ê
- * - ½Ã°£º¹Àâµµ: Æò±Õ O(1), ÃÖ¾Ç O(n)
+/* ì‚½ìž… ì—°ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: í‰ê·  O(1), ìµœì•… O(n)
  */
 bool hash_table_insert(HashTable* table, const char* key, int value) {
     if (get_load_factor(table) >= MAX_LOAD_FACTOR) {
@@ -142,10 +142,10 @@ bool hash_table_insert(HashTable* table, const char* key, int value) {
     do {
         index = get_probe_position(table, key, i);
 
-        // ºó ¹öÅ¶ÀÌ³ª »èÁ¦µÈ ¹öÅ¶À» Ã£À½
+        // ë¹ˆ ë²„í‚·ì´ë‚˜ ì‚­ì œëœ ë²„í‚·ì„ ì°¾ìŒ
         if (!table->entries[index].key ||
             table->entries[index].key == DELETED_NODE) {
-            // ÀÌ¹Ì ÀÖ´ø Å°ÀÎÁö È®ÀÎ
+            // ì´ë¯¸ ìžˆë˜ í‚¤ì¸ì§€ í™•ì¸
             size_t j = 0;
             size_t check_index;
             do {
@@ -160,7 +160,7 @@ bool hash_table_insert(HashTable* table, const char* key, int value) {
             } while (table->entries[check_index].key &&
                 j < table->capacity);
 
-            // »õ·Î¿î Å° »ðÀÔ
+            // ìƒˆë¡œìš´ í‚¤ ì‚½ìž…
             if (table->entries[index].key == DELETED_NODE) {
                 table->tombstones--;
             }
@@ -175,7 +175,7 @@ bool hash_table_insert(HashTable* table, const char* key, int value) {
             return true;
         }
 
-        // ÀÌ¹Ì ÀÖ´Â Å°¸é °ª °»½Å
+        // ì´ë¯¸ ìžˆëŠ” í‚¤ë©´ ê°’ ê°±ì‹ 
         if (strcmp(table->entries[index].key, key) == 0) {
             table->entries[index].value = value;
             return true;
@@ -184,11 +184,11 @@ bool hash_table_insert(HashTable* table, const char* key, int value) {
         i++;
     } while (i < table->capacity);
 
-    return false;  // Å×ÀÌºíÀÌ °¡µæ Âù °æ¿ì
+    return false;  // í…Œì´ë¸”ì´ ê°€ë“ ì°¬ ê²½ìš°
 }
 
-/* °Ë»ö ¿¬»ê
- * - ½Ã°£º¹Àâµµ: Æò±Õ O(1), ÃÖ¾Ç O(n)
+/* ê²€ìƒ‰ ì—°ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: í‰ê·  O(1), ìµœì•… O(n)
  */
 bool hash_table_get(const HashTable* table, const char* key, int* value) {
     size_t i = 0;
@@ -198,7 +198,7 @@ bool hash_table_get(const HashTable* table, const char* key, int* value) {
         index = get_probe_position(table, key, i);
 
         if (!table->entries[index].key) {
-            return false;  // ºó ¹öÅ¶À» ¸¸³ª¸é Á¾·á
+            return false;  // ë¹ˆ ë²„í‚·ì„ ë§Œë‚˜ë©´ ì¢…ë£Œ
         }
 
         if (table->entries[index].key != DELETED_NODE &&
@@ -213,8 +213,8 @@ bool hash_table_get(const HashTable* table, const char* key, int* value) {
     return false;
 }
 
-/* »èÁ¦ ¿¬»ê
- * - ½Ã°£º¹Àâµµ: Æò±Õ O(1), ÃÖ¾Ç O(n)
+/* ì‚­ì œ ì—°ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: í‰ê·  O(1), ìµœì•… O(n)
  */
 bool hash_table_remove(HashTable* table, const char* key) {
     size_t i = 0;
@@ -224,7 +224,7 @@ bool hash_table_remove(HashTable* table, const char* key) {
         index = get_probe_position(table, key, i);
 
         if (!table->entries[index].key) {
-            return false;  // ºó ¹öÅ¶À» ¸¸³ª¸é Á¾·á
+            return false;  // ë¹ˆ ë²„í‚·ì„ ë§Œë‚˜ë©´ ì¢…ë£Œ
         }
 
         if (table->entries[index].key != DELETED_NODE &&
@@ -242,7 +242,7 @@ bool hash_table_remove(HashTable* table, const char* key) {
     return false;
 }
 
-/* ÇØ½Ã Å×ÀÌºí ¸Þ¸ð¸® ÇØÁ¦ */
+/* í•´ì‹œ í…Œì´ë¸” ë©”ëª¨ë¦¬ í•´ì œ */
 void hash_table_destroy(HashTable* table) {
     if (!table) return;
 
@@ -256,7 +256,7 @@ void hash_table_destroy(HashTable* table) {
     free(table);
 }
 
-/* ÇØ½Ã Å×ÀÌºí »óÅÂ Ãâ·Â */
+/* í•´ì‹œ í…Œì´ë¸” ìƒíƒœ ì¶œë ¥ */
 void hash_table_print(const HashTable* table) {
     printf("\nHash Table Status:\n");
     printf("Size: %zu\n", table->size);
@@ -279,7 +279,7 @@ void hash_table_print(const HashTable* table) {
     }
 }
 
-/* Å½»ç ¹æ½ÄÀ» ¹®ÀÚ¿­·Î º¯È¯ */
+/* íƒì‚¬ ë°©ì‹ì„ ë¬¸ìžì—´ë¡œ ë³€í™˜ */
 const char* probe_type_to_string(ProbeType type) {
     switch (type) {
     case PROBE_LINEAR:
@@ -293,7 +293,7 @@ const char* probe_type_to_string(ProbeType type) {
     }
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Hash Table Menu ===\n");
     printf("1. Insert key-value pair\n");
@@ -411,89 +411,89 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. °³¹æ ÁÖ¼Ò¹ýÀÇ Æ¯Â¡
+1. ê°œë°© ì£¼ì†Œë²•ì˜ íŠ¹ì§•
 -----------------
-- ¸ðµç ¿ø¼Ò°¡ ÁÖ Å×ÀÌºí¿¡ ÀúÀå
-- ´õ ³ªÀº Ä³½Ã Áö¿ª¼º
-- Æ÷ÀÎÅÍ ¿À¹öÇìµå ¾øÀ½
-- Å¬·¯½ºÅÍ¸µ Çö»ó ¹ß»ý
+- ëª¨ë“  ì›ì†Œê°€ ì£¼ í…Œì´ë¸”ì— ì €ìž¥
+- ë” ë‚˜ì€ ìºì‹œ ì§€ì—­ì„±
+- í¬ì¸í„° ì˜¤ë²„í—¤ë“œ ì—†ìŒ
+- í´ëŸ¬ìŠ¤í„°ë§ í˜„ìƒ ë°œìƒ
 
-2. Å½»ç ¹æ½Ä
+2. íƒì‚¬ ë°©ì‹
 ----------
-¼±Çü Á¶»ç¹ý:
-- °¡Àå ´Ü¼øÇÑ ¹æ½Ä
-- ±âº» Å¬·¯½ºÅÍ¸µ ¹ß»ý
-- Ä³½Ã È¿À²¼º ¿ì¼ö
+ì„ í˜• ì¡°ì‚¬ë²•:
+- ê°€ìž¥ ë‹¨ìˆœí•œ ë°©ì‹
+- ê¸°ë³¸ í´ëŸ¬ìŠ¤í„°ë§ ë°œìƒ
+- ìºì‹œ íš¨ìœ¨ì„± ìš°ìˆ˜
 
-ÀÌÂ÷ Á¶»ç¹ý:
-- 2Â÷ Å¬·¯½ºÅÍ¸µ ¹ß»ý
-- ´õ ³ªÀº ºÐ»ê
-- ÀüÃ¼ Å½»ö º¸Àå ¾î·Á¿ò
+ì´ì°¨ ì¡°ì‚¬ë²•:
+- 2ì°¨ í´ëŸ¬ìŠ¤í„°ë§ ë°œìƒ
+- ë” ë‚˜ì€ ë¶„ì‚°
+- ì „ì²´ íƒìƒ‰ ë³´ìž¥ ì–´ë ¤ì›€
 
-ÀÌÁß ÇØ½Ì:
-- °¡Àå ÁÁÀº ºÐ»ê
-- Ãß°¡ ÇØ½Ã ÇÔ¼ö ÇÊ¿ä
-- Å¬·¯½ºÅÍ¸µ ÃÖ¼Ò
+ì´ì¤‘ í•´ì‹±:
+- ê°€ìž¥ ì¢‹ì€ ë¶„ì‚°
+- ì¶”ê°€ í•´ì‹œ í•¨ìˆ˜ í•„ìš”
+- í´ëŸ¬ìŠ¤í„°ë§ ìµœì†Œ
 
-3. ½Ã°£ º¹Àâµµ
+3. ì‹œê°„ ë³µìž¡ë„
 -----------
-Æò±Õ ÄÉÀÌ½º:
-- »ðÀÔ: O(1)
-- °Ë»ö: O(1)
-- »èÁ¦: O(1)
+í‰ê·  ì¼€ì´ìŠ¤:
+- ì‚½ìž…: O(1)
+- ê²€ìƒ‰: O(1)
+- ì‚­ì œ: O(1)
 
-ÃÖ¾Ç ÄÉÀÌ½º:
-- ¸ðµç ¿¬»ê O(n)
-- Å¬·¯½ºÅÍ¸µ ¹ß»ý ½Ã
+ìµœì•… ì¼€ì´ìŠ¤:
+- ëª¨ë“  ì—°ì‚° O(n)
+- í´ëŸ¬ìŠ¤í„°ë§ ë°œìƒ ì‹œ
 
-4. °ø°£ º¹Àâµµ
+4. ê³µê°„ ë³µìž¡ë„
 -----------
 O(n)
-- Ãß°¡ Æ÷ÀÎÅÍ ¾øÀ½
-- Tombstone °ø°£
-- ³·Àº ·Îµå ÆÑÅÍ ÇÊ¿ä
-- ¸Þ¸ð¸® È¿À²Àû
+- ì¶”ê°€ í¬ì¸í„° ì—†ìŒ
+- Tombstone ê³µê°„
+- ë‚®ì€ ë¡œë“œ íŒ©í„° í•„ìš”
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì 
 
-5. Tombstone Ã³¸®
+5. Tombstone ì²˜ë¦¬
 --------------
-- »èÁ¦ ½Ã Æ¯¼ö ¸¶Ä¿ »ç¿ë
-- °Ë»ö ½Ã °Ç³Ê¶Ù±â °¡´É
-- »ðÀÔ ½Ã Àç»ç¿ë °¡´É
-- ÁÖ±âÀû ÀçÇØ½Ì ÇÊ¿ä
+- ì‚­ì œ ì‹œ íŠ¹ìˆ˜ ë§ˆì»¤ ì‚¬ìš©
+- ê²€ìƒ‰ ì‹œ ê±´ë„ˆë›°ê¸° ê°€ëŠ¥
+- ì‚½ìž… ì‹œ ìž¬ì‚¬ìš© ê°€ëŠ¥
+- ì£¼ê¸°ì  ìž¬í•´ì‹± í•„ìš”
 
-6. Àå´ÜÁ¡
+6. ìž¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- Ä³½Ã Áö¿ª¼º
-- Æ÷ÀÎÅÍ ¾øÀ½
-- ¸Þ¸ð¸® È¿À²
-- ±¸Çö ´Ü¼ø
+ìž¥ì :
+- ìºì‹œ ì§€ì—­ì„±
+- í¬ì¸í„° ì—†ìŒ
+- ë©”ëª¨ë¦¬ íš¨ìœ¨
+- êµ¬í˜„ ë‹¨ìˆœ
 
-´ÜÁ¡:
-- Å¬·¯½ºÅÍ¸µ
-- ·Îµå ÆÑÅÍ Á¦ÇÑ
-- ÀçÇØ½Ì ÇÊ¿ä
-- »èÁ¦ Ã³¸® º¹Àâ
+ë‹¨ì :
+- í´ëŸ¬ìŠ¤í„°ë§
+- ë¡œë“œ íŒ©í„° ì œí•œ
+- ìž¬í•´ì‹± í•„ìš”
+- ì‚­ì œ ì²˜ë¦¬ ë³µìž¡
 
-7. ÃÖÀûÈ­ ±â¹ý
+7. ìµœì í™” ê¸°ë²•
 -----------
-- È¿À²Àû ÇØ½Ã ÇÔ¼ö
-- ÀûÀýÇÑ Å©±â °ü¸®
-- ÀçÇØ½Ì Àü·«
-- Å½»ç ¹æ½Ä ¼±ÅÃ
+- íš¨ìœ¨ì  í•´ì‹œ í•¨ìˆ˜
+- ì ì ˆí•œ í¬ê¸° ê´€ë¦¬
+- ìž¬í•´ì‹± ì „ëžµ
+- íƒì‚¬ ë°©ì‹ ì„ íƒ
 
-8. ÀÀ¿ë ºÐ¾ß
+8. ì‘ìš© ë¶„ì•¼
 ----------
-- Ä³½Ã ±¸Çö
-- ¸Þ¸ð¸® °ü¸®
-- ÀÛÀº µ¥ÀÌÅÍ¼Â
-- ½Ç½Ã°£ Ã³¸®
+- ìºì‹œ êµ¬í˜„
+- ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ìž‘ì€ ë°ì´í„°ì…‹
+- ì‹¤ì‹œê°„ ì²˜ë¦¬
 
-ÀÌ ±¸ÇöÀº ¼¼ °¡Áö Å½»ç ¹æ½ÄÀ»
-¸ðµÎ Áö¿øÇÏ¸ç, ½ÇÁ¦ È¯°æ¿¡¼­
-»ç¿ëÇÒ ¼ö ÀÖ´Â ¼öÁØÀÇ °³¹æ ÁÖ¼Ò¹ý
-ÇØ½Ã Å×ÀÌºíÀ» Á¦°øÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ì„¸ ê°€ì§€ íƒì‚¬ ë°©ì‹ì„
+ëª¨ë‘ ì§€ì›í•˜ë©°, ì‹¤ì œ í™˜ê²½ì—ì„œ
+ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ” ìˆ˜ì¤€ì˜ ê°œë°© ì£¼ì†Œë²•
+í•´ì‹œ í…Œì´ë¸”ì„ ì œê³µí•©ë‹ˆë‹¤.
 */

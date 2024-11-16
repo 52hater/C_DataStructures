@@ -3,21 +3,21 @@
 #include <stdbool.h>
 
 /*
-°íÁö½ÄÇÑ Å½»ö(Brute Force) ¾Ë°í¸®Áò:
-- ¹®ÀÚ¿­ ¸ÅÄªÀÇ °¡Àå ±âº»ÀûÀÎ ¾Ë°í¸®Áò
-- ÅØ½ºÆ®ÀÇ ¸ğµç À§Ä¡¿¡¼­ ÆĞÅÏÀ» ºñ±³
-- ÇÑ Ä­¾¿ ÀÌµ¿ÇÏ¸é¼­ ¼øÂ÷ÀûÀ¸·Î ºñ±³
-- ±¸ÇöÀÌ ´Ü¼øÇÏ°í ÀÌÇØÇÏ±â ½¬¿ò
+ê³ ì§€ì‹í•œ íƒìƒ‰(Brute Force) ì•Œê³ ë¦¬ì¦˜:
+- ë¬¸ìì—´ ë§¤ì¹­ì˜ ê°€ì¥ ê¸°ë³¸ì ì¸ ì•Œê³ ë¦¬ì¦˜
+- í…ìŠ¤íŠ¸ì˜ ëª¨ë“  ìœ„ì¹˜ì—ì„œ íŒ¨í„´ì„ ë¹„êµ
+- í•œ ì¹¸ì”© ì´ë™í•˜ë©´ì„œ ìˆœì°¨ì ìœ¼ë¡œ ë¹„êµ
+- êµ¬í˜„ì´ ë‹¨ìˆœí•˜ê³  ì´í•´í•˜ê¸° ì‰¬ì›€
 */
 
-/* ¹®ÀÚ¿­ Å½»ö °á°ú ÀúÀåÀ» À§ÇÑ ±¸Á¶Ã¼ */
+/* ë¬¸ìì—´ íƒìƒ‰ ê²°ê³¼ ì €ì¥ì„ ìœ„í•œ êµ¬ì¡°ì²´ */
 typedef struct {
-    int* positions;    // ¹ß°ßµÈ À§Ä¡µéÀÇ ¹è¿­
-    int count;         // ¹ß°ßµÈ ÃÑ È½¼ö
-    int capacity;      // positions ¹è¿­ÀÇ Å©±â
+    int* positions;    // ë°œê²¬ëœ ìœ„ì¹˜ë“¤ì˜ ë°°ì—´
+    int count;         // ë°œê²¬ëœ ì´ íšŸìˆ˜
+    int capacity;      // positions ë°°ì—´ì˜ í¬ê¸°
 } SearchResult;
 
-/* °Ë»ö °á°ú ÃÊ±âÈ­ */
+/* ê²€ìƒ‰ ê²°ê³¼ ì´ˆê¸°í™” */
 SearchResult* create_result(int initial_capacity) {
     SearchResult* result = (SearchResult*)malloc(sizeof(SearchResult));
     if (!result) return NULL;
@@ -33,7 +33,7 @@ SearchResult* create_result(int initial_capacity) {
     return result;
 }
 
-/* °Ë»ö °á°ú¿¡ »õ·Î¿î À§Ä¡ Ãß°¡ */
+/* ê²€ìƒ‰ ê²°ê³¼ì— ìƒˆë¡œìš´ ìœ„ì¹˜ ì¶”ê°€ */
 void add_position(SearchResult* result, int position) {
     if (result->count >= result->capacity) {
         int new_capacity = result->capacity * 2;
@@ -47,7 +47,7 @@ void add_position(SearchResult* result, int position) {
     result->positions[result->count++] = position;
 }
 
-/* °Ë»ö °á°ú ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê²€ìƒ‰ ê²°ê³¼ ë©”ëª¨ë¦¬ í•´ì œ */
 void destroy_result(SearchResult* result) {
     if (result) {
         free(result->positions);
@@ -55,19 +55,19 @@ void destroy_result(SearchResult* result) {
     }
 }
 
-/* ±âº» ºê·çÆ® Æ÷½º ¹®ÀÚ¿­ °Ë»ö
- * - ½Ã°£º¹Àâµµ: O(mn), m: ÆĞÅÏ±æÀÌ, n: ÅØ½ºÆ®±æÀÌ
- * - °ø°£º¹Àâµµ: O(1)
+/* ê¸°ë³¸ ë¸Œë£¨íŠ¸ í¬ìŠ¤ ë¬¸ìì—´ ê²€ìƒ‰
+ * - ì‹œê°„ë³µì¡ë„: O(mn), m: íŒ¨í„´ê¸¸ì´, n: í…ìŠ¤íŠ¸ê¸¸ì´
+ * - ê³µê°„ë³µì¡ë„: O(1)
  */
 SearchResult* brute_force_search(const char* text, const char* pattern, bool print_steps) {
-    SearchResult* result = create_result(10);  // ÃÊ±â ¿ë·® 10
+    SearchResult* result = create_result(10);  // ì´ˆê¸° ìš©ëŸ‰ 10
     if (!result) return NULL;
 
     int n = strlen(text);
     int m = strlen(pattern);
-    int comparisons = 0;  // ºñ±³ È½¼ö Ä«¿îÆ®
+    int comparisons = 0;  // ë¹„êµ íšŸìˆ˜ ì¹´ìš´íŠ¸
 
-    // ÅØ½ºÆ®ÀÇ °¢ À§Ä¡¿¡¼­ ½Ãµµ
+    // í…ìŠ¤íŠ¸ì˜ ê° ìœ„ì¹˜ì—ì„œ ì‹œë„
     for (int i = 0; i <= n - m; i++) {
         bool match = true;
 
@@ -77,7 +77,7 @@ SearchResult* brute_force_search(const char* text, const char* pattern, bool pri
             printf("Pattern: %*s%s\n", i, "", pattern);
         }
 
-        // ÇöÀç À§Ä¡¿¡¼­ ÆĞÅÏ°ú ºñ±³
+        // í˜„ì¬ ìœ„ì¹˜ì—ì„œ íŒ¨í„´ê³¼ ë¹„êµ
         for (int j = 0; j < m; j++) {
             comparisons++;
 
@@ -106,7 +106,7 @@ SearchResult* brute_force_search(const char* text, const char* pattern, bool pri
     return result;
 }
 
-/* °Ë»ö °á°ú Ãâ·Â */
+/* ê²€ìƒ‰ ê²°ê³¼ ì¶œë ¥ */
 void print_search_result(const SearchResult* result, const char* text, const char* pattern) {
     if (result->count == 0) {
         printf("Pattern not found in text.\n");
@@ -118,7 +118,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
         int pos = result->positions[i];
         printf("Position %d: ", pos);
 
-        // ¸ÅÄªµÈ ºÎºĞ ÀüÃ¼ ¹®ÀÚ¿­ Ãâ·Â
+        // ë§¤ì¹­ëœ ë¶€ë¶„ ì „ì²´ ë¬¸ìì—´ ì¶œë ¥
         printf("....");
         for (int j = pos - 4 >= 0 ? pos - 4 : 0; j < pos; j++) {
             printf("%c", text[j]);
@@ -129,7 +129,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
         }
         printf("....\n");
 
-        // À§Ä¡ Ç¥½Ã
+        // ìœ„ì¹˜ í‘œì‹œ
         printf("         ");
         for (int j = pos - 4 >= 0 ? pos - 4 : 0; j < pos; j++) {
             printf(" ");
@@ -142,7 +142,7 @@ void print_search_result(const SearchResult* result, const char* text, const cha
     }
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Brute Force String Search Menu ===\n");
     printf("1. Enter new text\n");
@@ -166,7 +166,7 @@ int main(void) {
     do {
         print_menu();
         scanf("%d", &choice);
-        getchar();  // ¹öÆÛ ºñ¿ì±â
+        getchar();  // ë²„í¼ ë¹„ìš°ê¸°
 
         switch (choice) {
         case 1:  // Enter text
@@ -216,64 +216,64 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ºê·çÆ® Æ÷½º ¾Ë°í¸®ÁòÀÇ ¿ø¸®
+1. ë¸Œë£¨íŠ¸ í¬ìŠ¤ ì•Œê³ ë¦¬ì¦˜ì˜ ì›ë¦¬
 -------------------------
-- °¡´ÉÇÑ ¸ğµç À§Ä¡ °Ë»ç
-- ÇÑ Ä­¾¿ ÀÌµ¿ÇÏ¸ç ºñ±³
-- ¿ÏÀü Å½»ö ¹æ½Ä
-- °ÅÀÇ ¹«Á¶°Ç ÇØ¸¦ Ã£À½
+- ê°€ëŠ¥í•œ ëª¨ë“  ìœ„ì¹˜ ê²€ì‚¬
+- í•œ ì¹¸ì”© ì´ë™í•˜ë©° ë¹„êµ
+- ì™„ì „ íƒìƒ‰ ë°©ì‹
+- ê±°ì˜ ë¬´ì¡°ê±´ í•´ë¥¼ ì°¾ìŒ
 
-2. ½Ã°£ º¹Àâµµ ºĞ¼®
+2. ì‹œê°„ ë³µì¡ë„ ë¶„ì„
 ---------------
-ÃÖ¾ÇÀÇ °æ¿ì: O(mn)
-- ¸ğµç À§Ä¡¿¡¼­ ÆĞÅÏ ±æÀÌ¸¸Å­ ºñ±³
-- n: ÅØ½ºÆ® ±æÀÌ
-- m: ÆĞÅÏ ±æÀÌ
+ìµœì•…ì˜ ê²½ìš°: O(mn)
+- ëª¨ë“  ìœ„ì¹˜ì—ì„œ íŒ¨í„´ ê¸¸ì´ë§Œí¼ ë¹„êµ
+- n: í…ìŠ¤íŠ¸ ê¸¸ì´
+- m: íŒ¨í„´ ê¸¸ì´
 
-Æò±ÕÀÇ °æ¿ì:
-- ½ÇÁ¦·Î´Â ´õ ÀûÀº ºñ±³
-- ºÒÀÏÄ¡ ¹ß»ı ½Ã Á¶±â Á¾·á
+í‰ê· ì˜ ê²½ìš°:
+- ì‹¤ì œë¡œëŠ” ë” ì ì€ ë¹„êµ
+- ë¶ˆì¼ì¹˜ ë°œìƒ ì‹œ ì¡°ê¸° ì¢…ë£Œ
 
-3. Àå´ÜÁ¡
+3. ì¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ±¸ÇöÀÌ ´Ü¼ø
-- ÀÌÇØÇÏ±â ½¬¿ò
-- ÀÛÀº ÅØ½ºÆ®¿¡ È¿°úÀû
-- ÀüÃ³¸® ºÒÇÊ¿ä
+ì¥ì :
+- êµ¬í˜„ì´ ë‹¨ìˆœ
+- ì´í•´í•˜ê¸° ì‰¬ì›€
+- ì‘ì€ í…ìŠ¤íŠ¸ì— íš¨ê³¼ì 
+- ì „ì²˜ë¦¬ ë¶ˆí•„ìš”
 
-´ÜÁ¡:
-- ºñÈ¿À²ÀûÀÎ ¼º´É
-- ¸¹Àº Áßº¹ ºñ±³
-- ±ä ÅØ½ºÆ®¿¡ ºÎÀûÇÕ
-- ÆĞÅÏ Á¤º¸ ¹ÌÈ°¿ë
+ë‹¨ì :
+- ë¹„íš¨ìœ¨ì ì¸ ì„±ëŠ¥
+- ë§ì€ ì¤‘ë³µ ë¹„êµ
+- ê¸´ í…ìŠ¤íŠ¸ì— ë¶€ì í•©
+- íŒ¨í„´ ì •ë³´ ë¯¸í™œìš©
 
-4. È°¿ë ºĞ¾ß
+4. í™œìš© ë¶„ì•¼
 ----------
-- ÂªÀº ¹®ÀÚ¿­ °Ë»ö
-- ´Ü¼øÇÑ ÅØ½ºÆ® ¿¡µğÅÍ
-- ±³À°¿ë ¿¹Á¦
-- ´Ù¸¥ ¾Ë°í¸®ÁòÀÇ ±âÁØ
+- ì§§ì€ ë¬¸ìì—´ ê²€ìƒ‰
+- ë‹¨ìˆœí•œ í…ìŠ¤íŠ¸ ì—ë””í„°
+- êµìœ¡ìš© ì˜ˆì œ
+- ë‹¤ë¥¸ ì•Œê³ ë¦¬ì¦˜ì˜ ê¸°ì¤€
 
-5. ÃÖÀûÈ­ °¡´É¼º
+5. ìµœì í™” ê°€ëŠ¥ì„±
 ------------
-- ¿©·¯ ¹®ÀÚ µ¿½Ã ºñ±³
-- SIMD ¸í·É¾î È°¿ë
-- Ä³½Ã Áö¿ª¼º °³¼±
-- º´·ÄÈ­ °¡´É
+- ì—¬ëŸ¬ ë¬¸ì ë™ì‹œ ë¹„êµ
+- SIMD ëª…ë ¹ì–´ í™œìš©
+- ìºì‹œ ì§€ì—­ì„± ê°œì„ 
+- ë³‘ë ¬í™” ê°€ëŠ¥
 
-6. ±³À°Àû °¡Ä¡
+6. êµìœ¡ì  ê°€ì¹˜
 -----------
-- ±âº» °³³ä ÀÌÇØ
-- ¼º´É ºĞ¼® ÇĞ½À
-- ÃÖÀûÈ­ ÇÊ¿ä¼º
-- ¾Ë°í¸®Áò ºñ±³
+- ê¸°ë³¸ ê°œë… ì´í•´
+- ì„±ëŠ¥ ë¶„ì„ í•™ìŠµ
+- ìµœì í™” í•„ìš”ì„±
+- ì•Œê³ ë¦¬ì¦˜ ë¹„êµ
 
-ÀÌ ±¸ÇöÀº ºê·çÆ® Æ÷½º ¹æ½ÄÀÇ
-¹®ÀÚ¿­ °Ë»öÀ» ÀÌÇØÇÏ±â ½±°Ô
-º¸¿©ÁÖ¸ç, ´ÙÀ½ ´Ü°èÀÎ KMP
-¾Ë°í¸®ÁòÀÇ ÇÊ¿ä¼ºÀ» ¼³¸íÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë¸Œë£¨íŠ¸ í¬ìŠ¤ ë°©ì‹ì˜
+ë¬¸ìì—´ ê²€ìƒ‰ì„ ì´í•´í•˜ê¸° ì‰½ê²Œ
+ë³´ì—¬ì£¼ë©°, ë‹¤ìŒ ë‹¨ê³„ì¸ KMP
+ì•Œê³ ë¦¬ì¦˜ì˜ í•„ìš”ì„±ì„ ì„¤ëª…í•©ë‹ˆë‹¤.
 */

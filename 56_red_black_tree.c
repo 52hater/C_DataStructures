@@ -3,17 +3,17 @@
 #include <stdbool.h>
 
 /*
-¾Ë°í¸®Áò ºÐ·ù: Æ®¸® ÀÚ·á±¸Á¶
-ÇÏÀ§ ºÐ·ù: ÀÚ°¡ ±ÕÇü ÀÌÁø Å½»ö Æ®¸®
-³­ÀÌµµ: »ó
-°ü·Ã ÀÚ·á±¸Á¶: AVL Æ®¸®, B-Æ®¸®
+ì•Œê³ ë¦¬ì¦˜ ë¶„ë¥˜: íŠ¸ë¦¬ ìžë£Œêµ¬ì¡°
+í•˜ìœ„ ë¶„ë¥˜: ìžê°€ ê· í˜• ì´ì§„ íƒìƒ‰ íŠ¸ë¦¬
+ë‚œì´ë„: ìƒ
+ê´€ë ¨ ìžë£Œêµ¬ì¡°: AVL íŠ¸ë¦¬, B-íŠ¸ë¦¬
 
-·¹µå-ºí·¢ Æ®¸® Æ¯¼º:
-1. ¸ðµç ³ëµå´Â »¡°£»ö ¶Ç´Â °ËÀº»ö
-2. ·çÆ®´Â °ËÀº»ö
-3. ¸ðµç ¸®ÇÁ(NIL)´Â °ËÀº»ö
-4. »¡°£ ³ëµåÀÇ ÀÚ½ÄÀº ¸ðµÎ °ËÀº»ö
-5. ÀÓÀÇÀÇ ³ëµå¿¡¼­ ¸ðµç ¸®ÇÁ±îÁöÀÇ °ËÀº ³ëµå ¼ö µ¿ÀÏ
+ë ˆë“œ-ë¸”ëž™ íŠ¸ë¦¬ íŠ¹ì„±:
+1. ëª¨ë“  ë…¸ë“œëŠ” ë¹¨ê°„ìƒ‰ ë˜ëŠ” ê²€ì€ìƒ‰
+2. ë£¨íŠ¸ëŠ” ê²€ì€ìƒ‰
+3. ëª¨ë“  ë¦¬í”„(NIL)ëŠ” ê²€ì€ìƒ‰
+4. ë¹¨ê°„ ë…¸ë“œì˜ ìžì‹ì€ ëª¨ë‘ ê²€ì€ìƒ‰
+5. ìž„ì˜ì˜ ë…¸ë“œì—ì„œ ëª¨ë“  ë¦¬í”„ê¹Œì§€ì˜ ê²€ì€ ë…¸ë“œ ìˆ˜ ë™ì¼
 */
 
 typedef enum { RED, BLACK } Color;
@@ -26,10 +26,10 @@ typedef struct Node {
 
 typedef struct {
     Node* root;
-    Node* NIL;  // ³Î ¸®ÇÁ ³ëµå
+    Node* NIL;  // ë„ ë¦¬í”„ ë…¸ë“œ
 } RBTree;
 
-// Æ®¸® »ý¼º
+// íŠ¸ë¦¬ ìƒì„±
 RBTree* create_tree(void) {
     RBTree* tree = (RBTree*)malloc(sizeof(RBTree));
     tree->NIL = (Node*)malloc(sizeof(Node));
@@ -39,7 +39,7 @@ RBTree* create_tree(void) {
     return tree;
 }
 
-// ³ëµå »ý¼º
+// ë…¸ë“œ ìƒì„±
 Node* create_node(RBTree* tree, int key) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->key = key;
@@ -49,7 +49,7 @@ Node* create_node(RBTree* tree, int key) {
     return node;
 }
 
-// ÁÂÈ¸Àü
+// ì¢ŒíšŒì „
 void left_rotate(RBTree* tree, Node* x) {
     Node* y = x->right;
     x->right = y->left;
@@ -69,10 +69,10 @@ void left_rotate(RBTree* tree, Node* x) {
     y->left = x;
     x->parent = y;
 
-    printf("ÁÂÈ¸Àü ¼öÇà (³ëµå %d)\n", x->key);
+    printf("ì¢ŒíšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", x->key);
 }
 
-// ¿ìÈ¸Àü
+// ìš°íšŒì „
 void right_rotate(RBTree* tree, Node* y) {
     Node* x = y->left;
     y->left = x->right;
@@ -92,60 +92,60 @@ void right_rotate(RBTree* tree, Node* y) {
     x->right = y;
     y->parent = x;
 
-    printf("¿ìÈ¸Àü ¼öÇà (³ëµå %d)\n", y->key);
+    printf("ìš°íšŒì „ ìˆ˜í–‰ (ë…¸ë“œ %d)\n", y->key);
 }
 
-// »ðÀÔ ÈÄ Á¶Á¤
+// ì‚½ìž… í›„ ì¡°ì •
 void insert_fixup(RBTree* tree, Node* z) {
     while (z->parent->color == RED) {
         if (z->parent == z->parent->parent->left) {
             Node* y = z->parent->parent->right;
 
-            // Case 1: »ïÃÌÀÌ »¡°£»ö
+            // Case 1: ì‚¼ì´Œì´ ë¹¨ê°„ìƒ‰
             if (y->color == RED) {
                 z->parent->color = BLACK;
                 y->color = BLACK;
                 z->parent->parent->color = RED;
                 z = z->parent->parent;
-                printf("Case 1 Àû¿ë (³ëµå %d)\n", z->key);
+                printf("Case 1 ì ìš© (ë…¸ë“œ %d)\n", z->key);
             }
             else {
-                // Case 2: »ïÃÌÀÌ °ËÀº»ö (»ï°¢Çü)
+                // Case 2: ì‚¼ì´Œì´ ê²€ì€ìƒ‰ (ì‚¼ê°í˜•)
                 if (z == z->parent->right) {
                     z = z->parent;
                     left_rotate(tree, z);
-                    printf("Case 2 Àû¿ë (³ëµå %d)\n", z->key);
+                    printf("Case 2 ì ìš© (ë…¸ë“œ %d)\n", z->key);
                 }
-                // Case 3: »ïÃÌÀÌ °ËÀº»ö (Á÷¼±)
+                // Case 3: ì‚¼ì´Œì´ ê²€ì€ìƒ‰ (ì§ì„ )
                 z->parent->color = BLACK;
                 z->parent->parent->color = RED;
                 right_rotate(tree, z->parent->parent);
-                printf("Case 3 Àû¿ë (³ëµå %d)\n", z->key);
+                printf("Case 3 ì ìš© (ë…¸ë“œ %d)\n", z->key);
             }
         }
         else {
             Node* y = z->parent->parent->left;
 
-            // Case 1: »ïÃÌÀÌ »¡°£»ö
+            // Case 1: ì‚¼ì´Œì´ ë¹¨ê°„ìƒ‰
             if (y->color == RED) {
                 z->parent->color = BLACK;
                 y->color = BLACK;
                 z->parent->parent->color = RED;
                 z = z->parent->parent;
-                printf("Case 1 Àû¿ë (³ëµå %d)\n", z->key);
+                printf("Case 1 ì ìš© (ë…¸ë“œ %d)\n", z->key);
             }
             else {
-                // Case 2: »ïÃÌÀÌ °ËÀº»ö (»ï°¢Çü)
+                // Case 2: ì‚¼ì´Œì´ ê²€ì€ìƒ‰ (ì‚¼ê°í˜•)
                 if (z == z->parent->left) {
                     z = z->parent;
                     right_rotate(tree, z);
-                    printf("Case 2 Àû¿ë (³ëµå %d)\n", z->key);
+                    printf("Case 2 ì ìš© (ë…¸ë“œ %d)\n", z->key);
                 }
-                // Case 3: »ïÃÌÀÌ °ËÀº»ö (Á÷¼±)
+                // Case 3: ì‚¼ì´Œì´ ê²€ì€ìƒ‰ (ì§ì„ )
                 z->parent->color = BLACK;
                 z->parent->parent->color = RED;
                 left_rotate(tree, z->parent->parent);
-                printf("Case 3 Àû¿ë (³ëµå %d)\n", z->key);
+                printf("Case 3 ì ìš© (ë…¸ë“œ %d)\n", z->key);
             }
         }
 
@@ -155,7 +155,7 @@ void insert_fixup(RBTree* tree, Node* z) {
     tree->root->color = BLACK;
 }
 
-// ³ëµå »ðÀÔ
+// ë…¸ë“œ ì‚½ìž…
 void insert(RBTree* tree, int key) {
     Node* z = create_node(tree, key);
     Node* y = tree->NIL;
@@ -178,11 +178,11 @@ void insert(RBTree* tree, int key) {
     else
         y->right = z;
 
-    printf("³ëµå %d »ðÀÔ\n", key);
+    printf("ë…¸ë“œ %d ì‚½ìž…\n", key);
     insert_fixup(tree, z);
 }
 
-// Æ®¸® Ãâ·Â
+// íŠ¸ë¦¬ ì¶œë ¥
 void print_tree_recursive(RBTree* tree, Node* root, int level) {
     if (root == tree->NIL) return;
 
@@ -196,12 +196,12 @@ void print_tree_recursive(RBTree* tree, Node* root, int level) {
 }
 
 void print_tree(RBTree* tree) {
-    printf("\n=== ÇöÀç Æ®¸® »óÅÂ ===\n");
+    printf("\n=== í˜„ìž¬ íŠ¸ë¦¬ ìƒíƒœ ===\n");
     print_tree_recursive(tree, tree->root, 0);
     printf("\n");
 }
 
-// Æ¯¼º °ËÁõ
+// íŠ¹ì„± ê²€ì¦
 bool validate_property_4(Node* node, RBTree* tree) {
     if (node == tree->NIL) return true;
 
@@ -228,30 +228,30 @@ int get_black_height(Node* node, RBTree* tree) {
 }
 
 void validate_tree(RBTree* tree) {
-    printf("\n=== Æ®¸® Æ¯¼º °ËÁõ ===\n");
+    printf("\n=== íŠ¸ë¦¬ íŠ¹ì„± ê²€ì¦ ===\n");
 
-    // Æ¯¼º 2: ·çÆ®´Â °ËÀº»ö
+    // íŠ¹ì„± 2: ë£¨íŠ¸ëŠ” ê²€ì€ìƒ‰
     if (tree->root->color != BLACK) {
-        printf("Æ¯¼º 2 À§¹Ý: ·çÆ®°¡ »¡°£»öÀÔ´Ï´Ù.\n");
+        printf("íŠ¹ì„± 2 ìœ„ë°˜: ë£¨íŠ¸ê°€ ë¹¨ê°„ìƒ‰ìž…ë‹ˆë‹¤.\n");
         return;
     }
 
-    // Æ¯¼º 4: »¡°£ ³ëµåÀÇ ÀÚ½ÄÀº °ËÀº»ö
+    // íŠ¹ì„± 4: ë¹¨ê°„ ë…¸ë“œì˜ ìžì‹ì€ ê²€ì€ìƒ‰
     if (!validate_property_4(tree->root, tree)) {
-        printf("Æ¯¼º 4 À§¹Ý: »¡°£ ³ëµåÀÇ ÀÚ½ÄÀÌ »¡°£»öÀÔ´Ï´Ù.\n");
+        printf("íŠ¹ì„± 4 ìœ„ë°˜: ë¹¨ê°„ ë…¸ë“œì˜ ìžì‹ì´ ë¹¨ê°„ìƒ‰ìž…ë‹ˆë‹¤.\n");
         return;
     }
 
-    // Æ¯¼º 5: °ËÀº ³ôÀÌ µ¿ÀÏ
+    // íŠ¹ì„± 5: ê²€ì€ ë†’ì´ ë™ì¼
     if (get_black_height(tree->root, tree) == -1) {
-        printf("Æ¯¼º 5 À§¹Ý: °ËÀº ³ôÀÌ°¡ ´Ù¸¨´Ï´Ù.\n");
+        printf("íŠ¹ì„± 5 ìœ„ë°˜: ê²€ì€ ë†’ì´ê°€ ë‹¤ë¦…ë‹ˆë‹¤.\n");
         return;
     }
 
-    printf("¸ðµç ·¹µå-ºí·¢ Æ®¸® Æ¯¼ºÀÌ ¸¸Á·µË´Ï´Ù.\n");
+    printf("ëª¨ë“  ë ˆë“œ-ë¸”ëž™ íŠ¸ë¦¬ íŠ¹ì„±ì´ ë§Œì¡±ë©ë‹ˆë‹¤.\n");
 }
 
-// ¸Þ¸ð¸® ÇØÁ¦
+// ë©”ëª¨ë¦¬ í•´ì œ
 void free_tree_recursive(RBTree* tree, Node* root) {
     if (root == tree->NIL) return;
     free_tree_recursive(tree, root->left);
@@ -269,20 +269,20 @@ int main(void) {
     RBTree* tree = create_tree();
     int choice, key;
 
-    printf("=== ·¹µå-ºí·¢ Æ®¸® Å×½ºÆ® ===\n");
+    printf("=== ë ˆë“œ-ë¸”ëž™ íŠ¸ë¦¬ í…ŒìŠ¤íŠ¸ ===\n");
 
     while (1) {
-        printf("\n1. ³ëµå »ðÀÔ\n");
-        printf("2. Æ®¸® Ãâ·Â\n");
-        printf("3. Æ¯¼º °ËÁõ\n");
-        printf("0. Á¾·á\n");
-        printf("¼±ÅÃ: ");
+        printf("\n1. ë…¸ë“œ ì‚½ìž…\n");
+        printf("2. íŠ¸ë¦¬ ì¶œë ¥\n");
+        printf("3. íŠ¹ì„± ê²€ì¦\n");
+        printf("0. ì¢…ë£Œ\n");
+        printf("ì„ íƒ: ");
 
         scanf("%d", &choice);
 
         switch (choice) {
         case 1:
-            printf("»ðÀÔÇÒ Å° °ª: ");
+            printf("ì‚½ìž…í•  í‚¤ ê°’: ");
             scanf("%d", &key);
             insert(tree, key);
             print_tree(tree);
@@ -301,7 +301,7 @@ int main(void) {
             return 0;
 
         default:
-            printf("Àß¸øµÈ ¼±ÅÃ\n");
+            printf("ìž˜ëª»ëœ ì„ íƒ\n");
         }
     }
 
@@ -309,50 +309,50 @@ int main(void) {
 }
 
 /*
-·¹µå-ºí·¢ Æ®¸® ºÐ¼®
+ë ˆë“œ-ë¸”ëž™ íŠ¸ë¦¬ ë¶„ì„
 ===============
 
-1. ÇÙ½É Æ¯¼º
+1. í•µì‹¬ íŠ¹ì„±
 ----------
-- ¸ðµç ³ëµå´Â R/B
-- ·çÆ®¿Í ¸®ÇÁ(NIL)´Â BLACK
-- RED ³ëµåÀÇ ÀÚ½ÄÀº BLACK
-- ¸ðµç °æ·ÎÀÇ BLACK ³ëµå ¼ö µ¿ÀÏ
+- ëª¨ë“  ë…¸ë“œëŠ” R/B
+- ë£¨íŠ¸ì™€ ë¦¬í”„(NIL)ëŠ” BLACK
+- RED ë…¸ë“œì˜ ìžì‹ì€ BLACK
+- ëª¨ë“  ê²½ë¡œì˜ BLACK ë…¸ë“œ ìˆ˜ ë™ì¼
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µìž¡ë„
 -----------
-- »ðÀÔ: O(log n)
-- »èÁ¦: O(log n)
-- °Ë»ö: O(log n)
+- ì‚½ìž…: O(log n)
+- ì‚­ì œ: O(log n)
+- ê²€ìƒ‰: O(log n)
 
-3. AVL Æ®¸®¿ÍÀÇ Â÷ÀÌ
+3. AVL íŠ¸ë¦¬ì™€ì˜ ì°¨ì´
 ----------------
-·¹µå-ºí·¢ Æ®¸®:
-- ´À½¼ÇÑ ±ÕÇü
-- »ðÀÔ/»èÁ¦ ½Ã È¸Àü ÀûÀ½
-- ½ÇÁ¦ ÀÀ¿ë¿¡ ´õ ÀûÇÕ
+ë ˆë“œ-ë¸”ëž™ íŠ¸ë¦¬:
+- ëŠìŠ¨í•œ ê· í˜•
+- ì‚½ìž…/ì‚­ì œ ì‹œ íšŒì „ ì ìŒ
+- ì‹¤ì œ ì‘ìš©ì— ë” ì í•©
 
-AVL Æ®¸®:
-- ¿Ïº®ÇÑ ±ÕÇü
-- ´õ ¸¹Àº È¸Àü ÇÊ¿ä
-- °Ë»öÀÌ ´õ ºü¸§
+AVL íŠ¸ë¦¬:
+- ì™„ë²½í•œ ê· í˜•
+- ë” ë§Žì€ íšŒì „ í•„ìš”
+- ê²€ìƒ‰ì´ ë” ë¹ ë¦„
 
-4. ½ÇÁ¦ ÀÀ¿ë
+4. ì‹¤ì œ ì‘ìš©
 ---------
-- C++ STLÀÇ map/set
+- C++ STLì˜ map/set
 - Java TreeMap/TreeSet
-- ÇÁ·Î¼¼½º ½ºÄÉÁÙ·¯
-- ¸Þ¸ð¸® °ü¸®
+- í”„ë¡œì„¸ìŠ¤ ìŠ¤ì¼€ì¤„ëŸ¬
+- ë©”ëª¨ë¦¬ ê´€ë¦¬
 
-5. ±¸Çö Æ¯Â¡
+5. êµ¬í˜„ íŠ¹ì§•
 ---------
-- NIL ³ëµå »ç¿ë
-- ºÎ¸ð Æ÷ÀÎÅÍ ÇÊ¿ä
-- »ö»ó Á¤º¸ ÀúÀå
-- Àç±ÍÀû Æ¯¼º °ËÁõ
+- NIL ë…¸ë“œ ì‚¬ìš©
+- ë¶€ëª¨ í¬ì¸í„° í•„ìš”
+- ìƒ‰ìƒ ì •ë³´ ì €ìž¥
+- ìž¬ê·€ì  íŠ¹ì„± ê²€ì¦
 
-ÀÌ ±¸ÇöÀº ÀÚ°¡ ±ÕÇü Æ®¸®ÀÇ
-°í±Þ ÇüÅÂ¸¦ º¸¿©ÁÖ¸ç,
-½ÇÁ¦ ½Ã½ºÅÛ¿¡¼­ ¸¹ÀÌ »ç¿ëµÇ´Â
-ÀÚ·á±¸Á¶ÀÇ ±âÃÊ¸¦ Á¦°øÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ìžê°€ ê· í˜• íŠ¸ë¦¬ì˜
+ê³ ê¸‰ í˜•íƒœë¥¼ ë³´ì—¬ì£¼ë©°,
+ì‹¤ì œ ì‹œìŠ¤í…œì—ì„œ ë§Žì´ ì‚¬ìš©ë˜ëŠ”
+ìžë£Œêµ¬ì¡°ì˜ ê¸°ì´ˆë¥¼ ì œê³µí•©ë‹ˆë‹¤.
 */

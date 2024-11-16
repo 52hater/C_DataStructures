@@ -3,17 +3,17 @@
 #include <stdbool.h>
 
 /*
-Å©·ç½ºÄ® ¾Ë°í¸®ÁòÀÇ Å½¿åÀû Æ¯¼º
+í¬ë£¨ìŠ¤ì¹¼ ì•Œê³ ë¦¬ì¦˜ì˜ íƒìš•ì  íŠ¹ì„±
 ===========================
 
-1. Å½¿åÀû ¼±ÅÃ
-- °¡Àå ÀÛÀº °¡ÁßÄ¡ÀÇ °£¼±ºÎÅÍ ¼±ÅÃ
-- »çÀÌÅ¬ Çü¼ºÇÏÁö ¾Ê´Â Á¶°Ç ÇÏ¿¡¼­ °áÁ¤
-- ¼±ÅÃ ½ÃÁ¡¿¡¼­ ÃÖ¼±ÀÇ ¼±ÅÃ
+1. íƒìš•ì  ì„ íƒ
+- ê°€ìž¥ ìž‘ì€ ê°€ì¤‘ì¹˜ì˜ ê°„ì„ ë¶€í„° ì„ íƒ
+- ì‚¬ì´í´ í˜•ì„±í•˜ì§€ ì•ŠëŠ” ì¡°ê±´ í•˜ì—ì„œ ê²°ì •
+- ì„ íƒ ì‹œì ì—ì„œ ìµœì„ ì˜ ì„ íƒ
 
-2. ÃÖÀû ºÎºÐ ±¸Á¶
-- ºÎºÐ MSTµµ ÃÖ¼Ò ½ÅÀå Æ®¸®
-- ¼±ÅÃµÈ °£¼±µéÀÇ ºÎºÐÁýÇÕµµ ÃÖÀû
+2. ìµœì  ë¶€ë¶„ êµ¬ì¡°
+- ë¶€ë¶„ MSTë„ ìµœì†Œ ì‹ ìž¥ íŠ¸ë¦¬
+- ì„ íƒëœ ê°„ì„ ë“¤ì˜ ë¶€ë¶„ì§‘í•©ë„ ìµœì 
 */
 
 typedef struct {
@@ -33,12 +33,12 @@ typedef struct {
     int* rank;
 } DisjointSet;
 
-// °£¼± ºñ±³ ÇÔ¼ö
+// ê°„ì„  ë¹„êµ í•¨ìˆ˜
 int compare_edges(const void* a, const void* b) {
     return ((Edge*)a)->weight - ((Edge*)b)->weight;
 }
 
-// Union-Find ±¸Çö
+// Union-Find êµ¬í˜„
 DisjointSet* create_disjoint_set(int size) {
     DisjointSet* set = malloc(sizeof(DisjointSet));
     set->parent = malloc(size * sizeof(int));
@@ -75,15 +75,15 @@ void union_sets(DisjointSet* set, int x, int y) {
     }
 }
 
-// Å½¿åÀû ¼±ÅÃ °úÁ¤À» º¸¿©ÁÖ´Â Å©·ç½ºÄ® ¾Ë°í¸®Áò
+// íƒìš•ì  ì„ íƒ ê³¼ì •ì„ ë³´ì—¬ì£¼ëŠ” í¬ë£¨ìŠ¤ì¹¼ ì•Œê³ ë¦¬ì¦˜
 void kruskal_mst_with_steps(Graph* graph) {
     qsort(graph->edges, graph->num_edges, sizeof(Edge), compare_edges);
     DisjointSet* set = create_disjoint_set(graph->num_vertices);
 
-    printf("\n=== Å©·ç½ºÄ® ¾Ë°í¸®Áò ½ÇÇà °úÁ¤ ===\n");
-    printf("°£¼±µéÀ» °¡ÁßÄ¡ ¼øÀ¸·Î Á¤·Ä:\n");
+    printf("\n=== í¬ë£¨ìŠ¤ì¹¼ ì•Œê³ ë¦¬ì¦˜ ì‹¤í–‰ ê³¼ì • ===\n");
+    printf("ê°„ì„ ë“¤ì„ ê°€ì¤‘ì¹˜ ìˆœìœ¼ë¡œ ì •ë ¬:\n");
     for (int i = 0; i < graph->num_edges; i++) {
-        printf("(%d-%d, °¡ÁßÄ¡: %d)\n",
+        printf("(%d-%d, ê°€ì¤‘ì¹˜: %d)\n",
             graph->edges[i].src,
             graph->edges[i].dest,
             graph->edges[i].weight);
@@ -91,11 +91,11 @@ void kruskal_mst_with_steps(Graph* graph) {
 
     int mst_weight = 0;
     int edges_used = 0;
-    printf("\n°£¼± ¼±ÅÃ °úÁ¤:\n");
+    printf("\nê°„ì„  ì„ íƒ ê³¼ì •:\n");
 
     for (int i = 0; i < graph->num_edges && edges_used < graph->num_vertices - 1; i++) {
         Edge current = graph->edges[i];
-        printf("\nÇöÀç °Ë»çÇÒ °£¼±: %d-%d (°¡ÁßÄ¡: %d)\n",
+        printf("\ní˜„ìž¬ ê²€ì‚¬í•  ê°„ì„ : %d-%d (ê°€ì¤‘ì¹˜: %d)\n",
             current.src, current.dest, current.weight);
 
         int src_root = find(set, current.src);
@@ -106,31 +106,31 @@ void kruskal_mst_with_steps(Graph* graph) {
             mst_weight += current.weight;
             edges_used++;
 
-            printf("¼±ÅÃµÊ - »çÀÌÅ¬À» Çü¼ºÇÏÁö ¾ÊÀ½\n");
-            printf("ÇöÀç±îÁöÀÇ MST °¡ÁßÄ¡: %d\n", mst_weight);
+            printf("ì„ íƒë¨ - ì‚¬ì´í´ì„ í˜•ì„±í•˜ì§€ ì•ŠìŒ\n");
+            printf("í˜„ìž¬ê¹Œì§€ì˜ MST ê°€ì¤‘ì¹˜: %d\n", mst_weight);
         }
         else {
-            printf("Á¦¿ÜµÊ - »çÀÌÅ¬ Çü¼º À§Çè\n");
+            printf("ì œì™¸ë¨ - ì‚¬ì´í´ í˜•ì„± ìœ„í—˜\n");
         }
 
-        printf("ÇöÀç±îÁö ¼±ÅÃµÈ °£¼± ¼ö: %d\n", edges_used);
+        printf("í˜„ìž¬ê¹Œì§€ ì„ íƒëœ ê°„ì„  ìˆ˜: %d\n", edges_used);
     }
 
-    printf("\n=== ÃÖÁ¾ °á°ú ===\n");
-    printf("MST ÃÑ °¡ÁßÄ¡: %d\n", mst_weight);
-    printf("»ç¿ëµÈ °£¼± ¼ö: %d\n", edges_used);
+    printf("\n=== ìµœì¢… ê²°ê³¼ ===\n");
+    printf("MST ì´ ê°€ì¤‘ì¹˜: %d\n", mst_weight);
+    printf("ì‚¬ìš©ëœ ê°„ì„  ìˆ˜: %d\n", edges_used);
 
     free(set->parent);
     free(set->rank);
     free(set);
 }
 
-// ¸ÞÀÎ ÇÔ¼ö
+// ë©”ì¸ í•¨ìˆ˜
 int main(void) {
     int num_vertices, num_edges;
-    printf("Á¤Á¡ ¼ö ÀÔ·Â: ");
+    printf("ì •ì  ìˆ˜ ìž…ë ¥: ");
     scanf("%d", &num_vertices);
-    printf("°£¼± ¼ö ÀÔ·Â: ");
+    printf("ê°„ì„  ìˆ˜ ìž…ë ¥: ");
     scanf("%d", &num_edges);
 
     Graph* graph = malloc(sizeof(Graph));
@@ -138,7 +138,7 @@ int main(void) {
     graph->num_edges = num_edges;
     graph->edges = malloc(num_edges * sizeof(Edge));
 
-    printf("\n°£¼± Á¤º¸ ÀÔ·Â (½ÃÀÛÁ¡ µµÂøÁ¡ °¡ÁßÄ¡):\n");
+    printf("\nê°„ì„  ì •ë³´ ìž…ë ¥ (ì‹œìž‘ì  ë„ì°©ì  ê°€ì¤‘ì¹˜):\n");
     for (int i = 0; i < num_edges; i++) {
         scanf("%d %d %d",
             &graph->edges[i].src,
@@ -154,36 +154,36 @@ int main(void) {
 }
 
 /*
-Å©·ç½ºÄ® ¾Ë°í¸®ÁòÀÇ Å½¿åÀû Á¤´ç¼º
+í¬ë£¨ìŠ¤ì¹¼ ì•Œê³ ë¦¬ì¦˜ì˜ íƒìš•ì  ì •ë‹¹ì„±
 ===========================
 
-1. ¾ÈÀü¼º (Safety Property)
+1. ì•ˆì „ì„± (Safety Property)
 ------------------------
-- °¡Àå ÀÛÀº °¡ÁßÄ¡ÀÇ °£¼± ¼±ÅÃÀÌ
-  Ç×»ó MSTÀÇ ÀÏºÎ°¡ µÉ ¼ö ÀÖÀ½
-- Cut Property¿¡ ÀÇÇØ Áõ¸í °¡´É
+- ê°€ìž¥ ìž‘ì€ ê°€ì¤‘ì¹˜ì˜ ê°„ì„  ì„ íƒì´
+  í•­ìƒ MSTì˜ ì¼ë¶€ê°€ ë  ìˆ˜ ìžˆìŒ
+- Cut Propertyì— ì˜í•´ ì¦ëª… ê°€ëŠ¥
 
-2. ÃÖÀû¼º (Optimality)
+2. ìµœì ì„± (Optimality)
 -------------------
-- Å½¿åÀû ¼±ÅÃÀ» ÅëÇØ Àü¿ª ÃÖÀûÇØ µµ´Þ
-- Exchange Argument·Î Áõ¸í °¡´É
-- ¼±ÅÃµÈ °£¼±Àº Ç×»ó ÃÖÀûÇØÀÇ ÀÏºÎ
+- íƒìš•ì  ì„ íƒì„ í†µí•´ ì „ì—­ ìµœì í•´ ë„ë‹¬
+- Exchange Argumentë¡œ ì¦ëª… ê°€ëŠ¥
+- ì„ íƒëœ ê°„ì„ ì€ í•­ìƒ ìµœì í•´ì˜ ì¼ë¶€
 
-3. Å½¿åÀû ¼±ÅÃÀÇ ÀåÁ¡
+3. íƒìš•ì  ì„ íƒì˜ ìž¥ì 
 -----------------
-- ´Ü¼øÇÏ°í Á÷°üÀûÀÎ ±¸Çö
-- È¿À²ÀûÀÎ ½ÇÇà ½Ã°£
-- ÁõºÐÀû ÇØ ±¸¼º
-- ºÎºÐÇØÀÇ ÃÖÀû¼º º¸Àå
+- ë‹¨ìˆœí•˜ê³  ì§ê´€ì ì¸ êµ¬í˜„
+- íš¨ìœ¨ì ì¸ ì‹¤í–‰ ì‹œê°„
+- ì¦ë¶„ì  í•´ êµ¬ì„±
+- ë¶€ë¶„í•´ì˜ ìµœì ì„± ë³´ìž¥
 
-4. ½Ã°£ º¹Àâµµ
+4. ì‹œê°„ ë³µìž¡ë„
 -----------
-- Á¤·Ä: O(E log E)
-- Union-Find: O(¥á(V))
-- ÀüÃ¼: O(E log E)
+- ì •ë ¬: O(E log E)
+- Union-Find: O(Î±(V))
+- ì „ì²´: O(E log E)
 
-ÀÌ ±¸ÇöÀº Å©·ç½ºÄ® ¾Ë°í¸®ÁòÀÇ
-Å½¿åÀû Æ¯¼ºÀ» °­Á¶ÇÏ°í,
-°¢ ¼±ÅÃ °úÁ¤À» ½Ã°¢È­ÇÏ¿©
-º¸¿©ÁÝ´Ï´Ù.
+ì´ êµ¬í˜„ì€ í¬ë£¨ìŠ¤ì¹¼ ì•Œê³ ë¦¬ì¦˜ì˜
+íƒìš•ì  íŠ¹ì„±ì„ ê°•ì¡°í•˜ê³ ,
+ê° ì„ íƒ ê³¼ì •ì„ ì‹œê°í™”í•˜ì—¬
+ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

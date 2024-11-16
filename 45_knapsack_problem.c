@@ -3,50 +3,50 @@
 #include <stdbool.h>
 
 /*
-¹è³¶ ¹®Á¦ (0/1 Knapsack Problem)
+ë°°ë‚­ ë¬¸ì œ (0/1 Knapsack Problem)
 ==============================
 
-Æ¯Â¡:
-1. °¢ ¹°°ÇÀ» ÅëÂ°·Î ³Ö°Å³ª ¾È ³Ö°Å³ª (0 ¶Ç´Â 1)
-2. Á¦ÇÑµÈ ¹«°Ô ³»¿¡¼­ ÃÖ´ë °¡Ä¡ ¼±ÅÃ
-3. ºĞÇÒ ºÒ°¡´ÉÇÑ ¹°°ÇµéÀÇ Á¶ÇÕ ÃÖÀûÈ­
+íŠ¹ì§•:
+1. ê° ë¬¼ê±´ì„ í†µì§¸ë¡œ ë„£ê±°ë‚˜ ì•ˆ ë„£ê±°ë‚˜ (0 ë˜ëŠ” 1)
+2. ì œí•œëœ ë¬´ê²Œ ë‚´ì—ì„œ ìµœëŒ€ ê°€ì¹˜ ì„ íƒ
+3. ë¶„í•  ë¶ˆê°€ëŠ¥í•œ ë¬¼ê±´ë“¤ì˜ ì¡°í•© ìµœì í™”
 
-±âº» °³³ä:
-- ¹°°Ç iÀÇ ¹«°Ô: w[i]
-- ¹°°Ç iÀÇ °¡Ä¡: v[i]
-- ¹è³¶ ¿ë·®: W
-- ÃÖÀûÇØ: dp[i][w]
+ê¸°ë³¸ ê°œë…:
+- ë¬¼ê±´ iì˜ ë¬´ê²Œ: w[i]
+- ë¬¼ê±´ iì˜ ê°€ì¹˜: v[i]
+- ë°°ë‚­ ìš©ëŸ‰: W
+- ìµœì í•´: dp[i][w]
 */
 
-// === ¹°°Ç ±¸Á¶Ã¼ ===
+// === ë¬¼ê±´ êµ¬ì¡°ì²´ ===
 typedef struct {
-    int weight;     // ¹«°Ô
-    int value;      // °¡Ä¡
-    char* name;     // ¹°°Ç ÀÌ¸§
+    int weight;     // ë¬´ê²Œ
+    int value;      // ê°€ì¹˜
+    char* name;     // ë¬¼ê±´ ì´ë¦„
 } Item;
 
-// === ¹è³¶ Å×ÀÌºí ±¸Á¶Ã¼ ===
+// === ë°°ë‚­ í…Œì´ë¸” êµ¬ì¡°ì²´ ===
 typedef struct {
-    int** table;    // DP Å×ÀÌºí
-    bool** selected; // ¼±ÅÃµÈ ¹°°Ç ÃßÀû
-    int rows;       // ¹°°Ç ¼ö + 1
-    int cols;       // ¹è³¶ ¿ë·® + 1
+    int** table;    // DP í…Œì´ë¸”
+    bool** selected; // ì„ íƒëœ ë¬¼ê±´ ì¶”ì 
+    int rows;       // ë¬¼ê±´ ìˆ˜ + 1
+    int cols;       // ë°°ë‚­ ìš©ëŸ‰ + 1
 } KnapsackTable;
 
-// === ¹è³¶ °á°ú ±¸Á¶Ã¼ ===
+// === ë°°ë‚­ ê²°ê³¼ êµ¬ì¡°ì²´ ===
 typedef struct {
-    int maxValue;           // ÃÖ´ë °¡Ä¡
-    bool* selectedItems;    // ¼±ÅÃµÈ ¹°°Çµé
-    int numSelected;        // ¼±ÅÃµÈ ¹°°Ç ¼ö
+    int maxValue;           // ìµœëŒ€ ê°€ì¹˜
+    bool* selectedItems;    // ì„ íƒëœ ë¬¼ê±´ë“¤
+    int numSelected;        // ì„ íƒëœ ë¬¼ê±´ ìˆ˜
 } KnapsackResult;
 
-// === ¹è³¶ Å×ÀÌºí »ı¼º ===
+// === ë°°ë‚­ í…Œì´ë¸” ìƒì„± ===
 KnapsackTable* create_knapsack_table(int numItems, int capacity) {
     KnapsackTable* table = (KnapsackTable*)malloc(sizeof(KnapsackTable));
     table->rows = numItems + 1;
     table->cols = capacity + 1;
 
-    // DP Å×ÀÌºí ÇÒ´ç
+    // DP í…Œì´ë¸” í• ë‹¹
     table->table = (int**)malloc(table->rows * sizeof(int*));
     table->selected = (bool**)malloc(table->rows * sizeof(bool*));
 
@@ -58,7 +58,7 @@ KnapsackTable* create_knapsack_table(int numItems, int capacity) {
     return table;
 }
 
-// === ¹è³¶ Å×ÀÌºí ¸Ş¸ğ¸® ÇØÁ¦ ===
+// === ë°°ë‚­ í…Œì´ë¸” ë©”ëª¨ë¦¬ í•´ì œ ===
 void destroy_knapsack_table(KnapsackTable* table) {
     for (int i = 0; i < table->rows; i++) {
         free(table->table[i]);
@@ -69,9 +69,9 @@ void destroy_knapsack_table(KnapsackTable* table) {
     free(table);
 }
 
-// === ¹è³¶ Å×ÀÌºí Ãâ·Â ===
+// === ë°°ë‚­ í…Œì´ë¸” ì¶œë ¥ ===
 void print_knapsack_table(KnapsackTable* table, Item* items) {
-    printf("\n=== ¹è³¶ ¹®Á¦ DP Å×ÀÌºí ===\n");
+    printf("\n=== ë°°ë‚­ ë¬¸ì œ DP í…Œì´ë¸” ===\n");
     printf("    ");
     for (int w = 0; w < table->cols; w++) {
         printf("%4d ", w);
@@ -89,15 +89,15 @@ void print_knapsack_table(KnapsackTable* table, Item* items) {
     }
 }
 
-// === ¹è³¶ ¹®Á¦ ÇØ°á ===
+// === ë°°ë‚­ ë¬¸ì œ í•´ê²° ===
 KnapsackResult* solve_knapsack(Item* items, int numItems, int capacity, bool print_steps) {
     KnapsackTable* table = create_knapsack_table(numItems, capacity);
 
     if (print_steps) {
-        printf("\n=== ¹è³¶ ¹®Á¦ ÇØ°á °úÁ¤ ===\n");
+        printf("\n=== ë°°ë‚­ ë¬¸ì œ í•´ê²° ê³¼ì • ===\n");
     }
 
-    // Bottom-up ¹æ½ÄÀ¸·Î Å×ÀÌºí Ã¤¿ì±â
+    // Bottom-up ë°©ì‹ìœ¼ë¡œ í…Œì´ë¸” ì±„ìš°ê¸°
     for (int i = 1; i <= numItems; i++) {
         for (int w = 0; w <= capacity; w++) {
             if (items[i - 1].weight <= w) {
@@ -110,7 +110,7 @@ KnapsackResult* solve_knapsack(Item* items, int numItems, int capacity, bool pri
                     table->selected[i][w] = true;
 
                     if (print_steps) {
-                        printf("¹°°Ç %s ¼±ÅÃ (¹«°Ô: %d, °¡Ä¡: %d)\n",
+                        printf("ë¬¼ê±´ %s ì„ íƒ (ë¬´ê²Œ: %d, ê°€ì¹˜: %d)\n",
                             items[i - 1].name, items[i - 1].weight, items[i - 1].value);
                     }
                 }
@@ -129,13 +129,13 @@ KnapsackResult* solve_knapsack(Item* items, int numItems, int capacity, bool pri
         }
     }
 
-    // °á°ú »ı¼º
+    // ê²°ê³¼ ìƒì„±
     KnapsackResult* result = (KnapsackResult*)malloc(sizeof(KnapsackResult));
     result->maxValue = table->table[numItems][capacity];
     result->selectedItems = (bool*)calloc(numItems, sizeof(bool));
     result->numSelected = 0;
 
-    // ¼±ÅÃµÈ ¹°°Ç ÃßÀû
+    // ì„ íƒëœ ë¬¼ê±´ ì¶”ì 
     int i = numItems;
     int w = capacity;
     while (i > 0 && w > 0) {
@@ -151,55 +151,55 @@ KnapsackResult* solve_knapsack(Item* items, int numItems, int capacity, bool pri
     return result;
 }
 
-// === °á°ú Ãâ·Â ===
+// === ê²°ê³¼ ì¶œë ¥ ===
 void print_knapsack_result(KnapsackResult* result, Item* items, int numItems) {
-    printf("\n=== ¹è³¶ ¹®Á¦ ÇØ°á °á°ú ===\n");
-    printf("ÃÖ´ë °¡Ä¡: %d\n", result->maxValue);
-    printf("\n¼±ÅÃµÈ ¹°°Çµé:\n");
+    printf("\n=== ë°°ë‚­ ë¬¸ì œ í•´ê²° ê²°ê³¼ ===\n");
+    printf("ìµœëŒ€ ê°€ì¹˜: %d\n", result->maxValue);
+    printf("\nì„ íƒëœ ë¬¼ê±´ë“¤:\n");
 
     int totalWeight = 0;
     for (int i = 0; i < numItems; i++) {
         if (result->selectedItems[i]) {
-            printf("- %s (¹«°Ô: %d, °¡Ä¡: %d)\n",
+            printf("- %s (ë¬´ê²Œ: %d, ê°€ì¹˜: %d)\n",
                 items[i].name, items[i].weight, items[i].value);
             totalWeight += items[i].weight;
         }
     }
-    printf("\nÃÑ ¹«°Ô: %d\n", totalWeight);
+    printf("\nì´ ë¬´ê²Œ: %d\n", totalWeight);
 }
 
-// === ¸ŞÀÎ ÇÔ¼ö ===
+// === ë©”ì¸ í•¨ìˆ˜ ===
 int main(void) {
-    printf("=== ¹è³¶ ¹®Á¦ ÇØ°á ÇÁ·Î±×·¥ ===\n");
+    printf("=== ë°°ë‚­ ë¬¸ì œ í•´ê²° í”„ë¡œê·¸ë¨ ===\n");
 
     int numItems, capacity;
-    printf("\n¹°°Ç °³¼ö ÀÔ·Â: ");
+    printf("\në¬¼ê±´ ê°œìˆ˜ ì…ë ¥: ");
     scanf("%d", &numItems);
 
     Item* items = (Item*)malloc(numItems * sizeof(Item));
 
     for (int i = 0; i < numItems; i++) {
         items[i].name = (char*)malloc(20 * sizeof(char));
-        printf("\n¹°°Ç %d Á¤º¸ ÀÔ·Â:\n", i + 1);
-        printf("ÀÌ¸§: ");
+        printf("\në¬¼ê±´ %d ì •ë³´ ì…ë ¥:\n", i + 1);
+        printf("ì´ë¦„: ");
         scanf("%s", items[i].name);
-        printf("¹«°Ô: ");
+        printf("ë¬´ê²Œ: ");
         scanf("%d", &items[i].weight);
-        printf("°¡Ä¡: ");
+        printf("ê°€ì¹˜: ");
         scanf("%d", &items[i].value);
     }
 
-    printf("\n¹è³¶ ¿ë·® ÀÔ·Â: ");
+    printf("\në°°ë‚­ ìš©ëŸ‰ ì…ë ¥: ");
     scanf("%d", &capacity);
 
     bool print_steps;
-    printf("\n°úÁ¤À» Ãâ·ÂÇÏ½Ã°Ú½À´Ï±î? (1: ¿¹, 0: ¾Æ´Ï¿À): ");
+    printf("\nê³¼ì •ì„ ì¶œë ¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (1: ì˜ˆ, 0: ì•„ë‹ˆì˜¤): ");
     scanf("%d", &print_steps);
 
     KnapsackResult* result = solve_knapsack(items, numItems, capacity, print_steps);
     print_knapsack_result(result, items, numItems);
 
-    // ¸Ş¸ğ¸® ÇØÁ¦
+    // ë©”ëª¨ë¦¬ í•´ì œ
     for (int i = 0; i < numItems; i++) {
         free(items[i].name);
     }
@@ -211,72 +211,72 @@ int main(void) {
 }
 
 /*
-¹è³¶ ¹®Á¦ ºĞ¼®
+ë°°ë‚­ ë¬¸ì œ ë¶„ì„
 ===========
 
-1. ½Ã°£ º¹Àâµµ
+1. ì‹œê°„ ë³µì¡ë„
 -----------
-- O(nW): nÀº ¹°°Ç ¼ö, W´Â ¹è³¶ ¿ë·®
-- ¸ğµç ºÎºĞ ¹®Á¦¸¦ ÇÑ ¹ø¾¿ °è»ê
-- °¢ ¼¿¸¶´Ù O(1) ¿¬»ê
+- O(nW): nì€ ë¬¼ê±´ ìˆ˜, WëŠ” ë°°ë‚­ ìš©ëŸ‰
+- ëª¨ë“  ë¶€ë¶„ ë¬¸ì œë¥¼ í•œ ë²ˆì”© ê³„ì‚°
+- ê° ì…€ë§ˆë‹¤ O(1) ì—°ì‚°
 
-2. °ø°£ º¹Àâµµ
+2. ê³µê°„ ë³µì¡ë„
 -----------
-- O(nW): 2Â÷¿ø DP Å×ÀÌºí
-- ¼±ÅÃ ÃßÀûÀ» À§ÇÑ Ãß°¡ ¹è¿­
-- ÀÔ·Â µ¥ÀÌÅÍ ÀúÀå °ø°£
+- O(nW): 2ì°¨ì› DP í…Œì´ë¸”
+- ì„ íƒ ì¶”ì ì„ ìœ„í•œ ì¶”ê°€ ë°°ì—´
+- ì…ë ¥ ë°ì´í„° ì €ì¥ ê³µê°„
 
-3. ÃÖÀûÈ­ °¡´É¼º
+3. ìµœì í™” ê°€ëŠ¥ì„±
 ------------
-°ø°£ ÃÖÀûÈ­:
-- O(W) °ø°£À¸·Î ÁÙÀÏ ¼ö ÀÖÀ½
-- ÇÑ Çà¸¸ »ç¿ëÇÏ´Â ¹æ½Ä
-- ¼±ÅÃ ÃßÀû Æ÷±â ½Ã °¡´É
+ê³µê°„ ìµœì í™”:
+- O(W) ê³µê°„ìœ¼ë¡œ ì¤„ì¼ ìˆ˜ ìˆìŒ
+- í•œ í–‰ë§Œ ì‚¬ìš©í•˜ëŠ” ë°©ì‹
+- ì„ íƒ ì¶”ì  í¬ê¸° ì‹œ ê°€ëŠ¥
 
-º´·ÄÈ­:
-- °¢ ÇàÀÇ °è»ê º´·Ä Ã³¸®
-- GPU È°¿ë °¡´É
-- ´ë±Ô¸ğ µ¥ÀÌÅÍ Ã³¸®
+ë³‘ë ¬í™”:
+- ê° í–‰ì˜ ê³„ì‚° ë³‘ë ¬ ì²˜ë¦¬
+- GPU í™œìš© ê°€ëŠ¥
+- ëŒ€ê·œëª¨ ë°ì´í„° ì²˜ë¦¬
 
-4. ÀÀ¿ë ºĞ¾ß
+4. ì‘ìš© ë¶„ì•¼
 ---------
-- ¸®¼Ò½º ÇÒ´ç
-- Æ÷Æ®Æú¸®¿À ÃÖÀûÈ­
-- ¿¹»ê °èÈ¹
-- È­¹° ÀûÀç
-- ½Ã°£ °ü¸®
+- ë¦¬ì†ŒìŠ¤ í• ë‹¹
+- í¬íŠ¸í´ë¦¬ì˜¤ ìµœì í™”
+- ì˜ˆì‚° ê³„íš
+- í™”ë¬¼ ì ì¬
+- ì‹œê°„ ê´€ë¦¬
 
-5. º¯Çü ¹®Á¦
+5. ë³€í˜• ë¬¸ì œ
 ---------
-ºĞÇÒ °¡´ÉÇÑ ¹è³¶:
+ë¶„í•  ê°€ëŠ¥í•œ ë°°ë‚­:
 - Fractional Knapsack
-- Greedy Á¢±Ù °¡´É
-- ´õ ´Ü¼øÇÑ ÇØ°á
+- Greedy ì ‘ê·¼ ê°€ëŠ¥
+- ë” ë‹¨ìˆœí•œ í•´ê²°
 
-´ÙÁß Á¦¾à:
+ë‹¤ì¤‘ ì œì•½:
 - Multiple Constraints
-- ´õ º¹ÀâÇÑ DP ÇÊ¿ä
-- Â÷¿ø Áõ°¡
+- ë” ë³µì¡í•œ DP í•„ìš”
+- ì°¨ì› ì¦ê°€
 
-6. ±¸Çö °í·Á»çÇ×
+6. êµ¬í˜„ ê³ ë ¤ì‚¬í•­
 ------------
-Á¤¹Ğµµ:
-- Á¤¼ö °¡Á¤
-- ¿À¹öÇÃ·Î¿ì ÁÖÀÇ
-- ºÎµ¿¼Ò¼öÁ¡ Ã³¸®
+ì •ë°€ë„:
+- ì •ìˆ˜ ê°€ì •
+- ì˜¤ë²„í”Œë¡œìš° ì£¼ì˜
+- ë¶€ë™ì†Œìˆ˜ì  ì²˜ë¦¬
 
-¸Ş¸ğ¸® °ü¸®:
-- µ¿Àû ÇÒ´ç ÁÖÀÇ
-- ¸Ş¸ğ¸® Àç»ç¿ë
-- Å« ÀÔ·Â Ã³¸®
+ë©”ëª¨ë¦¬ ê´€ë¦¬:
+- ë™ì  í• ë‹¹ ì£¼ì˜
+- ë©”ëª¨ë¦¬ ì¬ì‚¬ìš©
+- í° ì…ë ¥ ì²˜ë¦¬
 
-½Ã°¢È­:
-- ´Ü°èº° Ãâ·Â
-- °á°ú Ç¥Çö
-- »ç¿ëÀÚ ÀÎÅÍÆäÀÌ½º
+ì‹œê°í™”:
+- ë‹¨ê³„ë³„ ì¶œë ¥
+- ê²°ê³¼ í‘œí˜„
+- ì‚¬ìš©ì ì¸í„°í˜ì´ìŠ¤
 
-ÀÌ ±¸ÇöÀº ±³À°¿ëÀ¸·Î ÀûÇÕÇÏ¸ç
-½ÇÁ¦ ÀÀ¿ë¿¡µµ È°¿ë °¡´ÉÇÑ
-¿ÏÀüÇÑ ¹è³¶ ¹®Á¦ ÇØ°á±â¸¦
-Á¦°øÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ êµìœ¡ìš©ìœ¼ë¡œ ì í•©í•˜ë©°
+ì‹¤ì œ ì‘ìš©ì—ë„ í™œìš© ê°€ëŠ¥í•œ
+ì™„ì „í•œ ë°°ë‚­ ë¬¸ì œ í•´ê²°ê¸°ë¥¼
+ì œê³µí•©ë‹ˆë‹¤.
 */

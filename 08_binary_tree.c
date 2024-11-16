@@ -4,29 +4,29 @@
 
 typedef int DataType;
 
-// ³ëµå ±¸Á¶Ã¼ Á¤ÀÇ
+// ë…¸ë“œ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct TreeNode {
-    DataType data;             // µ¥ÀÌÅÍ
-    struct TreeNode* left;     // ¿ÞÂÊ ÀÚ½Ä ³ëµå
-    struct TreeNode* right;    // ¿À¸¥ÂÊ ÀÚ½Ä ³ëµå
+    DataType data;             // ë°ì´í„°
+    struct TreeNode* left;     // ì™¼ìª½ ìžì‹ ë…¸ë“œ
+    struct TreeNode* right;    // ì˜¤ë¥¸ìª½ ìžì‹ ë…¸ë“œ
 } TreeNode;
 
-// ÀÌÁø Æ®¸® ±¸Á¶Ã¼ Á¤ÀÇ
+// ì´ì§„ íŠ¸ë¦¬ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct {
-    TreeNode* root;    // ·çÆ® ³ëµå
-    size_t size;       // ÀüÃ¼ ³ëµåÀÇ ¼ö
+    TreeNode* root;    // ë£¨íŠ¸ ë…¸ë“œ
+    size_t size;       // ì „ì²´ ë…¸ë“œì˜ ìˆ˜
 } BinaryTree;
 
-/* ¿À·ù Ã³¸®¸¦ À§ÇÑ ¿­°ÅÇü Á¤ÀÇ */
+/* ì˜¤ë¥˜ ì²˜ë¦¬ë¥¼ ìœ„í•œ ì—´ê±°í˜• ì •ì˜ */
 typedef enum {
     TREE_OK,
     TREE_MEMORY_ERROR,
     TREE_EMPTY
 } TreeResult;
 
-/* »õ·Î¿î ³ëµå »ý¼º
- * - ¸Å°³º¯¼ö: data - ÀúÀåÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ ³ëµåÀÇ Æ÷ÀÎÅÍ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„±
+ * - ë§¤ê°œë³€ìˆ˜: data - ì €ìž¥í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ ë…¸ë“œì˜ í¬ì¸í„° ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 static TreeNode* node_create(DataType data) {
     TreeNode* new_node = (TreeNode*)malloc(sizeof(TreeNode));
@@ -39,9 +39,9 @@ static TreeNode* node_create(DataType data) {
     return new_node;
 }
 
-/* Æ®¸® »ý¼º
- * - »õ·Î¿î ºó ÀÌÁø Æ®¸®¸¦ µ¿ÀûÀ¸·Î ÇÒ´çÇÏ°í ÃÊ±âÈ­
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ Æ®¸®ÀÇ Æ÷ÀÎÅÍ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* íŠ¸ë¦¬ ìƒì„±
+ * - ìƒˆë¡œìš´ ë¹ˆ ì´ì§„ íŠ¸ë¦¬ë¥¼ ë™ì ìœ¼ë¡œ í• ë‹¹í•˜ê³  ì´ˆê¸°í™”
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ íŠ¸ë¦¬ì˜ í¬ì¸í„° ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 BinaryTree* tree_create(void) {
     BinaryTree* tree = (BinaryTree*)malloc(sizeof(BinaryTree));
@@ -53,49 +53,49 @@ BinaryTree* tree_create(void) {
     return tree;
 }
 
-/* Æ®¸®°¡ ºñ¾îÀÖ´ÂÁö È®ÀÎ
- * - ¸Å°³º¯¼ö: tree - °Ë»çÇÒ Æ®¸®
- * - ¹ÝÈ¯°ª: ºñ¾îÀÖÀ¸¸é true, ¾Æ´Ï¸é false
+/* íŠ¸ë¦¬ê°€ ë¹„ì–´ìžˆëŠ”ì§€ í™•ì¸
+ * - ë§¤ê°œë³€ìˆ˜: tree - ê²€ì‚¬í•  íŠ¸ë¦¬
+ * - ë°˜í™˜ê°’: ë¹„ì–´ìžˆìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool tree_is_empty(const BinaryTree* tree) {
     return (tree->root == NULL);
 }
 
-/* ÀüÀ§ ¼øÈ¸ (³»ºÎ ÇÔ¼ö)
- * - Root -> Left -> Right ¼ø¼­·Î ¼øÈ¸
+/* ì „ìœ„ ìˆœíšŒ (ë‚´ë¶€ í•¨ìˆ˜)
+ * - Root -> Left -> Right ìˆœì„œë¡œ ìˆœíšŒ
  */
 static void preorder_traversal(TreeNode* node) {
     if (node != NULL) {
-        printf("%d ", node->data);      // ÇöÀç ³ëµå Ã³¸®
-        preorder_traversal(node->left);  // ¿ÞÂÊ ¼­ºêÆ®¸® ¼øÈ¸
-        preorder_traversal(node->right); // ¿À¸¥ÂÊ ¼­ºêÆ®¸® ¼øÈ¸
+        printf("%d ", node->data);      // í˜„ìž¬ ë…¸ë“œ ì²˜ë¦¬
+        preorder_traversal(node->left);  // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ ìˆœíšŒ
+        preorder_traversal(node->right); // ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ ìˆœíšŒ
     }
 }
 
-/* ÁßÀ§ ¼øÈ¸ (³»ºÎ ÇÔ¼ö)
- * - Left -> Root -> Right ¼ø¼­·Î ¼øÈ¸
+/* ì¤‘ìœ„ ìˆœíšŒ (ë‚´ë¶€ í•¨ìˆ˜)
+ * - Left -> Root -> Right ìˆœì„œë¡œ ìˆœíšŒ
  */
 static void inorder_traversal(TreeNode* node) {
     if (node != NULL) {
-        inorder_traversal(node->left);   // ¿ÞÂÊ ¼­ºêÆ®¸® ¼øÈ¸
-        printf("%d ", node->data);       // ÇöÀç ³ëµå Ã³¸®
-        inorder_traversal(node->right);  // ¿À¸¥ÂÊ ¼­ºêÆ®¸® ¼øÈ¸
+        inorder_traversal(node->left);   // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ ìˆœíšŒ
+        printf("%d ", node->data);       // í˜„ìž¬ ë…¸ë“œ ì²˜ë¦¬
+        inorder_traversal(node->right);  // ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ ìˆœíšŒ
     }
 }
 
-/* ÈÄÀ§ ¼øÈ¸ (³»ºÎ ÇÔ¼ö)
- * - Left -> Right -> Root ¼ø¼­·Î ¼øÈ¸
+/* í›„ìœ„ ìˆœíšŒ (ë‚´ë¶€ í•¨ìˆ˜)
+ * - Left -> Right -> Root ìˆœì„œë¡œ ìˆœíšŒ
  */
 static void postorder_traversal(TreeNode* node) {
     if (node != NULL) {
-        postorder_traversal(node->left);  // ¿ÞÂÊ ¼­ºêÆ®¸® ¼øÈ¸
-        postorder_traversal(node->right); // ¿À¸¥ÂÊ ¼­ºêÆ®¸® ¼øÈ¸
-        printf("%d ", node->data);        // ÇöÀç ³ëµå Ã³¸®
+        postorder_traversal(node->left);  // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬ ìˆœíšŒ
+        postorder_traversal(node->right); // ì˜¤ë¥¸ìª½ ì„œë¸ŒíŠ¸ë¦¬ ìˆœíšŒ
+        printf("%d ", node->data);        // í˜„ìž¬ ë…¸ë“œ ì²˜ë¦¬
     }
 }
 
-/* ÀüÀ§ ¼øÈ¸ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º)
- * - ¸Å°³º¯¼ö: tree - ¼øÈ¸ÇÒ Æ®¸®
+/* ì „ìœ„ ìˆœíšŒ (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤)
+ * - ë§¤ê°œë³€ìˆ˜: tree - ìˆœíšŒí•  íŠ¸ë¦¬
  */
 void tree_preorder(const BinaryTree* tree) {
     if (tree_is_empty(tree)) {
@@ -107,8 +107,8 @@ void tree_preorder(const BinaryTree* tree) {
     printf("\n");
 }
 
-/* ÁßÀ§ ¼øÈ¸ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º)
- * - ¸Å°³º¯¼ö: tree - ¼øÈ¸ÇÒ Æ®¸®
+/* ì¤‘ìœ„ ìˆœíšŒ (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤)
+ * - ë§¤ê°œë³€ìˆ˜: tree - ìˆœíšŒí•  íŠ¸ë¦¬
  */
 void tree_inorder(const BinaryTree* tree) {
     if (tree_is_empty(tree)) {
@@ -120,8 +120,8 @@ void tree_inorder(const BinaryTree* tree) {
     printf("\n");
 }
 
-/* ÈÄÀ§ ¼øÈ¸ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º)
- * - ¸Å°³º¯¼ö: tree - ¼øÈ¸ÇÒ Æ®¸®
+/* í›„ìœ„ ìˆœíšŒ (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤)
+ * - ë§¤ê°œë³€ìˆ˜: tree - ìˆœíšŒí•  íŠ¸ë¦¬
  */
 void tree_postorder(const BinaryTree* tree) {
     if (tree_is_empty(tree)) {
@@ -133,9 +133,9 @@ void tree_postorder(const BinaryTree* tree) {
     printf("\n");
 }
 
-/* ³ëµåÀÇ ³ôÀÌ °è»ê (³»ºÎ ÇÔ¼ö)
- * - ¸Å°³º¯¼ö: node - ³ôÀÌ¸¦ °è»êÇÒ ³ëµå
- * - ¹ÝÈ¯°ª: ÇØ´ç ³ëµå¸¦ ·çÆ®·Î ÇÏ´Â ¼­ºêÆ®¸®ÀÇ ³ôÀÌ
+/* ë…¸ë“œì˜ ë†’ì´ ê³„ì‚° (ë‚´ë¶€ í•¨ìˆ˜)
+ * - ë§¤ê°œë³€ìˆ˜: node - ë†’ì´ë¥¼ ê³„ì‚°í•  ë…¸ë“œ
+ * - ë°˜í™˜ê°’: í•´ë‹¹ ë…¸ë“œë¥¼ ë£¨íŠ¸ë¡œ í•˜ëŠ” ì„œë¸ŒíŠ¸ë¦¬ì˜ ë†’ì´
  */
 static int calculate_height(const TreeNode* node) {
     if (node == NULL) {
@@ -146,9 +146,9 @@ static int calculate_height(const TreeNode* node) {
     return (left_height > right_height ? left_height : right_height) + 1;
 }
 
-/* Æ®¸®ÀÇ ³ôÀÌ ¹ÝÈ¯ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º)
- * - ¸Å°³º¯¼ö: tree - ³ôÀÌ¸¦ °è»êÇÒ Æ®¸®
- * - ¹ÝÈ¯°ª: Æ®¸®ÀÇ ³ôÀÌ
+/* íŠ¸ë¦¬ì˜ ë†’ì´ ë°˜í™˜ (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤)
+ * - ë§¤ê°œë³€ìˆ˜: tree - ë†’ì´ë¥¼ ê³„ì‚°í•  íŠ¸ë¦¬
+ * - ë°˜í™˜ê°’: íŠ¸ë¦¬ì˜ ë†’ì´
  */
 int tree_height(const BinaryTree* tree) {
     if (tree_is_empty(tree)) {
@@ -157,9 +157,9 @@ int tree_height(const BinaryTree* tree) {
     return calculate_height(tree->root);
 }
 
-/* ³ëµåÀÇ °³¼ö °è»ê (³»ºÎ ÇÔ¼ö)
- * - ¸Å°³º¯¼ö: node - °³¼ö¸¦ °è»êÇÒ ³ëµå
- * - ¹ÝÈ¯°ª: ÇØ´ç ³ëµå¸¦ ·çÆ®·Î ÇÏ´Â ¼­ºêÆ®¸®ÀÇ ³ëµå °³¼ö
+/* ë…¸ë“œì˜ ê°œìˆ˜ ê³„ì‚° (ë‚´ë¶€ í•¨ìˆ˜)
+ * - ë§¤ê°œë³€ìˆ˜: node - ê°œìˆ˜ë¥¼ ê³„ì‚°í•  ë…¸ë“œ
+ * - ë°˜í™˜ê°’: í•´ë‹¹ ë…¸ë“œë¥¼ ë£¨íŠ¸ë¡œ í•˜ëŠ” ì„œë¸ŒíŠ¸ë¦¬ì˜ ë…¸ë“œ ê°œìˆ˜
  */
 static size_t count_nodes(const TreeNode* node) {
     if (node == NULL) {
@@ -168,16 +168,16 @@ static size_t count_nodes(const TreeNode* node) {
     return 1 + count_nodes(node->left) + count_nodes(node->right);
 }
 
-/* Æ®¸®ÀÇ ³ëµå °³¼ö ¹ÝÈ¯ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º)
- * - ¸Å°³º¯¼ö: tree - ³ëµå °³¼ö¸¦ °è»êÇÒ Æ®¸®
- * - ¹ÝÈ¯°ª: Æ®¸®ÀÇ ÀüÃ¼ ³ëµå °³¼ö
+/* íŠ¸ë¦¬ì˜ ë…¸ë“œ ê°œìˆ˜ ë°˜í™˜ (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤)
+ * - ë§¤ê°œë³€ìˆ˜: tree - ë…¸ë“œ ê°œìˆ˜ë¥¼ ê³„ì‚°í•  íŠ¸ë¦¬
+ * - ë°˜í™˜ê°’: íŠ¸ë¦¬ì˜ ì „ì²´ ë…¸ë“œ ê°œìˆ˜
  */
 size_t tree_size(const BinaryTree* tree) {
     return tree->size;
 }
 
-/* Æ®¸® ½Ã°¢È­¸¦ À§ÇÑ ³»ºÎ ÇÔ¼ö
- * - ¸Å°³º¯¼ö: node - Ãâ·ÂÇÒ ³ëµå, level - ÇöÀç ·¹º§, prefix - Ãâ·Â Á¢µÎ»ç
+/* íŠ¸ë¦¬ ì‹œê°í™”ë¥¼ ìœ„í•œ ë‚´ë¶€ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: node - ì¶œë ¥í•  ë…¸ë“œ, level - í˜„ìž¬ ë ˆë²¨, prefix - ì¶œë ¥ ì ‘ë‘ì‚¬
  */
 static void print_tree_recursive(const TreeNode* node, int level, char* prefix) {
     if (node == NULL) {
@@ -185,11 +185,11 @@ static void print_tree_recursive(const TreeNode* node, int level, char* prefix) 
     }
 
     printf("%s", prefix);
-    printf("%s", level ? "¦§¦¡¦¡ " : "");
+    printf("%s", level ? "â”œâ”€â”€ " : "");
     printf("%d\n", node->data);
 
     char new_prefix[256];
-    sprintf(new_prefix, "%s%s", prefix, level ? "¦¢   " : "");
+    sprintf(new_prefix, "%s%s", prefix, level ? "â”‚   " : "");
 
     if (node->left || node->right) {
         print_tree_recursive(node->left, 1, new_prefix);
@@ -197,8 +197,8 @@ static void print_tree_recursive(const TreeNode* node, int level, char* prefix) 
     }
 }
 
-/* Æ®¸® ½Ã°¢È­ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º)
- * - ¸Å°³º¯¼ö: tree - Ãâ·ÂÇÒ Æ®¸®
+/* íŠ¸ë¦¬ ì‹œê°í™” (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤)
+ * - ë§¤ê°œë³€ìˆ˜: tree - ì¶œë ¥í•  íŠ¸ë¦¬
  */
 void tree_print(const BinaryTree* tree) {
     if (tree_is_empty(tree)) {
@@ -209,9 +209,9 @@ void tree_print(const BinaryTree* tree) {
     print_tree_recursive(tree->root, 0, "");
 }
 
-/* ³ëµå »ðÀÔ (¿ÞÂÊ ÀÚ½Ä)
- * - ¸Å°³º¯¼ö: parent - ºÎ¸ð ³ëµå, data - »ðÀÔÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: ¼º°ø ½Ã TREE_OK, ½ÇÆÐ ½Ã ¿¡·¯ ÄÚµå
+/* ë…¸ë“œ ì‚½ìž… (ì™¼ìª½ ìžì‹)
+ * - ë§¤ê°œë³€ìˆ˜: parent - ë¶€ëª¨ ë…¸ë“œ, data - ì‚½ìž…í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ì„±ê³µ ì‹œ TREE_OK, ì‹¤íŒ¨ ì‹œ ì—ëŸ¬ ì½”ë“œ
  */
 TreeResult tree_insert_left(BinaryTree* tree, TreeNode* parent, DataType data) {
     TreeNode* new_node = node_create(data);
@@ -239,9 +239,9 @@ TreeResult tree_insert_left(BinaryTree* tree, TreeNode* parent, DataType data) {
     return TREE_OK;
 }
 
-/* ³ëµå »ðÀÔ (¿À¸¥ÂÊ ÀÚ½Ä)
- * - ¸Å°³º¯¼ö: parent - ºÎ¸ð ³ëµå, data - »ðÀÔÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: ¼º°ø ½Ã TREE_OK, ½ÇÆÐ ½Ã ¿¡·¯ ÄÚµå
+/* ë…¸ë“œ ì‚½ìž… (ì˜¤ë¥¸ìª½ ìžì‹)
+ * - ë§¤ê°œë³€ìˆ˜: parent - ë¶€ëª¨ ë…¸ë“œ, data - ì‚½ìž…í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ì„±ê³µ ì‹œ TREE_OK, ì‹¤íŒ¨ ì‹œ ì—ëŸ¬ ì½”ë“œ
  */
 TreeResult tree_insert_right(BinaryTree* tree, TreeNode* parent, DataType data) {
     TreeNode* new_node = node_create(data);
@@ -269,8 +269,8 @@ TreeResult tree_insert_right(BinaryTree* tree, TreeNode* parent, DataType data) 
     return TREE_OK;
 }
 
-/* ¼­ºêÆ®¸® »èÁ¦ (³»ºÎ ÇÔ¼ö)
- * - ¸Å°³º¯¼ö: node - »èÁ¦ÇÒ ¼­ºêÆ®¸®ÀÇ ·çÆ® ³ëµå
+/* ì„œë¸ŒíŠ¸ë¦¬ ì‚­ì œ (ë‚´ë¶€ í•¨ìˆ˜)
+ * - ë§¤ê°œë³€ìˆ˜: node - ì‚­ì œí•  ì„œë¸ŒíŠ¸ë¦¬ì˜ ë£¨íŠ¸ ë…¸ë“œ
  */
 static void delete_subtree(TreeNode* node) {
     if (node == NULL) {
@@ -281,8 +281,8 @@ static void delete_subtree(TreeNode* node) {
     free(node);
 }
 
-/* Æ®¸® ¸Þ¸ð¸® ÇØÁ¦
- * - ¸Å°³º¯¼ö: tree - ÇØÁ¦ÇÒ Æ®¸®
+/* íŠ¸ë¦¬ ë©”ëª¨ë¦¬ í•´ì œ
+ * - ë§¤ê°œë³€ìˆ˜: tree - í•´ì œí•  íŠ¸ë¦¬
  */
 void tree_destroy(BinaryTree* tree) {
     if (tree != NULL) {
@@ -291,7 +291,7 @@ void tree_destroy(BinaryTree* tree) {
     }
 }
 
-/* ¸Þ´º Ãâ·Â ÇÔ¼ö */
+/* ë©”ë‰´ ì¶œë ¥ í•¨ìˆ˜ */
 void print_menu(void) {
     printf("\n=== Binary Tree Menu ===\n");
     printf("1. Insert left child\n");
@@ -305,7 +305,7 @@ void print_menu(void) {
     printf("Choice: ");
 }
 
-/* ¿¡·¯ ¸Þ½ÃÁö Ãâ·Â ÇÔ¼ö */
+/* ì—ëŸ¬ ë©”ì‹œì§€ ì¶œë ¥ í•¨ìˆ˜ */
 void print_error(TreeResult result) {
     switch (result) {
     case TREE_MEMORY_ERROR:
@@ -319,21 +319,21 @@ void print_error(TreeResult result) {
     }
 }
 
-/* Å×½ºÆ®¿ë »ùÇÃ Æ®¸® »ý¼º */
+/* í…ŒìŠ¤íŠ¸ìš© ìƒ˜í”Œ íŠ¸ë¦¬ ìƒì„± */
 void create_sample_tree(BinaryTree* tree) {
-    // ·çÆ® ³ëµå »ý¼º
+    // ë£¨íŠ¸ ë…¸ë“œ ìƒì„±
     tree_insert_left(tree, NULL, 1);
     TreeNode* root = tree->root;
 
-    // ¿ÞÂÊ ¼­ºêÆ®¸®
+    // ì™¼ìª½ ì„œë¸ŒíŠ¸ë¦¬
     tree_insert_left(tree, root, 2);
     tree_insert_right(tree, root, 3);
 
-    // 2ÀÇ ÀÚ½Äµé
+    // 2ì˜ ìžì‹ë“¤
     tree_insert_left(tree, root->left, 4);
     tree_insert_right(tree, root->left, 5);
 
-    // 3ÀÇ ÀÚ½Äµé
+    // 3ì˜ ìžì‹ë“¤
     tree_insert_left(tree, root->right, 6);
     tree_insert_right(tree, root->right, 7);
 }
@@ -345,7 +345,7 @@ int main(void) {
         return 1;
     }
 
-    // »ùÇÃ Æ®¸® »ý¼º (Å×½ºÆ®¿ë)
+    // ìƒ˜í”Œ íŠ¸ë¦¬ ìƒì„± (í…ŒìŠ¤íŠ¸ìš©)
     create_sample_tree(tree);
     printf("Sample binary tree created.\n");
 
@@ -357,7 +357,7 @@ int main(void) {
         print_menu();
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input\n");
-            while (getchar() != '\n');  // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+            while (getchar() != '\n');  // ìž…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
             continue;
         }
 
@@ -429,100 +429,100 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ÀÌÁø Æ®¸®ÀÇ ±âº» °³³ä
+1. ì´ì§„ íŠ¸ë¦¬ì˜ ê¸°ë³¸ ê°œë…
 --------------------
-- °¢ ³ëµå°¡ ÃÖ´ë 2°³ÀÇ ÀÚ½ÄÀ» °¡Áü
-- ¿ÞÂÊ ÀÚ½Ä°ú ¿À¸¥ÂÊ ÀÚ½ÄÀ¸·Î ±¸ºÐ
-- Àç±ÍÀû ÀÚ·á±¸Á¶
-- °èÃþÀû µ¥ÀÌÅÍ Ç¥Çö¿¡ ÀûÇÕ
+- ê° ë…¸ë“œê°€ ìµœëŒ€ 2ê°œì˜ ìžì‹ì„ ê°€ì§
+- ì™¼ìª½ ìžì‹ê³¼ ì˜¤ë¥¸ìª½ ìžì‹ìœ¼ë¡œ êµ¬ë¶„
+- ìž¬ê·€ì  ìžë£Œêµ¬ì¡°
+- ê³„ì¸µì  ë°ì´í„° í‘œí˜„ì— ì í•©
 
-2. ±¸Á¶Ã¼ ¼³°è
+2. êµ¬ì¡°ì²´ ì„¤ê³„
 -----------
 TreeNode:
-- data: µ¥ÀÌÅÍ
-- left: ¿ÞÂÊ ÀÚ½Ä Æ÷ÀÎÅÍ
-- right: ¿À¸¥ÂÊ ÀÚ½Ä Æ÷ÀÎÅÍ
+- data: ë°ì´í„°
+- left: ì™¼ìª½ ìžì‹ í¬ì¸í„°
+- right: ì˜¤ë¥¸ìª½ ìžì‹ í¬ì¸í„°
 
 BinaryTree:
-- root: ·çÆ® ³ëµå Æ÷ÀÎÅÍ
-- size: ÀüÃ¼ ³ëµå ¼ö
+- root: ë£¨íŠ¸ ë…¸ë“œ í¬ì¸í„°
+- size: ì „ì²´ ë…¸ë“œ ìˆ˜
 
-3. Æ®¸® ¼øÈ¸
+3. íŠ¸ë¦¬ ìˆœíšŒ
 ----------
-ÀüÀ§ ¼øÈ¸ (Preorder):
+ì „ìœ„ ìˆœíšŒ (Preorder):
 - Root -> Left -> Right
-- Æ®¸® º¹»ç¿¡ À¯¿ë
+- íŠ¸ë¦¬ ë³µì‚¬ì— ìœ ìš©
 
-ÁßÀ§ ¼øÈ¸ (Inorder):
+ì¤‘ìœ„ ìˆœíšŒ (Inorder):
 - Left -> Root -> Right
-- Á¤·ÄµÈ ¼ø¼­ Ãâ·Â
+- ì •ë ¬ëœ ìˆœì„œ ì¶œë ¥
 
-ÈÄÀ§ ¼øÈ¸ (Postorder):
+í›„ìœ„ ìˆœíšŒ (Postorder):
 - Left -> Right -> Root
-- ¸Þ¸ð¸® ÇØÁ¦¿¡ À¯¿ë
+- ë©”ëª¨ë¦¬ í•´ì œì— ìœ ìš©
 
-4. ÁÖ¿ä ¿¬»ê°ú º¹Àâµµ
+4. ì£¼ìš” ì—°ì‚°ê³¼ ë³µìž¡ë„
 -----------------
-»ðÀÔ:
-- O(1) (ÁöÁ¤µÈ ºÎ¸ð¿¡ »ðÀÔ ½Ã)
-- ºÎ¸ð ³ëµå Ã£±â´Â º°µµ
+ì‚½ìž…:
+- O(1) (ì§€ì •ëœ ë¶€ëª¨ì— ì‚½ìž… ì‹œ)
+- ë¶€ëª¨ ë…¸ë“œ ì°¾ê¸°ëŠ” ë³„ë„
 
-¼øÈ¸:
-- O(n) (¸ðµç ³ëµå ¹æ¹®)
+ìˆœíšŒ:
+- O(n) (ëª¨ë“  ë…¸ë“œ ë°©ë¬¸)
 
-³ôÀÌ °è»ê:
-- O(n) (¸ðµç ³ëµå ¹æ¹®)
+ë†’ì´ ê³„ì‚°:
+- O(n) (ëª¨ë“  ë…¸ë“œ ë°©ë¬¸)
 
-Å©±â °è»ê:
-- O(1) (size ÇÊµå ÀÌ¿ë)
+í¬ê¸° ê³„ì‚°:
+- O(1) (size í•„ë“œ ì´ìš©)
 
-5. ¸Þ¸ð¸® °ü¸®
+5. ë©”ëª¨ë¦¬ ê´€ë¦¬
 -----------
-- ³ëµå ´ÜÀ§ µ¿Àû ÇÒ´ç
-- Àç±ÍÀû ¸Þ¸ð¸® ÇØÁ¦
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- Æ÷ÀÎÅÍ °ü¸®
+- ë…¸ë“œ ë‹¨ìœ„ ë™ì  í• ë‹¹
+- ìž¬ê·€ì  ë©”ëª¨ë¦¬ í•´ì œ
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- í¬ì¸í„° ê´€ë¦¬
 
-6. ±¸Çö Æ¯Â¡
+6. êµ¬í˜„ íŠ¹ì§•
 ----------
-- Àç±ÍÀû ¾Ë°í¸®Áò È°¿ë
-- Æ÷ÀÎÅÍ ±â¹Ý ±¸Á¶
-- Å¸ÀÔ Ãß»óÈ­ (DataType)
-- ¿¡·¯ Ã³¸®
+- ìž¬ê·€ì  ì•Œê³ ë¦¬ì¦˜ í™œìš©
+- í¬ì¸í„° ê¸°ë°˜ êµ¬ì¡°
+- íƒ€ìž… ì¶”ìƒí™” (DataType)
+- ì—ëŸ¬ ì²˜ë¦¬
 
-7. ½Ã°¢È­ ±â´É
+7. ì‹œê°í™” ê¸°ëŠ¥
 -----------
-- Æ®¸® ±¸Á¶ ASCII ¾ÆÆ®
-- °èÃþ ±¸Á¶ Ç¥Çö
-- Á÷°üÀû ÀÌÇØ µµ¿ò
-- µð¹ö±ë ¿ëÀÌ
+- íŠ¸ë¦¬ êµ¬ì¡° ASCII ì•„íŠ¸
+- ê³„ì¸µ êµ¬ì¡° í‘œí˜„
+- ì§ê´€ì  ì´í•´ ë„ì›€
+- ë””ë²„ê¹… ìš©ì´
 
-8. ¾ÈÀü¼º °í·Á»çÇ×
+8. ì•ˆì „ì„± ê³ ë ¤ì‚¬í•­
 --------------
-- NULL Æ÷ÀÎÅÍ °Ë»ç
-- ¸Þ¸ð¸® ÇÒ´ç °ËÁõ
-- °æ°è Á¶°Ç Ã³¸®
-- ¼øÈ¯ ÂüÁ¶ ¹æÁö
+- NULL í¬ì¸í„° ê²€ì‚¬
+- ë©”ëª¨ë¦¬ í• ë‹¹ ê²€ì¦
+- ê²½ê³„ ì¡°ê±´ ì²˜ë¦¬
+- ìˆœí™˜ ì°¸ì¡° ë°©ì§€
 
-9. ±³À°Àû °¡Ä¡
+9. êµìœ¡ì  ê°€ì¹˜
 -----------
-- Àç±Í °³³ä ÇÐ½À
-- Æ÷ÀÎÅÍ ÀÌÇØ
-- µ¿Àû ¸Þ¸ð¸® °ü¸®
-- Æ®¸® ±¸Á¶ ÀÌÇØ
+- ìž¬ê·€ ê°œë… í•™ìŠµ
+- í¬ì¸í„° ì´í•´
+- ë™ì  ë©”ëª¨ë¦¬ ê´€ë¦¬
+- íŠ¸ë¦¬ êµ¬ì¡° ì´í•´
 
-10. È°¿ë ºÐ¾ß
+10. í™œìš© ë¶„ì•¼
 ----------
-- ÆÄÀÏ ½Ã½ºÅÛ
-- ±¸¹® ºÐ¼®
-- °Ë»ö ¾Ë°í¸®Áò
-- °áÁ¤ Æ®¸®
+- íŒŒì¼ ì‹œìŠ¤í…œ
+- êµ¬ë¬¸ ë¶„ì„
+- ê²€ìƒ‰ ì•Œê³ ë¦¬ì¦˜
+- ê²°ì • íŠ¸ë¦¬
 
-ÀÌ ±¸ÇöÀº ±³À°¿ëÀ¸·Î ÃÖÀûÈ­µÇ¾î ÀÖÀ¸¸ç,
-±âº»ÀûÀÎ ÀÌÁø Æ®¸®ÀÇ ¸ðµç ÇÙ½É °³³äÀ»
-Æ÷ÇÔÇÏ°í ÀÖ½À´Ï´Ù. ½ÇÁ¦ ÀÀ¿ëÀ» À§ÇÑ
-±âÃÊ°¡ µÇ´Â Ç¥ÁØÀûÀÎ ±¸ÇöÀ» Á¦°øÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ êµìœ¡ìš©ìœ¼ë¡œ ìµœì í™”ë˜ì–´ ìžˆìœ¼ë©°,
+ê¸°ë³¸ì ì¸ ì´ì§„ íŠ¸ë¦¬ì˜ ëª¨ë“  í•µì‹¬ ê°œë…ì„
+í¬í•¨í•˜ê³  ìžˆìŠµë‹ˆë‹¤. ì‹¤ì œ ì‘ìš©ì„ ìœ„í•œ
+ê¸°ì´ˆê°€ ë˜ëŠ” í‘œì¤€ì ì¸ êµ¬í˜„ì„ ì œê³µí•©ë‹ˆë‹¤.
 */

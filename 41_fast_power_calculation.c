@@ -4,22 +4,22 @@
 #include <stdbool.h>
 
 /*
-°ÅµìÁ¦°öÀÇ ºÐÇÒ Á¤º¹:
-- x^n = x^(n/2) * x^(n/2)     (nÀÌ Â¦¼öÀÏ ¶§)
-- x^n = x^(n/2) * x^(n/2) * x (nÀÌ È¦¼öÀÏ ¶§)
+ê±°ë“­ì œê³±ì˜ ë¶„í•  ì •ë³µ:
+- x^n = x^(n/2) * x^(n/2)     (nì´ ì§ìˆ˜ì¼ ë•Œ)
+- x^n = x^(n/2) * x^(n/2) * x (nì´ í™€ìˆ˜ì¼ ë•Œ)
 
-¿¹½Ã: 2^10 °è»ê
+ì˜ˆì‹œ: 2^10 ê³„ì‚°
 1. 2^10 = (2^5)^2
 2. 2^5 = 2^4 * 2
 3. 2^4 = (2^2)^2
 4. 2^2 = (2^1)^2
 5. 2^1 = 2
 
-ÀÏ¹ÝÀû ¹æ¹ý: O(n) -> ºÐÇÒ Á¤º¹: O(log n)
+ì¼ë°˜ì  ë°©ë²•: O(n) -> ë¶„í•  ì •ë³µ: O(log n)
 */
 
-/* ÀÏ¹ÝÀûÀÎ °ÅµìÁ¦°ö °è»ê
- * - ½Ã°£º¹Àâµµ: O(n)
+/* ì¼ë°˜ì ì¸ ê±°ë“­ì œê³± ê³„ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: O(n)
  */
 long long power_naive(long long base, int exp, bool print_steps) {
     long long result = 1;
@@ -35,8 +35,8 @@ long long power_naive(long long base, int exp, bool print_steps) {
     return result;
 }
 
-/* ºÐÇÒ Á¤º¹À» ÀÌ¿ëÇÑ °ÅµìÁ¦°ö °è»ê
- * - ½Ã°£º¹Àâµµ: O(log n)
+/* ë¶„í•  ì •ë³µì„ ì´ìš©í•œ ê±°ë“­ì œê³± ê³„ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: O(log n)
  */
 long long power_divide_conquer(long long base, int exp, bool print_steps) {
     if (print_steps) {
@@ -52,12 +52,12 @@ long long power_divide_conquer(long long base, int exp, bool print_steps) {
         return base;
     }
 
-    // ºÐÇÒ: Áö¼ö¸¦ Àý¹ÝÀ¸·Î ³ª´®
+    // ë¶„í• : ì§€ìˆ˜ë¥¼ ì ˆë°˜ìœ¼ë¡œ ë‚˜ëˆ”
     long long half = power_divide_conquer(base, exp / 2, print_steps);
     long long result;
 
     if (exp % 2 == 0) {
-        // Â¦¼ö: half * half
+        // ì§ìˆ˜: half * half
         result = half * half;
         if (print_steps) {
             printf("Even exp: %lld^%d = %lld^%d * %lld^%d = %lld * %lld = %lld\n",
@@ -65,7 +65,7 @@ long long power_divide_conquer(long long base, int exp, bool print_steps) {
         }
     }
     else {
-        // È¦¼ö: half * half * base
+        // í™€ìˆ˜: half * half * base
         result = half * half * base;
         if (print_steps) {
             printf("Odd exp: %lld^%d = %lld^%d * %lld^%d * %lld = %lld * %lld * %lld = %lld\n",
@@ -76,9 +76,9 @@ long long power_divide_conquer(long long base, int exp, bool print_steps) {
     return result;
 }
 
-/* ¸ðµâ·¯ ¿¬»êÀ» Æ÷ÇÔÇÑ °ÅµìÁ¦°ö °è»ê
- * - ½Ã°£º¹Àâµµ: O(log n)
- * - Å« ¼öÀÇ °ÅµìÁ¦°öÀ» ¾ÈÀüÇÏ°Ô °è»ê
+/* ëª¨ë“ˆëŸ¬ ì—°ì‚°ì„ í¬í•¨í•œ ê±°ë“­ì œê³± ê³„ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: O(log n)
+ * - í° ìˆ˜ì˜ ê±°ë“­ì œê³±ì„ ì•ˆì „í•˜ê²Œ ê³„ì‚°
  */
 long long power_modular(long long base, int exp, long long mod, bool print_steps) {
     if (print_steps) {
@@ -90,7 +90,7 @@ long long power_modular(long long base, int exp, long long mod, bool print_steps
         return 1;
     }
 
-    // ºÐÇÒ: Áö¼ö¸¦ Àý¹ÝÀ¸·Î ³ª´®
+    // ë¶„í• : ì§€ìˆ˜ë¥¼ ì ˆë°˜ìœ¼ë¡œ ë‚˜ëˆ”
     long long half = power_modular(base, exp / 2, mod, print_steps);
     long long result;
 
@@ -112,9 +112,9 @@ long long power_modular(long long base, int exp, long long mod, bool print_steps
     return result;
 }
 
-/* ÀÌÁø¼ö Ç¥ÇöÀ» ÀÌ¿ëÇÑ °ÅµìÁ¦°ö °è»ê
- * - ½Ã°£º¹Àâµµ: O(log n)
- * - ºñÆ® ¿¬»ê È°¿ë
+/* ì´ì§„ìˆ˜ í‘œí˜„ì„ ì´ìš©í•œ ê±°ë“­ì œê³± ê³„ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: O(log n)
+ * - ë¹„íŠ¸ ì—°ì‚° í™œìš©
  */
 long long power_binary(long long base, int exp, bool print_steps) {
     long long result = 1;
@@ -129,15 +129,15 @@ long long power_binary(long long base, int exp, bool print_steps) {
     }
 
     while (exp > 0) {
-        if (exp & 1) {  // ÇöÀç ºñÆ®°¡ 1ÀÌ¸é
+        if (exp & 1) {  // í˜„ìž¬ ë¹„íŠ¸ê°€ 1ì´ë©´
             if (print_steps) {
                 printf("Current bit is 1: multiply result by %lld\n", base);
             }
             result *= base;
         }
 
-        base *= base;  // ´ÙÀ½ ºñÆ®¸¦ À§ÇØ base¸¦ Á¦°ö
-        exp >>= 1;     // ´ÙÀ½ ºñÆ®·Î ÀÌµ¿
+        base *= base;  // ë‹¤ìŒ ë¹„íŠ¸ë¥¼ ìœ„í•´ baseë¥¼ ì œê³±
+        exp >>= 1;     // ë‹¤ìŒ ë¹„íŠ¸ë¡œ ì´ë™
 
         if (print_steps && exp > 0) {
             printf("Square base: %lld, Next exp: %d\n", base, exp);
@@ -147,7 +147,7 @@ long long power_binary(long long base, int exp, bool print_steps) {
     return result;
 }
 
-/* ½ÇÇà ½Ã°£ ÃøÁ¤ ÇÔ¼ö */
+/* ì‹¤í–‰ ì‹œê°„ ì¸¡ì • í•¨ìˆ˜ */
 double measure_time(long long (*func)(long long, int, bool),
     long long base, int exp, bool print_steps) {
     clock_t start = clock();
@@ -158,7 +158,7 @@ double measure_time(long long (*func)(long long, int, bool),
     return ((double)(end - start)) / CLOCKS_PER_SEC;
 }
 
-/* ¼º´É ºñ±³ ºÐ¼® */
+/* ì„±ëŠ¥ ë¹„êµ ë¶„ì„ */
 void compare_performance(void) {
     printf("\nPerformance Comparison:\n");
     printf("--------------------\n");
@@ -184,7 +184,7 @@ void compare_performance(void) {
     }
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Fast Power Calculation Menu ===\n");
     printf("1. Calculate power (naive)\n");
@@ -261,60 +261,60 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ºÐÇÒ Á¤º¹ Á¢±Ù¹ý
+1. ë¶„í•  ì •ë³µ ì ‘ê·¼ë²•
 ---------------
-±âº» ¾ÆÀÌµð¾î:
-- Áö¼ö¸¦ Àý¹ÝÀ¸·Î ³ª´®
-- ºÎºÐ °á°ú¸¦ Àç»ç¿ë
-- È¦¼ö/Â¦¼ö °æ¿ì ±¸ºÐ
+ê¸°ë³¸ ì•„ì´ë””ì–´:
+- ì§€ìˆ˜ë¥¼ ì ˆë°˜ìœ¼ë¡œ ë‚˜ëˆ”
+- ë¶€ë¶„ ê²°ê³¼ë¥¼ ìž¬ì‚¬ìš©
+- í™€ìˆ˜/ì§ìˆ˜ ê²½ìš° êµ¬ë¶„
 
-ÀåÁ¡:
-- ¿¬»ê È½¼ö °¨¼Ò
-- ºü¸¥ °è»ê ¼Óµµ
-- ¸Þ¸ð¸® È¿À²Àû
+ìž¥ì :
+- ì—°ì‚° íšŸìˆ˜ ê°ì†Œ
+- ë¹ ë¥¸ ê³„ì‚° ì†ë„
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì 
 
-2. ½Ã°£ º¹Àâµµ ºÐ¼®
+2. ì‹œê°„ ë³µìž¡ë„ ë¶„ì„
 ---------------
-ÀÏ¹ÝÀû ¹æ¹ý: O(n)
-- n¹øÀÇ °ö¼À ÇÊ¿ä
-- ¼±Çü ½Ã°£ º¹Àâµµ
+ì¼ë°˜ì  ë°©ë²•: O(n)
+- në²ˆì˜ ê³±ì…ˆ í•„ìš”
+- ì„ í˜• ì‹œê°„ ë³µìž¡ë„
 
-ºÐÇÒ Á¤º¹: O(log n)
-- Áö¼ö¸¦ Àý¹Ý¾¿ °¨¼Ò
-- ·Î±× ½Ã°£ º¹Àâµµ
-- Àç±Í È£Ãâ Æ®¸®
+ë¶„í•  ì •ë³µ: O(log n)
+- ì§€ìˆ˜ë¥¼ ì ˆë°˜ì”© ê°ì†Œ
+- ë¡œê·¸ ì‹œê°„ ë³µìž¡ë„
+- ìž¬ê·€ í˜¸ì¶œ íŠ¸ë¦¬
 
-3. ±¸Çö ¹æ½Ä
+3. êµ¬í˜„ ë°©ì‹
 ----------
-Àç±ÍÀû ±¸Çö:
-- Á÷°üÀû ÀÌÇØ ¿ëÀÌ
-- ÄÚµå °£´Ü
-- ½ºÅÃ »ç¿ë
+ìž¬ê·€ì  êµ¬í˜„:
+- ì§ê´€ì  ì´í•´ ìš©ì´
+- ì½”ë“œ ê°„ë‹¨
+- ìŠ¤íƒ ì‚¬ìš©
 
-ÀÌÁø¼ö ¹æ½Ä:
-- ºñÆ® ¿¬»ê È°¿ë
-- ¹Ýº¹Àû ±¸Çö
-- ¸Þ¸ð¸® È¿À²Àû
+ì´ì§„ìˆ˜ ë°©ì‹:
+- ë¹„íŠ¸ ì—°ì‚° í™œìš©
+- ë°˜ë³µì  êµ¬í˜„
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì 
 
-4. ÀÀ¿ë ºÐ¾ß
+4. ì‘ìš© ë¶„ì•¼
 ----------
-- ¾ÏÈ£È­ ¾Ë°í¸®Áò
-- ¸ðµâ·¯ ¿¬»ê
-- Å« ¼ö °è»ê
-- °í¼Ó Áö¼ö °è»ê
+- ì•”í˜¸í™” ì•Œê³ ë¦¬ì¦˜
+- ëª¨ë“ˆëŸ¬ ì—°ì‚°
+- í° ìˆ˜ ê³„ì‚°
+- ê³ ì† ì§€ìˆ˜ ê³„ì‚°
 
-5. ÃÖÀûÈ­ ±â¹ý
+5. ìµœì í™” ê¸°ë²•
 -----------
-- ¸ðµâ·¯ ¿¬»ê È°¿ë
-- ºñÆ® ¿¬»ê ÃÖÀûÈ­
-- Àç±Í Á¦°Å
-- Áß°£ °á°ú Àç»ç¿ë
+- ëª¨ë“ˆëŸ¬ ì—°ì‚° í™œìš©
+- ë¹„íŠ¸ ì—°ì‚° ìµœì í™”
+- ìž¬ê·€ ì œê±°
+- ì¤‘ê°„ ê²°ê³¼ ìž¬ì‚¬ìš©
 
-ÀÌ ±¸ÇöÀº °ÅµìÁ¦°ö °è»êÀÇ ´Ù¾çÇÑ
-¹æ¹ýÀ» º¸¿©ÁÖ¸ç, ½ÇÁ¦ ¼º´É Â÷ÀÌ¸¦
-ºñ±³ÇÒ ¼ö ÀÖ½À´Ï´Ù. ´ÙÀ½ ´Ü°èÀÎ
-ÇÇº¸³ªÄ¡ ¼ö °è»êÀÇ ±âÃÊ°¡ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ ê±°ë“­ì œê³± ê³„ì‚°ì˜ ë‹¤ì–‘í•œ
+ë°©ë²•ì„ ë³´ì—¬ì£¼ë©°, ì‹¤ì œ ì„±ëŠ¥ ì°¨ì´ë¥¼
+ë¹„êµí•  ìˆ˜ ìžˆìŠµë‹ˆë‹¤. ë‹¤ìŒ ë‹¨ê³„ì¸
+í”¼ë³´ë‚˜ì¹˜ ìˆ˜ ê³„ì‚°ì˜ ê¸°ì´ˆê°€ ë©ë‹ˆë‹¤.
 */

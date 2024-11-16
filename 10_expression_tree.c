@@ -4,40 +4,40 @@
 #include <ctype.h>
 #include <stdbool.h>
 
-// ¿¬»êÀÚ¿Í ÇÇ¿¬»êÀÚ¸¦ ±¸ºÐÇÏ±â À§ÇÑ ¿­°ÅÇü
+// ì—°ì‚°ìžì™€ í”¼ì—°ì‚°ìžë¥¼ êµ¬ë¶„í•˜ê¸° ìœ„í•œ ì—´ê±°í˜•
 typedef enum {
     NODE_OPERATOR,
     NODE_OPERAND
 } NodeType;
 
-// ³ëµå ±¸Á¶Ã¼ Á¤ÀÇ
+// ë…¸ë“œ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct TreeNode {
-    NodeType type;            // ³ëµå Å¸ÀÔ(¿¬»êÀÚ/ÇÇ¿¬»êÀÚ)
+    NodeType type;            // ë…¸ë“œ íƒ€ìž…(ì—°ì‚°ìž/í”¼ì—°ì‚°ìž)
     union {
-        char operator;        // ¿¬»êÀÚ(+, -, *, /, %)
-        double operand;       // ÇÇ¿¬»êÀÚ(¼ýÀÚ)
+        char operator;        // ì—°ì‚°ìž(+, -, *, /, %)
+        double operand;       // í”¼ì—°ì‚°ìž(ìˆ«ìž)
     } data;
-    struct TreeNode* left;    // ¿ÞÂÊ ÀÚ½Ä ³ëµå
-    struct TreeNode* right;   // ¿À¸¥ÂÊ ÀÚ½Ä ³ëµå
+    struct TreeNode* left;    // ì™¼ìª½ ìžì‹ ë…¸ë“œ
+    struct TreeNode* right;   // ì˜¤ë¥¸ìª½ ìžì‹ ë…¸ë“œ
 } TreeNode;
 
-// ¼ö½Ä Æ®¸® ±¸Á¶Ã¼ Á¤ÀÇ
+// ìˆ˜ì‹ íŠ¸ë¦¬ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct {
-    TreeNode* root;          // ·çÆ® ³ëµå
+    TreeNode* root;          // ë£¨íŠ¸ ë…¸ë“œ
 } ExpressionTree;
 
-// ½ºÅÃ ³ëµå ±¸Á¶Ã¼
+// ìŠ¤íƒ ë…¸ë“œ êµ¬ì¡°ì²´
 typedef struct StackNode {
     TreeNode* data;
     struct StackNode* next;
 } StackNode;
 
-// ½ºÅÃ ±¸Á¶Ã¼
+// ìŠ¤íƒ êµ¬ì¡°ì²´
 typedef struct {
     StackNode* top;
 } Stack;
 
-/* ½ºÅÃ »ý¼º */
+/* ìŠ¤íƒ ìƒì„± */
 Stack* create_stack(void) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
     if (stack) {
@@ -46,12 +46,12 @@ Stack* create_stack(void) {
     return stack;
 }
 
-/* ½ºÅÃÀÌ ºñ¾îÀÖ´ÂÁö È®ÀÎ */
+/* ìŠ¤íƒì´ ë¹„ì–´ìžˆëŠ”ì§€ í™•ì¸ */
 bool is_stack_empty(Stack* stack) {
     return (stack->top == NULL);
 }
 
-/* ½ºÅÃ¿¡ ³ëµå Çª½Ã */
+/* ìŠ¤íƒì— ë…¸ë“œ í‘¸ì‹œ */
 void push(Stack* stack, TreeNode* node) {
     StackNode* new_node = (StackNode*)malloc(sizeof(StackNode));
     if (new_node) {
@@ -61,7 +61,7 @@ void push(Stack* stack, TreeNode* node) {
     }
 }
 
-/* ½ºÅÃ¿¡¼­ ³ëµå ÆË */
+/* ìŠ¤íƒì—ì„œ ë…¸ë“œ íŒ */
 TreeNode* pop(Stack* stack) {
     if (is_stack_empty(stack)) {
         return NULL;
@@ -73,7 +73,7 @@ TreeNode* pop(Stack* stack) {
     return node;
 }
 
-/* ½ºÅÃ ¸Þ¸ð¸® ÇØÁ¦ */
+/* ìŠ¤íƒ ë©”ëª¨ë¦¬ í•´ì œ */
 void destroy_stack(Stack* stack) {
     while (!is_stack_empty(stack)) {
         pop(stack);
@@ -81,7 +81,7 @@ void destroy_stack(Stack* stack) {
     free(stack);
 }
 
-/* ¿¬»êÀÚ ³ëµå »ý¼º */
+/* ì—°ì‚°ìž ë…¸ë“œ ìƒì„± */
 TreeNode* create_operator_node(char op) {
     TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
     if (node) {
@@ -93,7 +93,7 @@ TreeNode* create_operator_node(char op) {
     return node;
 }
 
-/* ÇÇ¿¬»êÀÚ ³ëµå »ý¼º */
+/* í”¼ì—°ì‚°ìž ë…¸ë“œ ìƒì„± */
 TreeNode* create_operand_node(double value) {
     TreeNode* node = (TreeNode*)malloc(sizeof(TreeNode));
     if (node) {
@@ -105,7 +105,7 @@ TreeNode* create_operand_node(double value) {
     return node;
 }
 
-/* ¿¬»êÀÚÀÇ ¿ì¼±¼øÀ§ ¹ÝÈ¯ */
+/* ì—°ì‚°ìžì˜ ìš°ì„ ìˆœìœ„ ë°˜í™˜ */
 int get_precedence(char op) {
     switch (op) {
     case '+':
@@ -119,7 +119,7 @@ int get_precedence(char op) {
     }
 }
 
-/* ÈÄÀ§ Ç¥±â½ÄÀ¸·ÎºÎÅÍ ¼ö½Ä Æ®¸® »ý¼º */
+/* í›„ìœ„ í‘œê¸°ì‹ìœ¼ë¡œë¶€í„° ìˆ˜ì‹ íŠ¸ë¦¬ ìƒì„± */
 TreeNode* build_tree_from_postfix(const char* postfix) {
     Stack* stack = create_stack();
     TreeNode* node, * op1, * op2;
@@ -130,7 +130,7 @@ TreeNode* build_tree_from_postfix(const char* postfix) {
     token = strtok(expr, " ");
 
     while (token != NULL) {
-        // ¿¬»êÀÚÀÎ °æ¿ì
+        // ì—°ì‚°ìžì¸ ê²½ìš°
         if (strlen(token) == 1 && strchr("+-*/", token[0])) {
             node = create_operator_node(token[0]);
             op2 = pop(stack);
@@ -139,7 +139,7 @@ TreeNode* build_tree_from_postfix(const char* postfix) {
             node->right = op2;
             push(stack, node);
         }
-        // ÇÇ¿¬»êÀÚÀÎ °æ¿ì
+        // í”¼ì—°ì‚°ìžì¸ ê²½ìš°
         else {
             node = create_operand_node(atof(token));
             push(stack, node);
@@ -152,7 +152,7 @@ TreeNode* build_tree_from_postfix(const char* postfix) {
     return node;
 }
 
-/* ¼ö½Ä Æ®¸® »ý¼º */
+/* ìˆ˜ì‹ íŠ¸ë¦¬ ìƒì„± */
 ExpressionTree* create_expression_tree(const char* postfix) {
     ExpressionTree* tree = (ExpressionTree*)malloc(sizeof(ExpressionTree));
     if (tree) {
@@ -161,7 +161,7 @@ ExpressionTree* create_expression_tree(const char* postfix) {
     return tree;
 }
 
-/* ÀüÀ§ ¼øÈ¸ (³»ºÎ ÇÔ¼ö) */
+/* ì „ìœ„ ìˆœíšŒ (ë‚´ë¶€ í•¨ìˆ˜) */
 static void prefix_traversal(TreeNode* node) {
     if (node != NULL) {
         if (node->type == NODE_OPERATOR) {
@@ -175,7 +175,7 @@ static void prefix_traversal(TreeNode* node) {
     }
 }
 
-/* ÁßÀ§ ¼øÈ¸ (³»ºÎ ÇÔ¼ö) */
+/* ì¤‘ìœ„ ìˆœíšŒ (ë‚´ë¶€ í•¨ìˆ˜) */
 static void infix_traversal(TreeNode* node) {
     if (node != NULL) {
         if (node->type == NODE_OPERATOR) {
@@ -195,7 +195,7 @@ static void infix_traversal(TreeNode* node) {
     }
 }
 
-/* ÈÄÀ§ ¼øÈ¸ (³»ºÎ ÇÔ¼ö) */
+/* í›„ìœ„ ìˆœíšŒ (ë‚´ë¶€ í•¨ìˆ˜) */
 static void postfix_traversal(TreeNode* node) {
     if (node != NULL) {
         postfix_traversal(node->left);
@@ -209,28 +209,28 @@ static void postfix_traversal(TreeNode* node) {
     }
 }
 
-/* ÀüÀ§ Ç¥±â½Ä Ãâ·Â */
+/* ì „ìœ„ í‘œê¸°ì‹ ì¶œë ¥ */
 void print_prefix(ExpressionTree* tree) {
     printf("Prefix notation: ");
     prefix_traversal(tree->root);
     printf("\n");
 }
 
-/* ÁßÀ§ Ç¥±â½Ä Ãâ·Â */
+/* ì¤‘ìœ„ í‘œê¸°ì‹ ì¶œë ¥ */
 void print_infix(ExpressionTree* tree) {
     printf("Infix notation: ");
     infix_traversal(tree->root);
     printf("\n");
 }
 
-/* ÈÄÀ§ Ç¥±â½Ä Ãâ·Â */
+/* í›„ìœ„ í‘œê¸°ì‹ ì¶œë ¥ */
 void print_postfix(ExpressionTree* tree) {
     printf("Postfix notation: ");
     postfix_traversal(tree->root);
     printf("\n");
 }
 
-/* ¼ö½Ä °è»ê (³»ºÎ ÇÔ¼ö) */
+/* ìˆ˜ì‹ ê³„ì‚° (ë‚´ë¶€ í•¨ìˆ˜) */
 static double evaluate_recursive(TreeNode* node) {
     if (node == NULL) {
         return 0;
@@ -252,19 +252,19 @@ static double evaluate_recursive(TreeNode* node) {
     }
 }
 
-/* ¼ö½Ä °è»ê (¿ÜºÎ ÀÎÅÍÆäÀÌ½º) */
+/* ìˆ˜ì‹ ê³„ì‚° (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤) */
 double evaluate_expression(ExpressionTree* tree) {
     return evaluate_recursive(tree->root);
 }
 
-/* Æ®¸® ½Ã°¢È­ (³»ºÎ ÇÔ¼ö) */
+/* íŠ¸ë¦¬ ì‹œê°í™” (ë‚´ë¶€ í•¨ìˆ˜) */
 static void print_tree_recursive(TreeNode* node, int level, char* prefix) {
     if (node == NULL) {
         return;
     }
 
     printf("%s", prefix);
-    printf("%s", level ? "¦§¦¡¦¡ " : "");
+    printf("%s", level ? "â”œâ”€â”€ " : "");
 
     if (node->type == NODE_OPERATOR) {
         printf("%c\n", node->data.operator);
@@ -274,19 +274,19 @@ static void print_tree_recursive(TreeNode* node, int level, char* prefix) {
     }
 
     char new_prefix[256];
-    sprintf(new_prefix, "%s%s", prefix, level ? "¦¢   " : "");
+    sprintf(new_prefix, "%s%s", prefix, level ? "â”‚   " : "");
 
     print_tree_recursive(node->left, 1, new_prefix);
     print_tree_recursive(node->right, 1, new_prefix);
 }
 
-/* Æ®¸® ½Ã°¢È­ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º) */
+/* íŠ¸ë¦¬ ì‹œê°í™” (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤) */
 void print_tree(ExpressionTree* tree) {
     printf("Expression Tree Structure:\n");
     print_tree_recursive(tree->root, 0, "");
 }
 
-/* Æ®¸® ¸Þ¸ð¸® ÇØÁ¦ (³»ºÎ ÇÔ¼ö) */
+/* íŠ¸ë¦¬ ë©”ëª¨ë¦¬ í•´ì œ (ë‚´ë¶€ í•¨ìˆ˜) */
 static void destroy_tree_recursive(TreeNode* node) {
     if (node != NULL) {
         destroy_tree_recursive(node->left);
@@ -295,7 +295,7 @@ static void destroy_tree_recursive(TreeNode* node) {
     }
 }
 
-/* Æ®¸® ¸Þ¸ð¸® ÇØÁ¦ (¿ÜºÎ ÀÎÅÍÆäÀÌ½º) */
+/* íŠ¸ë¦¬ ë©”ëª¨ë¦¬ í•´ì œ (ì™¸ë¶€ ì¸í„°íŽ˜ì´ìŠ¤) */
 void destroy_expression_tree(ExpressionTree* tree) {
     if (tree != NULL) {
         destroy_tree_recursive(tree->root);
@@ -303,7 +303,7 @@ void destroy_expression_tree(ExpressionTree* tree) {
     }
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Expression Tree Menu ===\n");
     printf("1. Create new expression tree\n");
@@ -405,94 +405,94 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ¼ö½Ä Æ®¸®ÀÇ Æ¯Â¡
+1. ìˆ˜ì‹ íŠ¸ë¦¬ì˜ íŠ¹ì§•
 ----------------
-- ³»ºÎ ³ëµå: ¿¬»êÀÚ
-- ¸®ÇÁ ³ëµå: ÇÇ¿¬»êÀÚ
-- ÈÄÀ§ Ç¥±â½ÄÀ¸·Î »ý¼º
-- Æ®¸® ¼øÈ¸·Î Ç¥±â¹ý º¯È¯
+- ë‚´ë¶€ ë…¸ë“œ: ì—°ì‚°ìž
+- ë¦¬í”„ ë…¸ë“œ: í”¼ì—°ì‚°ìž
+- í›„ìœ„ í‘œê¸°ì‹ìœ¼ë¡œ ìƒì„±
+- íŠ¸ë¦¬ ìˆœíšŒë¡œ í‘œê¸°ë²• ë³€í™˜
 
-2. ³ëµå ±¸Á¶
+2. ë…¸ë“œ êµ¬ì¡°
 ----------
-- ³ëµå Å¸ÀÔ ±¸ºÐ
-- Union È°¿ë
-- ÀÌÁø Æ®¸® ±¸Á¶
-- µ¿Àû ÇÒ´ç
+- ë…¸ë“œ íƒ€ìž… êµ¬ë¶„
+- Union í™œìš©
+- ì´ì§„ íŠ¸ë¦¬ êµ¬ì¡°
+- ë™ì  í• ë‹¹
 
-3. ÁÖ¿ä ±â´É
+3. ì£¼ìš” ê¸°ëŠ¥
 ----------
-- ¼ö½Ä Æ®¸® »ý¼º
-- ¼¼ °¡Áö Ç¥±â¹ý º¯È¯
-- ¼ö½Ä °è»ê
-- Æ®¸® ½Ã°¢È­
+- ìˆ˜ì‹ íŠ¸ë¦¬ ìƒì„±
+- ì„¸ ê°€ì§€ í‘œê¸°ë²• ë³€í™˜
+- ìˆ˜ì‹ ê³„ì‚°
+- íŠ¸ë¦¬ ì‹œê°í™”
 
-4. Ç¥±â¹ý º¯È¯
+4. í‘œê¸°ë²• ë³€í™˜
 -----------
-ÀüÀ§(prefix):
-- ·çÆ®-¿ÞÂÊ-¿À¸¥ÂÊ
-- ¿¬»êÀÚ°¡ ¾Õ¿¡ À§Ä¡
+ì „ìœ„(prefix):
+- ë£¨íŠ¸-ì™¼ìª½-ì˜¤ë¥¸ìª½
+- ì—°ì‚°ìžê°€ ì•žì— ìœ„ì¹˜
 
-ÁßÀ§(infix):
-- ¿ÞÂÊ-·çÆ®-¿À¸¥ÂÊ
-- ÀÏ¹ÝÀûÀÎ ¼ö½Ä ÇüÅÂ
+ì¤‘ìœ„(infix):
+- ì™¼ìª½-ë£¨íŠ¸-ì˜¤ë¥¸ìª½
+- ì¼ë°˜ì ì¸ ìˆ˜ì‹ í˜•íƒœ
 
-ÈÄÀ§(postfix):
-- ¿ÞÂÊ-¿À¸¥ÂÊ-·çÆ®
-- ½ºÅÃ ±â¹Ý Æò°¡
+í›„ìœ„(postfix):
+- ì™¼ìª½-ì˜¤ë¥¸ìª½-ë£¨íŠ¸
+- ìŠ¤íƒ ê¸°ë°˜ í‰ê°€
 
-5. ½ºÅÃ È°¿ë
+5. ìŠ¤íƒ í™œìš©
 ----------
-- Æ®¸® »ý¼º ½Ã È°¿ë
-- ÈÄÀ§ Ç¥±â½Ä Ã³¸®
-- µ¿Àû ¸Þ¸ð¸® °ü¸®
-- LIFO ±¸Á¶
+- íŠ¸ë¦¬ ìƒì„± ì‹œ í™œìš©
+- í›„ìœ„ í‘œê¸°ì‹ ì²˜ë¦¬
+- ë™ì  ë©”ëª¨ë¦¬ ê´€ë¦¬
+- LIFO êµ¬ì¡°
 
-6. ¸Þ¸ð¸® °ü¸®
+6. ë©”ëª¨ë¦¬ ê´€ë¦¬
 -----------
-- ³ëµå ´ÜÀ§ ÇÒ´ç
-- Àç±ÍÀû ÇØÁ¦
-- ½ºÅÃ ¸Þ¸ð¸® °ü¸®
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
+- ë…¸ë“œ ë‹¨ìœ„ í• ë‹¹
+- ìž¬ê·€ì  í•´ì œ
+- ìŠ¤íƒ ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
 
-7. ¼øÈ¸ ¾Ë°í¸®Áò
+7. ìˆœíšŒ ì•Œê³ ë¦¬ì¦˜
 ------------
-ÀüÀ§ ¼øÈ¸:
-- ¿¬»êÀÚ ¿ì¼± Ã³¸®
-- ÀüÀ§ Ç¥±â¹ý »ý¼º
+ì „ìœ„ ìˆœíšŒ:
+- ì—°ì‚°ìž ìš°ì„  ì²˜ë¦¬
+- ì „ìœ„ í‘œê¸°ë²• ìƒì„±
 
-ÁßÀ§ ¼øÈ¸:
-- °ýÈ£ Ã³¸® ÇÊ¿ä
-- ÀÏ¹Ý ¼ö½Ä ÇüÅÂ
+ì¤‘ìœ„ ìˆœíšŒ:
+- ê´„í˜¸ ì²˜ë¦¬ í•„ìš”
+- ì¼ë°˜ ìˆ˜ì‹ í˜•íƒœ
 
-ÈÄÀ§ ¼øÈ¸:
-- ÇÇ¿¬»êÀÚ ¿ì¼± Ã³¸®
-- ÈÄÀ§ Ç¥±â¹ý »ý¼º
+í›„ìœ„ ìˆœíšŒ:
+- í”¼ì—°ì‚°ìž ìš°ì„  ì²˜ë¦¬
+- í›„ìœ„ í‘œê¸°ë²• ìƒì„±
 
-8. ±³À°Àû °¡Ä¡
+8. êµìœ¡ì  ê°€ì¹˜
 -----------
-- Æ®¸® ±¸Á¶ ÀÌÇØ
-- Àç±Í ¾Ë°í¸®Áò
-- Ç¥±â¹ý º¯È¯
-- ½ºÅÃ È°¿ë
+- íŠ¸ë¦¬ êµ¬ì¡° ì´í•´
+- ìž¬ê·€ ì•Œê³ ë¦¬ì¦˜
+- í‘œê¸°ë²• ë³€í™˜
+- ìŠ¤íƒ í™œìš©
 
-9. È°¿ë ºÐ¾ß
+9. í™œìš© ë¶„ì•¼
 ----------
-- ÄÄÆÄÀÏ·¯ ¼³°è
-- ¼ö½Ä °è»ê±â
-- ±¸¹® ºÐ¼®
-- ÄÚµå »ý¼º
+- ì»´íŒŒì¼ëŸ¬ ì„¤ê³„
+- ìˆ˜ì‹ ê³„ì‚°ê¸°
+- êµ¬ë¬¸ ë¶„ì„
+- ì½”ë“œ ìƒì„±
 
-10. ±¸Çö Æ¯Â¡
+10. êµ¬í˜„ íŠ¹ì§•
 -----------
-- ¸ðµâÈ­µÈ ¼³°è
-- ¾ÈÀüÇÑ ¸Þ¸ð¸® °ü¸®
-- »ç¿ëÀÚ ÀÎÅÍÆäÀÌ½º
-- ½Ã°¢Àû Ç¥Çö
+- ëª¨ë“ˆí™”ëœ ì„¤ê³„
+- ì•ˆì „í•œ ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ì‚¬ìš©ìž ì¸í„°íŽ˜ì´ìŠ¤
+- ì‹œê°ì  í‘œí˜„
 
-ÀÌ ±¸ÇöÀº ¼ö½Ä Æ®¸®ÀÇ Ç¥ÁØÀûÀÎ ±â´ÉÀ»
-¸ðµÎ Æ÷ÇÔÇÏ¸ç, ±³À° ¸ñÀûÀ¸·Î
-ÃÖÀûÈ­µÇ¾î ÀÖ½À´Ï´Ù.
+ì´ êµ¬í˜„ì€ ìˆ˜ì‹ íŠ¸ë¦¬ì˜ í‘œì¤€ì ì¸ ê¸°ëŠ¥ì„
+ëª¨ë‘ í¬í•¨í•˜ë©°, êµìœ¡ ëª©ì ìœ¼ë¡œ
+ìµœì í™”ë˜ì–´ ìžˆìŠµë‹ˆë‹¤.
 */

@@ -4,16 +4,16 @@
 #include <string.h>
 
 /*
-¾Ë°í¸®Áò ºÐ·ù: Æ®¸® ÀÚ·á±¸Á¶
-ÇÏÀ§ ºÐ·ù: ¹®ÀÚ¿­ Æ¯È­ Æ®¸®
-³­ÀÌµµ: Áß»ó
-°ü·Ã ÀÚ·á±¸Á¶: ÇØ½Ã Å×ÀÌºí, ÀÌÁø Å½»ö Æ®¸®
+ì•Œê³ ë¦¬ì¦˜ ë¶„ë¥˜: íŠ¸ë¦¬ ìžë£Œêµ¬ì¡°
+í•˜ìœ„ ë¶„ë¥˜: ë¬¸ìžì—´ íŠ¹í™” íŠ¸ë¦¬
+ë‚œì´ë„: ì¤‘ìƒ
+ê´€ë ¨ ìžë£Œêµ¬ì¡°: í•´ì‹œ í…Œì´ë¸”, ì´ì§„ íƒìƒ‰ íŠ¸ë¦¬
 
-Æ®¶óÀÌ Æ®¸® (Trie Tree / Prefix Tree):
-- ¹®ÀÚ¿­ ÁýÇÕÀ» ÀúÀåÇÏ´Â Á¤·ÄµÈ Æ®¸®
-- °¢ ³ëµå´Â ¹®ÀÚ ÇÏ³ª¸¦ Ç¥Çö
-- °øÅë Á¢µÎ¾î¸¦ °øÀ¯ÇÏ¿© °ø°£ Àý¾à
-- ¹®ÀÚ¿­ °Ë»ö, ÀÚµ¿ ¿Ï¼º¿¡ È¿À²Àû
+íŠ¸ë¼ì´ íŠ¸ë¦¬ (Trie Tree / Prefix Tree):
+- ë¬¸ìžì—´ ì§‘í•©ì„ ì €ìž¥í•˜ëŠ” ì •ë ¬ëœ íŠ¸ë¦¬
+- ê° ë…¸ë“œëŠ” ë¬¸ìž í•˜ë‚˜ë¥¼ í‘œí˜„
+- ê³µí†µ ì ‘ë‘ì–´ë¥¼ ê³µìœ í•˜ì—¬ ê³µê°„ ì ˆì•½
+- ë¬¸ìžì—´ ê²€ìƒ‰, ìžë™ ì™„ì„±ì— íš¨ìœ¨ì 
 */
 
 #define ALPHABET_SIZE 26
@@ -21,7 +21,7 @@
 typedef struct TrieNode {
     struct TrieNode* children[ALPHABET_SIZE];
     bool is_end_of_word;
-    int word_count;       // ÀÌ Á¢µÎ¾î·Î ½ÃÀÛÇÏ´Â ´Ü¾î ¼ö
+    int word_count;       // ì´ ì ‘ë‘ì–´ë¡œ ì‹œìž‘í•˜ëŠ” ë‹¨ì–´ ìˆ˜
 } TrieNode;
 
 typedef struct {
@@ -29,7 +29,7 @@ typedef struct {
     int total_words;
 } TrieTree;
 
-// »õ ³ëµå »ý¼º
+// ìƒˆ ë…¸ë“œ ìƒì„±
 TrieNode* create_node(void) {
     TrieNode* node = (TrieNode*)malloc(sizeof(TrieNode));
     node->is_end_of_word = false;
@@ -42,7 +42,7 @@ TrieNode* create_node(void) {
     return node;
 }
 
-// Æ®¶óÀÌ Æ®¸® »ý¼º
+// íŠ¸ë¼ì´ íŠ¸ë¦¬ ìƒì„±
 TrieTree* create_trie(void) {
     TrieTree* trie = (TrieTree*)malloc(sizeof(TrieTree));
     trie->root = create_node();
@@ -50,22 +50,22 @@ TrieTree* create_trie(void) {
     return trie;
 }
 
-// ´Ü¾î »ðÀÔ
+// ë‹¨ì–´ ì‚½ìž…
 void insert(TrieTree* trie, const char* word) {
     TrieNode* current = trie->root;
 
-    printf("\n´Ü¾î '%s' »ðÀÔ °úÁ¤:\n", word);
+    printf("\në‹¨ì–´ '%s' ì‚½ìž… ê³¼ì •:\n", word);
 
     for (int i = 0; word[i]; i++) {
         int index = word[i] - 'a';
         if (index < 0 || index >= ALPHABET_SIZE) {
-            printf("°æ°í: ¾ËÆÄºª ¼Ò¹®ÀÚ¸¸ Çã¿ëµÊ\n");
+            printf("ê²½ê³ : ì•ŒíŒŒë²³ ì†Œë¬¸ìžë§Œ í—ˆìš©ë¨\n");
             return;
         }
 
         if (current->children[index] == NULL) {
             current->children[index] = create_node();
-            printf("»õ ³ëµå »ý¼º: '%c'\n", word[i]);
+            printf("ìƒˆ ë…¸ë“œ ìƒì„±: '%c'\n", word[i]);
         }
         current = current->children[index];
         current->word_count++;
@@ -74,32 +74,32 @@ void insert(TrieTree* trie, const char* word) {
     if (!current->is_end_of_word) {
         current->is_end_of_word = true;
         trie->total_words++;
-        printf("´Ü¾î ³¡ Ç¥½Ã Ãß°¡\n");
+        printf("ë‹¨ì–´ ë í‘œì‹œ ì¶”ê°€\n");
     }
 }
 
-// ´Ü¾î °Ë»ö
+// ë‹¨ì–´ ê²€ìƒ‰
 bool search(TrieTree* trie, const char* word) {
     TrieNode* current = trie->root;
 
-    printf("\n´Ü¾î '%s' °Ë»ö °úÁ¤:\n", word);
+    printf("\në‹¨ì–´ '%s' ê²€ìƒ‰ ê³¼ì •:\n", word);
 
     for (int i = 0; word[i]; i++) {
         int index = word[i] - 'a';
         if (!current->children[index]) {
-            printf("¹®ÀÚ '%c'¿¡¼­ °Ë»ö ½ÇÆÐ\n", word[i]);
+            printf("ë¬¸ìž '%c'ì—ì„œ ê²€ìƒ‰ ì‹¤íŒ¨\n", word[i]);
             return false;
         }
         current = current->children[index];
-        printf("¹®ÀÚ '%c' Ã£À½\n", word[i]);
+        printf("ë¬¸ìž '%c' ì°¾ìŒ\n", word[i]);
     }
 
     bool found = current->is_end_of_word;
-    printf("°Ë»ö °á°ú: %s\n", found ? "Ã£À½" : "¾øÀ½");
+    printf("ê²€ìƒ‰ ê²°ê³¼: %s\n", found ? "ì°¾ìŒ" : "ì—†ìŒ");
     return found;
 }
 
-// Á¢µÎ¾î·Î ½ÃÀÛÇÏ´Â ´Ü¾î ¼ö ¹ÝÈ¯
+// ì ‘ë‘ì–´ë¡œ ì‹œìž‘í•˜ëŠ” ë‹¨ì–´ ìˆ˜ ë°˜í™˜
 int count_prefix(TrieTree* trie, const char* prefix) {
     TrieNode* current = trie->root;
 
@@ -114,7 +114,7 @@ int count_prefix(TrieTree* trie, const char* prefix) {
     return current->word_count;
 }
 
-// ÀÚµ¿ ¿Ï¼º ±¸ÇöÀ» À§ÇÑ Àç±Í ÇÔ¼ö
+// ìžë™ ì™„ì„± êµ¬í˜„ì„ ìœ„í•œ ìž¬ê·€ í•¨ìˆ˜
 void find_words_with_prefix(TrieNode* node, char* prefix, int level) {
     if (node->is_end_of_word) {
         prefix[level] = '\0';
@@ -129,29 +129,29 @@ void find_words_with_prefix(TrieNode* node, char* prefix, int level) {
     }
 }
 
-// ÀÚµ¿ ¿Ï¼º ±â´É
+// ìžë™ ì™„ì„± ê¸°ëŠ¥
 void autocomplete(TrieTree* trie, const char* prefix) {
     TrieNode* current = trie->root;
     char buffer[100];
     strcpy(buffer, prefix);
 
-    printf("\n'%s'·Î ½ÃÀÛÇÏ´Â ´Ü¾îµé:\n", prefix);
+    printf("\n'%s'ë¡œ ì‹œìž‘í•˜ëŠ” ë‹¨ì–´ë“¤:\n", prefix);
 
-    // Á¢µÎ¾î±îÁö ÀÌµ¿
+    // ì ‘ë‘ì–´ê¹Œì§€ ì´ë™
     for (int i = 0; prefix[i]; i++) {
         int index = prefix[i] - 'a';
         if (!current->children[index]) {
-            printf("ÇØ´ç Á¢µÎ¾î·Î ½ÃÀÛÇÏ´Â ´Ü¾î°¡ ¾ø½À´Ï´Ù.\n");
+            printf("í•´ë‹¹ ì ‘ë‘ì–´ë¡œ ì‹œìž‘í•˜ëŠ” ë‹¨ì–´ê°€ ì—†ìŠµë‹ˆë‹¤.\n");
             return;
         }
         current = current->children[index];
     }
 
-    // °¡´ÉÇÑ ¸ðµç ´Ü¾î Ãâ·Â
+    // ê°€ëŠ¥í•œ ëª¨ë“  ë‹¨ì–´ ì¶œë ¥
     find_words_with_prefix(current, buffer, strlen(prefix));
 }
 
-// Æ®¶óÀÌ ³ëµå »èÁ¦ (Àç±Í)
+// íŠ¸ë¼ì´ ë…¸ë“œ ì‚­ì œ (ìž¬ê·€)
 void free_node(TrieNode* node) {
     if (node == NULL) return;
 
@@ -162,16 +162,16 @@ void free_node(TrieNode* node) {
     free(node);
 }
 
-// Æ®¶óÀÌ Æ®¸® »èÁ¦
+// íŠ¸ë¼ì´ íŠ¸ë¦¬ ì‚­ì œ
 void free_trie(TrieTree* trie) {
     free_node(trie->root);
     free(trie);
 }
 
-// Åë°è Á¤º¸ Ãâ·Â
+// í†µê³„ ì •ë³´ ì¶œë ¥
 void print_stats(TrieTree* trie) {
-    printf("\n=== Æ®¶óÀÌ Æ®¸® Åë°è ===\n");
-    printf("ÃÑ ´Ü¾î ¼ö: %d\n", trie->total_words);
+    printf("\n=== íŠ¸ë¼ì´ íŠ¸ë¦¬ í†µê³„ ===\n");
+    printf("ì´ ë‹¨ì–´ ìˆ˜: %d\n", trie->total_words);
 }
 
 int main(void) {
@@ -179,43 +179,43 @@ int main(void) {
     char word[100];
     int choice;
 
-    printf("=== Æ®¶óÀÌ Æ®¸® Å×½ºÆ® ===\n");
+    printf("=== íŠ¸ë¼ì´ íŠ¸ë¦¬ í…ŒìŠ¤íŠ¸ ===\n");
 
     while (1) {
-        printf("\n1. ´Ü¾î »ðÀÔ\n");
-        printf("2. ´Ü¾î °Ë»ö\n");
-        printf("3. ÀÚµ¿ ¿Ï¼º\n");
-        printf("4. Á¢µÎ¾î Åë°è\n");
-        printf("5. Æ®¸® Åë°è\n");
-        printf("0. Á¾·á\n");
-        printf("¼±ÅÃ: ");
+        printf("\n1. ë‹¨ì–´ ì‚½ìž…\n");
+        printf("2. ë‹¨ì–´ ê²€ìƒ‰\n");
+        printf("3. ìžë™ ì™„ì„±\n");
+        printf("4. ì ‘ë‘ì–´ í†µê³„\n");
+        printf("5. íŠ¸ë¦¬ í†µê³„\n");
+        printf("0. ì¢…ë£Œ\n");
+        printf("ì„ íƒ: ");
 
         scanf("%d", &choice);
-        getchar(); // ¹öÆÛ ºñ¿ì±â
+        getchar(); // ë²„í¼ ë¹„ìš°ê¸°
 
         switch (choice) {
         case 1:
-            printf("»ðÀÔÇÒ ´Ü¾î (¼Ò¹®ÀÚ): ");
+            printf("ì‚½ìž…í•  ë‹¨ì–´ (ì†Œë¬¸ìž): ");
             scanf("%s", word);
             insert(trie, word);
             break;
 
         case 2:
-            printf("°Ë»öÇÒ ´Ü¾î: ");
+            printf("ê²€ìƒ‰í•  ë‹¨ì–´: ");
             scanf("%s", word);
             search(trie, word);
             break;
 
         case 3:
-            printf("Á¢µÎ¾î ÀÔ·Â: ");
+            printf("ì ‘ë‘ì–´ ìž…ë ¥: ");
             scanf("%s", word);
             autocomplete(trie, word);
             break;
 
         case 4:
-            printf("Á¢µÎ¾î ÀÔ·Â: ");
+            printf("ì ‘ë‘ì–´ ìž…ë ¥: ");
             scanf("%s", word);
-            printf("'%s'·Î ½ÃÀÛÇÏ´Â ´Ü¾î ¼ö: %d\n",
+            printf("'%s'ë¡œ ì‹œìž‘í•˜ëŠ” ë‹¨ì–´ ìˆ˜: %d\n",
                 word, count_prefix(trie, word));
             break;
 
@@ -228,7 +228,7 @@ int main(void) {
             return 0;
 
         default:
-            printf("Àß¸øµÈ ¼±ÅÃ\n");
+            printf("ìž˜ëª»ëœ ì„ íƒ\n");
         }
     }
 
@@ -236,51 +236,51 @@ int main(void) {
 }
 
 /*
-Æ®¶óÀÌ Æ®¸® ºÐ¼®
+íŠ¸ë¼ì´ íŠ¸ë¦¬ ë¶„ì„
 ============
 
-1. ½Ã°£ º¹Àâµµ
+1. ì‹œê°„ ë³µìž¡ë„
 -----------
-- »ðÀÔ: O(m), mÀº ¹®ÀÚ¿­ ±æÀÌ
-- °Ë»ö: O(m)
-- Á¢µÎ¾î °Ë»ö: O(p + k)
-  p: Á¢µÎ¾î ±æÀÌ
-  k: °á°ú ´Ü¾î ¼ö
+- ì‚½ìž…: O(m), mì€ ë¬¸ìžì—´ ê¸¸ì´
+- ê²€ìƒ‰: O(m)
+- ì ‘ë‘ì–´ ê²€ìƒ‰: O(p + k)
+  p: ì ‘ë‘ì–´ ê¸¸ì´
+  k: ê²°ê³¼ ë‹¨ì–´ ìˆ˜
 
-2. °ø°£ º¹Àâµµ
+2. ê³µê°„ ë³µìž¡ë„
 -----------
-- ÃÖ¾Ç: O(ALPHABET_SIZE * m * n)
-  m: Æò±Õ ¹®ÀÚ¿­ ±æÀÌ
-  n: ¹®ÀÚ¿­ °³¼ö
-- ½ÇÁ¦·Î´Â °øÅë Á¢µÎ¾î·Î ÀÎÇØ ´õ ÀûÀ½
+- ìµœì•…: O(ALPHABET_SIZE * m * n)
+  m: í‰ê·  ë¬¸ìžì—´ ê¸¸ì´
+  n: ë¬¸ìžì—´ ê°œìˆ˜
+- ì‹¤ì œë¡œëŠ” ê³µí†µ ì ‘ë‘ì–´ë¡œ ì¸í•´ ë” ì ìŒ
 
-3. Àå´ÜÁ¡
+3. ìž¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ºü¸¥ °Ë»ö/»ðÀÔ
-- Á¢µÎ¾î ±â¹Ý ¿¬»ê È¿À²Àû
-- ÀÚµ¿ ¿Ï¼º¿¡ ÀÌ»óÀû
+ìž¥ì :
+- ë¹ ë¥¸ ê²€ìƒ‰/ì‚½ìž…
+- ì ‘ë‘ì–´ ê¸°ë°˜ ì—°ì‚° íš¨ìœ¨ì 
+- ìžë™ ì™„ì„±ì— ì´ìƒì 
 
-´ÜÁ¡:
-- ¸Þ¸ð¸® »ç¿ë·® ¸¹À½
-- °ø°£ Áö¿ª¼º ³·À½
-- ¾÷µ¥ÀÌÆ® ºñ¿ë ³ôÀ½
+ë‹¨ì :
+- ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ ë§ŽìŒ
+- ê³µê°„ ì§€ì—­ì„± ë‚®ìŒ
+- ì—…ë°ì´íŠ¸ ë¹„ìš© ë†’ìŒ
 
-4. ÃÖÀûÈ­ ±â¹ý
+4. ìµœì í™” ê¸°ë²•
 -----------
-- ¾ÐÃà Æ®¶óÀÌ
-- ±â¼ö Æ®¸®
-- ÅÏ½ºÆ¿ Æ®¸®
-- ¸Þ¸ð¸® Ç®¸µ
+- ì••ì¶• íŠ¸ë¼ì´
+- ê¸°ìˆ˜ íŠ¸ë¦¬
+- í„´ìŠ¤í‹¸ íŠ¸ë¦¬
+- ë©”ëª¨ë¦¬ í’€ë§
 
-5. ½ÇÁ¦ ÀÀ¿ë
+5. ì‹¤ì œ ì‘ìš©
 ---------
-- ÀÚµ¿ ¿Ï¼º
-- ¸ÂÃã¹ý °Ë»ç
-- IP ¶ó¿ìÆÃ
-- ÀüÈ­¹øÈ£ºÎ
+- ìžë™ ì™„ì„±
+- ë§žì¶¤ë²• ê²€ì‚¬
+- IP ë¼ìš°íŒ…
+- ì „í™”ë²ˆí˜¸ë¶€
 
-ÀÌ ±¸ÇöÀº ¹®ÀÚ¿­ Ã³¸®¿¡
-Æ¯È­µÈ Æ®¸® ±¸Á¶ÀÇ
-±âº» ¿ø¸®¸¦ º¸¿©ÁÝ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë¬¸ìžì—´ ì²˜ë¦¬ì—
+íŠ¹í™”ëœ íŠ¸ë¦¬ êµ¬ì¡°ì˜
+ê¸°ë³¸ ì›ë¦¬ë¥¼ ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

@@ -4,29 +4,29 @@
 
 typedef int DataType;
 
-// ³ëµå ±¸Á¶Ã¼ Á¤ÀÇ
+// ë…¸ë“œ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct Node {
     DataType data;
     struct Node* next;
 } Node;
 
-// Å¥ ±¸Á¶Ã¼ Á¤ÀÇ
+// í êµ¬ì¡°ì²´ ì •ì˜
 typedef struct {
-    Node* front;    // Ã¹ ¹øÂ° ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ
-    Node* rear;     // ¸¶Áö¸· ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ
-    size_t size;    // ÇöÀç Å¥¿¡ ÀúÀåµÈ ¿ä¼ÒÀÇ ¼ö
+    Node* front;    // ì²« ë²ˆì§¸ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°
+    Node* rear;     // ë§ˆì§€ë§‰ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°
+    size_t size;    // í˜„ìž¬ íì— ì €ìž¥ëœ ìš”ì†Œì˜ ìˆ˜
 } LinkedQueue;
 
-/* ¿À·ù Ã³¸®¸¦ À§ÇÑ ¿­°ÅÇü Á¤ÀÇ */
+/* ì˜¤ë¥˜ ì²˜ë¦¬ë¥¼ ìœ„í•œ ì—´ê±°í˜• ì •ì˜ */
 typedef enum {
     QUEUE_OK,
     QUEUE_EMPTY,
     QUEUE_MEMORY_ERROR
 } QueueResult;
 
-/* »õ·Î¿î ³ëµå »ý¼º
- * - ¸Å°³º¯¼ö: data - ÀúÀåÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ ³ëµåÀÇ Æ÷ÀÎÅÍ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„±
+ * - ë§¤ê°œë³€ìˆ˜: data - ì €ìž¥í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ ë…¸ë“œì˜ í¬ì¸í„° ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 static Node* node_create(DataType data) {
     Node* new_node = (Node*)malloc(sizeof(Node));
@@ -38,9 +38,9 @@ static Node* node_create(DataType data) {
     return new_node;
 }
 
-/* Å¥ »ý¼º
- * - »õ·Î¿î ºó Å¥¸¦ µ¿ÀûÀ¸·Î ÇÒ´çÇÏ°í ÃÊ±âÈ­
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ Å¥ÀÇ Æ÷ÀÎÅÍ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* í ìƒì„±
+ * - ìƒˆë¡œìš´ ë¹ˆ íë¥¼ ë™ì ìœ¼ë¡œ í• ë‹¹í•˜ê³  ì´ˆê¸°í™”
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ íì˜ í¬ì¸í„° ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 LinkedQueue* queue_create(void) {
     LinkedQueue* queue = (LinkedQueue*)malloc(sizeof(LinkedQueue));
@@ -53,25 +53,25 @@ LinkedQueue* queue_create(void) {
     return queue;
 }
 
-/* Å¥°¡ ºñ¾îÀÖ´ÂÁö È®ÀÎ
- * - ¸Å°³º¯¼ö: queue - °Ë»çÇÒ Å¥
- * - ¹ÝÈ¯°ª: ºñ¾îÀÖÀ¸¸é true, ¾Æ´Ï¸é false
+/* íê°€ ë¹„ì–´ìžˆëŠ”ì§€ í™•ì¸
+ * - ë§¤ê°œë³€ìˆ˜: queue - ê²€ì‚¬í•  í
+ * - ë°˜í™˜ê°’: ë¹„ì–´ìžˆìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool queue_is_empty(const LinkedQueue* queue) {
     return (queue->size == 0);
 }
 
-/* Å¥ÀÇ ÇöÀç Å©±â ¹ÝÈ¯
- * - ¸Å°³º¯¼ö: queue - ´ë»ó Å¥
- * - ¹ÝÈ¯°ª: Å¥¿¡ ÀúÀåµÈ ¿ä¼ÒÀÇ ¼ö
+/* íì˜ í˜„ìž¬ í¬ê¸° ë°˜í™˜
+ * - ë§¤ê°œë³€ìˆ˜: queue - ëŒ€ìƒ í
+ * - ë°˜í™˜ê°’: íì— ì €ìž¥ëœ ìš”ì†Œì˜ ìˆ˜
  */
 size_t queue_size(const LinkedQueue* queue) {
     return queue->size;
 }
 
-/* Å¥¿¡ ¿ä¼Ò Ãß°¡ (enqueue)
- * - ¸Å°³º¯¼ö: queue - ´ë»ó Å¥, data - Ãß°¡ÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â QueueResult
+/* íì— ìš”ì†Œ ì¶”ê°€ (enqueue)
+ * - ë§¤ê°œë³€ìˆ˜: queue - ëŒ€ìƒ í, data - ì¶”ê°€í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” QueueResult
  */
 QueueResult queue_enqueue(LinkedQueue* queue, DataType data) {
     Node* new_node = node_create(data);
@@ -90,9 +90,9 @@ QueueResult queue_enqueue(LinkedQueue* queue, DataType data) {
     return QUEUE_OK;
 }
 
-/* Å¥¿¡¼­ ¿ä¼Ò Á¦°Å (dequeue)
- * - ¸Å°³º¯¼ö: queue - ´ë»ó Å¥, data - Á¦°ÅµÈ µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ Æ÷ÀÎÅÍ
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â QueueResult
+/* íì—ì„œ ìš”ì†Œ ì œê±° (dequeue)
+ * - ë§¤ê°œë³€ìˆ˜: queue - ëŒ€ìƒ í, data - ì œê±°ëœ ë°ì´í„°ë¥¼ ì €ìž¥í•  í¬ì¸í„°
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” QueueResult
  */
 QueueResult queue_dequeue(LinkedQueue* queue, DataType* data) {
     if (queue_is_empty(queue)) {
@@ -112,9 +112,9 @@ QueueResult queue_dequeue(LinkedQueue* queue, DataType* data) {
     return QUEUE_OK;
 }
 
-/* Å¥ÀÇ ¸Ç ¾Õ ¿ä¼Ò È®ÀÎ (peek)
- * - ¸Å°³º¯¼ö: queue - ´ë»ó Å¥, data - µ¥ÀÌÅÍ¸¦ ÀúÀåÇÒ Æ÷ÀÎÅÍ
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â QueueResult
+/* íì˜ ë§¨ ì•ž ìš”ì†Œ í™•ì¸ (peek)
+ * - ë§¤ê°œë³€ìˆ˜: queue - ëŒ€ìƒ í, data - ë°ì´í„°ë¥¼ ì €ìž¥í•  í¬ì¸í„°
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” QueueResult
  */
 QueueResult queue_peek(const LinkedQueue* queue, DataType* data) {
     if (queue_is_empty(queue)) {
@@ -125,8 +125,8 @@ QueueResult queue_peek(const LinkedQueue* queue, DataType* data) {
     return QUEUE_OK;
 }
 
-/* Å¥ ÃÊ±âÈ­ (clear)
- * - ¸Å°³º¯¼ö: queue - ÃÊ±âÈ­ÇÒ Å¥
+/* í ì´ˆê¸°í™” (clear)
+ * - ë§¤ê°œë³€ìˆ˜: queue - ì´ˆê¸°í™”í•  í
  */
 void queue_clear(LinkedQueue* queue) {
     while (!queue_is_empty(queue)) {
@@ -135,16 +135,16 @@ void queue_clear(LinkedQueue* queue) {
     }
 }
 
-/* Å¥ ¸Þ¸ð¸® ÇØÁ¦
- * - ¸Å°³º¯¼ö: queue - ÇØÁ¦ÇÒ Å¥
+/* í ë©”ëª¨ë¦¬ í•´ì œ
+ * - ë§¤ê°œë³€ìˆ˜: queue - í•´ì œí•  í
  */
 void queue_destroy(LinkedQueue* queue) {
     queue_clear(queue);
     free(queue);
 }
 
-/* Å¥ÀÇ ¸ðµç ¿ä¼Ò Ãâ·Â
- * - ¸Å°³º¯¼ö: queue - Ãâ·ÂÇÒ Å¥
+/* íì˜ ëª¨ë“  ìš”ì†Œ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: queue - ì¶œë ¥í•  í
  */
 void queue_print(const LinkedQueue* queue) {
     if (queue_is_empty(queue)) {
@@ -161,15 +161,15 @@ void queue_print(const LinkedQueue* queue) {
     printf("] REAR\n");
 }
 
-/* Å¥ÀÇ »óÅÂ Á¤º¸ Ãâ·Â
- * - ¸Å°³º¯¼ö: queue - »óÅÂ¸¦ È®ÀÎÇÒ Å¥
+/* íì˜ ìƒíƒœ ì •ë³´ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: queue - ìƒíƒœë¥¼ í™•ì¸í•  í
  */
 void queue_status(const LinkedQueue* queue) {
     printf("\nQueue Status:\n");
     printf("- Size: %zu\n", queue->size);
     printf("- Empty: %s\n", queue_is_empty(queue) ? "Yes" : "No");
 
-    // ¸Þ¸ð¸® »ç¿ë·® °è»ê
+    // ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ ê³„ì‚°
     size_t queue_memory = sizeof(LinkedQueue);
     size_t node_memory = sizeof(Node) * queue->size;
     printf("- Memory usage: %zu bytes (overhead: %zu bytes, nodes: %zu bytes)\n",
@@ -181,7 +181,7 @@ void queue_status(const LinkedQueue* queue) {
     }
 }
 
-/* ¸Þ´º Ãâ·Â ÇÔ¼ö */
+/* ë©”ë‰´ ì¶œë ¥ í•¨ìˆ˜ */
 void print_menu(void) {
     printf("\n=== Linked Queue Menu ===\n");
     printf("1. Enqueue\n");
@@ -196,8 +196,8 @@ void print_menu(void) {
     printf("Choice: ");
 }
 
-/* ¿¡·¯ ¸Þ½ÃÁö Ãâ·Â ÇÔ¼ö
- * - ¸Å°³º¯¼ö: result - Å¥ ¿¬»ê °á°ú
+/* ì—ëŸ¬ ë©”ì‹œì§€ ì¶œë ¥ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: result - í ì—°ì‚° ê²°ê³¼
  */
 void print_error(QueueResult result) {
     switch (result) {
@@ -227,7 +227,7 @@ int main(void) {
         print_menu();
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input\n");
-            while (getchar() != '\n');  // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+            while (getchar() != '\n');  // ìž…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
             continue;
         }
 
@@ -300,96 +300,96 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ¿¬°á ¸®½ºÆ® ±â¹Ý Å¥ÀÇ °³³ä
+1. ì—°ê²° ë¦¬ìŠ¤íŠ¸ ê¸°ë°˜ íì˜ ê°œë…
 -------------------------
-- FIFO(First In First Out) ¿øÄ¢
-- ³ëµå ±â¹ÝÀÇ µ¿Àû ±¸Á¶
-- front¿Í rear Æ÷ÀÎÅÍ È°¿ë
-- µ¿Àû ¸Þ¸ð¸® ÇÒ´ç/ÇØÁ¦
+- FIFO(First In First Out) ì›ì¹™
+- ë…¸ë“œ ê¸°ë°˜ì˜ ë™ì  êµ¬ì¡°
+- frontì™€ rear í¬ì¸í„° í™œìš©
+- ë™ì  ë©”ëª¨ë¦¬ í• ë‹¹/í•´ì œ
 
-2. ±¸Á¶Ã¼ ¼³°è
+2. êµ¬ì¡°ì²´ ì„¤ê³„
 -----------
 Node:
-- data: ÀúÀåÇÒ µ¥ÀÌÅÍ
-- next: ´ÙÀ½ ³ëµå Æ÷ÀÎÅÍ
+- data: ì €ìž¥í•  ë°ì´í„°
+- next: ë‹¤ìŒ ë…¸ë“œ í¬ì¸í„°
 
 LinkedQueue:
-- front: Ã¹ ³ëµå Æ÷ÀÎÅÍ
-- rear: ¸¶Áö¸· ³ëµå Æ÷ÀÎÅÍ
-- size: ÇöÀç ¿ä¼Ò ¼ö
+- front: ì²« ë…¸ë“œ í¬ì¸í„°
+- rear: ë§ˆì§€ë§‰ ë…¸ë“œ í¬ì¸í„°
+- size: í˜„ìž¬ ìš”ì†Œ ìˆ˜
 
-3. ÇÙ½É ¿¬»ê°ú º¹Àâµµ
+3. í•µì‹¬ ì—°ì‚°ê³¼ ë³µìž¡ë„
 -----------------
 Enqueue: O(1)
-- »õ ³ëµå »ý¼º
-- rear Æ÷ÀÎÅÍ Á¶Á¤
-- size Áõ°¡
+- ìƒˆ ë…¸ë“œ ìƒì„±
+- rear í¬ì¸í„° ì¡°ì •
+- size ì¦ê°€
 
 Dequeue: O(1)
-- front ³ëµå Á¦°Å
-- front Æ÷ÀÎÅÍ Á¶Á¤
-- size °¨¼Ò
+- front ë…¸ë“œ ì œê±°
+- front í¬ì¸í„° ì¡°ì •
+- size ê°ì†Œ
 
 Peek: O(1)
-- front ³ëµå µ¥ÀÌÅÍ ¹ÝÈ¯
+- front ë…¸ë“œ ë°ì´í„° ë°˜í™˜
 
-4. ¸Þ¸ð¸® °ü¸® Àü·«
+4. ë©”ëª¨ë¦¬ ê´€ë¦¬ ì „ëžµ
 ---------------
-- µ¿Àû ÇÒ´ç (malloc)
-- ÀûÀýÇÑ ÇØÁ¦ (free)
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- NULL Æ÷ÀÎÅÍ Ã³¸®
+- ë™ì  í• ë‹¹ (malloc)
+- ì ì ˆí•œ í•´ì œ (free)
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- NULL í¬ì¸í„° ì²˜ë¦¬
 
-5. °æ°è Á¶°Ç Ã³¸®
+5. ê²½ê³„ ì¡°ê±´ ì²˜ë¦¬
 -------------
-ºó Å¥:
+ë¹ˆ í:
 - front == NULL
 - rear == NULL
 - size == 0
 
-´ÜÀÏ ³ëµå:
+ë‹¨ì¼ ë…¸ë“œ:
 - front == rear
 - size == 1
 
-³ëµå Á¦°Å ÈÄ:
-- front °»½Å
-- rear °»½Å (ÇÊ¿ä½Ã)
+ë…¸ë“œ ì œê±° í›„:
+- front ê°±ì‹ 
+- rear ê°±ì‹  (í•„ìš”ì‹œ)
 
-6. ±¸Çö Æ¯Â¡
+6. êµ¬í˜„ íŠ¹ì§•
 ----------
-- Å¸ÀÔ Ãß»óÈ­ (DataType)
-- ¿À·ù »óÅÂ ¿­°ÅÇü
-- ¾ÈÀüÇÑ ¸Þ¸ð¸® °ü¸®
-- ¸íÈ®ÇÑ ÀÎÅÍÆäÀÌ½º
+- íƒ€ìž… ì¶”ìƒí™” (DataType)
+- ì˜¤ë¥˜ ìƒíƒœ ì—´ê±°í˜•
+- ì•ˆì „í•œ ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ëª…í™•í•œ ì¸í„°íŽ˜ì´ìŠ¤
 
-7. ¼º´É ÃÖÀûÈ­
+7. ì„±ëŠ¥ ìµœì í™”
 -----------
-- O(1) »ðÀÔ/»èÁ¦
-- Æ÷ÀÎÅÍ È¿À²¼º
-- ºÒÇÊ¿äÇÑ º¹»ç ¹æÁö
-- ¸Þ¸ð¸® ÃÖÀûÈ­
+- O(1) ì‚½ìž…/ì‚­ì œ
+- í¬ì¸í„° íš¨ìœ¨ì„±
+- ë¶ˆí•„ìš”í•œ ë³µì‚¬ ë°©ì§€
+- ë©”ëª¨ë¦¬ ìµœì í™”
 
-8. ±³À°Àû °¡Ä¡
+8. êµìœ¡ì  ê°€ì¹˜
 -----------
-- Æ÷ÀÎÅÍ °³³ä ÇÐ½À
-- µ¿Àû ¸Þ¸ð¸® ÀÌÇØ
-- ÀÚ·á±¸Á¶ ¿ø¸® ÆÄ¾Ç
-- Ãß»óÈ­ °³³ä ½Àµæ
+- í¬ì¸í„° ê°œë… í•™ìŠµ
+- ë™ì  ë©”ëª¨ë¦¬ ì´í•´
+- ìžë£Œêµ¬ì¡° ì›ë¦¬ íŒŒì•…
+- ì¶”ìƒí™” ê°œë… ìŠµë“
 
-9. ¾ÈÀü¼º °í·Á»çÇ×
+9. ì•ˆì „ì„± ê³ ë ¤ì‚¬í•­
 --------------
-- NULL Ã¼Å©
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- Æ÷ÀÎÅÍ À¯È¿¼º
-- °æ°è Á¶°Ç Ã³¸®
+- NULL ì²´í¬
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- í¬ì¸í„° ìœ íš¨ì„±
+- ê²½ê³„ ì¡°ê±´ ì²˜ë¦¬
 
-10. ÄÚµå Ç°Áú
+10. ì½”ë“œ í’ˆì§ˆ
 ----------
-- ÀÏ°üµÈ ¸í¸í±ÔÄ¢
-- ¸íÈ®ÇÑ ÁÖ¼®
-- ¸ðµâÈ­µÈ ¼³°è
-- ¿¡·¯ Ã³¸®
+- ì¼ê´€ëœ ëª…ëª…ê·œì¹™
+- ëª…í™•í•œ ì£¼ì„
+- ëª¨ë“ˆí™”ëœ ì„¤ê³„
+- ì—ëŸ¬ ì²˜ë¦¬
 */

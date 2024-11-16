@@ -3,28 +3,28 @@
 #include <string.h>
 
 /*
-ÇãÇÁ¸¸ ÄÚµùÀÇ Å½¿åÀû Æ¯¼º
+í—ˆí”„ë§Œ ì½”ë”©ì˜ íƒìš•ì  íŠ¹ì„±
 ====================
-1. °¡Àå ³·Àº ºóµµ¸¦ °¡Áø µÎ ³ëµå ¼±ÅÃ
-2. ¼±ÅÃµÈ ³ëµå¸¦ °áÇÕÇÏ¿© »õ·Î¿î ³ëµå »ı¼º
-3. ÀÌÀü ¼±ÅÃÀ» ¹øº¹ÇÏÁö ¾ÊÀ½
+1. ê°€ì¥ ë‚®ì€ ë¹ˆë„ë¥¼ ê°€ì§„ ë‘ ë…¸ë“œ ì„ íƒ
+2. ì„ íƒëœ ë…¸ë“œë¥¼ ê²°í•©í•˜ì—¬ ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„±
+3. ì´ì „ ì„ íƒì„ ë²ˆë³µí•˜ì§€ ì•ŠìŒ
 */
 
-// ÇãÇÁ¸¸ Æ®¸® ³ëµå
+// í—ˆí”„ë§Œ íŠ¸ë¦¬ ë…¸ë“œ
 typedef struct Node {
-    char data;             // ¹®ÀÚ
-    unsigned frequency;    // ºóµµ¼ö
+    char data;             // ë¬¸ì
+    unsigned frequency;    // ë¹ˆë„ìˆ˜
     struct Node* left, * right;
 } Node;
 
-// ÃÖ¼Ò Èü ³ëµå
+// ìµœì†Œ í™ ë…¸ë“œ
 typedef struct {
     Node** array;
     int size;
     int capacity;
 } MinHeap;
 
-// ³ëµå »ı¼º
+// ë…¸ë“œ ìƒì„±
 Node* create_node(char data, unsigned frequency) {
     Node* node = (Node*)malloc(sizeof(Node));
     node->data = data;
@@ -33,7 +33,7 @@ Node* create_node(char data, unsigned frequency) {
     return node;
 }
 
-// ÃÖ¼Ò Èü »ı¼º
+// ìµœì†Œ í™ ìƒì„±
 MinHeap* create_min_heap(unsigned capacity) {
     MinHeap* heap = (MinHeap*)malloc(sizeof(MinHeap));
     heap->size = 0;
@@ -42,7 +42,7 @@ MinHeap* create_min_heap(unsigned capacity) {
     return heap;
 }
 
-// Èü ¿¬»ê
+// í™ ì—°ì‚°
 void swap_nodes(Node** a, Node** b) {
     Node* temp = *a;
     *a = *b;
@@ -68,7 +68,7 @@ void min_heapify(MinHeap* heap, int idx) {
     }
 }
 
-// ³ëµå »ğÀÔ/ÃßÃâ
+// ë…¸ë“œ ì‚½ì…/ì¶”ì¶œ
 void insert_min_heap(MinHeap* heap, Node* node) {
     heap->size++;
     int i = heap->size - 1;
@@ -92,39 +92,39 @@ Node* extract_min(MinHeap* heap) {
     return temp;
 }
 
-// ºóµµ¼ö °è»ê
+// ë¹ˆë„ìˆ˜ ê³„ì‚°
 void calculate_frequency(const char* text, int* freq) {
     for (int i = 0; text[i]; i++) {
         freq[(unsigned char)text[i]]++;
     }
 
-    printf("\n¹®ÀÚº° ºóµµ¼ö:\n");
+    printf("\në¬¸ìë³„ ë¹ˆë„ìˆ˜:\n");
     for (int i = 0; i < 256; i++) {
         if (freq[i])
             printf("'%c': %d\n", i, freq[i]);
     }
 }
 
-// ÇãÇÁ¸¸ Æ®¸® ±¸Ãà
+// í—ˆí”„ë§Œ íŠ¸ë¦¬ êµ¬ì¶•
 Node* build_huffman_tree(char* data, int* freq, int size) {
-    printf("\n=== ÇãÇÁ¸¸ Æ®¸® ±¸Ãà °úÁ¤ ===\n");
+    printf("\n=== í—ˆí”„ë§Œ íŠ¸ë¦¬ êµ¬ì¶• ê³¼ì • ===\n");
 
     MinHeap* heap = create_min_heap(size);
 
-    // ÃÊ±â ³ëµå »ı¼º
+    // ì´ˆê¸° ë…¸ë“œ ìƒì„±
     for (int i = 0; i < size; i++) {
         if (freq[i] > 0) {
             heap->array[heap->size] = create_node(data[i], freq[i]);
             heap->size++;
-            printf("³ëµå »ı¼º: '%c' (ºóµµ¼ö: %d)\n", data[i], freq[i]);
+            printf("ë…¸ë“œ ìƒì„±: '%c' (ë¹ˆë„ìˆ˜: %d)\n", data[i], freq[i]);
         }
     }
 
-    // Èü ±¸¼º
+    // í™ êµ¬ì„±
     for (int i = (heap->size - 1) / 2; i >= 0; i--)
         min_heapify(heap, i);
 
-    // Æ®¸® ±¸Ãà
+    // íŠ¸ë¦¬ êµ¬ì¶•
     while (heap->size > 1) {
         Node* left = extract_min(heap);
         Node* right = extract_min(heap);
@@ -133,7 +133,7 @@ Node* build_huffman_tree(char* data, int* freq, int size) {
         parent->left = left;
         parent->right = right;
 
-        printf("\n³ëµå °áÇÕ: %d + %d = %d\n",
+        printf("\në…¸ë“œ ê²°í•©: %d + %d = %d\n",
             left->frequency, right->frequency, parent->frequency);
 
         insert_min_heap(heap, parent);
@@ -145,7 +145,7 @@ Node* build_huffman_tree(char* data, int* freq, int size) {
     return root;
 }
 
-// ÇãÇÁ¸¸ ÄÚµå »ı¼º
+// í—ˆí”„ë§Œ ì½”ë“œ ìƒì„±
 void print_codes(Node* root, int* code, int top) {
     if (root->left) {
         code[top] = 0;
@@ -165,7 +165,7 @@ void print_codes(Node* root, int* code, int top) {
     }
 }
 
-// Æ®¸® ¸Ş¸ğ¸® ÇØÁ¦
+// íŠ¸ë¦¬ ë©”ëª¨ë¦¬ í•´ì œ
 void free_tree(Node* root) {
     if (root) {
         free_tree(root->left);
@@ -174,17 +174,17 @@ void free_tree(Node* root) {
     }
 }
 
-// ¾ĞÃà·ü °è»ê
+// ì••ì¶•ë¥  ê³„ì‚°
 void calculate_compression_ratio(const char* text, Node* root) {
     int original_size = strlen(text) * 8;  // 8 bits per character
     int compressed_size = 0;
     int* code = (int*)malloc(100 * sizeof(int));
 
-    // °¢ ¹®ÀÚÀÇ ÇãÇÁ¸¸ ÄÚµå ±æÀÌ °è»ê
+    // ê° ë¬¸ìì˜ í—ˆí”„ë§Œ ì½”ë“œ ê¸¸ì´ ê³„ì‚°
     void count_bits(Node * node, int depth) {
         if (!node) return;
         if (!node->left && !node->right) {
-            // ¹®ÀÚº° ÃâÇö ºóµµ * ÄÚµå ±æÀÌ
+            // ë¬¸ìë³„ ì¶œí˜„ ë¹ˆë„ * ì½”ë“œ ê¸¸ì´
             compressed_size += strlen(text) * depth;
         }
         count_bits(node->left, depth + 1);
@@ -193,10 +193,10 @@ void calculate_compression_ratio(const char* text, Node* root) {
 
     count_bits(root, 0);
 
-    printf("\n=== ¾ĞÃà ºĞ¼® ===\n");
-    printf("¿øº» Å©±â: %d bits\n", original_size);
-    printf("¾ĞÃà ÈÄ Å©±â: %d bits\n", compressed_size);
-    printf("¾ĞÃà·ü: %.2f%%\n",
+    printf("\n=== ì••ì¶• ë¶„ì„ ===\n");
+    printf("ì›ë³¸ í¬ê¸°: %d bits\n", original_size);
+    printf("ì••ì¶• í›„ í¬ê¸°: %d bits\n", compressed_size);
+    printf("ì••ì¶•ë¥ : %.2f%%\n",
         (1 - (float)compressed_size / original_size) * 100);
 
     free(code);
@@ -206,59 +206,59 @@ int main(void) {
     char text[1000];
     int freq[256] = { 0 };
 
-    printf("ÅØ½ºÆ® ÀÔ·Â: ");
+    printf("í…ìŠ¤íŠ¸ ì…ë ¥: ");
     fgets(text, sizeof(text), stdin);
     text[strcspn(text, "\n")] = 0;
 
     calculate_frequency(text, freq);
 
-    // ÇãÇÁ¸¸ Æ®¸® ±¸Ãà
+    // í—ˆí”„ë§Œ íŠ¸ë¦¬ êµ¬ì¶•
     Node* root = build_huffman_tree(text, freq, 256);
 
-    // ÇãÇÁ¸¸ ÄÚµå Ãâ·Â
-    printf("\n=== »ı¼ºµÈ ÇãÇÁ¸¸ ÄÚµå ===\n");
+    // í—ˆí”„ë§Œ ì½”ë“œ ì¶œë ¥
+    printf("\n=== ìƒì„±ëœ í—ˆí”„ë§Œ ì½”ë“œ ===\n");
     int code[100];
     print_codes(root, code, 0);
 
-    // ¾ĞÃà·ü °è»ê
+    // ì••ì¶•ë¥  ê³„ì‚°
     calculate_compression_ratio(text, root);
 
-    // ¸Ş¸ğ¸® ÇØÁ¦
+    // ë©”ëª¨ë¦¬ í•´ì œ
     free_tree(root);
 
     return 0;
 }
 
 /*
-ÇãÇÁ¸¸ ÄÚµùÀÇ ºĞ¼®
+í—ˆí”„ë§Œ ì½”ë”©ì˜ ë¶„ì„
 ==============
 
-1. Å½¿åÀû ¼±ÅÃÀÇ Á¤´ç¼º
+1. íƒìš•ì  ì„ íƒì˜ ì •ë‹¹ì„±
 ------------------
-- °¡Àå ³·Àº ºóµµÀÇ ¹®ÀÚ º´ÇÕ
-- Àü¿ª ÃÖÀûÇØ º¸Àå
-- ÄÚµå Á¢µÎ¾î ¼ºÁú À¯Áö
+- ê°€ì¥ ë‚®ì€ ë¹ˆë„ì˜ ë¬¸ì ë³‘í•©
+- ì „ì—­ ìµœì í•´ ë³´ì¥
+- ì½”ë“œ ì ‘ë‘ì–´ ì„±ì§ˆ ìœ ì§€
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µì¡ë„
 -----------
-- ºóµµ¼ö °è»ê: O(n)
-- Èü ±¸¼º: O(n)
-- Æ®¸® ±¸Ãà: O(n log n)
-- ÀüÃ¼: O(n log n)
+- ë¹ˆë„ìˆ˜ ê³„ì‚°: O(n)
+- í™ êµ¬ì„±: O(n)
+- íŠ¸ë¦¬ êµ¬ì¶•: O(n log n)
+- ì „ì²´: O(n log n)
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µì¡ë„
 -----------
-- ºóµµ¼ö Å×ÀÌºí: O(1)
-- ÇãÇÁ¸¸ Æ®¸®: O(n)
-- ÄÚµå Å×ÀÌºí: O(n)
+- ë¹ˆë„ìˆ˜ í…Œì´ë¸”: O(1)
+- í—ˆí”„ë§Œ íŠ¸ë¦¬: O(n)
+- ì½”ë“œ í…Œì´ë¸”: O(n)
 
-4. ¾ĞÃà È¿À²¼º
+4. ì••ì¶• íš¨ìœ¨ì„±
 -----------
-- ³ôÀº ºóµµ ¹®ÀÚ: ÂªÀº ÄÚµå
-- ³·Àº ºóµµ ¹®ÀÚ: ±ä ÄÚµå
-- ÃÖÀû Á¢µÎ¾î ÄÚµå º¸Àå
+- ë†’ì€ ë¹ˆë„ ë¬¸ì: ì§§ì€ ì½”ë“œ
+- ë‚®ì€ ë¹ˆë„ ë¬¸ì: ê¸´ ì½”ë“œ
+- ìµœì  ì ‘ë‘ì–´ ì½”ë“œ ë³´ì¥
 
-ÀÌ ±¸ÇöÀº ÇãÇÁ¸¸ ÄÚµùÀÇ
-Å½¿åÀû Á¢±Ù ¹æ½Ä°ú ±× È¿À²¼ºÀ»
-¸íÈ®ÇÏ°Ô º¸¿©Áİ´Ï´Ù.
+ì´ êµ¬í˜„ì€ í—ˆí”„ë§Œ ì½”ë”©ì˜
+íƒìš•ì  ì ‘ê·¼ ë°©ì‹ê³¼ ê·¸ íš¨ìœ¨ì„±ì„
+ëª…í™•í•˜ê²Œ ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

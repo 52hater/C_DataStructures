@@ -4,32 +4,32 @@
 #include <stdbool.h>
 
 /*
-ÇÇº¸³ªÄ¡ ¼öÀÇ ´Ù¾çÇÑ °è»ê ¹æ¹ý:
+í”¼ë³´ë‚˜ì¹˜ ìˆ˜ì˜ ë‹¤ì–‘í•œ ê³„ì‚° ë°©ë²•:
 
-1. ±âº» Àç±Í ¹æ¹ý (O(2^n))
-   - Á÷°üÀûÀÌÁö¸¸ ¸Å¿ì ºñÈ¿À²Àû
-   - Áßº¹ °è»êÀÌ ¸¹À½
+1. ê¸°ë³¸ ìž¬ê·€ ë°©ë²• (O(2^n))
+   - ì§ê´€ì ì´ì§€ë§Œ ë§¤ìš° ë¹„íš¨ìœ¨ì 
+   - ì¤‘ë³µ ê³„ì‚°ì´ ë§ŽìŒ
 
-2. µ¿Àû °èÈ¹¹ý (O(n))
-   - Áßº¹ °è»ê Á¦°Å
-   - ¸Þ¸ð¸® O(n) ¶Ç´Â O(1)
+2. ë™ì  ê³„íšë²• (O(n))
+   - ì¤‘ë³µ ê³„ì‚° ì œê±°
+   - ë©”ëª¨ë¦¬ O(n) ë˜ëŠ” O(1)
 
-3. Çà·Ä °ÅµìÁ¦°ö ¹æ¹ý (O(log n))
-   - ºÐÇÒ Á¤º¹ÀÇ ÇÙ½É ¿¹½Ã
+3. í–‰ë ¬ ê±°ë“­ì œê³± ë°©ë²• (O(log n))
+   - ë¶„í•  ì •ë³µì˜ í•µì‹¬ ì˜ˆì‹œ
    - [[1 1], [1 0]]^n = [[F(n+1) F(n)], [F(n) F(n-1)]]
 
-4. ¼öÇÐÀû °ø½Ä (O(1))
-   - ºü¸£Áö¸¸ Å« ¼ö¿¡¼­ Á¤¹Ðµµ ¹®Á¦
-   - Binet's Formula È°¿ë
+4. ìˆ˜í•™ì  ê³µì‹ (O(1))
+   - ë¹ ë¥´ì§€ë§Œ í° ìˆ˜ì—ì„œ ì •ë°€ë„ ë¬¸ì œ
+   - Binet's Formula í™œìš©
 */
 
-// 2x2 Çà·Ä ±¸Á¶Ã¼
+// 2x2 í–‰ë ¬ êµ¬ì¡°ì²´
 typedef struct {
     long long m[2][2];
 } Matrix2x2;
 
-/* Çà·Ä °ö¼À
- * - 2x2 Çà·ÄÀÇ °ö¼À ¿¬»ê
+/* í–‰ë ¬ ê³±ì…ˆ
+ * - 2x2 í–‰ë ¬ì˜ ê³±ì…ˆ ì—°ì‚°
  */
 Matrix2x2 matrix_multiply(Matrix2x2 a, Matrix2x2 b) {
     Matrix2x2 result;
@@ -44,9 +44,9 @@ Matrix2x2 matrix_multiply(Matrix2x2 a, Matrix2x2 b) {
     return result;
 }
 
-/* ±âº» Àç±Í ¹æ½Ä ÇÇº¸³ªÄ¡
- * - ½Ã°£º¹Àâµµ: O(2^n)
- * - Á÷°üÀûÀÌÁö¸¸ ¸Å¿ì ºñÈ¿À²Àû
+/* ê¸°ë³¸ ìž¬ê·€ ë°©ì‹ í”¼ë³´ë‚˜ì¹˜
+ * - ì‹œê°„ë³µìž¡ë„: O(2^n)
+ * - ì§ê´€ì ì´ì§€ë§Œ ë§¤ìš° ë¹„íš¨ìœ¨ì 
  */
 long long fib_recursive(int n, bool print_steps) {
     if (print_steps) {
@@ -65,9 +65,9 @@ long long fib_recursive(int n, bool print_steps) {
     return result;
 }
 
-/* µ¿Àû °èÈ¹¹ý ÇÇº¸³ªÄ¡
- * - ½Ã°£º¹Àâµµ: O(n)
- * - °ø°£º¹Àâµµ: O(1)
+/* ë™ì  ê³„íšë²• í”¼ë³´ë‚˜ì¹˜
+ * - ì‹œê°„ë³µìž¡ë„: O(n)
+ * - ê³µê°„ë³µìž¡ë„: O(1)
  */
 long long fib_dynamic(int n, bool print_steps) {
     if (n <= 1) return n;
@@ -87,9 +87,9 @@ long long fib_dynamic(int n, bool print_steps) {
     return curr;
 }
 
-/* Çà·Ä °ÅµìÁ¦°öÀ» ÀÌ¿ëÇÑ ÇÇº¸³ªÄ¡
- * - ½Ã°£º¹Àâµµ: O(log n)
- * - ºÐÇÒ Á¤º¹ »ç¿ë
+/* í–‰ë ¬ ê±°ë“­ì œê³±ì„ ì´ìš©í•œ í”¼ë³´ë‚˜ì¹˜
+ * - ì‹œê°„ë³µìž¡ë„: O(log n)
+ * - ë¶„í•  ì •ë³µ ì‚¬ìš©
  */
 Matrix2x2 matrix_power(Matrix2x2 base, int exp, bool print_steps) {
     if (print_steps) {
@@ -118,8 +118,8 @@ Matrix2x2 matrix_power(Matrix2x2 base, int exp, bool print_steps) {
     return result;
 }
 
-/* Çà·Ä ¹æ½Ä ÇÇº¸³ªÄ¡
- * - F(n)À» Çà·Ä °ÅµìÁ¦°öÀ¸·Î °è»ê
+/* í–‰ë ¬ ë°©ì‹ í”¼ë³´ë‚˜ì¹˜
+ * - F(n)ì„ í–‰ë ¬ ê±°ë“­ì œê³±ìœ¼ë¡œ ê³„ì‚°
  */
 long long fib_matrix(int n, bool print_steps) {
     if (n <= 1) return n;
@@ -134,42 +134,42 @@ long long fib_matrix(int n, bool print_steps) {
     return result.m[0][0];
 }
 
-/* ¼öÇÐÀû °ø½ÄÀ» ÀÌ¿ëÇÑ ÇÇº¸³ªÄ¡ (Binet's Formula)
- * - ½Ã°£º¹Àâµµ: O(1)
- * - Å« ¼ö¿¡¼­ Á¤¹Ðµµ ¹®Á¦ ÀÖÀ½
+/* ìˆ˜í•™ì  ê³µì‹ì„ ì´ìš©í•œ í”¼ë³´ë‚˜ì¹˜ (Binet's Formula)
+ * - ì‹œê°„ë³µìž¡ë„: O(1)
+ * - í° ìˆ˜ì—ì„œ ì •ë°€ë„ ë¬¸ì œ ìžˆìŒ
  */
 double fib_binet(int n) {
-    const double phi = (1 + sqrt(5)) / 2;  // È²±Ýºñ
+    const double phi = (1 + sqrt(5)) / 2;  // í™©ê¸ˆë¹„
     return round((pow(phi, n) - pow(-phi, -n)) / sqrt(5));
 }
 
-/* ½ÇÇà ½Ã°£ ÃøÁ¤ ¹× ºñ±³ */
+/* ì‹¤í–‰ ì‹œê°„ ì¸¡ì • ë° ë¹„êµ */
 void compare_methods(int n) {
     printf("\nComparing different methods for F(%d):\n", n);
     printf("----------------------------------------\n");
 
-    // µ¿Àû °èÈ¹¹ý
+    // ë™ì  ê³„íšë²•
     clock_t start = clock();
     long long result_dp = fib_dynamic(n, false);
     clock_t end = clock();
     printf("Dynamic Programming: %lld (%.6f seconds)\n",
         result_dp, ((double)(end - start)) / CLOCKS_PER_SEC);
 
-    // Çà·Ä ¹æ½Ä
+    // í–‰ë ¬ ë°©ì‹
     start = clock();
     long long result_matrix = fib_matrix(n, false);
     end = clock();
     printf("Matrix Method: %lld (%.6f seconds)\n",
         result_matrix, ((double)(end - start)) / CLOCKS_PER_SEC);
 
-    // Binet °ø½Ä
+    // Binet ê³µì‹
     start = clock();
     double result_binet = fib_binet(n);
     end = clock();
     printf("Binet's Formula: %.0f (%.6f seconds)\n",
         result_binet, ((double)(end - start)) / CLOCKS_PER_SEC);
 
-    // ±âº» Àç±Í (ÀÛÀº ¼ö¸¸)
+    // ê¸°ë³¸ ìž¬ê·€ (ìž‘ì€ ìˆ˜ë§Œ)
     if (n <= 40) {
         start = clock();
         long long result_rec = fib_recursive(n, false);
@@ -182,7 +182,7 @@ void compare_methods(int n) {
     }
 }
 
-/* ¸Þ¸ð¸® »ç¿ë·® ºÐ¼® */
+/* ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ ë¶„ì„ */
 void analyze_memory_usage(void) {
     printf("\nMemory Usage Analysis:\n");
     printf("---------------------\n");
@@ -213,7 +213,7 @@ void analyze_memory_usage(void) {
     printf("   - Best for small numbers\n");
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Fibonacci Calculation Menu ===\n");
     printf("1. Basic recursive method\n");
@@ -299,81 +299,81 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ´Ù¾çÇÑ Á¢±Ù ¹æ½Ä
+1. ë‹¤ì–‘í•œ ì ‘ê·¼ ë°©ì‹
 ---------------
-±âº» Àç±Í:
-- °¡Àå Á÷°üÀûÀÎ ±¸Çö
+ê¸°ë³¸ ìž¬ê·€:
+- ê°€ìž¥ ì§ê´€ì ì¸ êµ¬í˜„
 - F(n) = F(n-1) + F(n-2)
-- Áö¼ö ½Ã°£ º¹Àâµµ
-- ±³À°¿ëÀ¸·Î ÀûÇÕ
+- ì§€ìˆ˜ ì‹œê°„ ë³µìž¡ë„
+- êµìœ¡ìš©ìœ¼ë¡œ ì í•©
 
-µ¿Àû °èÈ¹¹ý:
-- Áßº¹ °è»ê Á¦°Å
-- ¼±Çü ½Ã°£ º¹Àâµµ
-- ¸Þ¸ð¸® È¿À²Àû
-- ½Ç¿ëÀûÀÎ ¹æ¹ý
+ë™ì  ê³„íšë²•:
+- ì¤‘ë³µ ê³„ì‚° ì œê±°
+- ì„ í˜• ì‹œê°„ ë³µìž¡ë„
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì 
+- ì‹¤ìš©ì ì¸ ë°©ë²•
 
-Çà·Ä °ÅµìÁ¦°ö:
-- ºÐÇÒ Á¤º¹ÀÇ ÇÙ½É
-- ·Î±× ½Ã°£ º¹Àâµµ
-- Å« ¼ö¿¡ È¿À²Àû
-- °í±Þ ¼öÇÐ °³³ä
+í–‰ë ¬ ê±°ë“­ì œê³±:
+- ë¶„í•  ì •ë³µì˜ í•µì‹¬
+- ë¡œê·¸ ì‹œê°„ ë³µìž¡ë„
+- í° ìˆ˜ì— íš¨ìœ¨ì 
+- ê³ ê¸‰ ìˆ˜í•™ ê°œë…
 
-2. Çà·Ä ¹æ½ÄÀÇ ÀÌÇØ
+2. í–‰ë ¬ ë°©ì‹ì˜ ì´í•´
 ---------------
-±âº» ¿ø¸®:
+ê¸°ë³¸ ì›ë¦¬:
 [[1 1], [1 0]]^n = [[F(n+1) F(n)], [F(n) F(n-1)]]
 
-¼öÇÐÀû Áõ¸í:
-1) n = 1ÀÏ ¶§ ¼º¸³
-2) n -> n+1·ÎÀÇ ±Í³³Àû Áõ¸í
-3) Çà·Ä °ö¼ÀÀÇ ¼ºÁú È°¿ë
+ìˆ˜í•™ì  ì¦ëª…:
+1) n = 1ì¼ ë•Œ ì„±ë¦½
+2) n -> n+1ë¡œì˜ ê·€ë‚©ì  ì¦ëª…
+3) í–‰ë ¬ ê³±ì…ˆì˜ ì„±ì§ˆ í™œìš©
 
-ÀåÁ¡:
-- ºü¸¥ °è»ê ¼Óµµ
-- Å« ¼ö Ã³¸® °¡´É
-- ¼öÇÐÀû ¿ì¾ÆÇÔ
+ìž¥ì :
+- ë¹ ë¥¸ ê³„ì‚° ì†ë„
+- í° ìˆ˜ ì²˜ë¦¬ ê°€ëŠ¥
+- ìˆ˜í•™ì  ìš°ì•„í•¨
 
-3. ¼º´É ºÐ¼®
+3. ì„±ëŠ¥ ë¶„ì„
 ----------
-½Ã°£ º¹Àâµµ:
-- Àç±Í: O(2^n)
-- µ¿Àû °èÈ¹¹ý: O(n)
-- Çà·Ä: O(log n)
+ì‹œê°„ ë³µìž¡ë„:
+- ìž¬ê·€: O(2^n)
+- ë™ì  ê³„íšë²•: O(n)
+- í–‰ë ¬: O(log n)
 - Binet: O(1)
 
-°ø°£ º¹Àâµµ:
-- Àç±Í: O(n)
-- µ¿Àû °èÈ¹¹ý: O(1)
-- Çà·Ä: O(1)
+ê³µê°„ ë³µìž¡ë„:
+- ìž¬ê·€: O(n)
+- ë™ì  ê³„íšë²•: O(1)
+- í–‰ë ¬: O(1)
 - Binet: O(1)
 
-4. ¼öÇÐÀû ÅëÂû
+4. ìˆ˜í•™ì  í†µì°°
 -----------
-ÇÇº¸³ªÄ¡ ¼öÀÇ ¼ºÁú:
-- È²±Ýºñ¿ÍÀÇ °ü°è
-- Çà·Ä Ç¥ÇöÀÇ ÀÇ¹Ì
-- Áö¼öÀû Áõ°¡
-- ¼öÇÐÀû ÆÐÅÏ
+í”¼ë³´ë‚˜ì¹˜ ìˆ˜ì˜ ì„±ì§ˆ:
+- í™©ê¸ˆë¹„ì™€ì˜ ê´€ê³„
+- í–‰ë ¬ í‘œí˜„ì˜ ì˜ë¯¸
+- ì§€ìˆ˜ì  ì¦ê°€
+- ìˆ˜í•™ì  íŒ¨í„´
 
-ÀÀ¿ë ºÐ¾ß:
-- ÀÚ¿¬°èÀÇ ÇÇº¸³ªÄ¡ ¼ö¿­
-- ¾ÏÈ£ÇÐ
-- ¾Ë°í¸®Áò ¼³°è
-- ¼öÇÐÀû ¸ðµ¨¸µ
+ì‘ìš© ë¶„ì•¼:
+- ìžì—°ê³„ì˜ í”¼ë³´ë‚˜ì¹˜ ìˆ˜ì—´
+- ì•”í˜¸í•™
+- ì•Œê³ ë¦¬ì¦˜ ì„¤ê³„
+- ìˆ˜í•™ì  ëª¨ë¸ë§
 
-5. ÃÖÀûÈ­ ±â¹ý
+5. ìµœì í™” ê¸°ë²•
 -----------
-- Çà·Ä °ö¼À ÃÖÀûÈ­
-- Ä³½Ã È°¿ë
-- ¸ðµâ·¯ ¿¬»ê
-- º´·ÄÈ­ °¡´É¼º
+- í–‰ë ¬ ê³±ì…ˆ ìµœì í™”
+- ìºì‹œ í™œìš©
+- ëª¨ë“ˆëŸ¬ ì—°ì‚°
+- ë³‘ë ¬í™” ê°€ëŠ¥ì„±
 
-ÀÌ ±¸ÇöÀº ÇÇº¸³ªÄ¡ ¼ö °è»êÀÇ
-´Ù¾çÇÑ ¹æ¹ýÀ» º¸¿©ÁÖ¸ç, °¢ ¹æ½ÄÀÇ
-Àå´ÜÁ¡À» ½ÇÁ¦·Î ºñ±³ÇÒ ¼ö ÀÖ°Ô
-ÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ í”¼ë³´ë‚˜ì¹˜ ìˆ˜ ê³„ì‚°ì˜
+ë‹¤ì–‘í•œ ë°©ë²•ì„ ë³´ì—¬ì£¼ë©°, ê° ë°©ì‹ì˜
+ìž¥ë‹¨ì ì„ ì‹¤ì œë¡œ ë¹„êµí•  ìˆ˜ ìžˆê²Œ
+í•©ë‹ˆë‹¤.
 */

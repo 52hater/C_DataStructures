@@ -3,53 +3,53 @@
 #include <stdbool.h>
 
 /*
-À§»ó Á¤·Ä (Topological Sort):
-- ¹æÇâ ºñ¼øÈ¯ ±×·¡ÇÁ(DAG)¿¡¼­ Á¤Á¡µéÀÇ ¼±ÇüÀû ¼ø¼­¸¦ Ã£´Â ¾Ë°í¸®Áò
-- ¼±Çà °ü°è°¡ ÀÖ´Â ÀÛ¾÷µéÀ» ¼ø¼­´ë·Î ³ª¿­
-- ¿¹½Ã:
-  * ´ëÇĞ ¼ö°­ ½ÅÃ» (¼±¼ö°ú¸ñ °ü°è)
-  * ÇÁ·ÎÁ§Æ® ÀÏÁ¤ °ü¸®
-  * ÀÇÁ¸¼º ÀÖ´Â ÆĞÅ°Áö ¼³Ä¡
+ìœ„ìƒ ì •ë ¬ (Topological Sort):
+- ë°©í–¥ ë¹„ìˆœí™˜ ê·¸ë˜í”„(DAG)ì—ì„œ ì •ì ë“¤ì˜ ì„ í˜•ì  ìˆœì„œë¥¼ ì°¾ëŠ” ì•Œê³ ë¦¬ì¦˜
+- ì„ í–‰ ê´€ê³„ê°€ ìˆëŠ” ì‘ì—…ë“¤ì„ ìˆœì„œëŒ€ë¡œ ë‚˜ì—´
+- ì˜ˆì‹œ:
+  * ëŒ€í•™ ìˆ˜ê°• ì‹ ì²­ (ì„ ìˆ˜ê³¼ëª© ê´€ê³„)
+  * í”„ë¡œì íŠ¸ ì¼ì • ê´€ë¦¬
+  * ì˜ì¡´ì„± ìˆëŠ” íŒ¨í‚¤ì§€ ì„¤ì¹˜
 
-Æ¯Â¡:
-1. DAG¿¡¼­¸¸ °¡´É (»çÀÌÅ¬ÀÌ ¾ø¾î¾ß ÇÔ)
-2. °á°ú°¡ À¯ÀÏÇÏÁö ¾ÊÀ» ¼ö ÀÖÀ½
-3. ÁøÀÔ Â÷¼ö(in-degree)¸¦ »ç¿ë
-4. DFS ¶Ç´Â ÁøÀÔ Â÷¼ö ±â¹İÀ¸·Î ±¸Çö °¡´É
+íŠ¹ì§•:
+1. DAGì—ì„œë§Œ ê°€ëŠ¥ (ì‚¬ì´í´ì´ ì—†ì–´ì•¼ í•¨)
+2. ê²°ê³¼ê°€ ìœ ì¼í•˜ì§€ ì•Šì„ ìˆ˜ ìˆìŒ
+3. ì§„ì… ì°¨ìˆ˜(in-degree)ë¥¼ ì‚¬ìš©
+4. DFS ë˜ëŠ” ì§„ì… ì°¨ìˆ˜ ê¸°ë°˜ìœ¼ë¡œ êµ¬í˜„ ê°€ëŠ¥
 
-¿©±â¼­´Â µÎ °¡Áö ¹æ½Ä ¸ğµÎ ±¸Çö:
-1. DFS + ½ºÅÃ
-2. ÁøÀÔ Â÷¼ö + Å¥
+ì—¬ê¸°ì„œëŠ” ë‘ ê°€ì§€ ë°©ì‹ ëª¨ë‘ êµ¬í˜„:
+1. DFS + ìŠ¤íƒ
+2. ì§„ì… ì°¨ìˆ˜ + í
 */
 
 #define MAX_VERTICES 100
 
-// Å¥ ±¸Á¶Ã¼ ¹× ÇÔ¼ö
+// í êµ¬ì¡°ì²´ ë° í•¨ìˆ˜
 typedef struct {
     int items[MAX_VERTICES];
     int front;
     int rear;
 } Queue;
 
-/* Å¥ ÃÊ±âÈ­ */
+/* í ì´ˆê¸°í™” */
 void queue_init(Queue* q) {
     q->front = -1;
     q->rear = -1;
 }
 
-/* Å¥°¡ ºñ¾îÀÖ´ÂÁö È®ÀÎ */
+/* íê°€ ë¹„ì–´ìˆëŠ”ì§€ í™•ì¸ */
 bool queue_is_empty(const Queue* q) {
     return q->front == -1;
 }
 
-/* Å¥¿¡ ¿ø¼Ò Ãß°¡ */
+/* íì— ì›ì†Œ ì¶”ê°€ */
 void queue_enqueue(Queue* q, int value) {
     if (q->front == -1)
         q->front = 0;
     q->items[++q->rear] = value;
 }
 
-/* Å¥¿¡¼­ ¿ø¼Ò Á¦°Å */
+/* íì—ì„œ ì›ì†Œ ì œê±° */
 int queue_dequeue(Queue* q) {
     int item = q->items[q->front];
     if (q->front == q->rear) {
@@ -62,33 +62,33 @@ int queue_dequeue(Queue* q) {
     return item;
 }
 
-// ±×·¡ÇÁ ±¸Á¶Ã¼
+// ê·¸ë˜í”„ êµ¬ì¡°ì²´
 typedef struct {
     int num_vertices;
-    int** adj_matrix;     // ÀÎÁ¢ Çà·Ä
-    int* in_degree;       // ÁøÀÔ Â÷¼ö ¹è¿­
+    int** adj_matrix;     // ì¸ì ‘ í–‰ë ¬
+    int* in_degree;       // ì§„ì… ì°¨ìˆ˜ ë°°ì—´
 } Graph;
 
-/* ±×·¡ÇÁ »ı¼º */
+/* ê·¸ë˜í”„ ìƒì„± */
 Graph* graph_create(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     if (!graph) return NULL;
 
     graph->num_vertices = vertices;
 
-    // ÀÎÁ¢ Çà·Ä ÇÒ´ç
+    // ì¸ì ‘ í–‰ë ¬ í• ë‹¹
     graph->adj_matrix = (int**)malloc(vertices * sizeof(int*));
     for (int i = 0; i < vertices; i++) {
         graph->adj_matrix[i] = (int*)calloc(vertices, sizeof(int));
     }
 
-    // ÁøÀÔ Â÷¼ö ¹è¿­ ÇÒ´ç
+    // ì§„ì… ì°¨ìˆ˜ ë°°ì—´ í• ë‹¹
     graph->in_degree = (int*)calloc(vertices, sizeof(int));
 
     return graph;
 }
 
-/* °£¼± Ãß°¡ */
+/* ê°„ì„  ì¶”ê°€ */
 bool graph_add_edge(Graph* graph, int src, int dest) {
     if (!graph || src < 0 || src >= graph->num_vertices ||
         dest < 0 || dest >= graph->num_vertices) {
@@ -96,35 +96,35 @@ bool graph_add_edge(Graph* graph, int src, int dest) {
     }
 
     graph->adj_matrix[src][dest] = 1;
-    graph->in_degree[dest]++;  // ÁøÀÔ Â÷¼ö Áõ°¡
+    graph->in_degree[dest]++;  // ì§„ì… ì°¨ìˆ˜ ì¦ê°€
     return true;
 }
 
-/* DFS ±â¹İ À§»ó Á¤·ÄÀ» À§ÇÑ Àç±Í ÇÔ¼ö */
+/* DFS ê¸°ë°˜ ìœ„ìƒ ì •ë ¬ì„ ìœ„í•œ ì¬ê·€ í•¨ìˆ˜ */
 void topological_sort_dfs_util(Graph* graph, int vertex, bool visited[],
     int stack[], int* stack_index) {
     visited[vertex] = true;
 
-    // ÀÎÁ¢ÇÑ ¸ğµç Á¤Á¡¿¡ ´ëÇØ
+    // ì¸ì ‘í•œ ëª¨ë“  ì •ì ì— ëŒ€í•´
     for (int i = 0; i < graph->num_vertices; i++) {
         if (graph->adj_matrix[vertex][i] && !visited[i]) {
             topological_sort_dfs_util(graph, i, visited, stack, stack_index);
         }
     }
 
-    // ÇöÀç Á¤Á¡À» ½ºÅÃ¿¡ Ãß°¡
+    // í˜„ì¬ ì •ì ì„ ìŠ¤íƒì— ì¶”ê°€
     stack[(*stack_index)++] = vertex;
 }
 
-/* DFS ±â¹İ À§»ó Á¤·Ä (½ºÅÃ »ç¿ë)
- * - ½Ã°£º¹Àâµµ: O(V + E)
+/* DFS ê¸°ë°˜ ìœ„ìƒ ì •ë ¬ (ìŠ¤íƒ ì‚¬ìš©)
+ * - ì‹œê°„ë³µì¡ë„: O(V + E)
  */
 void topological_sort_dfs(Graph* graph) {
     bool* visited = (bool*)calloc(graph->num_vertices, sizeof(bool));
     int* stack = (int*)malloc(graph->num_vertices * sizeof(int));
     int stack_index = 0;
 
-    // ¸ğµç Á¤Á¡¿¡ ´ëÇØ DFS ¼öÇà
+    // ëª¨ë“  ì •ì ì— ëŒ€í•´ DFS ìˆ˜í–‰
     for (int i = 0; i < graph->num_vertices; i++) {
         if (!visited[i]) {
             topological_sort_dfs_util(graph, i, visited, stack, &stack_index);
@@ -141,14 +141,14 @@ void topological_sort_dfs(Graph* graph) {
     free(stack);
 }
 
-/* ÁøÀÔ Â÷¼ö ±â¹İ À§»ó Á¤·Ä (Å¥ »ç¿ë)
- * - ½Ã°£º¹Àâµµ: O(V + E)
+/* ì§„ì… ì°¨ìˆ˜ ê¸°ë°˜ ìœ„ìƒ ì •ë ¬ (í ì‚¬ìš©)
+ * - ì‹œê°„ë³µì¡ë„: O(V + E)
  */
 void topological_sort_indegree(Graph* graph) {
     Queue queue;
     queue_init(&queue);
 
-    // ÁøÀÔ Â÷¼ö ¹è¿­ º¹»ç
+    // ì§„ì… ì°¨ìˆ˜ ë°°ì—´ ë³µì‚¬
     int* in_degree = (int*)malloc(graph->num_vertices * sizeof(int));
     for (int i = 0; i < graph->num_vertices; i++) {
         in_degree[i] = graph->in_degree[i];
@@ -165,7 +165,7 @@ void topological_sort_indegree(Graph* graph) {
         printf("%d ", vertex);
         visited_count++;
 
-        // ÀÎÁ¢ÇÑ Á¤Á¡µéÀÇ ÁøÀÔ Â÷¼ö °¨¼Ò
+        // ì¸ì ‘í•œ ì •ì ë“¤ì˜ ì§„ì… ì°¨ìˆ˜ ê°ì†Œ
         for (int i = 0; i < graph->num_vertices; i++) {
             if (graph->adj_matrix[vertex][i]) {
                 in_degree[i]--;
@@ -177,7 +177,7 @@ void topological_sort_indegree(Graph* graph) {
     }
     printf("\n");
 
-    // »çÀÌÅ¬ °Ë»ç
+    // ì‚¬ì´í´ ê²€ì‚¬
     if (visited_count != graph->num_vertices) {
         printf("Graph contains a cycle!\n");
     }
@@ -185,7 +185,7 @@ void topological_sort_indegree(Graph* graph) {
     free(in_degree);
 }
 
-/* ±×·¡ÇÁ Ãâ·Â */
+/* ê·¸ë˜í”„ ì¶œë ¥ */
 void graph_print(const Graph* graph) {
     printf("\nAdjacency Matrix:\n");
     for (int i = 0; i < graph->num_vertices; i++) {
@@ -202,7 +202,7 @@ void graph_print(const Graph* graph) {
     printf("\n");
 }
 
-/* ±×·¡ÇÁ ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê·¸ë˜í”„ ë©”ëª¨ë¦¬ í•´ì œ */
 void graph_destroy(Graph* graph) {
     if (!graph) return;
 
@@ -214,7 +214,7 @@ void graph_destroy(Graph* graph) {
     free(graph);
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Topological Sort Menu ===\n");
     printf("1. Add edge\n");
@@ -226,7 +226,7 @@ void print_menu(void) {
 }
 
 int main(void) {
-    // ¿¹Á¦: ´ëÇĞ ¼ö°­ ½ÅÃ» ½Ã³ª¸®¿À
+    // ì˜ˆì œ: ëŒ€í•™ ìˆ˜ê°• ì‹ ì²­ ì‹œë‚˜ë¦¬ì˜¤
     printf("College Course Prerequisites Example\n");
     printf("Courses: \n");
     printf("0: Introduction to Programming\n");
@@ -290,69 +290,69 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. À§»ó Á¤·ÄÀÌ¶õ?
+1. ìœ„ìƒ ì •ë ¬ì´ë€?
 -------------
-- ¹æÇâ ±×·¡ÇÁÀÇ Á¤Á¡µéÀ» ¼±ÇüÀ¸·Î Á¤·Ä
-- ¸ğµç °£¼± (u,v)¿¡ ´ëÇØ u°¡ vº¸´Ù ¾Õ¿¡ À§Ä¡
-- ¼±Çà °ü°è¸¦ ¸¸Á·ÇÏ´Â ¼ø¼­ Ã£±â
-- DAG¿¡¼­¸¸ °¡´É
+- ë°©í–¥ ê·¸ë˜í”„ì˜ ì •ì ë“¤ì„ ì„ í˜•ìœ¼ë¡œ ì •ë ¬
+- ëª¨ë“  ê°„ì„  (u,v)ì— ëŒ€í•´ uê°€ vë³´ë‹¤ ì•ì— ìœ„ì¹˜
+- ì„ í–‰ ê´€ê³„ë¥¼ ë§Œì¡±í•˜ëŠ” ìˆœì„œ ì°¾ê¸°
+- DAGì—ì„œë§Œ ê°€ëŠ¥
 
-2. À§»ó Á¤·ÄÀÇ È°¿ë
+2. ìœ„ìƒ ì •ë ¬ì˜ í™œìš©
 ---------------
-±³À°:
-- ±³°ú °úÁ¤ ¼³°è
-- ¼±¼ö°ú¸ñ Ã¼°è
+êµìœ¡:
+- êµê³¼ ê³¼ì • ì„¤ê³„
+- ì„ ìˆ˜ê³¼ëª© ì²´ê³„
 
-ÇÁ·ÎÁ§Æ® °ü¸®:
-- ÀÛ¾÷ ¼ø¼­ °áÁ¤
-- ÀÏÁ¤ °èÈ¹
+í”„ë¡œì íŠ¸ ê´€ë¦¬:
+- ì‘ì—… ìˆœì„œ ê²°ì •
+- ì¼ì • ê³„íš
 
-¼ÒÇÁÆ®¿ş¾î:
-- ºôµå ÀÇÁ¸¼º
-- ÆĞÅ°Áö ¼³Ä¡ ¼ø¼­
+ì†Œí”„íŠ¸ì›¨ì–´:
+- ë¹Œë“œ ì˜ì¡´ì„±
+- íŒ¨í‚¤ì§€ ì„¤ì¹˜ ìˆœì„œ
 
-3. ±¸Çö ¹æ½Ä
+3. êµ¬í˜„ ë°©ì‹
 ----------
-DFS ±â¹İ:
-- ½ºÅÃ »ç¿ë
-- Àç±ÍÀû ±¸Çö
-- ¿Ï·á ¼ø¼­ ¿ª¼ø
+DFS ê¸°ë°˜:
+- ìŠ¤íƒ ì‚¬ìš©
+- ì¬ê·€ì  êµ¬í˜„
+- ì™„ë£Œ ìˆœì„œ ì—­ìˆœ
 
-ÁøÀÔ Â÷¼ö ±â¹İ:
-- Å¥ »ç¿ë
-- ¹İº¹Àû ±¸Çö
-- 0Â÷¼öºÎÅÍ Ã³¸®
+ì§„ì… ì°¨ìˆ˜ ê¸°ë°˜:
+- í ì‚¬ìš©
+- ë°˜ë³µì  êµ¬í˜„
+- 0ì°¨ìˆ˜ë¶€í„° ì²˜ë¦¬
 
-4. ½Ã°£ º¹Àâµµ
+4. ì‹œê°„ ë³µì¡ë„
 -----------
-- µÎ ¹æ½Ä ¸ğµÎ O(V + E)
-- ÀÎÁ¢ Çà·Ä: O(V©÷)
-- ÀÎÁ¢ ¸®½ºÆ®: O(V + E)
+- ë‘ ë°©ì‹ ëª¨ë‘ O(V + E)
+- ì¸ì ‘ í–‰ë ¬: O(VÂ²)
+- ì¸ì ‘ ë¦¬ìŠ¤íŠ¸: O(V + E)
 
-5. Æ¯Â¡°ú Á¦¾à
+5. íŠ¹ì§•ê³¼ ì œì•½
 -----------
-Æ¯Â¡:
-- °á°ú ºñÀ¯ÀÏ¼º
-- ºÎºĞ ¼ø¼­ Á¸Àç
-- »çÀÌÅ¬ °ËÃâ °¡´É
+íŠ¹ì§•:
+- ê²°ê³¼ ë¹„ìœ ì¼ì„±
+- ë¶€ë¶„ ìˆœì„œ ì¡´ì¬
+- ì‚¬ì´í´ ê²€ì¶œ ê°€ëŠ¥
 
-Á¦¾à:
-- DAG¸¸ °¡´É
-- »çÀÌÅ¬ ºÒ°¡
-- ¸ğÈ£¼º Á¸Àç
+ì œì•½:
+- DAGë§Œ ê°€ëŠ¥
+- ì‚¬ì´í´ ë¶ˆê°€
+- ëª¨í˜¸ì„± ì¡´ì¬
 
-6. ÀÀ¿ë ¿¹½Ã
+6. ì‘ìš© ì˜ˆì‹œ
 ----------
-- ÀÛ¾÷ ½ºÄÉÁÙ¸µ
-- ¼ö°­ ½ÅÃ» ½Ã½ºÅÛ
-- ÀÇÁ¸¼º ÇØ¼®
-- °ÔÀÓ ½ºÅ³Æ®¸®
+- ì‘ì—… ìŠ¤ì¼€ì¤„ë§
+- ìˆ˜ê°• ì‹ ì²­ ì‹œìŠ¤í…œ
+- ì˜ì¡´ì„± í•´ì„
+- ê²Œì„ ìŠ¤í‚¬íŠ¸ë¦¬
 
-ÀÌ ±¸ÇöÀº À§»ó Á¤·ÄÀÇ µÎ °¡Áö
-ÁÖ¿ä Á¢±Ù ¹æ½ÄÀ» ¸ğµÎ º¸¿©ÁÖ¸ç,
-½ÇÁ¦ ÀÀ¿ë »ç·Ê(¼ö°­ ½ÅÃ»)¸¦
-¿¹Á¦·Î Á¦½ÃÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ìœ„ìƒ ì •ë ¬ì˜ ë‘ ê°€ì§€
+ì£¼ìš” ì ‘ê·¼ ë°©ì‹ì„ ëª¨ë‘ ë³´ì—¬ì£¼ë©°,
+ì‹¤ì œ ì‘ìš© ì‚¬ë¡€(ìˆ˜ê°• ì‹ ì²­)ë¥¼
+ì˜ˆì œë¡œ ì œì‹œí•©ë‹ˆë‹¤.
 */

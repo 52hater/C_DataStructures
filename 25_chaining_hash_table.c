@@ -4,14 +4,14 @@
 #include <stdbool.h>
 
 /*
-Ã¼ÀÌ´× ¹æ½Ä ÇØ½Ã Å×ÀÌºí:
-- Ãæµ¹ ¹ß»ý½Ã ¿¬°á ¸®½ºÆ®·Î Ã³¸®
-- µ¿Àû Å©±â Á¶Á¤À¸·Î ¼º´É À¯Áö
-- ´Ù¾çÇÑ ÇØ½Ã ÇÔ¼ö Áö¿ø
-- ½ÇÁ¦ ÀÀ¿ë¿¡ °¡Àå ³Î¸® »ç¿ë
+ì²´ì´ë‹ ë°©ì‹ í•´ì‹œ í…Œì´ë¸”:
+- ì¶©ëŒ ë°œìƒì‹œ ì—°ê²° ë¦¬ìŠ¤íŠ¸ë¡œ ì²˜ë¦¬
+- ë™ì  í¬ê¸° ì¡°ì •ìœ¼ë¡œ ì„±ëŠ¥ ìœ ì§€
+- ë‹¤ì–‘í•œ í•´ì‹œ í•¨ìˆ˜ ì§€ì›
+- ì‹¤ì œ ì‘ìš©ì— ê°€ìž¥ ë„ë¦¬ ì‚¬ìš©
 */
 
-#define INITIAL_SIZE 7  // ¼Ò¼ö¸¦ »ç¿ëÇÏ¿© ´õ ÁÁÀº ºÐÆ÷
+#define INITIAL_SIZE 7  // ì†Œìˆ˜ë¥¼ ì‚¬ìš©í•˜ì—¬ ë” ì¢‹ì€ ë¶„í¬
 #define MAX_LOAD_FACTOR 0.75
 
 typedef struct {
@@ -25,13 +25,13 @@ typedef struct Node {
 } Node;
 
 typedef struct {
-    Node** buckets;       // ¹öÅ¶ ¹è¿­
-    size_t size;         // ÇöÀç ÀúÀåµÈ ¿ø¼Ò ¼ö
-    size_t capacity;     // ÇØ½Ã Å×ÀÌºí Å©±â
+    Node** buckets;       // ë²„í‚· ë°°ì—´
+    size_t size;         // í˜„ìž¬ ì €ìž¥ëœ ì›ì†Œ ìˆ˜
+    size_t capacity;     // í•´ì‹œ í…Œì´ë¸” í¬ê¸°
 } HashTable;
 
-/* ¹®ÀÚ¿­ ÇØ½Ã ÇÔ¼ö (djb2)
- * - ½ÇÁ¦ ÇÁ·ÎÁ§Æ®¿¡¼­ ¸¹ÀÌ »ç¿ëµÇ´Â ÇØ½Ã ÇÔ¼ö
+/* ë¬¸ìžì—´ í•´ì‹œ í•¨ìˆ˜ (djb2)
+ * - ì‹¤ì œ í”„ë¡œì íŠ¸ì—ì„œ ë§Žì´ ì‚¬ìš©ë˜ëŠ” í•´ì‹œ í•¨ìˆ˜
  */
 unsigned long hash_function(const char* str) {
     unsigned long hash = 5381;
@@ -44,7 +44,7 @@ unsigned long hash_function(const char* str) {
     return hash;
 }
 
-/* ÇØ½Ã Å×ÀÌºí »ý¼º */
+/* í•´ì‹œ í…Œì´ë¸” ìƒì„± */
 HashTable* hash_table_create(size_t initial_capacity) {
     HashTable* table = (HashTable*)malloc(sizeof(HashTable));
     if (!table) return NULL;
@@ -60,7 +60,7 @@ HashTable* hash_table_create(size_t initial_capacity) {
     return table;
 }
 
-/* ³ëµå »ý¼º */
+/* ë…¸ë“œ ìƒì„± */
 Node* create_node(const char* key, int value) {
     Node* node = (Node*)malloc(sizeof(Node));
     if (!node) return NULL;
@@ -76,36 +76,36 @@ Node* create_node(const char* key, int value) {
     return node;
 }
 
-/* ³ëµå »èÁ¦ */
+/* ë…¸ë“œ ì‚­ì œ */
 void free_node(Node* node) {
     free(node->data.key);
     free(node);
 }
 
-/* ÇöÀç ·Îµå ÆÑÅÍ °è»ê */
+/* í˜„ìž¬ ë¡œë“œ íŒ©í„° ê³„ì‚° */
 double get_load_factor(const HashTable* table) {
     return (double)table->size / table->capacity;
 }
 
-/* ÇØ½Ã Å×ÀÌºí ÀçÇØ½Ì
- * - Å×ÀÌºí Å©±â¸¦ µÎ ¹è·Î ´Ã¸®°í ¸ðµç ¿ø¼Ò Àç»ðÀÔ
+/* í•´ì‹œ í…Œì´ë¸” ìž¬í•´ì‹±
+ * - í…Œì´ë¸” í¬ê¸°ë¥¼ ë‘ ë°°ë¡œ ëŠ˜ë¦¬ê³  ëª¨ë“  ì›ì†Œ ìž¬ì‚½ìž…
  */
 bool hash_table_resize(HashTable* table) {
     size_t new_capacity = table->capacity * 2;
     Node** new_buckets = (Node**)calloc(new_capacity, sizeof(Node*));
     if (!new_buckets) return false;
 
-    // ¸ðµç ¿ø¼Ò¸¦ »õ ¹öÅ¶À¸·Î Àç¹èÄ¡
+    // ëª¨ë“  ì›ì†Œë¥¼ ìƒˆ ë²„í‚·ìœ¼ë¡œ ìž¬ë°°ì¹˜
     for (size_t i = 0; i < table->capacity; i++) {
         Node* current = table->buckets[i];
         while (current) {
             Node* next = current->next;
 
-            // »õ À§Ä¡ °è»ê
+            // ìƒˆ ìœ„ì¹˜ ê³„ì‚°
             unsigned long hash = hash_function(current->data.key);
             size_t new_index = hash % new_capacity;
 
-            // »õ ¹öÅ¶ÀÇ ¾Õ¿¡ »ðÀÔ
+            // ìƒˆ ë²„í‚·ì˜ ì•žì— ì‚½ìž…
             current->next = new_buckets[new_index];
             new_buckets[new_index] = current;
 
@@ -113,21 +113,21 @@ bool hash_table_resize(HashTable* table) {
         }
     }
 
-    // ÀÌÀü ¹öÅ¶ ¹è¿­ ÇØÁ¦
+    // ì´ì „ ë²„í‚· ë°°ì—´ í•´ì œ
     free(table->buckets);
 
-    // »õ ¹öÅ¶À¸·Î ±³Ã¼
+    // ìƒˆ ë²„í‚·ìœ¼ë¡œ êµì²´
     table->buckets = new_buckets;
     table->capacity = new_capacity;
 
     return true;
 }
 
-/* »ðÀÔ ¿¬»ê
- * - ½Ã°£º¹Àâµµ: Æò±Õ O(1), ÃÖ¾Ç O(n)
+/* ì‚½ìž… ì—°ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: í‰ê·  O(1), ìµœì•… O(n)
  */
 bool hash_table_insert(HashTable* table, const char* key, int value) {
-    // ·Îµå ÆÑÅÍ °Ë»ç
+    // ë¡œë“œ íŒ©í„° ê²€ì‚¬
     if (get_load_factor(table) >= MAX_LOAD_FACTOR) {
         if (!hash_table_resize(table)) {
             return false;
@@ -137,21 +137,21 @@ bool hash_table_insert(HashTable* table, const char* key, int value) {
     unsigned long hash = hash_function(key);
     size_t index = hash % table->capacity;
 
-    // Å°°¡ ÀÌ¹Ì Á¸ÀçÇÏ´ÂÁö °Ë»ç
+    // í‚¤ê°€ ì´ë¯¸ ì¡´ìž¬í•˜ëŠ”ì§€ ê²€ì‚¬
     Node* current = table->buckets[index];
     while (current) {
         if (strcmp(current->data.key, key) == 0) {
-            current->data.value = value;  // °ª °»½Å
+            current->data.value = value;  // ê°’ ê°±ì‹ 
             return true;
         }
         current = current->next;
     }
 
-    // »õ ³ëµå »ý¼º
+    // ìƒˆ ë…¸ë“œ ìƒì„±
     Node* new_node = create_node(key, value);
     if (!new_node) return false;
 
-    // ¹öÅ¶ÀÇ ¾Õ¿¡ »ðÀÔ
+    // ë²„í‚·ì˜ ì•žì— ì‚½ìž…
     new_node->next = table->buckets[index];
     table->buckets[index] = new_node;
     table->size++;
@@ -159,8 +159,8 @@ bool hash_table_insert(HashTable* table, const char* key, int value) {
     return true;
 }
 
-/* °Ë»ö ¿¬»ê
- * - ½Ã°£º¹Àâµµ: Æò±Õ O(1), ÃÖ¾Ç O(n)
+/* ê²€ìƒ‰ ì—°ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: í‰ê·  O(1), ìµœì•… O(n)
  */
 bool hash_table_get(const HashTable* table, const char* key, int* value) {
     unsigned long hash = hash_function(key);
@@ -178,8 +178,8 @@ bool hash_table_get(const HashTable* table, const char* key, int* value) {
     return false;
 }
 
-/* »èÁ¦ ¿¬»ê
- * - ½Ã°£º¹Àâµµ: Æò±Õ O(1), ÃÖ¾Ç O(n)
+/* ì‚­ì œ ì—°ì‚°
+ * - ì‹œê°„ë³µìž¡ë„: í‰ê·  O(1), ìµœì•… O(n)
  */
 bool hash_table_remove(HashTable* table, const char* key) {
     unsigned long hash = hash_function(key);
@@ -208,7 +208,7 @@ bool hash_table_remove(HashTable* table, const char* key) {
     return false;
 }
 
-/* ÇØ½Ã Å×ÀÌºí ¸Þ¸ð¸® ÇØÁ¦ */
+/* í•´ì‹œ í…Œì´ë¸” ë©”ëª¨ë¦¬ í•´ì œ */
 void hash_table_destroy(HashTable* table) {
     if (!table) return;
 
@@ -225,7 +225,7 @@ void hash_table_destroy(HashTable* table) {
     free(table);
 }
 
-/* ÇØ½Ã Å×ÀÌºí »óÅÂ Ãâ·Â */
+/* í•´ì‹œ í…Œì´ë¸” ìƒíƒœ ì¶œë ¥ */
 void hash_table_print(const HashTable* table) {
     printf("\nHash Table Status:\n");
     printf("Size: %zu\n", table->size);
@@ -250,7 +250,7 @@ void hash_table_print(const HashTable* table) {
     printf("\n");
 }
 
-/* Ãæµ¹ Åë°è Ãâ·Â */
+/* ì¶©ëŒ í†µê³„ ì¶œë ¥ */
 void print_collision_stats(const HashTable* table) {
     size_t empty_buckets = 0;
     size_t max_chain = 0;
@@ -284,7 +284,7 @@ void print_collision_stats(const HashTable* table) {
         (float)total_chain / (table->capacity - empty_buckets));
 }
 
-/* ¸Þ´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Hash Table Menu ===\n");
     printf("1. Insert key-value pair\n");
@@ -314,13 +314,13 @@ int main(void) {
             while (getchar() != '\n');
             continue;
         }
-        while (getchar() != '\n');  // ¹öÆÛ ºñ¿ì±â
+        while (getchar() != '\n');  // ë²„í¼ ë¹„ìš°ê¸°
 
         switch (choice) {
         case 1:  // Insert
             printf("Enter key: ");
             if (!fgets(key, sizeof(key), stdin)) continue;
-            key[strcspn(key, "\n")] = 0;  // °³Çà Á¦°Å
+            key[strcspn(key, "\n")] = 0;  // ê°œí–‰ ì œê±°
 
             printf("Enter value: ");
             if (scanf("%d", &value) != 1) {
@@ -385,83 +385,83 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. Ã¼ÀÌ´×ÀÇ Æ¯Â¡
+1. ì²´ì´ë‹ì˜ íŠ¹ì§•
 ------------
-- Ãæµ¹ Ã³¸®°¡ °£´Ü
-- ¸Þ¸ð¸® ¿À¹öÇìµå ¹ß»ý
-- Ä³½Ã Áö¿ª¼º ³·À½
-- ±¸ÇöÀÌ Á÷°üÀû
+- ì¶©ëŒ ì²˜ë¦¬ê°€ ê°„ë‹¨
+- ë©”ëª¨ë¦¬ ì˜¤ë²„í—¤ë“œ ë°œìƒ
+- ìºì‹œ ì§€ì—­ì„± ë‚®ìŒ
+- êµ¬í˜„ì´ ì§ê´€ì 
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µìž¡ë„
 -----------
-Æò±Õ ÄÉÀÌ½º:
-- »ðÀÔ: O(1)
-- °Ë»ö: O(1)
-- »èÁ¦: O(1)
+í‰ê·  ì¼€ì´ìŠ¤:
+- ì‚½ìž…: O(1)
+- ê²€ìƒ‰: O(1)
+- ì‚­ì œ: O(1)
 
-ÃÖ¾Ç ÄÉÀÌ½º:
-- ¸ðµç ¿¬»ê O(n)
-- ÇØ½Ã Ãæµ¹ ½Ã
+ìµœì•… ì¼€ì´ìŠ¤:
+- ëª¨ë“  ì—°ì‚° O(n)
+- í•´ì‹œ ì¶©ëŒ ì‹œ
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µìž¡ë„
 -----------
 O(n)
-- Ãß°¡ ¿¬°á ¸®½ºÆ® °ø°£
-- µ¿Àû Å©±â Á¶Á¤
-- ·Îµå ÆÑÅÍ °ü¸®
+- ì¶”ê°€ ì—°ê²° ë¦¬ìŠ¤íŠ¸ ê³µê°„
+- ë™ì  í¬ê¸° ì¡°ì •
+- ë¡œë“œ íŒ©í„° ê´€ë¦¬
 
-4. ÁÖ¿ä ±¸¼º ¿ä¼Ò
+4. ì£¼ìš” êµ¬ì„± ìš”ì†Œ
 -------------
-ÇØ½Ã ÇÔ¼ö:
-- ±Õµî ºÐÆ÷
-- °è»ê È¿À²¼º
-- Ãæµ¹ ÃÖ¼ÒÈ­
+í•´ì‹œ í•¨ìˆ˜:
+- ê· ë“± ë¶„í¬
+- ê³„ì‚° íš¨ìœ¨ì„±
+- ì¶©ëŒ ìµœì†Œí™”
 
-Ãæµ¹ Ã³¸®:
-- ¿¬°á ¸®½ºÆ® »ç¿ë
-- µ¿Àû ¸Þ¸ð¸® °ü¸®
-- È¿À²ÀûÀÎ Å½»ö
+ì¶©ëŒ ì²˜ë¦¬:
+- ì—°ê²° ë¦¬ìŠ¤íŠ¸ ì‚¬ìš©
+- ë™ì  ë©”ëª¨ë¦¬ ê´€ë¦¬
+- íš¨ìœ¨ì ì¸ íƒìƒ‰
 
-5. ÃÖÀûÈ­ ±â¹ý
+5. ìµœì í™” ê¸°ë²•
 -----------
-- ·Îµå ÆÑÅÍ °ü¸®
-- µ¿Àû Å©±â Á¶Á¤
-- È¿À²Àû ÇØ½Ã ÇÔ¼ö
-- ¸Þ¸ð¸® °ü¸®
+- ë¡œë“œ íŒ©í„° ê´€ë¦¬
+- ë™ì  í¬ê¸° ì¡°ì •
+- íš¨ìœ¨ì  í•´ì‹œ í•¨ìˆ˜
+- ë©”ëª¨ë¦¬ ê´€ë¦¬
 
-6. Àå´ÜÁ¡
+6. ìž¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ±¸Çö ¿ëÀÌ
-- »èÁ¦ °£´Ü
-- ¼º´É ¾ÈÁ¤Àû
-- È®Àå ¿ëÀÌ
+ìž¥ì :
+- êµ¬í˜„ ìš©ì´
+- ì‚­ì œ ê°„ë‹¨
+- ì„±ëŠ¥ ì•ˆì •ì 
+- í™•ìž¥ ìš©ì´
 
-´ÜÁ¡:
-- Ãß°¡ ¸Þ¸ð¸®
-- Ä³½Ã ¼º´É
-- Æ÷ÀÎÅÍ ¿À¹öÇìµå
-- Å¬·¯½ºÅÍ¸µ
+ë‹¨ì :
+- ì¶”ê°€ ë©”ëª¨ë¦¬
+- ìºì‹œ ì„±ëŠ¥
+- í¬ì¸í„° ì˜¤ë²„í—¤ë“œ
+- í´ëŸ¬ìŠ¤í„°ë§
 
-7. ÀÀ¿ë ºÐ¾ß
+7. ì‘ìš© ë¶„ì•¼
 ----------
-- ½Éº¼ Å×ÀÌºí
-- Ä³½Ã ±¸Çö
-- µ¥ÀÌÅÍº£ÀÌ½º ÀÎµ¦½Ì
-- ¸Þ¸ð¸® Ç®
+- ì‹¬ë³¼ í…Œì´ë¸”
+- ìºì‹œ êµ¬í˜„
+- ë°ì´í„°ë² ì´ìŠ¤ ì¸ë±ì‹±
+- ë©”ëª¨ë¦¬ í’€
 
-8. ±¸Çö Æ¯Â¡
+8. êµ¬í˜„ íŠ¹ì§•
 ----------
-- µ¿Àû Å©±â Á¶Á¤
-- Ãæµ¹ Åë°è
-- ¾ÈÀüÇÑ ¸Þ¸ð¸® °ü¸®
-- »ç¿ëÀÚ ÀÎÅÍÆäÀÌ½º
+- ë™ì  í¬ê¸° ì¡°ì •
+- ì¶©ëŒ í†µê³„
+- ì•ˆì „í•œ ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ì‚¬ìš©ìž ì¸í„°íŽ˜ì´ìŠ¤
 
-ÀÌ ±¸ÇöÀº ½ÇÁ¦ ÇÁ·ÎÁ§Æ®¿¡¼­
-»ç¿ëÇÒ ¼ö ÀÖ´Â ¼öÁØÀÇ ÇØ½Ã Å×ÀÌºíÀ»
-Á¦°øÇÏ¸ç, ´ÙÀ½ ´Ü°èÀÎ °³¹æ ÁÖ¼Ò¹ý
-±¸ÇöÀÇ ºñ±³ ±âÁØÀÌ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ ì‹¤ì œ í”„ë¡œì íŠ¸ì—ì„œ
+ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ” ìˆ˜ì¤€ì˜ í•´ì‹œ í…Œì´ë¸”ì„
+ì œê³µí•˜ë©°, ë‹¤ìŒ ë‹¨ê³„ì¸ ê°œë°© ì£¼ì†Œë²•
+êµ¬í˜„ì˜ ë¹„êµ ê¸°ì¤€ì´ ë©ë‹ˆë‹¤.
 */

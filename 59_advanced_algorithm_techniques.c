@@ -5,25 +5,25 @@
 #include <limits.h>
 
 /*
-¾Ë°í¸®Áò ºĞ·ù: ¾Ë°í¸®Áò ¼³°è ±â¹ı
-ÇÏÀ§ ºĞ·ù: µ¿Àû °èÈ¹¹ı ½ÉÈ­
-³­ÀÌµµ: »ó
-°ü·Ã ¾Ë°í¸®Áò: ºĞÇÒ Á¤º¹, ±×¸®µğ
+ì•Œê³ ë¦¬ì¦˜ ë¶„ë¥˜: ì•Œê³ ë¦¬ì¦˜ ì„¤ê³„ ê¸°ë²•
+í•˜ìœ„ ë¶„ë¥˜: ë™ì  ê³„íšë²• ì‹¬í™”
+ë‚œì´ë„: ìƒ
+ê´€ë ¨ ì•Œê³ ë¦¬ì¦˜: ë¶„í•  ì •ë³µ, ê·¸ë¦¬ë””
 
-°í±Ş µ¿Àû °èÈ¹¹ı ¿¹Á¦:
-1. ÆíÁı °Å¸® (Edit Distance)
-2. Çà·Ä Ã¼ÀÎ °ö¼À (Matrix Chain Multiplication)
-3. ÃÖÀû ÀÌÁø Å½»ö Æ®¸® (Optimal BST)
+ê³ ê¸‰ ë™ì  ê³„íšë²• ì˜ˆì œ:
+1. í¸ì§‘ ê±°ë¦¬ (Edit Distance)
+2. í–‰ë ¬ ì²´ì¸ ê³±ì…ˆ (Matrix Chain Multiplication)
+3. ìµœì  ì´ì§„ íƒìƒ‰ íŠ¸ë¦¬ (Optimal BST)
 */
 
-// === ÆíÁı °Å¸® (Edit Distance) ===
+// === í¸ì§‘ ê±°ë¦¬ (Edit Distance) ===
 typedef struct {
-    int** dp;         // DP Å×ÀÌºí
-    char** ops;       // ¿¬»ê ÃßÀû Å×ÀÌºí
-    int m, n;         // ¹®ÀÚ¿­ ±æÀÌ
+    int** dp;         // DP í…Œì´ë¸”
+    char** ops;       // ì—°ì‚° ì¶”ì  í…Œì´ë¸”
+    int m, n;         // ë¬¸ìì—´ ê¸¸ì´
 } EditDistance;
 
-// ÃÖ¼Ò°ª ¹İÈ¯
+// ìµœì†Œê°’ ë°˜í™˜
 int min3(int a, int b, int c) {
     int min = a;
     if (b < min) min = b;
@@ -31,7 +31,7 @@ int min3(int a, int b, int c) {
     return min;
 }
 
-// ÆíÁı °Å¸® ÃÊ±âÈ­
+// í¸ì§‘ ê±°ë¦¬ ì´ˆê¸°í™”
 EditDistance* init_edit_distance(int m, int n) {
     EditDistance* ed = (EditDistance*)malloc(sizeof(EditDistance));
     ed->m = m;
@@ -48,13 +48,13 @@ EditDistance* init_edit_distance(int m, int n) {
     return ed;
 }
 
-// ÆíÁı °Å¸® °è»ê
+// í¸ì§‘ ê±°ë¦¬ ê³„ì‚°
 int edit_distance(char* str1, char* str2, bool print_steps) {
     int m = strlen(str1);
     int n = strlen(str2);
     EditDistance* ed = init_edit_distance(m, n);
 
-    // ±âÀú »ç·Ê ÃÊ±âÈ­
+    // ê¸°ì € ì‚¬ë¡€ ì´ˆê¸°í™”
     for (int i = 0; i <= m; i++) {
         ed->dp[i][0] = i;
         ed->ops[i][0] = 'D';  // Delete
@@ -65,7 +65,7 @@ int edit_distance(char* str1, char* str2, bool print_steps) {
         ed->ops[0][j] = 'I';  // Insert
     }
 
-    // DP Å×ÀÌºí Ã¤¿ì±â
+    // DP í…Œì´ë¸” ì±„ìš°ê¸°
     for (int i = 1; i <= m; i++) {
         for (int j = 1; j <= n; j++) {
             if (str1[i - 1] == str2[j - 1]) {
@@ -74,9 +74,9 @@ int edit_distance(char* str1, char* str2, bool print_steps) {
             }
             else {
                 ed->dp[i][j] = 1 + min3(
-                    ed->dp[i - 1][j],    // »èÁ¦
-                    ed->dp[i][j - 1],    // »ğÀÔ
-                    ed->dp[i - 1][j - 1]   // ´ëÃ¼
+                    ed->dp[i - 1][j],    // ì‚­ì œ
+                    ed->dp[i][j - 1],    // ì‚½ì…
+                    ed->dp[i - 1][j - 1]   // ëŒ€ì²´
                 );
 
                 if (ed->dp[i][j] == 1 + ed->dp[i - 1][j])
@@ -94,26 +94,26 @@ int edit_distance(char* str1, char* str2, bool print_steps) {
         }
     }
 
-    // ÆíÁı ¼ø¼­ Ãâ·Â
+    // í¸ì§‘ ìˆœì„œ ì¶œë ¥
     if (print_steps) {
-        printf("\nÆíÁı ¼ø¼­:\n");
+        printf("\ní¸ì§‘ ìˆœì„œ:\n");
         int i = m, j = n;
         while (i > 0 || j > 0) {
             switch (ed->ops[i][j]) {
             case 'M':
-                printf("À¯Áö: %c\n", str1[i - 1]);
+                printf("ìœ ì§€: %c\n", str1[i - 1]);
                 i--; j--;
                 break;
             case 'D':
-                printf("»èÁ¦: %c\n", str1[i - 1]);
+                printf("ì‚­ì œ: %c\n", str1[i - 1]);
                 i--;
                 break;
             case 'I':
-                printf("»ğÀÔ: %c\n", str2[j - 1]);
+                printf("ì‚½ì…: %c\n", str2[j - 1]);
                 j--;
                 break;
             case 'R':
-                printf("´ëÃ¼: %c -> %c\n", str1[i - 1], str2[j - 1]);
+                printf("ëŒ€ì²´: %c -> %c\n", str1[i - 1], str2[j - 1]);
                 i--; j--;
                 break;
             }
@@ -122,7 +122,7 @@ int edit_distance(char* str1, char* str2, bool print_steps) {
 
     int result = ed->dp[m][n];
 
-    // ¸Ş¸ğ¸® ÇØÁ¦
+    // ë©”ëª¨ë¦¬ í•´ì œ
     for (int i = 0; i <= m; i++) {
         free(ed->dp[i]);
         free(ed->ops[i]);
@@ -134,14 +134,14 @@ int edit_distance(char* str1, char* str2, bool print_steps) {
     return result;
 }
 
-// === Çà·Ä Ã¼ÀÎ °ö¼À ===
+// === í–‰ë ¬ ì²´ì¸ ê³±ì…ˆ ===
 typedef struct {
-    int** dp;         // DP Å×ÀÌºí
-    int** bracket;    // °ıÈ£ À§Ä¡ Å×ÀÌºí
-    int n;           // Çà·Ä °³¼ö
+    int** dp;         // DP í…Œì´ë¸”
+    int** bracket;    // ê´„í˜¸ ìœ„ì¹˜ í…Œì´ë¸”
+    int n;           // í–‰ë ¬ ê°œìˆ˜
 } MatrixChain;
 
-// Çà·Ä Ã¼ÀÎ ÃÊ±âÈ­
+// í–‰ë ¬ ì²´ì¸ ì´ˆê¸°í™”
 MatrixChain* init_matrix_chain(int n) {
     MatrixChain* mc = (MatrixChain*)malloc(sizeof(MatrixChain));
     mc->n = n;
@@ -161,7 +161,7 @@ MatrixChain* init_matrix_chain(int n) {
     return mc;
 }
 
-// °ıÈ£ À§Ä¡ Ãâ·Â
+// ê´„í˜¸ ìœ„ì¹˜ ì¶œë ¥
 void print_parenthesis(MatrixChain* mc, int i, int j) {
     if (i == j) {
         printf("A%d", i);
@@ -174,17 +174,17 @@ void print_parenthesis(MatrixChain* mc, int i, int j) {
     printf(")");
 }
 
-// Çà·Ä Ã¼ÀÎ °ö¼À ÃÖÀûÈ­
+// í–‰ë ¬ ì²´ì¸ ê³±ì…ˆ ìµœì í™”
 int matrix_chain_mult(int* dimensions, int n, bool print_steps) {
     MatrixChain* mc = init_matrix_chain(n);
 
-    // lenÀº Ã¼ÀÎÀÇ ±æÀÌ
+    // lenì€ ì²´ì¸ì˜ ê¸¸ì´
     for (int len = 2; len < n; len++) {
         for (int i = 1; i < n - len + 1; i++) {
             int j = i + len - 1;
             mc->dp[i][j] = INT_MAX;
 
-            // k´Â ºĞÇÒ À§Ä¡
+            // këŠ” ë¶„í•  ìœ„ì¹˜
             for (int k = i; k < j; k++) {
                 int cost = mc->dp[i][k] + mc->dp[k + 1][j] +
                     dimensions[i - 1] * dimensions[k] * dimensions[j];
@@ -202,14 +202,14 @@ int matrix_chain_mult(int* dimensions, int n, bool print_steps) {
     }
 
     if (print_steps) {
-        printf("\nÃÖÀûÀÇ °ıÈ£ ¹èÄ¡:\n");
+        printf("\nìµœì ì˜ ê´„í˜¸ ë°°ì¹˜:\n");
         print_parenthesis(mc, 1, n - 1);
         printf("\n");
     }
 
     int result = mc->dp[1][n - 1];
 
-    // ¸Ş¸ğ¸® ÇØÁ¦
+    // ë©”ëª¨ë¦¬ í•´ì œ
     for (int i = 0; i < n; i++) {
         free(mc->dp[i]);
         free(mc->bracket[i]);
@@ -221,14 +221,14 @@ int matrix_chain_mult(int* dimensions, int n, bool print_steps) {
     return result;
 }
 
-// === ÃÖÀû ÀÌÁø Å½»ö Æ®¸® ===
+// === ìµœì  ì´ì§„ íƒìƒ‰ íŠ¸ë¦¬ ===
 typedef struct {
-    double** dp;      // DP Å×ÀÌºí
-    int** root;       // ·çÆ® ¼±ÅÃ Å×ÀÌºí
-    int n;           // Å°ÀÇ °³¼ö
+    double** dp;      // DP í…Œì´ë¸”
+    int** root;       // ë£¨íŠ¸ ì„ íƒ í…Œì´ë¸”
+    int n;           // í‚¤ì˜ ê°œìˆ˜
 } OptimalBST;
 
-// ÃÖÀû BST ÃÊ±âÈ­
+// ìµœì  BST ì´ˆê¸°í™”
 OptimalBST* init_optimal_bst(int n) {
     OptimalBST* obst = (OptimalBST*)malloc(sizeof(OptimalBST));
     obst->n = n;
@@ -247,23 +247,23 @@ OptimalBST* init_optimal_bst(int n) {
     return obst;
 }
 
-// ÃÖÀû BST °è»ê
+// ìµœì  BST ê³„ì‚°
 double optimal_bst(int* keys, double* freq, int n, bool print_steps) {
     OptimalBST* obst = init_optimal_bst(n);
     double* sum = (double*)calloc(n + 1, sizeof(double));
 
-    // ´©Àû ºóµµ¼ö °è»ê
+    // ëˆ„ì  ë¹ˆë„ìˆ˜ ê³„ì‚°
     for (int i = 0; i < n; i++) {
         sum[i + 1] = sum[i] + freq[i];
     }
 
-    // ±æÀÌ 1ÀÎ ¼­ºêÆ®¸® ÃÊ±âÈ­
+    // ê¸¸ì´ 1ì¸ ì„œë¸ŒíŠ¸ë¦¬ ì´ˆê¸°í™”
     for (int i = 0; i < n; i++) {
         obst->dp[i][i + 1] = freq[i];
         obst->root[i][i] = i;
     }
 
-    // ±æÀÌ 2 ÀÌ»óÀÇ ¼­ºêÆ®¸®
+    // ê¸¸ì´ 2 ì´ìƒì˜ ì„œë¸ŒíŠ¸ë¦¬
     for (int len = 2; len <= n; len++) {
         for (int i = 0; i <= n - len; i++) {
             int j = i + len;
@@ -287,10 +287,10 @@ double optimal_bst(int* keys, double* freq, int n, bool print_steps) {
     }
 
     if (print_steps) {
-        printf("\nÃÖÀû BSTÀÇ ·çÆ® ¼±ÅÃ:\n");
+        printf("\nìµœì  BSTì˜ ë£¨íŠ¸ ì„ íƒ:\n");
         for (int i = 0; i < n; i++) {
             for (int j = i; j < n; j++) {
-                printf("¼­ºêÆ®¸® [%d-%d]ÀÇ ·çÆ®: %d\n",
+                printf("ì„œë¸ŒíŠ¸ë¦¬ [%d-%d]ì˜ ë£¨íŠ¸: %d\n",
                     i, j, obst->root[i][j]);
             }
         }
@@ -298,7 +298,7 @@ double optimal_bst(int* keys, double* freq, int n, bool print_steps) {
 
     double result = obst->dp[0][n];
 
-    // ¸Ş¸ğ¸® ÇØÁ¦
+    // ë©”ëª¨ë¦¬ í•´ì œ
     for (int i = 0; i <= n; i++) {
         free(obst->dp[i]);
     }
@@ -317,40 +317,40 @@ int main(void) {
     int choice;
 
     while (1) {
-        printf("\n=== °í±Ş µ¿Àû °èÈ¹¹ı ===\n");
-        printf("1. ÆíÁı °Å¸®\n");
-        printf("2. Çà·Ä Ã¼ÀÎ °ö¼À\n");
-        printf("3. ÃÖÀû ÀÌÁø Å½»ö Æ®¸®\n");
-        printf("0. Á¾·á\n");
-        printf("¼±ÅÃ: ");
+        printf("\n=== ê³ ê¸‰ ë™ì  ê³„íšë²• ===\n");
+        printf("1. í¸ì§‘ ê±°ë¦¬\n");
+        printf("2. í–‰ë ¬ ì²´ì¸ ê³±ì…ˆ\n");
+        printf("3. ìµœì  ì´ì§„ íƒìƒ‰ íŠ¸ë¦¬\n");
+        printf("0. ì¢…ë£Œ\n");
+        printf("ì„ íƒ: ");
         scanf("%d", &choice);
 
         switch (choice) {
         case 1: {
             char str1[100], str2[100];
-            printf("\nÃ¹ ¹øÂ° ¹®ÀÚ¿­: ");
+            printf("\nì²« ë²ˆì§¸ ë¬¸ìì—´: ");
             scanf("%s", str1);
-            printf("µÎ ¹øÂ° ¹®ÀÚ¿­: ");
+            printf("ë‘ ë²ˆì§¸ ë¬¸ìì—´: ");
             scanf("%s", str2);
 
             int distance = edit_distance(str1, str2, true);
-            printf("\nÃÖ¼Ò ÆíÁı °Å¸®: %d\n", distance);
+            printf("\nìµœì†Œ í¸ì§‘ ê±°ë¦¬: %d\n", distance);
             break;
         }
 
         case 2: {
             int n;
-            printf("\nÇà·Ä °³¼ö: ");
+            printf("\ní–‰ë ¬ ê°œìˆ˜: ");
             scanf("%d", &n);
 
             int* dimensions = (int*)malloc((n + 1) * sizeof(int));
-            printf("°¢ Çà·ÄÀÇ Â÷¿ø ÀÔ·Â:\n");
+            printf("ê° í–‰ë ¬ì˜ ì°¨ì› ì…ë ¥:\n");
             for (int i = 0; i <= n; i++) {
                 scanf("%d", &dimensions[i]);
             }
 
             int min_mult = matrix_chain_mult(dimensions, n + 1, true);
-            printf("\nÃÖ¼Ò °ö¼À È½¼ö: %d\n", min_mult);
+            printf("\nìµœì†Œ ê³±ì…ˆ íšŸìˆ˜: %d\n", min_mult);
 
             free(dimensions);
             break;
@@ -358,19 +358,19 @@ int main(void) {
 
         case 3: {
             int n;
-            printf("\nÅ° °³¼ö: ");
+            printf("\ní‚¤ ê°œìˆ˜: ");
             scanf("%d", &n);
 
             int* keys = (int*)malloc(n * sizeof(int));
             double* freq = (double*)malloc(n * sizeof(double));
 
-            printf("Å°¿Í ºóµµ¼ö ÀÔ·Â:\n");
+            printf("í‚¤ì™€ ë¹ˆë„ìˆ˜ ì…ë ¥:\n");
             for (int i = 0; i < n; i++) {
                 scanf("%d %lf", &keys[i], &freq[i]);
             }
 
             double cost = optimal_bst(keys, freq, n, true);
-            printf("\nÃÖÀû BSTÀÇ ±â´ë °Ë»ö ºñ¿ë: %.2f\n", cost);
+            printf("\nìµœì  BSTì˜ ê¸°ëŒ€ ê²€ìƒ‰ ë¹„ìš©: %.2f\n", cost);
 
             free(keys);
             free(freq);
@@ -381,7 +381,7 @@ int main(void) {
             return 0;
 
         default:
-            printf("Àß¸øµÈ ¼±ÅÃ\n");
+            printf("ì˜ëª»ëœ ì„ íƒ\n");
         }
     }
 
@@ -389,79 +389,79 @@ int main(void) {
 }
 
 /*
-°í±Ş µ¿Àû °èÈ¹¹ı ºĞ¼®
+ê³ ê¸‰ ë™ì  ê³„íšë²• ë¶„ì„
 ================
 
-1. ÆíÁı °Å¸®
+1. í¸ì§‘ ê±°ë¦¬
 ---------
-½Ã°£ º¹Àâµµ:
+ì‹œê°„ ë³µì¡ë„:
 - O(mn)
 
-°ø°£ º¹Àâµµ:
+ê³µê°„ ë³µì¡ë„:
 - O(mn)
 
-ÀÀ¿ë:
-- ¸ÂÃã¹ı °Ë»ç
-- DNA ¼­¿­ ºñ±³
-- ¹®ÀÚ¿­ À¯»çµµ
+ì‘ìš©:
+- ë§ì¶¤ë²• ê²€ì‚¬
+- DNA ì„œì—´ ë¹„êµ
+- ë¬¸ìì—´ ìœ ì‚¬ë„
 
-2. Çà·Ä Ã¼ÀÎ °ö¼À
+2. í–‰ë ¬ ì²´ì¸ ê³±ì…ˆ
 ---------
-½Ã°£ º¹Àâµµ:
-- O(n©ø)
+ì‹œê°„ ë³µì¡ë„:
+- O(nÂ³)
 
-°ø°£ º¹Àâµµ:
--O(n©÷)
+ê³µê°„ ë³µì¡ë„:
+-O(nÂ²)
 
-ÀÀ¿ë:
-- Çà·Ä ¿¬»ê ÃÖÀûÈ­
-- ¿¬°ü ¹è¿­ °è»ê
-- ±×·¡ÇÈ½º ÆÄÀÌÇÁ¶óÀÎ
+ì‘ìš©:
+- í–‰ë ¬ ì—°ì‚° ìµœì í™”
+- ì—°ê´€ ë°°ì—´ ê³„ì‚°
+- ê·¸ë˜í”½ìŠ¤ íŒŒì´í”„ë¼ì¸
 
-3. ÃÖÀû ÀÌÁø Å½»ö Æ®¸®
+3. ìµœì  ì´ì§„ íƒìƒ‰ íŠ¸ë¦¬
 ----------
 
-½Ã°£ º¹Àâµµ:
-- O(n©ø)
+ì‹œê°„ ë³µì¡ë„:
+- O(nÂ³)
 
-°ø°£ º¹Àâµµ:
-- O(n©÷)
+ê³µê°„ ë³µì¡ë„:
+- O(nÂ²)
 
-ÀÀ¿ë:
-- °Ë»ö ¿£Áø
-- ÄÄÆÄÀÏ·¯ ½Éº¼ Å×ÀÌºí
-- µ¥ÀÌÅÍº£ÀÌ½º ÀÎµ¦½Ì
+ì‘ìš©:
+- ê²€ìƒ‰ ì—”ì§„
+- ì»´íŒŒì¼ëŸ¬ ì‹¬ë³¼ í…Œì´ë¸”
+- ë°ì´í„°ë² ì´ìŠ¤ ì¸ë±ì‹±
 
-ÀÏ¹İÀû ±³ÈÆ
+ì¼ë°˜ì  êµí›ˆ
 
-1. »óÅÂ ¼³°èÀÇ Áß¿ä¼º
-- »óÅÂ Á¤ÀÇ°¡ ¼º´É °áÁ¤
-- ¸Ş¸ğ¸® »ç¿ë·® °í·Á
-- °»½Å ¼ø¼­ ÃÖÀûÈ­
+1. ìƒíƒœ ì„¤ê³„ì˜ ì¤‘ìš”ì„±
+- ìƒíƒœ ì •ì˜ê°€ ì„±ëŠ¥ ê²°ì •
+- ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ ê³ ë ¤
+- ê°±ì‹  ìˆœì„œ ìµœì í™”
 
 
-2. ºÎºĞ ¹®Á¦ Áßº¹
-- ¸Ş¸ğÀÌÁ¦ÀÌ¼Ç È°¿ë
-- Å×ÀÌºí Àç»ç¿ë
-- °ø°£ º¹Àâµµ °³¼±
+2. ë¶€ë¶„ ë¬¸ì œ ì¤‘ë³µ
+- ë©”ëª¨ì´ì œì´ì…˜ í™œìš©
+- í…Œì´ë¸” ì¬ì‚¬ìš©
+- ê³µê°„ ë³µì¡ë„ ê°œì„ 
 
-3. ÃÖÀû ºÎºĞ ±¸Á¶
-- Àç±ÍÀû ±¸Á¶ È°¿ë
-- ºÎºĞÇØ Á¶ÇÕ ¹æ¹ı
-- Àü¿ª ÃÖÀûÇØ º¸Àå
+3. ìµœì  ë¶€ë¶„ êµ¬ì¡°
+- ì¬ê·€ì  êµ¬ì¡° í™œìš©
+- ë¶€ë¶„í•´ ì¡°í•© ë°©ë²•
+- ì „ì—­ ìµœì í•´ ë³´ì¥
 
-4. ±¸Çö ÃÖÀûÈ­
-- Ä³½Ã Áö¿ª¼º
-- ¸Ş¸ğ¸® °ü¸®
-- ¹İº¹¹® ÃÖÀûÈ­
+4. êµ¬í˜„ ìµœì í™”
+- ìºì‹œ ì§€ì—­ì„±
+- ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ë°˜ë³µë¬¸ ìµœì í™”
 
-5. ½ÇÁ¦ ÀÀ¿ë
-- ½Ç½Ã°£ Ã³¸®
-- ´ë±Ô¸ğ µ¥ÀÌÅÍ
-- Á¤È®¼º vs È¿À²¼º
+5. ì‹¤ì œ ì‘ìš©
+- ì‹¤ì‹œê°„ ì²˜ë¦¬
+- ëŒ€ê·œëª¨ ë°ì´í„°
+- ì •í™•ì„± vs íš¨ìœ¨ì„±
 
-ÀÌ ±¸ÇöµéÀº µ¿Àû °èÈ¹¹ıÀÇ
-°í±Ş ÀÀ¿ëÀ» º¸¿©ÁÖ¸ç,
-½ÇÁ¦ ½Ã½ºÅÛ¿¡¼­ »ç¿ëµÇ´Â
-ÃÖÀûÈ­ ±â¹ıµéÀ» Æ÷ÇÔÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ë“¤ì€ ë™ì  ê³„íšë²•ì˜
+ê³ ê¸‰ ì‘ìš©ì„ ë³´ì—¬ì£¼ë©°,
+ì‹¤ì œ ì‹œìŠ¤í…œì—ì„œ ì‚¬ìš©ë˜ëŠ”
+ìµœì í™” ê¸°ë²•ë“¤ì„ í¬í•¨í•©ë‹ˆë‹¤.
 */

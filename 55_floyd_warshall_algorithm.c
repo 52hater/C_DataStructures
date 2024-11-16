@@ -3,32 +3,32 @@
 #include <limits.h>
 
 /*
-¾Ë°í¸®Áò ºÐ·ù: ±×·¡ÇÁ ¾Ë°í¸®Áò
-ÇÏÀ§ ºÐ·ù: ÃÖ´Ü °æ·Î ¾Ë°í¸®Áò
-³­ÀÌµµ: Áß»ó
-°ü·Ã ¾Ë°í¸®Áò: º§¸¸-Æ÷µå, ´ÙÀÍ½ºÆ®¶ó
+ì•Œê³ ë¦¬ì¦˜ ë¶„ë¥˜: ê·¸ëž˜í”„ ì•Œê³ ë¦¬ì¦˜
+í•˜ìœ„ ë¶„ë¥˜: ìµœë‹¨ ê²½ë¡œ ì•Œê³ ë¦¬ì¦˜
+ë‚œì´ë„: ì¤‘ìƒ
+ê´€ë ¨ ì•Œê³ ë¦¬ì¦˜: ë²¨ë§Œ-í¬ë“œ, ë‹¤ìµìŠ¤íŠ¸ë¼
 
-ÇÃ·ÎÀÌµå-¿ö¼È ¾Ë°í¸®Áò:
-- ¸ðµç Á¤Á¡ ½Ö °£ÀÇ ÃÖ´Ü °æ·Î
-- µ¿Àû °èÈ¹¹ý ±â¹Ý
-- À½¼ö °¡ÁßÄ¡ Çã¿ë (»çÀÌÅ¬ ¾ø´Â °æ¿ì)
-- °æ·Î º¹¿ø °¡´É
+í”Œë¡œì´ë“œ-ì›Œì…œ ì•Œê³ ë¦¬ì¦˜:
+- ëª¨ë“  ì •ì  ìŒ ê°„ì˜ ìµœë‹¨ ê²½ë¡œ
+- ë™ì  ê³„íšë²• ê¸°ë°˜
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ í—ˆìš© (ì‚¬ì´í´ ì—†ëŠ” ê²½ìš°)
+- ê²½ë¡œ ë³µì› ê°€ëŠ¥
 */
 
 #define INF INT_MAX
 
 typedef struct {
-    int** dist;      // °Å¸® Çà·Ä
-    int** next;      // °æ·Î º¹¿ø¿ë Çà·Ä
-    int V;           // Á¤Á¡ ¼ö
+    int** dist;      // ê±°ë¦¬ í–‰ë ¬
+    int** next;      // ê²½ë¡œ ë³µì›ìš© í–‰ë ¬
+    int V;           // ì •ì  ìˆ˜
 } Graph;
 
-// ±×·¡ÇÁ »ý¼º
+// ê·¸ëž˜í”„ ìƒì„±
 Graph* create_graph(int V) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     graph->V = V;
 
-    // °Å¸® Çà·Ä ÇÒ´ç
+    // ê±°ë¦¬ í–‰ë ¬ í• ë‹¹
     graph->dist = (int**)malloc(V * sizeof(int*));
     graph->next = (int**)malloc(V * sizeof(int*));
 
@@ -48,9 +48,9 @@ Graph* create_graph(int V) {
     return graph;
 }
 
-// ±×·¡ÇÁ Ãâ·Â
+// ê·¸ëž˜í”„ ì¶œë ¥
 void print_graph(Graph* graph) {
-    printf("\nÇöÀç °Å¸® Çà·Ä:\n");
+    printf("\ní˜„ìž¬ ê±°ë¦¬ í–‰ë ¬:\n");
     printf("    ");
     for (int i = 0; i < graph->V; i++)
         printf("%4d", i);
@@ -68,37 +68,37 @@ void print_graph(Graph* graph) {
     }
 }
 
-// °æ·Î Ãâ·Â
+// ê²½ë¡œ ì¶œë ¥
 void print_path(Graph* graph, int start, int end) {
     if (graph->next[start][end] == -1) {
-        printf("°æ·Î°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.\n");
+        printf("ê²½ë¡œê°€ ì¡´ìž¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.\n");
         return;
     }
 
-    printf("°æ·Î: %d", start);
+    printf("ê²½ë¡œ: %d", start);
     int current = start;
     while (current != end) {
         current = graph->next[current][end];
         printf(" -> %d", current);
     }
-    printf("\n°Å¸®: %d\n", graph->dist[start][end]);
+    printf("\nê±°ë¦¬: %d\n", graph->dist[start][end]);
 }
 
-// ÇÃ·ÎÀÌµå-¿ö¼È ¾Ë°í¸®Áò
+// í”Œë¡œì´ë“œ-ì›Œì…œ ì•Œê³ ë¦¬ì¦˜
 void floyd_warshall(Graph* graph, bool print_steps) {
-    printf("\n=== ÇÃ·ÎÀÌµå-¿ö¼È ¾Ë°í¸®Áò ½ÇÇà ===\n");
+    printf("\n=== í”Œë¡œì´ë“œ-ì›Œì…œ ì•Œê³ ë¦¬ì¦˜ ì‹¤í–‰ ===\n");
 
-    // k: Áß°£ Á¤Á¡
+    // k: ì¤‘ê°„ ì •ì 
     for (int k = 0; k < graph->V; k++) {
         if (print_steps) {
-            printf("\nÁß°£ Á¤Á¡ %d »ç¿ë:\n", k);
+            printf("\nì¤‘ê°„ ì •ì  %d ì‚¬ìš©:\n", k);
         }
 
-        // i: ½ÃÀÛ Á¤Á¡
+        // i: ì‹œìž‘ ì •ì 
         for (int i = 0; i < graph->V; i++) {
-            // j: µµÂø Á¤Á¡
+            // j: ë„ì°© ì •ì 
             for (int j = 0; j < graph->V; j++) {
-                // ¿À¹öÇÃ·Î¿ì ¹æÁö
+                // ì˜¤ë²„í”Œë¡œìš° ë°©ì§€
                 if (graph->dist[i][k] != INF &&
                     graph->dist[k][j] != INF) {
                     int new_dist = graph->dist[i][k] + graph->dist[k][j];
@@ -108,7 +108,7 @@ void floyd_warshall(Graph* graph, bool print_steps) {
                         graph->next[i][j] = graph->next[i][k];
 
                         if (print_steps) {
-                            printf("%d->%d °æ·Î °»½Å: %d (°æÀ¯: %d)\n",
+                            printf("%d->%d ê²½ë¡œ ê°±ì‹ : %d (ê²½ìœ : %d)\n",
                                 i, j, new_dist, k);
                         }
                     }
@@ -121,16 +121,16 @@ void floyd_warshall(Graph* graph, bool print_steps) {
         }
     }
 
-    // À½¼ö »çÀÌÅ¬ °Ë»ç
+    // ìŒìˆ˜ ì‚¬ì´í´ ê²€ì‚¬
     for (int i = 0; i < graph->V; i++) {
         if (graph->dist[i][i] < 0) {
-            printf("\n°æ°í: À½¼ö »çÀÌÅ¬ ¹ß°ß!\n");
+            printf("\nê²½ê³ : ìŒìˆ˜ ì‚¬ì´í´ ë°œê²¬!\n");
             return;
         }
     }
 }
 
-// °æ·Î ÃÊ±âÈ­
+// ê²½ë¡œ ì´ˆê¸°í™”
 void initialize_paths(Graph* graph) {
     for (int i = 0; i < graph->V; i++) {
         for (int j = 0; j < graph->V; j++) {
@@ -141,7 +141,7 @@ void initialize_paths(Graph* graph) {
     }
 }
 
-// ¸Þ¸ð¸® ÇØÁ¦
+// ë©”ëª¨ë¦¬ í•´ì œ
 void free_graph(Graph* graph) {
     for (int i = 0; i < graph->V; i++) {
         free(graph->dist[i]);
@@ -154,14 +154,14 @@ void free_graph(Graph* graph) {
 
 int main(void) {
     int V, E;
-    printf("Á¤Á¡ ¼ö ÀÔ·Â: ");
+    printf("ì •ì  ìˆ˜ ìž…ë ¥: ");
     scanf("%d", &V);
-    printf("°£¼± ¼ö ÀÔ·Â: ");
+    printf("ê°„ì„  ìˆ˜ ìž…ë ¥: ");
     scanf("%d", &E);
 
     Graph* graph = create_graph(V);
 
-    printf("\n°£¼± Á¤º¸ ÀÔ·Â (½ÃÀÛÁ¡ µµÂøÁ¡ °¡ÁßÄ¡):\n");
+    printf("\nê°„ì„  ì •ë³´ ìž…ë ¥ (ì‹œìž‘ì  ë„ì°©ì  ê°€ì¤‘ì¹˜):\n");
     for (int i = 0; i < E; i++) {
         int src, dest, weight;
         scanf("%d %d %d", &src, &dest, &weight);
@@ -169,20 +169,20 @@ int main(void) {
     }
 
     initialize_paths(graph);
-    printf("\nÃÊ±â »óÅÂ:");
+    printf("\nì´ˆê¸° ìƒíƒœ:");
     print_graph(graph);
 
     bool print_steps;
-    printf("\n°úÁ¤À» Ãâ·ÂÇÏ½Ã°Ú½À´Ï±î? (1/0): ");
+    printf("\nê³¼ì •ì„ ì¶œë ¥í•˜ì‹œê² ìŠµë‹ˆê¹Œ? (1/0): ");
     scanf("%d", &print_steps);
 
     floyd_warshall(graph, print_steps);
 
-    printf("\n=== ¸ðµç ½Ö ÃÖ´Ü °æ·Î ===\n");
+    printf("\n=== ëª¨ë“  ìŒ ìµœë‹¨ ê²½ë¡œ ===\n");
     for (int i = 0; i < V; i++) {
         for (int j = 0; j < V; j++) {
             if (i != j && graph->dist[i][j] != INF) {
-                printf("\n%d¿¡¼­ %d±îÁö:\n", i, j);
+                printf("\n%dì—ì„œ %dê¹Œì§€:\n", i, j);
                 print_path(graph, i, j);
             }
         }
@@ -193,57 +193,57 @@ int main(void) {
 }
 
 /*
-ÇÃ·ÎÀÌµå-¿ö¼È ¾Ë°í¸®Áò ºÐ¼®
+í”Œë¡œì´ë“œ-ì›Œì…œ ì•Œê³ ë¦¬ì¦˜ ë¶„ì„
 =====================
 
-1. ÀÛµ¿ ¿ø¸®
+1. ìž‘ë™ ì›ë¦¬
 ----------
-- ¸ðµç Á¤Á¡ ½Ö¿¡ ´ëÇØ ÃÖ´Ü °æ·Î °è»ê
-- k¸¦ Áß°£ Á¤Á¡À¸·Î »ç¿ë
-- µ¿Àû °èÈ¹¹ý ±â¹ÝÀÇ Á¡È­½Ä
+- ëª¨ë“  ì •ì  ìŒì— ëŒ€í•´ ìµœë‹¨ ê²½ë¡œ ê³„ì‚°
+- kë¥¼ ì¤‘ê°„ ì •ì ìœ¼ë¡œ ì‚¬ìš©
+- ë™ì  ê³„íšë²• ê¸°ë°˜ì˜ ì í™”ì‹
 - dist[i][j] = min(dist[i][j],
                    dist[i][k] + dist[k][j])
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µìž¡ë„
 -----------
-- »ïÁß ¹Ýº¹¹®: O(V©ø)
-- ¸ðµç ½ÖÀ» µ¿½Ã¿¡ °è»ê
-- Èñ¼Ò ±×·¡ÇÁ¿¡¼­´Â ºñÈ¿À²Àû
+- ì‚¼ì¤‘ ë°˜ë³µë¬¸: O(VÂ³)
+- ëª¨ë“  ìŒì„ ë™ì‹œì— ê³„ì‚°
+- í¬ì†Œ ê·¸ëž˜í”„ì—ì„œëŠ” ë¹„íš¨ìœ¨ì 
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µìž¡ë„
 -----------
-- °Å¸® Çà·Ä: O(V©÷)
-- °æ·Î Çà·Ä: O(V©÷)
-- ÃÑ °ø°£: O(V©÷)
+- ê±°ë¦¬ í–‰ë ¬: O(VÂ²)
+- ê²½ë¡œ í–‰ë ¬: O(VÂ²)
+- ì´ ê³µê°„: O(VÂ²)
 
-4. ´Ù¸¥ ¾Ë°í¸®Áò°úÀÇ ºñ±³
+4. ë‹¤ë¥¸ ì•Œê³ ë¦¬ì¦˜ê³¼ì˜ ë¹„êµ
 -------------------
-ÇÃ·ÎÀÌµå-¿ö¼È:
-- ¸ðµç ½Ö ÃÖ´Ü °æ·Î
-- O(V©ø) ½Ã°£º¹Àâµµ
-- ´Ü¼øÇÑ ±¸Çö
+í”Œë¡œì´ë“œ-ì›Œì…œ:
+- ëª¨ë“  ìŒ ìµœë‹¨ ê²½ë¡œ
+- O(VÂ³) ì‹œê°„ë³µìž¡ë„
+- ë‹¨ìˆœí•œ êµ¬í˜„
 
-´ÙÀÍ½ºÆ®¶ó V¹ø:
+ë‹¤ìµìŠ¤íŠ¸ë¼ Vë²ˆ:
 - O(V * E log V)
-- Èñ¼Ò ±×·¡ÇÁ¿¡¼­ À¯¸®
-- À½¼ö °¡ÁßÄ¡ ºÒ°¡
+- í¬ì†Œ ê·¸ëž˜í”„ì—ì„œ ìœ ë¦¬
+- ìŒìˆ˜ ê°€ì¤‘ì¹˜ ë¶ˆê°€
 
-5. ½ÇÁ¦ ÀÀ¿ë
+5. ì‹¤ì œ ì‘ìš©
 ---------
-- ³×Æ®¿öÅ© ¶ó¿ìÆÃ
-- Â÷ÀÍ °Å·¡ Å½Áö
-- ÀüÀÌÀû Æó¼â
-- Á¤Á¡ Áß½É¼º °è»ê
+- ë„¤íŠ¸ì›Œí¬ ë¼ìš°íŒ…
+- ì°¨ìµ ê±°ëž˜ íƒì§€
+- ì „ì´ì  íì‡„
+- ì •ì  ì¤‘ì‹¬ì„± ê³„ì‚°
 
-6. ÃÖÀûÈ­ ±â¹ý
+6. ìµœì í™” ê¸°ë²•
 -----------
-- Ä³½Ã Áö¿ª¼º È°¿ë
-- º´·ÄÈ­ °¡´É¼º
-- Èñ¼Ò Çà·Ä È°¿ë
-- SIMD ÃÖÀûÈ­
+- ìºì‹œ ì§€ì—­ì„± í™œìš©
+- ë³‘ë ¬í™” ê°€ëŠ¥ì„±
+- í¬ì†Œ í–‰ë ¬ í™œìš©
+- SIMD ìµœì í™”
 
-ÀÌ ±¸ÇöÀº ±×·¡ÇÁ¿¡¼­
-¸ðµç Á¤Á¡ ½Ö °£ÀÇ ÃÖ´Ü °æ·Î¸¦
-Ã£´Â ±âº»ÀûÀÎ ¹æ¹ýÀ»
-º¸¿©ÁÝ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ê·¸ëž˜í”„ì—ì„œ
+ëª¨ë“  ì •ì  ìŒ ê°„ì˜ ìµœë‹¨ ê²½ë¡œë¥¼
+ì°¾ëŠ” ê¸°ë³¸ì ì¸ ë°©ë²•ì„
+ë³´ì—¬ì¤ë‹ˆë‹¤.
 */

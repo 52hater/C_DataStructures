@@ -4,16 +4,16 @@
 
 typedef int ElementType;
 
-// ºÐ¸® ÁýÇÕÀÇ ³ëµå¸¦ Ç¥ÇöÇÏ´Â ±¸Á¶Ã¼
+// ë¶„ë¦¬ ì§‘í•©ì˜ ë…¸ë“œë¥¼ í‘œí˜„í•˜ëŠ” êµ¬ì¡°ì²´
 typedef struct {
-    ElementType* parent;  // ºÎ¸ð ³ëµå ¹è¿­
-    int* rank;           // Æ®¸®ÀÇ ³ôÀÌ(·©Å©) ¹è¿­
-    size_t size;         // ÀüÃ¼ ¿ø¼ÒÀÇ °³¼ö
+    ElementType* parent;  // ë¶€ëª¨ ë…¸ë“œ ë°°ì—´
+    int* rank;           // íŠ¸ë¦¬ì˜ ë†’ì´(ëž­í¬) ë°°ì—´
+    size_t size;         // ì „ì²´ ì›ì†Œì˜ ê°œìˆ˜
 } DisjointSet;
 
-/* ºÐ¸® ÁýÇÕ ÃÊ±âÈ­
- * - ¸Å°³º¯¼ö: size - ÁýÇÕÀÇ Å©±â
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ ºÐ¸® ÁýÇÕ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* ë¶„ë¦¬ ì§‘í•© ì´ˆê¸°í™”
+ * - ë§¤ê°œë³€ìˆ˜: size - ì§‘í•©ì˜ í¬ê¸°
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ ë¶„ë¦¬ ì§‘í•© ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 DisjointSet* disjoint_set_create(size_t size) {
     DisjointSet* set = (DisjointSet*)malloc(sizeof(DisjointSet));
@@ -30,40 +30,40 @@ DisjointSet* disjoint_set_create(size_t size) {
         return NULL;
     }
 
-    // °¢ ¿ø¼Ò¸¦ µ¶¸³µÈ ÁýÇÕÀ¸·Î ÃÊ±âÈ­
+    // ê° ì›ì†Œë¥¼ ë…ë¦½ëœ ì§‘í•©ìœ¼ë¡œ ì´ˆê¸°í™”
     for (size_t i = 0; i < size; i++) {
-        set->parent[i] = i;  // ÀÚ±â ÀÚ½ÅÀÌ ´ëÇ¥ ¿ø¼Ò
-        set->rank[i] = 0;    // ÃÊ±â ·©Å©´Â 0
+        set->parent[i] = i;  // ìžê¸° ìžì‹ ì´ ëŒ€í‘œ ì›ì†Œ
+        set->rank[i] = 0;    // ì´ˆê¸° ëž­í¬ëŠ” 0
     }
     set->size = size;
 
     return set;
 }
 
-/* ¿ø¼Ò°¡ ¼ÓÇÑ ÁýÇÕÀÇ ´ëÇ¥ ¿ø¼Ò Ã£±â (°æ·Î ¾ÐÃà Æ÷ÇÔ)
- * - ¸Å°³º¯¼ö: set - ºÐ¸® ÁýÇÕ, x - Ã£À» ¿ø¼Ò
- * - ¹ÝÈ¯°ª: ´ëÇ¥ ¿ø¼ÒÀÇ ÀÎµ¦½º
+/* ì›ì†Œê°€ ì†í•œ ì§‘í•©ì˜ ëŒ€í‘œ ì›ì†Œ ì°¾ê¸° (ê²½ë¡œ ì••ì¶• í¬í•¨)
+ * - ë§¤ê°œë³€ìˆ˜: set - ë¶„ë¦¬ ì§‘í•©, x - ì°¾ì„ ì›ì†Œ
+ * - ë°˜í™˜ê°’: ëŒ€í‘œ ì›ì†Œì˜ ì¸ë±ìŠ¤
  */
 ElementType find_set(DisjointSet* set, ElementType x) {
     if (x != set->parent[x]) {
-        set->parent[x] = find_set(set, set->parent[x]);  // °æ·Î ¾ÐÃà
+        set->parent[x] = find_set(set, set->parent[x]);  // ê²½ë¡œ ì••ì¶•
     }
     return set->parent[x];
 }
 
-/* µÎ ÁýÇÕÀ» ÇÕÄ¡±â (·©Å©¸¦ ÀÌ¿ëÇÑ ÇÕÁýÇÕ)
- * - ¸Å°³º¯¼ö: set - ºÐ¸® ÁýÇÕ, x, y - ÇÕÄ¥ µÎ ¿ø¼Ò
- * - ¹ÝÈ¯°ª: ÇÕÄ¡±â ¼º°ø ½Ã true, ½ÇÆÐ ½Ã false
+/* ë‘ ì§‘í•©ì„ í•©ì¹˜ê¸° (ëž­í¬ë¥¼ ì´ìš©í•œ í•©ì§‘í•©)
+ * - ë§¤ê°œë³€ìˆ˜: set - ë¶„ë¦¬ ì§‘í•©, x, y - í•©ì¹  ë‘ ì›ì†Œ
+ * - ë°˜í™˜ê°’: í•©ì¹˜ê¸° ì„±ê³µ ì‹œ true, ì‹¤íŒ¨ ì‹œ false
  */
 bool union_sets(DisjointSet* set, ElementType x, ElementType y) {
     ElementType root_x = find_set(set, x);
     ElementType root_y = find_set(set, y);
 
     if (root_x == root_y) {
-        return false;  // ÀÌ¹Ì °°Àº ÁýÇÕ
+        return false;  // ì´ë¯¸ ê°™ì€ ì§‘í•©
     }
 
-    // ·©Å©°¡ ´õ Å« Æ®¸®¿¡ ÀÛÀº Æ®¸®¸¦ ºÙÀÓ
+    // ëž­í¬ê°€ ë” í° íŠ¸ë¦¬ì— ìž‘ì€ íŠ¸ë¦¬ë¥¼ ë¶™ìž„
     if (set->rank[root_x] < set->rank[root_y]) {
         set->parent[root_x] = root_y;
     }
@@ -78,16 +78,16 @@ bool union_sets(DisjointSet* set, ElementType x, ElementType y) {
     return true;
 }
 
-/* µÎ ¿ø¼Ò°¡ °°Àº ÁýÇÕ¿¡ ¼ÓÇÏ´ÂÁö È®ÀÎ
- * - ¸Å°³º¯¼ö: set - ºÐ¸® ÁýÇÕ, x, y - È®ÀÎÇÒ µÎ ¿ø¼Ò
- * - ¹ÝÈ¯°ª: °°Àº ÁýÇÕÀÌ¸é true, ´Ù¸¥ ÁýÇÕÀÌ¸é false
+/* ë‘ ì›ì†Œê°€ ê°™ì€ ì§‘í•©ì— ì†í•˜ëŠ”ì§€ í™•ì¸
+ * - ë§¤ê°œë³€ìˆ˜: set - ë¶„ë¦¬ ì§‘í•©, x, y - í™•ì¸í•  ë‘ ì›ì†Œ
+ * - ë°˜í™˜ê°’: ê°™ì€ ì§‘í•©ì´ë©´ true, ë‹¤ë¥¸ ì§‘í•©ì´ë©´ false
  */
 bool is_same_set(DisjointSet* set, ElementType x, ElementType y) {
     return find_set(set, x) == find_set(set, y);
 }
 
-/* ÇöÀç ºÐ¸® ÁýÇÕÀÇ »óÅÂ Ãâ·Â
- * - ¸Å°³º¯¼ö: set - Ãâ·ÂÇÒ ºÐ¸® ÁýÇÕ
+/* í˜„ìž¬ ë¶„ë¦¬ ì§‘í•©ì˜ ìƒíƒœ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: set - ì¶œë ¥í•  ë¶„ë¦¬ ì§‘í•©
  */
 void print_sets(DisjointSet* set) {
     printf("\nDisjoint Set Status:\n");
@@ -106,8 +106,8 @@ void print_sets(DisjointSet* set) {
     printf("\n");
 }
 
-/* °¢ ÁýÇÕÀÇ ¿ø¼ÒµéÀ» ±×·ìÈ­ÇÏ¿© Ãâ·Â
- * - ¸Å°³º¯¼ö: set - Ãâ·ÂÇÒ ºÐ¸® ÁýÇÕ
+/* ê° ì§‘í•©ì˜ ì›ì†Œë“¤ì„ ê·¸ë£¹í™”í•˜ì—¬ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: set - ì¶œë ¥í•  ë¶„ë¦¬ ì§‘í•©
  */
 void print_set_groups(DisjointSet* set) {
     bool* visited = (bool*)calloc(set->size, sizeof(bool));
@@ -121,7 +121,7 @@ void print_set_groups(DisjointSet* set) {
             ElementType root = find_set(set, i);
             printf("Group %d: ", root);
 
-            // °°Àº ÁýÇÕ¿¡ ¼ÓÇÑ ¿ø¼Òµé Ãâ·Â
+            // ê°™ì€ ì§‘í•©ì— ì†í•œ ì›ì†Œë“¤ ì¶œë ¥
             for (size_t j = 0; j < set->size; j++) {
                 if (!visited[j] && find_set(set, j) == root) {
                     printf("%zu ", j);
@@ -135,8 +135,8 @@ void print_set_groups(DisjointSet* set) {
     free(visited);
 }
 
-/* ºÐ¸® ÁýÇÕÀÇ ¸Þ¸ð¸® ÇØÁ¦
- * - ¸Å°³º¯¼ö: set - ÇØÁ¦ÇÒ ºÐ¸® ÁýÇÕ
+/* ë¶„ë¦¬ ì§‘í•©ì˜ ë©”ëª¨ë¦¬ í•´ì œ
+ * - ë§¤ê°œë³€ìˆ˜: set - í•´ì œí•  ë¶„ë¦¬ ì§‘í•©
  */
 void disjoint_set_destroy(DisjointSet* set) {
     if (set != NULL) {
@@ -146,7 +146,7 @@ void disjoint_set_destroy(DisjointSet* set) {
     }
 }
 
-/* ¸Þ´º Ãâ·Â ÇÔ¼ö */
+/* ë©”ë‰´ ì¶œë ¥ í•¨ìˆ˜ */
 void print_menu(void) {
     printf("\n=== Disjoint Set Menu ===\n");
     printf("1. Union two elements\n");
@@ -246,77 +246,77 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ºÐ¸® ÁýÇÕÀÇ Æ¯Â¡
+1. ë¶„ë¦¬ ì§‘í•©ì˜ íŠ¹ì§•
 ----------------
-- ¼­·Î¼ÒÀÎ ºÎºÐÁýÇÕµéÀÇ ÁýÇÕ
-- µ¿Àû ¿¬°á¼º °ü¸®
-- Æ®¸® ±â¹Ý ±¸Çö
-- Union-Find ¿¬»ê Áö¿ø
+- ì„œë¡œì†Œì¸ ë¶€ë¶„ì§‘í•©ë“¤ì˜ ì§‘í•©
+- ë™ì  ì—°ê²°ì„± ê´€ë¦¬
+- íŠ¸ë¦¬ ê¸°ë°˜ êµ¬í˜„
+- Union-Find ì—°ì‚° ì§€ì›
 
-2. ÃÖÀûÈ­ ±â¹ý
+2. ìµœì í™” ê¸°ë²•
 -----------
-°æ·Î ¾ÐÃà(Path Compression):
-- find_set ¿¬»ê ½Ã Àû¿ë
-- ¸ðµç ³ëµå¸¦ ·çÆ®¿¡ Á÷Á¢ ¿¬°á
-- Æò±Õ ½Ã°£º¹Àâµµ °³¼±
+ê²½ë¡œ ì••ì¶•(Path Compression):
+- find_set ì—°ì‚° ì‹œ ì ìš©
+- ëª¨ë“  ë…¸ë“œë¥¼ ë£¨íŠ¸ì— ì§ì ‘ ì—°ê²°
+- í‰ê·  ì‹œê°„ë³µìž¡ë„ ê°œì„ 
 
-·©Å© ±â¹Ý ÇÕÄ¡±â(Union by Rank):
-- Æ®¸®ÀÇ ³ôÀÌ¸¦ ÃÖ¼ÒÈ­
-- ÀÛÀº Æ®¸®¸¦ Å« Æ®¸®¿¡ ºÙÀÓ
-- ±ÕÇü ÀâÈù Æ®¸® À¯Áö
+ëž­í¬ ê¸°ë°˜ í•©ì¹˜ê¸°(Union by Rank):
+- íŠ¸ë¦¬ì˜ ë†’ì´ë¥¼ ìµœì†Œí™”
+- ìž‘ì€ íŠ¸ë¦¬ë¥¼ í° íŠ¸ë¦¬ì— ë¶™ìž„
+- ê· í˜• ìž¡ížŒ íŠ¸ë¦¬ ìœ ì§€
 
-3. ÁÖ¿ä ¿¬»ê°ú º¹Àâµµ
+3. ì£¼ìš” ì—°ì‚°ê³¼ ë³µìž¡ë„
 -----------------
 Make-Set: O(1)
-- ÃÊ±â ´ÜÀÏ ¿ø¼Ò ÁýÇÕ »ý¼º
+- ì´ˆê¸° ë‹¨ì¼ ì›ì†Œ ì§‘í•© ìƒì„±
 
-Find-Set: O(¥á(n))
-- ¿ø¼ÒÀÇ ´ëÇ¥ ¿ø¼Ò Ã£±â
-- ¥á(n)Àº ¾ÖÄ¿¸¸ ÇÔ¼öÀÇ ¿ªÇÔ¼ö
+Find-Set: O(Î±(n))
+- ì›ì†Œì˜ ëŒ€í‘œ ì›ì†Œ ì°¾ê¸°
+- Î±(n)ì€ ì• ì»¤ë§Œ í•¨ìˆ˜ì˜ ì—­í•¨ìˆ˜
 
-Union: O(¥á(n))
-- µÎ ÁýÇÕÀ» ÇÕÄ¡±â
-- ·©Å© ±â¹Ý ÃÖÀûÈ­
+Union: O(Î±(n))
+- ë‘ ì§‘í•©ì„ í•©ì¹˜ê¸°
+- ëž­í¬ ê¸°ë°˜ ìµœì í™”
 
-4. ±¸Çö Æ¯Â¡
+4. êµ¬í˜„ íŠ¹ì§•
 ----------
-- ¹è¿­ ±â¹Ý ±¸Çö
-- ·©Å© ¹è¿­ °ü¸®
-- °æ·Î ¾ÐÃà Àû¿ë
-- ¸Þ¸ð¸® È¿À²¼º
+- ë°°ì—´ ê¸°ë°˜ êµ¬í˜„
+- ëž­í¬ ë°°ì—´ ê´€ë¦¬
+- ê²½ë¡œ ì••ì¶• ì ìš©
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì„±
 
-5. ¸Þ¸ð¸® °ü¸®
+5. ë©”ëª¨ë¦¬ ê´€ë¦¬
 -----------
-- µ¿Àû ¹è¿­ ÇÒ´ç
-- ¾ÈÀüÇÑ ¸Þ¸ð¸® ÇØÁ¦
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- ÃÊ±âÈ­ °ËÁõ
+- ë™ì  ë°°ì—´ í• ë‹¹
+- ì•ˆì „í•œ ë©”ëª¨ë¦¬ í•´ì œ
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- ì´ˆê¸°í™” ê²€ì¦
 
-6. ÀÀ¿ë ºÐ¾ß
+6. ì‘ìš© ë¶„ì•¼
 ----------
-- Å©·ç½ºÄ® ¾Ë°í¸®Áò
-- »çÀÌÅ¬ °ËÃâ
-- ³×Æ®¿öÅ© ¿¬°á¼º
-- µ¿Àû ±×·¡ÇÁ
+- í¬ë£¨ìŠ¤ì¹¼ ì•Œê³ ë¦¬ì¦˜
+- ì‚¬ì´í´ ê²€ì¶œ
+- ë„¤íŠ¸ì›Œí¬ ì—°ê²°ì„±
+- ë™ì  ê·¸ëž˜í”„
 
-7. ±³À°Àû °¡Ä¡
+7. êµìœ¡ì  ê°€ì¹˜
 -----------
-- Æ®¸® ±¸Á¶ ÀÌÇØ
-- ÃÖÀûÈ­ ±â¹ý ÇÐ½À
-- ½Ã°£º¹Àâµµ ºÐ¼®
-- ÀÚ·á±¸Á¶ È°¿ë
+- íŠ¸ë¦¬ êµ¬ì¡° ì´í•´
+- ìµœì í™” ê¸°ë²• í•™ìŠµ
+- ì‹œê°„ë³µìž¡ë„ ë¶„ì„
+- ìžë£Œêµ¬ì¡° í™œìš©
 
-8. ÃÖÀûÈ­ °í·Á»çÇ×
+8. ìµœì í™” ê³ ë ¤ì‚¬í•­
 --------------
-- °æ·Î ¾ÐÃà ±¸Çö
-- ·©Å© ±â¹Ý ÇÕÄ¡±â
-- ¸Þ¸ð¸® Á¢±Ù ÃÖÀûÈ­
-- Ä³½Ã È¿À²¼º
+- ê²½ë¡œ ì••ì¶• êµ¬í˜„
+- ëž­í¬ ê¸°ë°˜ í•©ì¹˜ê¸°
+- ë©”ëª¨ë¦¬ ì ‘ê·¼ ìµœì í™”
+- ìºì‹œ íš¨ìœ¨ì„±
 
-ÀÌ ±¸ÇöÀº ºÐ¸® ÁýÇÕÀÇ Ç¥ÁØÀûÀÎ ±â´ÉÀ»
-¸ðµÎ Æ÷ÇÔÇÏ¸ç, ÃÖÀûÈ­ ±â¹ýÀÌ Àû¿ëµÈ
-È¿À²ÀûÀÎ ±¸ÇöÀ» Á¦°øÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë¶„ë¦¬ ì§‘í•©ì˜ í‘œì¤€ì ì¸ ê¸°ëŠ¥ì„
+ëª¨ë‘ í¬í•¨í•˜ë©°, ìµœì í™” ê¸°ë²•ì´ ì ìš©ëœ
+íš¨ìœ¨ì ì¸ êµ¬í˜„ì„ ì œê³µí•©ë‹ˆë‹¤.
 */

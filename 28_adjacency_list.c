@@ -3,25 +3,25 @@
 #include <stdbool.h>
 
 /*
-ÀÎÁ¢ ¸®½ºÆ® ±â¹İ ±×·¡ÇÁ:
-- °¢ Á¤Á¡¸¶´Ù ¿¬°áµÈ Á¤Á¡µéÀÇ ¸®½ºÆ® À¯Áö
-- Èñ¼Ò ±×·¡ÇÁ¿¡ È¿À²Àû
-- ¸Ş¸ğ¸® È¿À²ÀûÀÎ ±¸Á¶
-- ½ÇÁ¦ ¸¹ÀÌ »ç¿ëµÇ´Â ¹æ½Ä
+ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ ê¸°ë°˜ ê·¸ë˜í”„:
+- ê° ì •ì ë§ˆë‹¤ ì—°ê²°ëœ ì •ì ë“¤ì˜ ë¦¬ìŠ¤íŠ¸ ìœ ì§€
+- í¬ì†Œ ê·¸ë˜í”„ì— íš¨ìœ¨ì 
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì ì¸ êµ¬ì¡°
+- ì‹¤ì œ ë§ì´ ì‚¬ìš©ë˜ëŠ” ë°©ì‹
 */
 
 typedef struct Node {
-    int vertex;         // µµÂø Á¤Á¡
-    int weight;         // °£¼±ÀÇ °¡ÁßÄ¡
-    struct Node* next;  // ´ÙÀ½ °£¼±
+    int vertex;         // ë„ì°© ì •ì 
+    int weight;         // ê°„ì„ ì˜ ê°€ì¤‘ì¹˜
+    struct Node* next;  // ë‹¤ìŒ ê°„ì„ 
 } Node;
 
 typedef struct {
-    int num_vertices;           // Á¤Á¡ÀÇ °³¼ö
-    Node** adj_list;           // ÀÎÁ¢ ¸®½ºÆ® ¹è¿­
+    int num_vertices;           // ì •ì ì˜ ê°œìˆ˜
+    Node** adj_list;           // ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ ë°°ì—´
 } Graph;
 
-/* »õ·Î¿î ³ëµå »ı¼º */
+/* ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„± */
 Node* create_node(int v, int weight) {
     Node* new_node = (Node*)malloc(sizeof(Node));
     if (new_node) {
@@ -32,7 +32,7 @@ Node* create_node(int v, int weight) {
     return new_node;
 }
 
-/* ±×·¡ÇÁ »ı¼º */
+/* ê·¸ë˜í”„ ìƒì„± */
 Graph* graph_create(int vertices) {
     Graph* graph = (Graph*)malloc(sizeof(Graph));
     if (!graph) return NULL;
@@ -45,7 +45,7 @@ Graph* graph_create(int vertices) {
 
     graph->num_vertices = vertices;
 
-    // ÀÎÁ¢ ¸®½ºÆ® ÃÊ±âÈ­
+    // ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ ì´ˆê¸°í™”
     for (int i = 0; i < vertices; i++) {
         graph->adj_list[i] = NULL;
     }
@@ -53,21 +53,21 @@ Graph* graph_create(int vertices) {
     return graph;
 }
 
-/* °£¼± Ãß°¡ */
+/* ê°„ì„  ì¶”ê°€ */
 bool graph_add_edge(Graph* graph, int src, int dest, int weight, bool directed) {
     if (!graph || src < 0 || src >= graph->num_vertices ||
         dest < 0 || dest >= graph->num_vertices) {
         return false;
     }
 
-    // src¿¡¼­ dest·ÎÀÇ °£¼± Ãß°¡
+    // srcì—ì„œ destë¡œì˜ ê°„ì„  ì¶”ê°€
     Node* new_node = create_node(dest, weight);
     if (!new_node) return false;
 
     new_node->next = graph->adj_list[src];
     graph->adj_list[src] = new_node;
 
-    if (!directed) {  // ¹«¹æÇâ ±×·¡ÇÁÀÎ °æ¿ì
+    if (!directed) {  // ë¬´ë°©í–¥ ê·¸ë˜í”„ì¸ ê²½ìš°
         new_node = create_node(src, weight);
         if (!new_node) return false;
 
@@ -78,14 +78,14 @@ bool graph_add_edge(Graph* graph, int src, int dest, int weight, bool directed) 
     return true;
 }
 
-/* °£¼± Á¦°Å */
+/* ê°„ì„  ì œê±° */
 bool graph_remove_edge(Graph* graph, int src, int dest, bool directed) {
     if (!graph || src < 0 || src >= graph->num_vertices ||
         dest < 0 || dest >= graph->num_vertices) {
         return false;
     }
 
-    // src¿¡¼­ dest·ÎÀÇ °£¼± Á¦°Å
+    // srcì—ì„œ destë¡œì˜ ê°„ì„  ì œê±°
     Node* current = graph->adj_list[src];
     Node* prev = NULL;
 
@@ -94,7 +94,7 @@ bool graph_remove_edge(Graph* graph, int src, int dest, bool directed) {
         current = current->next;
     }
 
-    if (!current) return false;  // °£¼±ÀÌ Á¸ÀçÇÏÁö ¾ÊÀ½
+    if (!current) return false;  // ê°„ì„ ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŒ
 
     if (prev) {
         prev->next = current->next;
@@ -105,7 +105,7 @@ bool graph_remove_edge(Graph* graph, int src, int dest, bool directed) {
 
     free(current);
 
-    if (!directed) {  // ¹«¹æÇâ ±×·¡ÇÁÀÎ °æ¿ì ¹İ´ë ¹æÇâµµ Á¦°Å
+    if (!directed) {  // ë¬´ë°©í–¥ ê·¸ë˜í”„ì¸ ê²½ìš° ë°˜ëŒ€ ë°©í–¥ë„ ì œê±°
         current = graph->adj_list[dest];
         prev = NULL;
 
@@ -128,7 +128,7 @@ bool graph_remove_edge(Graph* graph, int src, int dest, bool directed) {
     return true;
 }
 
-/* °£¼± Á¸Àç ¿©ºÎ È®ÀÎ */
+/* ê°„ì„  ì¡´ì¬ ì—¬ë¶€ í™•ì¸ */
 bool graph_has_edge(const Graph* graph, int src, int dest) {
     if (!graph || src < 0 || src >= graph->num_vertices ||
         dest < 0 || dest >= graph->num_vertices) {
@@ -146,7 +146,7 @@ bool graph_has_edge(const Graph* graph, int src, int dest) {
     return false;
 }
 
-/* Á¤Á¡ÀÇ Â÷¼ö °è»ê */
+/* ì •ì ì˜ ì°¨ìˆ˜ ê³„ì‚° */
 int graph_degree(const Graph* graph, int vertex) {
     if (!graph || vertex < 0 || vertex >= graph->num_vertices) {
         return -1;
@@ -163,7 +163,7 @@ int graph_degree(const Graph* graph, int vertex) {
     return degree;
 }
 
-/* ±×·¡ÇÁ Ãâ·Â */
+/* ê·¸ë˜í”„ ì¶œë ¥ */
 void graph_print(const Graph* graph) {
     if (!graph) return;
 
@@ -180,7 +180,7 @@ void graph_print(const Graph* graph) {
     }
 }
 
-/* Á¤Á¡º° ÀÎÁ¢ Á¤Á¡ Á¤º¸ Ãâ·Â */
+/* ì •ì ë³„ ì¸ì ‘ ì •ì  ì •ë³´ ì¶œë ¥ */
 void graph_info(const Graph* graph) {
     if (!graph) return;
 
@@ -205,11 +205,11 @@ void graph_info(const Graph* graph) {
     }
 }
 
-/* ±×·¡ÇÁ ¸Ş¸ğ¸® ÇØÁ¦ */
+/* ê·¸ë˜í”„ ë©”ëª¨ë¦¬ í•´ì œ */
 void graph_destroy(Graph* graph) {
     if (!graph) return;
 
-    // °¢ Á¤Á¡ÀÇ ÀÎÁ¢ ¸®½ºÆ® ÇØÁ¦
+    // ê° ì •ì ì˜ ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ í•´ì œ
     for (int i = 0; i < graph->num_vertices; i++) {
         Node* current = graph->adj_list[i];
         while (current) {
@@ -223,7 +223,7 @@ void graph_destroy(Graph* graph) {
     free(graph);
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Graph Menu ===\n");
     printf("1. Add edge\n");
@@ -350,65 +350,65 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ÀÎÁ¢ ¸®½ºÆ®ÀÇ Æ¯Â¡
+1. ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ì˜ íŠ¹ì§•
 -----------------
-ÀåÁ¡:
-- Èñ¼Ò ±×·¡ÇÁ¿¡ È¿À²Àû
-- °ø°£ º¹Àâµµ O(V + E)
-- Á¤Á¡ ¼øÈ¸ È¿À²Àû
-- ¸Ş¸ğ¸® È¿À²Àû
+ì¥ì :
+- í¬ì†Œ ê·¸ë˜í”„ì— íš¨ìœ¨ì 
+- ê³µê°„ ë³µì¡ë„ O(V + E)
+- ì •ì  ìˆœíšŒ íš¨ìœ¨ì 
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì 
 
-´ÜÁ¡:
-- °£¼± Á¸Àç È®ÀÎ O(V)
-- ±¸ÇöÀÌ º¹ÀâÇÔ
-- Ä³½Ã Áö¿ª¼º ³·À½
-- ¸Ş¸ğ¸® ´ÜÆíÈ­
+ë‹¨ì :
+- ê°„ì„  ì¡´ì¬ í™•ì¸ O(V)
+- êµ¬í˜„ì´ ë³µì¡í•¨
+- ìºì‹œ ì§€ì—­ì„± ë‚®ìŒ
+- ë©”ëª¨ë¦¬ ë‹¨í¸í™”
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µì¡ë„
 -----------
-±âº» ¿¬»ê:
-- °£¼± Ãß°¡: O(1)
-- °£¼± Á¦°Å: O(V)
-- °£¼± È®ÀÎ: O(V)
+ê¸°ë³¸ ì—°ì‚°:
+- ê°„ì„  ì¶”ê°€: O(1)
+- ê°„ì„  ì œê±°: O(V)
+- ê°„ì„  í™•ì¸: O(V)
 
-Á¤Á¡ °ü·Ã:
-- Â÷¼ö °è»ê: O(V)
-- ÀÎÁ¢ Á¤Á¡: O(1)
-- ÀüÃ¼ ¼øÈ¸: O(V + E)
+ì •ì  ê´€ë ¨:
+- ì°¨ìˆ˜ ê³„ì‚°: O(V)
+- ì¸ì ‘ ì •ì : O(1)
+- ì „ì²´ ìˆœíšŒ: O(V + E)
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µì¡ë„
 -----------
 - O(V + E)
-- µ¿Àû ¸Ş¸ğ¸® »ç¿ë
-- ÇÊ¿äÇÑ ¸¸Å­¸¸ »ç¿ë
-- Ãß°¡ Æ÷ÀÎÅÍ ÇÊ¿ä
+- ë™ì  ë©”ëª¨ë¦¬ ì‚¬ìš©
+- í•„ìš”í•œ ë§Œí¼ë§Œ ì‚¬ìš©
+- ì¶”ê°€ í¬ì¸í„° í•„ìš”
 
-4. ±¸Çö Æ¯Â¡
+4. êµ¬í˜„ íŠ¹ì§•
 ----------
-- ¿¬°á ¸®½ºÆ® »ç¿ë
-- µ¿Àû ¸Ş¸ğ¸® °ü¸®
-- Æ÷ÀÎÅÍ Á¶ÀÛ
-- °¡ÁßÄ¡ Ç¥Çö
+- ì—°ê²° ë¦¬ìŠ¤íŠ¸ ì‚¬ìš©
+- ë™ì  ë©”ëª¨ë¦¬ ê´€ë¦¬
+- í¬ì¸í„° ì¡°ì‘
+- ê°€ì¤‘ì¹˜ í‘œí˜„
 
-5. È°¿ë ºĞ¾ß
+5. í™œìš© ë¶„ì•¼
 ----------
-- Èñ¼Ò ±×·¡ÇÁ
-- Å« ±×·¡ÇÁ
-- SNS °ü°è¸Á
-- À¥ ±×·¡ÇÁ
+- í¬ì†Œ ê·¸ë˜í”„
+- í° ê·¸ë˜í”„
+- SNS ê´€ê³„ë§
+- ì›¹ ê·¸ë˜í”„
 
-6. ÁÖÀÇ»çÇ×
+6. ì£¼ì˜ì‚¬í•­
 ---------
-- ¸Ş¸ğ¸® °ü¸®
-- Æ÷ÀÎÅÍ Ã³¸®
-- µ¿Àû ÇÒ´ç ½ÇÆĞ
-- ¸Ş¸ğ¸® ´©¼ö
+- ë©”ëª¨ë¦¬ ê´€ë¦¬
+- í¬ì¸í„° ì²˜ë¦¬
+- ë™ì  í• ë‹¹ ì‹¤íŒ¨
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜
 
-ÀÌ ±¸ÇöÀº ÀÎÁ¢ Çà·Ä°ú ´ëºñµÇ´Â
-ÀÎÁ¢ ¸®½ºÆ®ÀÇ Æ¯Â¡À» Àß º¸¿©ÁÖ¸ç,
-´ÙÀ½ ´Ü°èÀÎ ±×·¡ÇÁ ¼øÈ¸ ±¸ÇöÀÇ
-±âÃÊ°¡ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ ì¸ì ‘ í–‰ë ¬ê³¼ ëŒ€ë¹„ë˜ëŠ”
+ì¸ì ‘ ë¦¬ìŠ¤íŠ¸ì˜ íŠ¹ì§•ì„ ì˜ ë³´ì—¬ì£¼ë©°,
+ë‹¤ìŒ ë‹¨ê³„ì¸ ê·¸ë˜í”„ ìˆœíšŒ êµ¬í˜„ì˜
+ê¸°ì´ˆê°€ ë©ë‹ˆë‹¤.
 */

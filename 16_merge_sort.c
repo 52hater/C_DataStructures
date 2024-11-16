@@ -5,16 +5,16 @@
 
 typedef int DataType;
 
-/* º´ÇÕ ÇÔ¼ö (±âº» ¹öÀü)
- * - ¸Å°³º¯¼ö: arr - ¿øº» ¹è¿­, left, mid, right - º´ÇÕÇÒ ±¸°£
- *            temp - ÀÓ½Ã ¹è¿­
+/* ë³‘í•© í•¨ìˆ˜ (ê¸°ë³¸ ë²„ì „)
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì›ë³¸ ë°°ì—´, left, mid, right - ë³‘í•©í•  êµ¬ê°„
+ *            temp - ì„ì‹œ ë°°ì—´
  */
 void merge(DataType arr[], size_t left, size_t mid, size_t right, DataType temp[]) {
-    size_t i = left;    // ¿ŞÂÊ ¹è¿­ ÀÎµ¦½º
-    size_t j = mid + 1; // ¿À¸¥ÂÊ ¹è¿­ ÀÎµ¦½º
-    size_t k = left;    // ÀÓ½Ã ¹è¿­ ÀÎµ¦½º
+    size_t i = left;    // ì™¼ìª½ ë°°ì—´ ì¸ë±ìŠ¤
+    size_t j = mid + 1; // ì˜¤ë¥¸ìª½ ë°°ì—´ ì¸ë±ìŠ¤
+    size_t k = left;    // ì„ì‹œ ë°°ì—´ ì¸ë±ìŠ¤
 
-    // µÎ ¹è¿­À» ºñ±³ÇÏ¸ç ÀÓ½Ã ¹è¿­¿¡ º´ÇÕ
+    // ë‘ ë°°ì—´ì„ ë¹„êµí•˜ë©° ì„ì‹œ ë°°ì—´ì— ë³‘í•©
     while (i <= mid && j <= right) {
         if (arr[i] <= arr[j]) {
             temp[k++] = arr[i++];
@@ -24,25 +24,25 @@ void merge(DataType arr[], size_t left, size_t mid, size_t right, DataType temp[
         }
     }
 
-    // ¿ŞÂÊ ¹è¿­¿¡ ³²Àº ¿ä¼Ò º¹»ç
+    // ì™¼ìª½ ë°°ì—´ì— ë‚¨ì€ ìš”ì†Œ ë³µì‚¬
     while (i <= mid) {
         temp[k++] = arr[i++];
     }
 
-    // ¿À¸¥ÂÊ ¹è¿­¿¡ ³²Àº ¿ä¼Ò º¹»ç
+    // ì˜¤ë¥¸ìª½ ë°°ì—´ì— ë‚¨ì€ ìš”ì†Œ ë³µì‚¬
     while (j <= right) {
         temp[k++] = arr[j++];
     }
 
-    // ÀÓ½Ã ¹è¿­ÀÇ ³»¿ëÀ» ¿øº» ¹è¿­·Î º¹»ç
+    // ì„ì‹œ ë°°ì—´ì˜ ë‚´ìš©ì„ ì›ë³¸ ë°°ì—´ë¡œ ë³µì‚¬
     for (k = left; k <= right; k++) {
         arr[k] = temp[k];
     }
 }
 
-/* º´ÇÕ ÇÔ¼ö (ÃÖÀûÈ­ ¹öÀü)
- * - ¸Å°³º¯¼ö: arr - ¿øº» ¹è¿­, left, mid, right - º´ÇÕÇÒ ±¸°£
- *            temp - ÀÓ½Ã ¹è¿­
+/* ë³‘í•© í•¨ìˆ˜ (ìµœì í™” ë²„ì „)
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì›ë³¸ ë°°ì—´, left, mid, right - ë³‘í•©í•  êµ¬ê°„
+ *            temp - ì„ì‹œ ë°°ì—´
  */
 void merge_optimized(DataType arr[], size_t left, size_t mid, size_t right,
     DataType temp[]) {
@@ -50,35 +50,35 @@ void merge_optimized(DataType arr[], size_t left, size_t mid, size_t right,
     size_t j = mid + 1;
     size_t k = left;
 
-    // ¹Ì¸® ºñ±³ÇÏ¿© º´ÇÕÀÌ ÇÊ¿ä ¾ø´Â °æ¿ì Ã³¸®
+    // ë¯¸ë¦¬ ë¹„êµí•˜ì—¬ ë³‘í•©ì´ í•„ìš” ì—†ëŠ” ê²½ìš° ì²˜ë¦¬
     if (arr[mid] <= arr[j]) {
-        return;  // ÀÌ¹Ì Á¤·ÄµÈ »óÅÂ
+        return;  // ì´ë¯¸ ì •ë ¬ëœ ìƒíƒœ
     }
 
-    // µÎ ¹è¿­À» ºñ±³ÇÏ¸ç ÀÓ½Ã ¹è¿­¿¡ º´ÇÕ
+    // ë‘ ë°°ì—´ì„ ë¹„êµí•˜ë©° ì„ì‹œ ë°°ì—´ì— ë³‘í•©
     while (i <= mid && j <= right) {
         temp[k++] = (arr[i] <= arr[j]) ? arr[i++] : arr[j++];
     }
 
-    // ¿ŞÂÊ ¹è¿­¿¡ ³²Àº ¿ä¼Ò º¹»ç
+    // ì™¼ìª½ ë°°ì—´ì— ë‚¨ì€ ìš”ì†Œ ë³µì‚¬
     while (i <= mid) {
         temp[k++] = arr[i++];
     }
 
-    // ¿À¸¥ÂÊ ¹è¿­¿¡ ³²Àº ¿ä¼Ò º¹»ç
+    // ì˜¤ë¥¸ìª½ ë°°ì—´ì— ë‚¨ì€ ìš”ì†Œ ë³µì‚¬
     while (j <= right) {
         temp[k++] = arr[j++];
     }
 
-    // ÀÓ½Ã ¹è¿­ÀÇ ³»¿ëÀ» ¿øº» ¹è¿­·Î º¹»ç
+    // ì„ì‹œ ë°°ì—´ì˜ ë‚´ìš©ì„ ì›ë³¸ ë°°ì—´ë¡œ ë³µì‚¬
     for (k = left; k <= right; k++) {
         arr[k] = temp[k];
     }
 }
 
-/* ±âº» º´ÇÕ Á¤·Ä (Àç±Í ¹öÀü)
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, left, right - Á¤·ÄÇÒ ±¸°£
- *            temp - ÀÓ½Ã ¹è¿­
+/* ê¸°ë³¸ ë³‘í•© ì •ë ¬ (ì¬ê·€ ë²„ì „)
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, left, right - ì •ë ¬í•  êµ¬ê°„
+ *            temp - ì„ì‹œ ë°°ì—´
  */
 void merge_sort_recursive(DataType arr[], size_t left, size_t right,
     DataType temp[]) {
@@ -90,15 +90,15 @@ void merge_sort_recursive(DataType arr[], size_t left, size_t right,
     }
 }
 
-/* ÃÖÀûÈ­µÈ º´ÇÕ Á¤·Ä (Àç±Í ¹öÀü)
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, left, right - Á¤·ÄÇÒ ±¸°£
- *            temp - ÀÓ½Ã ¹è¿­
+/* ìµœì í™”ëœ ë³‘í•© ì •ë ¬ (ì¬ê·€ ë²„ì „)
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, left, right - ì •ë ¬í•  êµ¬ê°„
+ *            temp - ì„ì‹œ ë°°ì—´
  */
 void merge_sort_optimized_recursive(DataType arr[], size_t left, size_t right,
     DataType temp[]) {
-    // ÀÛÀº ¹è¿­Àº »ğÀÔ Á¤·Ä »ç¿ë
+    // ì‘ì€ ë°°ì—´ì€ ì‚½ì… ì •ë ¬ ì‚¬ìš©
     if (right - left <= 10) {
-        // »ğÀÔ Á¤·Ä ±¸Çö
+        // ì‚½ì… ì •ë ¬ êµ¬í˜„
         for (size_t i = left + 1; i <= right; i++) {
             DataType key = arr[i];
             size_t j = i - 1;
@@ -119,9 +119,9 @@ void merge_sort_optimized_recursive(DataType arr[], size_t left, size_t right,
     }
 }
 
-/* ¹İº¹Àû º´ÇÕ Á¤·Ä
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
- *            temp - ÀÓ½Ã ¹è¿­
+/* ë°˜ë³µì  ë³‘í•© ì •ë ¬
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
+ *            temp - ì„ì‹œ ë°°ì—´
  */
 void merge_sort_iterative(DataType arr[], size_t size, DataType temp[]) {
     for (size_t width = 1; width < size; width *= 2) {
@@ -133,8 +133,8 @@ void merge_sort_iterative(DataType arr[], size_t size, DataType temp[]) {
     }
 }
 
-/* Wrapper ÇÔ¼ö - ±âº» º´ÇÕ Á¤·Ä
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* Wrapper í•¨ìˆ˜ - ê¸°ë³¸ ë³‘í•© ì •ë ¬
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void merge_sort_basic(DataType arr[], size_t size) {
     DataType* temp = (DataType*)malloc(size * sizeof(DataType));
@@ -146,8 +146,8 @@ void merge_sort_basic(DataType arr[], size_t size) {
     free(temp);
 }
 
-/* Wrapper ÇÔ¼ö - ÃÖÀûÈ­µÈ º´ÇÕ Á¤·Ä
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* Wrapper í•¨ìˆ˜ - ìµœì í™”ëœ ë³‘í•© ì •ë ¬
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void merge_sort_optimized(DataType arr[], size_t size) {
     DataType* temp = (DataType*)malloc(size * sizeof(DataType));
@@ -159,8 +159,8 @@ void merge_sort_optimized(DataType arr[], size_t size) {
     free(temp);
 }
 
-/* Wrapper ÇÔ¼ö - ¹İº¹Àû º´ÇÕ Á¤·Ä
- * - ¸Å°³º¯¼ö: arr - Á¤·ÄÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* Wrapper í•¨ìˆ˜ - ë°˜ë³µì  ë³‘í•© ì •ë ¬
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì •ë ¬í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void merge_sort_iterative_wrapper(DataType arr[], size_t size) {
     DataType* temp = (DataType*)malloc(size * sizeof(DataType));
@@ -172,8 +172,8 @@ void merge_sort_iterative_wrapper(DataType arr[], size_t size) {
     free(temp);
 }
 
-/* ¹è¿­ Ãâ·Â
- * - ¸Å°³º¯¼ö: arr - Ãâ·ÂÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* ë°°ì—´ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: arr - ì¶œë ¥í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void print_array(const DataType arr[], size_t size) {
     for (size_t i = 0; i < size; i++) {
@@ -182,9 +182,9 @@ void print_array(const DataType arr[], size_t size) {
     printf("\n");
 }
 
-/* ¹è¿­ÀÌ Á¤·ÄµÇ¾ú´ÂÁö °ËÁõ
- * - ¸Å°³º¯¼ö: arr - °ËÁõÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
- * - ¹İÈ¯°ª: Á¤·ÄµÇ¾úÀ¸¸é true, ¾Æ´Ï¸é false
+/* ë°°ì—´ì´ ì •ë ¬ë˜ì—ˆëŠ”ì§€ ê²€ì¦
+ * - ë§¤ê°œë³€ìˆ˜: arr - ê²€ì¦í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
+ * - ë°˜í™˜ê°’: ì •ë ¬ë˜ì—ˆìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool is_sorted(const DataType arr[], size_t size) {
     for (size_t i = 0; i < size - 1; i++) {
@@ -195,8 +195,8 @@ bool is_sorted(const DataType arr[], size_t size) {
     return true;
 }
 
-/* ¹è¿­ º¹»ç
- * - ¸Å°³º¯¼ö: dest - ¸ñÀûÁö ¹è¿­, src - ¿øº» ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* ë°°ì—´ ë³µì‚¬
+ * - ë§¤ê°œë³€ìˆ˜: dest - ëª©ì ì§€ ë°°ì—´, src - ì›ë³¸ ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void copy_array(DataType dest[], const DataType src[], size_t size) {
     for (size_t i = 0; i < size; i++) {
@@ -204,9 +204,9 @@ void copy_array(DataType dest[], const DataType src[], size_t size) {
     }
 }
 
-/* ¾Ë°í¸®Áò ½ÇÇà ½Ã°£ ÃøÁ¤
- * - ¸Å°³º¯¼ö: sort_func - Á¤·Ä ÇÔ¼ö Æ÷ÀÎÅÍ, arr - Á¤·ÄÇÒ ¹è¿­,
- *            size - ¹è¿­ÀÇ Å©±â, name - ¾Ë°í¸®Áò ÀÌ¸§
+/* ì•Œê³ ë¦¬ì¦˜ ì‹¤í–‰ ì‹œê°„ ì¸¡ì •
+ * - ë§¤ê°œë³€ìˆ˜: sort_func - ì •ë ¬ í•¨ìˆ˜ í¬ì¸í„°, arr - ì •ë ¬í•  ë°°ì—´,
+ *            size - ë°°ì—´ì˜ í¬ê¸°, name - ì•Œê³ ë¦¬ì¦˜ ì´ë¦„
  */
 void measure_time(void (*sort_func)(DataType[], size_t),
     DataType arr[], size_t size, const char* name) {
@@ -218,23 +218,23 @@ void measure_time(void (*sort_func)(DataType[], size_t),
     printf("%s: %.6f seconds\n", name, cpu_time);
 }
 
-/* »õ·Î¿î ¹«ÀÛÀ§ ¹è¿­ »ı¼º
- * - ¸Å°³º¯¼ö: arr - »ı¼ºÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* ìƒˆë¡œìš´ ë¬´ì‘ìœ„ ë°°ì—´ ìƒì„±
+ * - ë§¤ê°œë³€ìˆ˜: arr - ìƒì„±í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void generate_random_array(DataType arr[], size_t size) {
     for (size_t i = 0; i < size; i++) {
-        arr[i] = rand() % 1000;  // 0-999 ¹üÀ§ÀÇ ¹«ÀÛÀ§ °ª
+        arr[i] = rand() % 1000;  // 0-999 ë²”ìœ„ì˜ ë¬´ì‘ìœ„ ê°’
     }
 }
 
-/* °ÅÀÇ Á¤·ÄµÈ ¹è¿­ »ı¼º
- * - ¸Å°³º¯¼ö: arr - »ı¼ºÇÒ ¹è¿­, size - ¹è¿­ÀÇ Å©±â
+/* ê±°ì˜ ì •ë ¬ëœ ë°°ì—´ ìƒì„±
+ * - ë§¤ê°œë³€ìˆ˜: arr - ìƒì„±í•  ë°°ì—´, size - ë°°ì—´ì˜ í¬ê¸°
  */
 void generate_nearly_sorted_array(DataType arr[], size_t size) {
     for (size_t i = 0; i < size; i++) {
         arr[i] = i;
     }
-    // ¾à 5%ÀÇ ¿ø¼Ò¸¸ ¹«ÀÛÀ§·Î ¼¯À½
+    // ì•½ 5%ì˜ ì›ì†Œë§Œ ë¬´ì‘ìœ„ë¡œ ì„ìŒ
     for (size_t i = 0; i < size / 20; i++) {
         size_t idx1 = rand() % size;
         size_t idx2 = rand() % size;
@@ -244,7 +244,7 @@ void generate_nearly_sorted_array(DataType arr[], size_t size) {
     }
 }
 
-/* ¸Ş´º Ãâ·Â */
+/* ë©”ë‰´ ì¶œë ¥ */
 void print_menu(void) {
     printf("\n=== Merge Sort Menu ===\n");
     printf("1. Run basic merge sort\n");
@@ -258,7 +258,7 @@ void print_menu(void) {
 }
 
 int main(void) {
-    srand((unsigned int)time(NULL));  // ³­¼ö ¹ß»ı±â ÃÊ±âÈ­
+    srand((unsigned int)time(NULL));  // ë‚œìˆ˜ ë°œìƒê¸° ì´ˆê¸°í™”
 
     size_t size;
     printf("Enter array size: ");
@@ -333,17 +333,17 @@ int main(void) {
         case 4:  // Compare all versions
             printf("\nComparing all versions with the same input:\n");
 
-            // ±âº» º´ÇÕ Á¤·Ä
+            // ê¸°ë³¸ ë³‘í•© ì •ë ¬
             copy_array(temp_arr, arr, size);
             measure_time(merge_sort_basic, temp_arr, size,
                 "Basic merge sort");
 
-            // ÃÖÀûÈ­µÈ º´ÇÕ Á¤·Ä
+            // ìµœì í™”ëœ ë³‘í•© ì •ë ¬
             copy_array(temp_arr, arr, size);
             measure_time(merge_sort_optimized, temp_arr, size,
                 "Optimized merge sort");
 
-            // ¹İº¹Àû º´ÇÕ Á¤·Ä
+            // ë°˜ë³µì  ë³‘í•© ì •ë ¬
             copy_array(temp_arr, arr, size);
             measure_time(merge_sort_iterative_wrapper, temp_arr, size,
                 "Iterative merge sort");
@@ -379,100 +379,100 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. º´ÇÕ Á¤·ÄÀÇ ±âº» ¿ø¸®
+1. ë³‘í•© ì •ë ¬ì˜ ê¸°ë³¸ ì›ë¦¬
 -------------------
-- ºĞÇÒ Á¤º¹ ¹æ½Ä
-- ¹è¿­À» ¹İÀ¸·Î ³ª´®
-- Àç±ÍÀû Á¤·Ä
-- º´ÇÕ °úÁ¤¿¡¼­ Á¤·Ä
-- ¾ÈÁ¤ Á¤·Ä (Stable Sort)
+- ë¶„í•  ì •ë³µ ë°©ì‹
+- ë°°ì—´ì„ ë°˜ìœ¼ë¡œ ë‚˜ëˆ”
+- ì¬ê·€ì  ì •ë ¬
+- ë³‘í•© ê³¼ì •ì—ì„œ ì •ë ¬
+- ì•ˆì • ì •ë ¬ (Stable Sort)
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µì¡ë„
 -----------
-ÃÖ¼±ÀÇ °æ¿ì: O(n log n)
-Æò±ÕÀÇ °æ¿ì: O(n log n)
-ÃÖ¾ÇÀÇ °æ¿ì: O(n log n)
-- ¸ğµç °æ¿ì µ¿ÀÏÇÑ ¼º´É
-- ÀÔ·Â¿¡ µ¶¸³Àû
+ìµœì„ ì˜ ê²½ìš°: O(n log n)
+í‰ê· ì˜ ê²½ìš°: O(n log n)
+ìµœì•…ì˜ ê²½ìš°: O(n log n)
+- ëª¨ë“  ê²½ìš° ë™ì¼í•œ ì„±ëŠ¥
+- ì…ë ¥ì— ë…ë¦½ì 
 
-3. °ø°£ º¹Àâµµ
+3. ê³µê°„ ë³µì¡ë„
 -----------
 O(n)
-- ÀÓ½Ã ¹è¿­ ÇÊ¿ä
-- Á¦ÀÚ¸® Á¤·Ä ¾Æ´Ô
-- Ãß°¡ ¸Ş¸ğ¸® »ç¿ë
+- ì„ì‹œ ë°°ì—´ í•„ìš”
+- ì œìë¦¬ ì •ë ¬ ì•„ë‹˜
+- ì¶”ê°€ ë©”ëª¨ë¦¬ ì‚¬ìš©
 
-4. ±¸Çö ¹æ½Ä
+4. êµ¬í˜„ ë°©ì‹
 ----------
-Àç±ÍÀû ±¸Çö:
-- Á÷°üÀûÀÎ ÀÌÇØ
-- Äİ ½ºÅÃ »ç¿ë
-- ±íÀÌ Á¦ÇÑ ÀÖÀ½
+ì¬ê·€ì  êµ¬í˜„:
+- ì§ê´€ì ì¸ ì´í•´
+- ì½œ ìŠ¤íƒ ì‚¬ìš©
+- ê¹Šì´ ì œí•œ ìˆìŒ
 
-¹İº¹Àû ±¸Çö:
-- Äİ ½ºÅÃ ¿À¹öÇìµå ¾øÀ½
-- ±¸ÇöÀÌ º¹Àâ
-- ¸Ş¸ğ¸® È¿À²Àû
+ë°˜ë³µì  êµ¬í˜„:
+- ì½œ ìŠ¤íƒ ì˜¤ë²„í—¤ë“œ ì—†ìŒ
+- êµ¬í˜„ì´ ë³µì¡
+- ë©”ëª¨ë¦¬ íš¨ìœ¨ì 
 
-5. ÃÖÀûÈ­ ±â¹ı
+5. ìµœì í™” ê¸°ë²•
 -----------
-ÀÛÀº ºÎºĞ¹è¿­:
-- »ğÀÔ Á¤·Ä È°¿ë
-- ÀÓ°è°ª ÀÌÇÏ Ã³¸®
-- ¿À¹öÇìµå °¨¼Ò
+ì‘ì€ ë¶€ë¶„ë°°ì—´:
+- ì‚½ì… ì •ë ¬ í™œìš©
+- ì„ê³„ê°’ ì´í•˜ ì²˜ë¦¬
+- ì˜¤ë²„í—¤ë“œ ê°ì†Œ
 
-º´ÇÕ ÃÖÀûÈ­:
-- ÀÌ¹Ì Á¤·ÄµÈ °æ¿ì °Ë»ç
-- º¹»ç È½¼ö °¨¼Ò
-- Ä³½Ã È¿À²¼º °³¼±
+ë³‘í•© ìµœì í™”:
+- ì´ë¯¸ ì •ë ¬ëœ ê²½ìš° ê²€ì‚¬
+- ë³µì‚¬ íšŸìˆ˜ ê°ì†Œ
+- ìºì‹œ íš¨ìœ¨ì„± ê°œì„ 
 
-6. Àå´ÜÁ¡
+6. ì¥ë‹¨ì 
 -------
-ÀåÁ¡:
-- ¾ÈÁ¤ Á¤·Ä
-- ¿¹Ãø °¡´ÉÇÑ ¼º´É
-- ¿¬°á ¸®½ºÆ® Á¤·Ä¿¡ ÀûÇÕ
-- ¿ÜºÎ Á¤·ÄÀÇ ±âÃÊ
+ì¥ì :
+- ì•ˆì • ì •ë ¬
+- ì˜ˆì¸¡ ê°€ëŠ¥í•œ ì„±ëŠ¥
+- ì—°ê²° ë¦¬ìŠ¤íŠ¸ ì •ë ¬ì— ì í•©
+- ì™¸ë¶€ ì •ë ¬ì˜ ê¸°ì´ˆ
 
-´ÜÁ¡:
-- Ãß°¡ ¸Ş¸ğ¸® ÇÊ¿ä
-- Ä³½Ã Áö¿ª¼º ³·À½
-- ÀÛÀº ¹è¿­¿¡ ºñÈ¿À²Àû
-- °ø°£ ¿À¹öÇìµå
+ë‹¨ì :
+- ì¶”ê°€ ë©”ëª¨ë¦¬ í•„ìš”
+- ìºì‹œ ì§€ì—­ì„± ë‚®ìŒ
+- ì‘ì€ ë°°ì—´ì— ë¹„íš¨ìœ¨ì 
+- ê³µê°„ ì˜¤ë²„í—¤ë“œ
 
-7. ÀÀ¿ë ºĞ¾ß
+7. ì‘ìš© ë¶„ì•¼
 ----------
-- ¿ÜºÎ Á¤·Ä
-- ¿¬°á ¸®½ºÆ® Á¤·Ä
-- º´·Ä Á¤·Ä
-- ¾ÈÁ¤¼ºÀÌ ÇÊ¿äÇÑ °æ¿ì
+- ì™¸ë¶€ ì •ë ¬
+- ì—°ê²° ë¦¬ìŠ¤íŠ¸ ì •ë ¬
+- ë³‘ë ¬ ì •ë ¬
+- ì•ˆì •ì„±ì´ í•„ìš”í•œ ê²½ìš°
 
-8. ±¸Çö Æ¯Â¡
+8. êµ¬í˜„ íŠ¹ì§•
 ----------
-- ¼¼ °¡Áö ±¸Çö ¹æ½Ä
-- ÃÖÀûÈ­ ±â¹ı Àû¿ë
-- ¼º´É ÃøÁ¤ ±â´É
-- °á°ú °ËÁõ
+- ì„¸ ê°€ì§€ êµ¬í˜„ ë°©ì‹
+- ìµœì í™” ê¸°ë²• ì ìš©
+- ì„±ëŠ¥ ì¸¡ì • ê¸°ëŠ¥
+- ê²°ê³¼ ê²€ì¦
 
-9. °³¼± °¡´É¼º
+9. ê°œì„  ê°€ëŠ¥ì„±
 -----------
-- º´·ÄÈ­
-- Ä³½Ã ÃÖÀûÈ­
-- ÇÏÀÌºê¸®µå ¹æ½Ä
-- ¸Ş¸ğ¸® Àç»ç¿ë
+- ë³‘ë ¬í™”
+- ìºì‹œ ìµœì í™”
+- í•˜ì´ë¸Œë¦¬ë“œ ë°©ì‹
+- ë©”ëª¨ë¦¬ ì¬ì‚¬ìš©
 
-10. ±³À°Àû °¡Ä¡
+10. êµìœ¡ì  ê°€ì¹˜
 ------------
-- ºĞÇÒ Á¤º¹ ÀÌÇØ
-- ¾ÈÁ¤ Á¤·Ä °³³ä
-- ½Ã°£/°ø°£ Æ®·¹ÀÌµå¿ÀÇÁ
-- ÃÖÀûÈ­ ±â¹ı ÇĞ½À
+- ë¶„í•  ì •ë³µ ì´í•´
+- ì•ˆì • ì •ë ¬ ê°œë…
+- ì‹œê°„/ê³µê°„ íŠ¸ë ˆì´ë“œì˜¤í”„
+- ìµœì í™” ê¸°ë²• í•™ìŠµ
 
-ÀÌ ±¸ÇöÀº º´ÇÕ Á¤·ÄÀÇ ´Ù¾çÇÑ
-¹öÀüÀ» Æ÷ÇÔÇÏ¸ç, °¢°¢ÀÇ Àå´ÜÁ¡À»
-ºñ±³ÇÒ ¼ö ÀÖ´Â ±³À°¿ë ÇÁ·Î±×·¥À»
-Á¦°øÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë³‘í•© ì •ë ¬ì˜ ë‹¤ì–‘í•œ
+ë²„ì „ì„ í¬í•¨í•˜ë©°, ê°ê°ì˜ ì¥ë‹¨ì ì„
+ë¹„êµí•  ìˆ˜ ìˆëŠ” êµìœ¡ìš© í”„ë¡œê·¸ë¨ì„
+ì œê³µí•©ë‹ˆë‹¤.
 */

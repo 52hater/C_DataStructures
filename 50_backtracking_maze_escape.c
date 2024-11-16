@@ -3,14 +3,14 @@
 #include <stdbool.h>
 
 /*
-¹Ì·Î Å»Ãâ ¹®Á¦ (Maze Escape)
+ë¯¸ë¡œ íƒˆì¶œ ë¬¸ì œ (Maze Escape)
 =========================
 
-Æ¯Â¡:
-1. ÇöÀç À§Ä¡¿¡¼­ °¡´ÉÇÑ ¸ðµç ¹æÇâ ½Ãµµ
-2. À¯È¿ÇÏÁö ¾ÊÀº °æ·Î´Â µÇµ¹¾Æ°¨
-3. ÃÖÁ¾ ¸ñÀûÁö µµ´Þ½Ã ¼º°ø
-4. ¸ðµç ¹æÇâ ½ÇÆÐ½Ã ¹éÆ®·¡Å·
+íŠ¹ì§•:
+1. í˜„ìž¬ ìœ„ì¹˜ì—ì„œ ê°€ëŠ¥í•œ ëª¨ë“  ë°©í–¥ ì‹œë„
+2. ìœ íš¨í•˜ì§€ ì•Šì€ ê²½ë¡œëŠ” ë˜ëŒì•„ê°
+3. ìµœì¢… ëª©ì ì§€ ë„ë‹¬ì‹œ ì„±ê³µ
+4. ëª¨ë“  ë°©í–¥ ì‹¤íŒ¨ì‹œ ë°±íŠ¸ëž˜í‚¹
 */
 
 #define MAX_SIZE 20
@@ -20,23 +20,23 @@ typedef struct {
 } Point;
 
 typedef struct {
-    int** maze;        // ¹Ì·Î ¹è¿­
-    int** solution;    // ÇØ°á °æ·Î
-    int size;          // ¹Ì·Î Å©±â
-    Point start;       // ½ÃÀÛÁ¡
-    Point end;         // µµÂøÁ¡
+    int** maze;        // ë¯¸ë¡œ ë°°ì—´
+    int** solution;    // í•´ê²° ê²½ë¡œ
+    int size;          // ë¯¸ë¡œ í¬ê¸°
+    Point start;       // ì‹œìž‘ì 
+    Point end;         // ë„ì°©ì 
 } Maze;
 
-// ¹æÇâ º¤ÅÍ (»ó,¿ì,ÇÏ,ÁÂ)
+// ë°©í–¥ ë²¡í„° (ìƒ,ìš°,í•˜,ì¢Œ)
 const int dx[] = { -1, 0, 1, 0 };
 const int dy[] = { 0, 1, 0, -1 };
 
-// ¹Ì·Î »ý¼º
+// ë¯¸ë¡œ ìƒì„±
 Maze* create_maze(int size) {
     Maze* maze = (Maze*)malloc(sizeof(Maze));
     maze->size = size;
 
-    // ¹Ì·Î ¹è¿­ ÇÒ´ç
+    // ë¯¸ë¡œ ë°°ì—´ í• ë‹¹
     maze->maze = (int**)malloc(size * sizeof(int*));
     maze->solution = (int**)malloc(size * sizeof(int*));
     for (int i = 0; i < size; i++) {
@@ -47,9 +47,9 @@ Maze* create_maze(int size) {
     return maze;
 }
 
-// ¹Ì·Î Ãâ·Â
+// ë¯¸ë¡œ ì¶œë ¥
 void print_maze_state(Maze* maze, bool show_solution) {
-    printf("\nÇöÀç ¹Ì·Î »óÅÂ:\n");
+    printf("\ní˜„ìž¬ ë¯¸ë¡œ ìƒíƒœ:\n");
     for (int i = 0; i < maze->size; i++) {
         for (int j = 0; j < maze->size; j++) {
             if (i == maze->start.x && j == maze->start.y)
@@ -68,49 +68,49 @@ void print_maze_state(Maze* maze, bool show_solution) {
     printf("\n");
 }
 
-// À¯È¿¼º °Ë»ç
+// ìœ íš¨ì„± ê²€ì‚¬
 bool is_valid_move(Maze* maze, int x, int y) {
     return (x >= 0 && x < maze->size &&
         y >= 0 && y < maze->size &&
         !maze->maze[x][y]);
 }
 
-// ¹éÆ®·¡Å·À¸·Î °æ·Î Ã£±â
+// ë°±íŠ¸ëž˜í‚¹ìœ¼ë¡œ ê²½ë¡œ ì°¾ê¸°
 bool solve_maze_util(Maze* maze, int x, int y, bool show_steps) {
-    // ¸ñÀûÁö µµ´Þ
+    // ëª©ì ì§€ ë„ë‹¬
     if (x == maze->end.x && y == maze->end.y) {
         maze->solution[x][y] = 1;
         return true;
     }
 
-    // ÇöÀç À§Ä¡°¡ À¯È¿ÇÑÁö °Ë»ç
+    // í˜„ìž¬ ìœ„ì¹˜ê°€ ìœ íš¨í•œì§€ ê²€ì‚¬
     if (is_valid_move(maze, x, y)) {
-        // ÇöÀç À§Ä¡ ¹æ¹® Ç¥½Ã
+        // í˜„ìž¬ ìœ„ì¹˜ ë°©ë¬¸ í‘œì‹œ
         maze->solution[x][y] = 1;
 
         if (show_steps) {
-            printf("\nÇöÀç À§Ä¡: (%d, %d)\n", x, y);
+            printf("\ní˜„ìž¬ ìœ„ì¹˜: (%d, %d)\n", x, y);
             print_maze_state(maze, true);
         }
 
-        // ³× ¹æÇâ ½Ãµµ
+        // ë„¤ ë°©í–¥ ì‹œë„
         for (int i = 0; i < 4; i++) {
             int next_x = x + dx[i];
             int next_y = y + dy[i];
 
             if (show_steps) {
-                printf("¹æÇâ %d ½Ãµµ (%d, %d)\n", i, next_x, next_y);
+                printf("ë°©í–¥ %d ì‹œë„ (%d, %d)\n", i, next_x, next_y);
             }
 
             if (solve_maze_util(maze, next_x, next_y, show_steps))
                 return true;
         }
 
-        // ¸ðµç ¹æÇâ ½ÇÆÐ½Ã ¹éÆ®·¡Å·
+        // ëª¨ë“  ë°©í–¥ ì‹¤íŒ¨ì‹œ ë°±íŠ¸ëž˜í‚¹
         maze->solution[x][y] = 0;
 
         if (show_steps) {
-            printf("\n¹éÆ®·¡Å·: (%d, %d)\n", x, y);
+            printf("\në°±íŠ¸ëž˜í‚¹: (%d, %d)\n", x, y);
             print_maze_state(maze, true);
         }
     }
@@ -118,16 +118,16 @@ bool solve_maze_util(Maze* maze, int x, int y, bool show_steps) {
     return false;
 }
 
-// ¹Ì·Î ÇØ°á ÇÔ¼ö
+// ë¯¸ë¡œ í•´ê²° í•¨ìˆ˜
 bool solve_maze(Maze* maze, bool show_steps) {
-    printf("\n=== ¹Ì·Î Å»Ãâ ½ÃÀÛ ===\n");
-    printf("½ÃÀÛÁ¡: (%d, %d)\n", maze->start.x, maze->start.y);
-    printf("µµÂøÁ¡: (%d, %d)\n", maze->end.x, maze->end.y);
+    printf("\n=== ë¯¸ë¡œ íƒˆì¶œ ì‹œìž‘ ===\n");
+    printf("ì‹œìž‘ì : (%d, %d)\n", maze->start.x, maze->start.y);
+    printf("ë„ì°©ì : (%d, %d)\n", maze->end.x, maze->end.y);
 
     return solve_maze_util(maze, maze->start.x, maze->start.y, show_steps);
 }
 
-// ¸Þ¸ð¸® ÇØÁ¦
+// ë©”ëª¨ë¦¬ í•´ì œ
 void destroy_maze(Maze* maze) {
     for (int i = 0; i < maze->size; i++) {
         free(maze->maze[i]);
@@ -140,36 +140,36 @@ void destroy_maze(Maze* maze) {
 
 int main(void) {
     int size;
-    printf("¹Ì·ÎÀÇ Å©±â ÀÔ·Â: ");
+    printf("ë¯¸ë¡œì˜ í¬ê¸° ìž…ë ¥: ");
     scanf("%d", &size);
 
     Maze* maze = create_maze(size);
 
-    printf("\n¹Ì·Î ÀÔ·Â (0: ±æ, 1: º®)\n");
+    printf("\në¯¸ë¡œ ìž…ë ¥ (0: ê¸¸, 1: ë²½)\n");
     for (int i = 0; i < size; i++) {
         for (int j = 0; j < size; j++) {
             scanf("%d", &maze->maze[i][j]);
         }
     }
 
-    printf("½ÃÀÛÁ¡ ÀÔ·Â (x y): ");
+    printf("ì‹œìž‘ì  ìž…ë ¥ (x y): ");
     scanf("%d %d", &maze->start.x, &maze->start.y);
 
-    printf("µµÂøÁ¡ ÀÔ·Â (x y): ");
+    printf("ë„ì°©ì  ìž…ë ¥ (x y): ");
     scanf("%d %d", &maze->end.x, &maze->end.y);
 
     print_maze_state(maze, false);
 
     bool show_steps;
-    printf("Ç®ÀÌ °úÁ¤À» º¸½Ã°Ú½À´Ï±î? (1: ¿¹, 0: ¾Æ´Ï¿À): ");
+    printf("í’€ì´ ê³¼ì •ì„ ë³´ì‹œê² ìŠµë‹ˆê¹Œ? (1: ì˜ˆ, 0: ì•„ë‹ˆì˜¤): ");
     scanf("%d", &show_steps);
 
     if (solve_maze(maze, show_steps)) {
-        printf("\n=== ¹Ì·Î Å»Ãâ ¼º°ø! ===\n");
+        printf("\n=== ë¯¸ë¡œ íƒˆì¶œ ì„±ê³µ! ===\n");
         print_maze_state(maze, true);
     }
     else {
-        printf("\n=== ¹Ì·Î Å»Ãâ ½ÇÆÐ! ===\n");
+        printf("\n=== ë¯¸ë¡œ íƒˆì¶œ ì‹¤íŒ¨! ===\n");
     }
 
     destroy_maze(maze);
@@ -177,38 +177,38 @@ int main(void) {
 }
 
 /*
-¹éÆ®·¡Å·ÀÇ ÇÙ½É °³³ä
+ë°±íŠ¸ëž˜í‚¹ì˜ í•µì‹¬ ê°œë…
 ================
 
-1. »óÅÂ °ø°£ Å½»ö
+1. ìƒíƒœ ê³µê°„ íƒìƒ‰
 --------------
-- DFS ±â¹Ý Å½»ö
-- À¯¸Á¼º °Ë»ç
-- °¡ÁöÄ¡±â
-- »óÅÂ º¹¿ø
+- DFS ê¸°ë°˜ íƒìƒ‰
+- ìœ ë§ì„± ê²€ì‚¬
+- ê°€ì§€ì¹˜ê¸°
+- ìƒíƒœ ë³µì›
 
-2. ½Ã°£ º¹Àâµµ
+2. ì‹œê°„ ë³µìž¡ë„
 -----------
-- ÃÖ¾Ç: O(4^(N©÷))
-- °¡ÁöÄ¡±â·Î ½ÇÁ¦·Î´Â ´õ È¿À²Àû
-- ¹Ì·Î ±¸Á¶¿¡ µû¶ó Å©°Ô ´Þ¶óÁü
+- ìµœì•…: O(4^(NÂ²))
+- ê°€ì§€ì¹˜ê¸°ë¡œ ì‹¤ì œë¡œëŠ” ë” íš¨ìœ¨ì 
+- ë¯¸ë¡œ êµ¬ì¡°ì— ë”°ë¼ í¬ê²Œ ë‹¬ë¼ì§
 
-3. ±¸Çö Æ¯Â¡
+3. êµ¬í˜„ íŠ¹ì§•
 ---------
-- Àç±ÍÀû Á¢±Ù
-- ¹æ¹® Ç¥½Ã
-- °æ·Î ÃßÀû
-- »óÅÂ ·Ñ¹é
+- ìž¬ê·€ì  ì ‘ê·¼
+- ë°©ë¬¸ í‘œì‹œ
+- ê²½ë¡œ ì¶”ì 
+- ìƒíƒœ ë¡¤ë°±
 
-4. ÃÖÀûÈ­ ±â¹ý
+4. ìµœì í™” ê¸°ë²•
 -----------
-- ¹æ¹® Ã¼Å©
-- ¹æÇâ ¿ì¼±¼øÀ§
-- ¸Þ¸ð¸® Àç»ç¿ë
-- Á¶±â Á¾·á
+- ë°©ë¬¸ ì²´í¬
+- ë°©í–¥ ìš°ì„ ìˆœìœ„
+- ë©”ëª¨ë¦¬ ìž¬ì‚¬ìš©
+- ì¡°ê¸° ì¢…ë£Œ
 
-ÀÌ ±¸ÇöÀº ¹éÆ®·¡Å·ÀÇ ±âº» ¿ø¸®¸¦
-¹Ì·Î Å»Ãâ ¹®Á¦¸¦ ÅëÇØ º¸¿©ÁÖ¸ç,
-»óÅÂ °ø°£ Å½»öÀÇ ÇÙ½ÉÀ»
-ÀÌÇØÇÏ´Â µ¥ µµ¿òÀÌ µË´Ï´Ù.
+ì´ êµ¬í˜„ì€ ë°±íŠ¸ëž˜í‚¹ì˜ ê¸°ë³¸ ì›ë¦¬ë¥¼
+ë¯¸ë¡œ íƒˆì¶œ ë¬¸ì œë¥¼ í†µí•´ ë³´ì—¬ì£¼ë©°,
+ìƒíƒœ ê³µê°„ íƒìƒ‰ì˜ í•µì‹¬ì„
+ì´í•´í•˜ëŠ” ë° ë„ì›€ì´ ë©ë‹ˆë‹¤.
 */

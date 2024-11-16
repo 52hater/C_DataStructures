@@ -5,20 +5,20 @@
 
 typedef int ElementType;
 
-// ³ëµå ±¸Á¶Ã¼ Á¤ÀÇ
+// ë…¸ë“œ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct Node {
     ElementType data;
     struct Node* next;
 } Node;
 
-// ½ºÅÃ ±¸Á¶Ã¼ Á¤ÀÇ
+// ìŠ¤íƒ êµ¬ì¡°ì²´ ì •ì˜
 typedef struct {
-    Node* top;      // ½ºÅÃÀÇ ÃÖ»óÀ§ ³ëµå¸¦ °¡¸®Å°´Â Æ÷ÀÎÅÍ
-    size_t size;    // ÇöÀç ½ºÅÃ¿¡ ÀúÀåµÈ ¿ä¼ÒÀÇ ¼ö
+    Node* top;      // ìŠ¤íƒì˜ ìµœìƒìœ„ ë…¸ë“œë¥¼ ê°€ë¦¬í‚¤ëŠ” í¬ì¸í„°
+    size_t size;    // í˜„ìž¬ ìŠ¤íƒì— ì €ìž¥ëœ ìš”ì†Œì˜ ìˆ˜
 } Stack;
 
-/* ¿À·ù Ã³¸®¸¦ À§ÇÑ ¿­°ÅÇü Á¤ÀÇ
- * - ½ºÅÃ ¿¬»êÀÇ ´Ù¾çÇÑ °á°ú »óÅÂ¸¦ Ç¥Çö
+/* ì˜¤ë¥˜ ì²˜ë¦¬ë¥¼ ìœ„í•œ ì—´ê±°í˜• ì •ì˜
+ * - ìŠ¤íƒ ì—°ì‚°ì˜ ë‹¤ì–‘í•œ ê²°ê³¼ ìƒíƒœë¥¼ í‘œí˜„
  */
 typedef enum {
     STACK_OK,
@@ -26,9 +26,9 @@ typedef enum {
     STACK_MEMORY_ERROR
 } StackResult;
 
-/* »õ·Î¿î ³ëµå »ý¼º
- * - ¸Å°³º¯¼ö: data - ÀúÀåÇÒ µ¥ÀÌÅÍ
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ ³ëµåÀÇ Æ÷ÀÎÅÍ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* ìƒˆë¡œìš´ ë…¸ë“œ ìƒì„±
+ * - ë§¤ê°œë³€ìˆ˜: data - ì €ìž¥í•  ë°ì´í„°
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ ë…¸ë“œì˜ í¬ì¸í„° ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 static Node* create_node(ElementType data) {
     Node* newNode = (Node*)malloc(sizeof(Node));
@@ -40,9 +40,9 @@ static Node* create_node(ElementType data) {
     return newNode;
 }
 
-/* ½ºÅÃ »ý¼º
- * - »õ·Î¿î ºó ½ºÅÃÀ» µ¿ÀûÀ¸·Î ÇÒ´çÇÏ°í ÃÊ±âÈ­
- * - ¹ÝÈ¯°ª: »ý¼ºµÈ ½ºÅÃÀÇ Æ÷ÀÎÅÍ ¶Ç´Â ½ÇÆÐ ½Ã NULL
+/* ìŠ¤íƒ ìƒì„±
+ * - ìƒˆë¡œìš´ ë¹ˆ ìŠ¤íƒì„ ë™ì ìœ¼ë¡œ í• ë‹¹í•˜ê³  ì´ˆê¸°í™”
+ * - ë°˜í™˜ê°’: ìƒì„±ëœ ìŠ¤íƒì˜ í¬ì¸í„° ë˜ëŠ” ì‹¤íŒ¨ ì‹œ NULL
  */
 Stack* stack_create(void) {
     Stack* stack = (Stack*)malloc(sizeof(Stack));
@@ -54,25 +54,25 @@ Stack* stack_create(void) {
     return stack;
 }
 
-/* ½ºÅÃÀÌ ºñ¾îÀÖ´ÂÁö È®ÀÎ
- * - ¸Å°³º¯¼ö: stack - °Ë»çÇÒ ½ºÅÃ
- * - ¹ÝÈ¯°ª: ºñ¾îÀÖÀ¸¸é true, ¾Æ´Ï¸é false
+/* ìŠ¤íƒì´ ë¹„ì–´ìžˆëŠ”ì§€ í™•ì¸
+ * - ë§¤ê°œë³€ìˆ˜: stack - ê²€ì‚¬í•  ìŠ¤íƒ
+ * - ë°˜í™˜ê°’: ë¹„ì–´ìžˆìœ¼ë©´ true, ì•„ë‹ˆë©´ false
  */
 bool stack_is_empty(const Stack* stack) {
     return (stack->size == 0);
 }
 
-/* ½ºÅÃÀÇ ÇöÀç Å©±â ¹ÝÈ¯
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ
- * - ¹ÝÈ¯°ª: ½ºÅÃ¿¡ ÀúÀåµÈ ¿ä¼ÒÀÇ ¼ö
+/* ìŠ¤íƒì˜ í˜„ìž¬ í¬ê¸° ë°˜í™˜
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ
+ * - ë°˜í™˜ê°’: ìŠ¤íƒì— ì €ìž¥ëœ ìš”ì†Œì˜ ìˆ˜
  */
 size_t stack_size(const Stack* stack) {
     return stack->size;
 }
 
-/* ½ºÅÃ¿¡ ¿ä¼Ò Ãß°¡ (push)
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ, value - Ãß°¡ÇÒ °ª
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â StackResult
+/* ìŠ¤íƒì— ìš”ì†Œ ì¶”ê°€ (push)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ, value - ì¶”ê°€í•  ê°’
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” StackResult
  */
 StackResult stack_push(Stack* stack, ElementType value) {
     Node* newNode = create_node(value);
@@ -86,9 +86,9 @@ StackResult stack_push(Stack* stack, ElementType value) {
     return STACK_OK;
 }
 
-/* ½ºÅÃ¿¡¼­ ¿ä¼Ò Á¦°Å (pop)
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ, value - Á¦°ÅµÈ °ªÀ» ÀúÀåÇÒ Æ÷ÀÎÅÍ
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â StackResult
+/* ìŠ¤íƒì—ì„œ ìš”ì†Œ ì œê±° (pop)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ, value - ì œê±°ëœ ê°’ì„ ì €ìž¥í•  í¬ì¸í„°
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” StackResult
  */
 StackResult stack_pop(Stack* stack, ElementType* value) {
     if (stack_is_empty(stack)) {
@@ -103,9 +103,9 @@ StackResult stack_pop(Stack* stack, ElementType* value) {
     return STACK_OK;
 }
 
-/* ½ºÅÃÀÇ ¸Ç À§ ¿ä¼Ò È®ÀÎ (peek)
- * - ¸Å°³º¯¼ö: stack - ´ë»ó ½ºÅÃ, value - °ªÀ» ÀúÀåÇÒ Æ÷ÀÎÅÍ
- * - ¹ÝÈ¯°ª: ¿¬»ê °á°ú¸¦ ³ªÅ¸³»´Â StackResult
+/* ìŠ¤íƒì˜ ë§¨ ìœ„ ìš”ì†Œ í™•ì¸ (peek)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ëŒ€ìƒ ìŠ¤íƒ, value - ê°’ì„ ì €ìž¥í•  í¬ì¸í„°
+ * - ë°˜í™˜ê°’: ì—°ì‚° ê²°ê³¼ë¥¼ ë‚˜íƒ€ë‚´ëŠ” StackResult
  */
 StackResult stack_peek(const Stack* stack, ElementType* value) {
     if (stack_is_empty(stack)) {
@@ -116,8 +116,8 @@ StackResult stack_peek(const Stack* stack, ElementType* value) {
     return STACK_OK;
 }
 
-/* ½ºÅÃ ÃÊ±âÈ­ (clear)
- * - ¸Å°³º¯¼ö: stack - ÃÊ±âÈ­ÇÒ ½ºÅÃ
+/* ìŠ¤íƒ ì´ˆê¸°í™” (clear)
+ * - ë§¤ê°œë³€ìˆ˜: stack - ì´ˆê¸°í™”í•  ìŠ¤íƒ
  */
 void stack_clear(Stack* stack) {
     ElementType dummy;
@@ -126,16 +126,16 @@ void stack_clear(Stack* stack) {
     }
 }
 
-/* ½ºÅÃ ¸Þ¸ð¸® ÇØÁ¦
- * - ¸Å°³º¯¼ö: stack - ÇØÁ¦ÇÒ ½ºÅÃ
+/* ìŠ¤íƒ ë©”ëª¨ë¦¬ í•´ì œ
+ * - ë§¤ê°œë³€ìˆ˜: stack - í•´ì œí•  ìŠ¤íƒ
  */
 void stack_destroy(Stack* stack) {
     stack_clear(stack);
     free(stack);
 }
 
-/* ½ºÅÃÀÇ ¸ðµç ¿ä¼Ò Ãâ·Â
- * - ¸Å°³º¯¼ö: stack - Ãâ·ÂÇÒ ½ºÅÃ
+/* ìŠ¤íƒì˜ ëª¨ë“  ìš”ì†Œ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: stack - ì¶œë ¥í•  ìŠ¤íƒ
  */
 void stack_print(const Stack* stack) {
     if (stack_is_empty(stack)) {
@@ -152,22 +152,22 @@ void stack_print(const Stack* stack) {
     printf("] BOTTOM\n");
 }
 
-/* ½ºÅÃÀÇ »óÅÂ Á¤º¸ Ãâ·Â
- * - ¸Å°³º¯¼ö: stack - »óÅÂ¸¦ È®ÀÎÇÒ ½ºÅÃ
+/* ìŠ¤íƒì˜ ìƒíƒœ ì •ë³´ ì¶œë ¥
+ * - ë§¤ê°œë³€ìˆ˜: stack - ìƒíƒœë¥¼ í™•ì¸í•  ìŠ¤íƒ
  */
 void stack_status(const Stack* stack) {
     printf("\nStack Status:\n");
     printf("- Size: %zu\n", stack->size);
     printf("- Empty: %s\n", stack_is_empty(stack) ? "Yes" : "No");
 
-    // ¸Þ¸ð¸® »ç¿ë·® °è»ê (´ë·«Àû)
+    // ë©”ëª¨ë¦¬ ì‚¬ìš©ëŸ‰ ê³„ì‚° (ëŒ€ëžµì )
     size_t stack_memory = sizeof(Stack);
     size_t node_memory = sizeof(Node) * stack->size;
     printf("- Memory usage: %zu bytes (overhead: %zu bytes, nodes: %zu bytes)\n",
         stack_memory + node_memory, stack_memory, node_memory);
 }
 
-/* ¸Þ´º Ãâ·Â ÇÔ¼ö */
+/* ë©”ë‰´ ì¶œë ¥ í•¨ìˆ˜ */
 void print_menu(void) {
     printf("\n=== Linked List-based Stack Menu ===\n");
     printf("1. Push\n");
@@ -182,8 +182,8 @@ void print_menu(void) {
     printf("Choice: ");
 }
 
-/* ¿¡·¯ ¸Þ½ÃÁö Ãâ·Â ÇÔ¼ö
- * - ¸Å°³º¯¼ö: result - ½ºÅÃ ¿¬»ê °á°ú
+/* ì—ëŸ¬ ë©”ì‹œì§€ ì¶œë ¥ í•¨ìˆ˜
+ * - ë§¤ê°œë³€ìˆ˜: result - ìŠ¤íƒ ì—°ì‚° ê²°ê³¼
  */
 void print_error(StackResult result) {
     switch (result) {
@@ -213,7 +213,7 @@ int main(void) {
         print_menu();
         if (scanf("%d", &choice) != 1) {
             printf("Invalid input\n");
-            while (getchar() != '\n');  // ÀÔ·Â ¹öÆÛ ºñ¿ì±â
+            while (getchar() != '\n');  // ìž…ë ¥ ë²„í¼ ë¹„ìš°ê¸°
             continue;
         }
 
@@ -286,96 +286,96 @@ int main(void) {
 
 /*
 ==========================================
-»ó¼¼ ¼³¸í ¹× ÁÖ¿ä °³³ä
+ìƒì„¸ ì„¤ëª… ë° ì£¼ìš” ê°œë…
 ==========================================
 
-1. ¿¬°á ¸®½ºÆ® ±â¹Ý ½ºÅÃÀÇ Æ¯Â¡
+1. ì—°ê²° ë¦¬ìŠ¤íŠ¸ ê¸°ë°˜ ìŠ¤íƒì˜ íŠ¹ì§•
 ---------------------------
-- µ¿Àû ¸Þ¸ð¸® ÇÒ´ç »ç¿ë
-- ³ëµå ´ÜÀ§ÀÇ ¸Þ¸ð¸® °ü¸®
-- Å©±â Á¦ÇÑ ¾øÀ½
-- Æ÷ÀÎÅÍ ±â¹Ý ±¸Á¶
+- ë™ì  ë©”ëª¨ë¦¬ í• ë‹¹ ì‚¬ìš©
+- ë…¸ë“œ ë‹¨ìœ„ì˜ ë©”ëª¨ë¦¬ ê´€ë¦¬
+- í¬ê¸° ì œí•œ ì—†ìŒ
+- í¬ì¸í„° ê¸°ë°˜ êµ¬ì¡°
 
-2. ¹è¿­ ±â¹Ý vs ¿¬°á ¸®½ºÆ® ±â¹Ý ºñ±³
+2. ë°°ì—´ ê¸°ë°˜ vs ì—°ê²° ë¦¬ìŠ¤íŠ¸ ê¸°ë°˜ ë¹„êµ
 --------------------------------
-ÀåÁ¡:
-- Å©±â Á¦ÇÑÀÌ ¾øÀ½
-- ¸Þ¸ð¸®¸¦ ÇÊ¿äÇÑ ¸¸Å­¸¸ »ç¿ë
-- »ðÀÔ/»èÁ¦°¡ Ç×»ó O(1)
-- ÀçÇÒ´ç ¿À¹öÇìµå ¾øÀ½
+ìž¥ì :
+- í¬ê¸° ì œí•œì´ ì—†ìŒ
+- ë©”ëª¨ë¦¬ë¥¼ í•„ìš”í•œ ë§Œí¼ë§Œ ì‚¬ìš©
+- ì‚½ìž…/ì‚­ì œê°€ í•­ìƒ O(1)
+- ìž¬í• ë‹¹ ì˜¤ë²„í—¤ë“œ ì—†ìŒ
 
-´ÜÁ¡:
-- Ãß°¡ ¸Þ¸ð¸® »ç¿ë (Æ÷ÀÎÅÍ)
-- Ä³½Ã Áö¿ª¼º ³·À½
-- ¸Þ¸ð¸® ´ÜÆíÈ­ °¡´É¼º
-- °³º° ³ëµå ÇÒ´ç/ÇØÁ¦ ¿À¹öÇìµå
+ë‹¨ì :
+- ì¶”ê°€ ë©”ëª¨ë¦¬ ì‚¬ìš© (í¬ì¸í„°)
+- ìºì‹œ ì§€ì—­ì„± ë‚®ìŒ
+- ë©”ëª¨ë¦¬ ë‹¨íŽ¸í™” ê°€ëŠ¥ì„±
+- ê°œë³„ ë…¸ë“œ í• ë‹¹/í•´ì œ ì˜¤ë²„í—¤ë“œ
 
-3. ±¸Çö Æ¯Â¡
+3. êµ¬í˜„ íŠ¹ì§•
 ----------
-Node ±¸Á¶Ã¼:
-- data: ½ÇÁ¦ µ¥ÀÌÅÍ
-- next: ´ÙÀ½ ³ëµå Æ÷ÀÎÅÍ
+Node êµ¬ì¡°ì²´:
+- data: ì‹¤ì œ ë°ì´í„°
+- next: ë‹¤ìŒ ë…¸ë“œ í¬ì¸í„°
 
-Stack ±¸Á¶Ã¼:
-- top: ÃÖ»óÀ§ ³ëµå Æ÷ÀÎÅÍ
-- size: ÇöÀç ¿ä¼Ò ¼ö
+Stack êµ¬ì¡°ì²´:
+- top: ìµœìƒìœ„ ë…¸ë“œ í¬ì¸í„°
+- size: í˜„ìž¬ ìš”ì†Œ ìˆ˜
 
-4. ÁÖ¿ä ¿¬»ê
+4. ì£¼ìš” ì—°ì‚°
 ----------
-±âº» ¿¬»ê:
+ê¸°ë³¸ ì—°ì‚°:
 - Push: O(1)
 - Pop: O(1)
 - Peek: O(1)
 
-º¸Á¶ ¿¬»ê:
+ë³´ì¡° ì—°ì‚°:
 - Clear: O(n)
 - IsEmpty: O(1)
 - Size: O(1)
 
-5. ¸Þ¸ð¸® °ü¸®
+5. ë©”ëª¨ë¦¬ ê´€ë¦¬
 -----------
-- ³ëµå ´ÜÀ§ µ¿Àû ÇÒ´ç
-- °³º° ³ëµå ÇØÁ¦
-- ½ºÅÃ ±¸Á¶Ã¼ °ü¸®
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
+- ë…¸ë“œ ë‹¨ìœ„ ë™ì  í• ë‹¹
+- ê°œë³„ ë…¸ë“œ í•´ì œ
+- ìŠ¤íƒ êµ¬ì¡°ì²´ ê´€ë¦¬
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
 
-6. ¿À·ù Ã³¸®
+6. ì˜¤ë¥˜ ì²˜ë¦¬
 ----------
-- ¸Þ¸ð¸® ÇÒ´ç ½ÇÆÐ
-- ºó ½ºÅÃ Ã³¸®
-- NULL Æ÷ÀÎÅÍ °Ë»ç
-- ¾ÈÀüÇÑ ¸Þ¸ð¸® ÇØÁ¦
+- ë©”ëª¨ë¦¬ í• ë‹¹ ì‹¤íŒ¨
+- ë¹ˆ ìŠ¤íƒ ì²˜ë¦¬
+- NULL í¬ì¸í„° ê²€ì‚¬
+- ì•ˆì „í•œ ë©”ëª¨ë¦¬ í•´ì œ
 
-7. ÃÖÀûÈ­ Æ¯Â¡
+7. ìµœì í™” íŠ¹ì§•
 -----------
-- »ó¼ö ½Ã°£ »ðÀÔ/»èÁ¦
-- ÃÖ¼ÒÇÑÀÇ ¸Þ¸ð¸® ÀÌµ¿
-- È¿À²ÀûÀÎ ¸Þ¸ð¸® »ç¿ë
-- °£´ÜÇÑ ±¸Çö
+- ìƒìˆ˜ ì‹œê°„ ì‚½ìž…/ì‚­ì œ
+- ìµœì†Œí•œì˜ ë©”ëª¨ë¦¬ ì´ë™
+- íš¨ìœ¨ì ì¸ ë©”ëª¨ë¦¬ ì‚¬ìš©
+- ê°„ë‹¨í•œ êµ¬í˜„
 
-8. ¾ÈÀü¼º °í·Á»çÇ×
+8. ì•ˆì „ì„± ê³ ë ¤ì‚¬í•­
 --------------
-- Æ÷ÀÎÅÍ À¯È¿¼º °Ë»ç
-- ¸Þ¸ð¸® ´©¼ö ¹æÁö
-- ´Ü°èÀû ÀÚ¿ø ÇØÁ¦
-- °æ°è Á¶°Ç Ã³¸®
+- í¬ì¸í„° ìœ íš¨ì„± ê²€ì‚¬
+- ë©”ëª¨ë¦¬ ëˆ„ìˆ˜ ë°©ì§€
+- ë‹¨ê³„ì  ìžì› í•´ì œ
+- ê²½ê³„ ì¡°ê±´ ì²˜ë¦¬
 
-9. ±³À°Àû °¡Ä¡
+9. êµìœ¡ì  ê°€ì¹˜
 -----------
-- Æ÷ÀÎÅÍ °³³ä ÇÐ½À
-- µ¿Àû ¸Þ¸ð¸® °ü¸®
-- ¿¬°á ¸®½ºÆ® ÀÌÇØ
-- LIFO ¿ø¸® ÇÐ½À
+- í¬ì¸í„° ê°œë… í•™ìŠµ
+- ë™ì  ë©”ëª¨ë¦¬ ê´€ë¦¬
+- ì—°ê²° ë¦¬ìŠ¤íŠ¸ ì´í•´
+- LIFO ì›ë¦¬ í•™ìŠµ
 
-10. ½Ç¹«Àû Æ¯Â¡
+10. ì‹¤ë¬´ì  íŠ¹ì§•
 ------------
-- °ß°íÇÑ ±¸Çö
-- È®Àå °¡´ÉÇÑ ±¸Á¶
-- ¸íÈ®ÇÑ ¿¡·¯ Ã³¸®
-- À¯Áöº¸¼ö ¿ëÀÌ¼º
+- ê²¬ê³ í•œ êµ¬í˜„
+- í™•ìž¥ ê°€ëŠ¥í•œ êµ¬ì¡°
+- ëª…í™•í•œ ì—ëŸ¬ ì²˜ë¦¬
+- ìœ ì§€ë³´ìˆ˜ ìš©ì´ì„±
 
-ÀÌ ±¸ÇöÀº ½ÇÁ¦ ÇÁ·ÎÁ§Æ®¿¡¼­ »ç¿ëÇÒ ¼ö ÀÖ´Â
-¾ÈÁ¤ÀûÀÌ°í È¿À²ÀûÀÎ ¿¬°á ¸®½ºÆ® ±â¹Ý ½ºÅÃÀ»
-Á¦°øÇÕ´Ï´Ù. Æ¯È÷ Å©±â°¡ °¡º¯ÀûÀÌ°Å³ª
-¿¹ÃøÇÏ±â ¾î·Á¿î °æ¿ì¿¡ À¯¿ëÇÕ´Ï´Ù.
+ì´ êµ¬í˜„ì€ ì‹¤ì œ í”„ë¡œì íŠ¸ì—ì„œ ì‚¬ìš©í•  ìˆ˜ ìžˆëŠ”
+ì•ˆì •ì ì´ê³  íš¨ìœ¨ì ì¸ ì—°ê²° ë¦¬ìŠ¤íŠ¸ ê¸°ë°˜ ìŠ¤íƒì„
+ì œê³µí•©ë‹ˆë‹¤. íŠ¹ížˆ í¬ê¸°ê°€ ê°€ë³€ì ì´ê±°ë‚˜
+ì˜ˆì¸¡í•˜ê¸° ì–´ë ¤ìš´ ê²½ìš°ì— ìœ ìš©í•©ë‹ˆë‹¤.
 */

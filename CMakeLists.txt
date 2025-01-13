@@ -12,10 +12,42 @@ endif()
 project ("C_DataStructures")
 
 # 이 프로젝트의 실행 파일에 소스를 추가합니다.
-add_executable (C_DataStructures "C_DataStructures.cpp" "C_DataStructures.h"                 "01_single_linkedlist.c" "02_doubly_linkedlist.c" "03_circular_linkedlist.c" "04_array_stack.c" "05_linkedlist_stack.c" "06_circular_queue.c" "07_linked_queue.c" "08_binary_tree.c" "09_binary_search_tree.c" "10_expression_tree.c" "11_disjoint_set.c" "12_bubble_sort.c" "13_insertion_sort.c" "14_selection_sort.c")
 
-if (CMAKE_VERSION VERSION_GREATER 3.12)
-  set_property(TARGET C_DataStructures PROPERTY CXX_STANDARD 20)
-endif()
+# src/c 디렉터리의 모든 .c 파일
+file(GLOB C_FILES "${CMAKE_SOURCE_DIR}/src/c/*.c")
 
-# TODO: 필요한 경우 테스트를 추가하고 대상을 설치합니다.
+# tests/cpp 디렉터리의 모든 .cpp 파일
+file(GLOB CPP_FILES
+        "${CMAKE_SOURCE_DIR}/tests/cpp/01_linkedlist/*.cpp"
+        "${CMAKE_SOURCE_DIR}/tests/cpp/02_stack/*.cpp"
+        "${CMAKE_SOURCE_DIR}/tests/cpp/03_queue/*.cpp"
+        "${CMAKE_SOURCE_DIR}/tests/cpp/04_tree/*.cpp"
+)
+
+# main.cpp (사용예제) 디렉터리
+file(GLOB EXAMPLE_FILES "${CMAKE_SOURCE_DIR}/examples/*.cpp")
+
+############################################################
+
+# 헤더 파일이 들어있는 디렉터리 추가 (인터페이스 헤더들)
+include_directories("${CMAKE_SOURCE_DIR}/include/mylib/interfaces")
+
+# 헤더 파일이 들어있는 디렉터리 추가 (템플릿 구현 포함 헤더들)
+include_directories(
+        "${CMAKE_SOURCE_DIR}/src/hpp"
+        "${CMAKE_SOURCE_DIR}/src/hpp/01_linked_list"
+        "${CMAKE_SOURCE_DIR}/src/hpp/02_stack"
+        "${CMAKE_SOURCE_DIR}/src/hpp/03_queue"
+        "${CMAKE_SOURCE_DIR}/src/hpp/04_tree"
+)
+
+# 실행 파일에 소스 추가
+add_executable(C_DataStructures ${C_FILES} ${CPP_FILES} ${EXAMPLE_FILES} "C_DataStructures.cpp" "C_DataStructures.h"
+        include/mylib/interfaces/i_linked_list.hpp
+        src/hpp/01_linked_list/single_linked_list.hpp
+        src/hpp/01_linked_list/double_linked_list.hpp
+        src/hpp/01_linked_list/circular_linked_list.hpp
+        tests/cpp/01_linked_list/single_linked_list_test.cpp
+        tests/cpp/01_linked_list/double_linked_list_test.cpp
+        tests/cpp/01_linked_list/circular_linked_list.cpp
+)

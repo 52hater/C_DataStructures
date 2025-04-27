@@ -51,416 +51,423 @@ build cmake_object_order_depends_target_C_DataStructures: phony || .
 
 build CMakeFiles/C_DataStructures.dir/src/c/01_single_linkedlist.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/01_single_linkedlist.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\01_single_linkedlist.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/02_doubly_linkedlist.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/02_doubly_linkedlist.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\02_doubly_linkedlist.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/03_circular_linkedlist.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/03_circular_linkedlist.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\03_circular_linkedlist.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/04_array_stack.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/04_array_stack.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\04_array_stack.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/05_linkedlist_stack.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/05_linkedlist_stack.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\05_linkedlist_stack.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/06_circular_queue.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/06_circular_queue.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\06_circular_queue.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/07_linked_queue.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/07_linked_queue.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\07_linked_queue.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/08_binary_tree.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/08_binary_tree.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\08_binary_tree.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/09_binary_search_tree.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/09_binary_search_tree.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\09_binary_search_tree.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/10_expression_tree.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/10_expression_tree.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\10_expression_tree.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/11_disjoint_set.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/11_disjoint_set.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\11_disjoint_set.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/12_bubble_sort.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/12_bubble_sort.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\12_bubble_sort.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/13_insertion_sort.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/13_insertion_sort.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\13_insertion_sort.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/14_selection_sort.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/14_selection_sort.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\14_selection_sort.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/15_quick_sort.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/15_quick_sort.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\15_quick_sort.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/16_merge_sort.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/16_merge_sort.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\16_merge_sort.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/17_heap_sort.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/17_heap_sort.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\17_heap_sort.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/18_qsort_function.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/18_qsort_function.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\18_qsort_function.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/19_sequential_search.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/19_sequential_search.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\19_sequential_search.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/20_binary_search.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/20_binary_search.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\20_binary_search.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/21_bsearch_function.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/21_bsearch_function.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\21_bsearch_function.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/22_priority_queue.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/22_priority_queue.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\22_priority_queue.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/23_max_heap.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/23_max_heap.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\23_max_heap.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/24_heap_based_priority_que.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/24_heap_based_priority_que.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\24_heap_based_priority_que.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/25_chaining_hash_table.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/25_chaining_hash_table.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\25_chaining_hash_table.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/26_open_addressing_hash_table.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/26_open_addressing_hash_table.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\26_open_addressing_hash_table.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/27_adjacency_matrix.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/27_adjacency_matrix.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\27_adjacency_matrix.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/28_adjacency_list.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/28_adjacency_list.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\28_adjacency_list.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/29_graph_dfs.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/29_graph_dfs.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\29_graph_dfs.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/30_graph_bfs.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/30_graph_bfs.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\30_graph_bfs.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/31_kruskal_algorithm.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/31_kruskal_algorithm.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\31_kruskal_algorithm.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/32_prim_algorithm.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/32_prim_algorithm.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\32_prim_algorithm.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/33_dijkstra_algorithm.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/33_dijkstra_algorithm.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\33_dijkstra_algorithm.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/34_topological_sort.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/34_topological_sort.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\34_topological_sort.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/35_brute_force_string_search.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/35_brute_force_string_search.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\35_brute_force_string_search.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/36_kmp_string_search.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/36_kmp_string_search.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\36_kmp_string_search.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/37_boyer_moore_string_search.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/37_boyer_moore_string_search.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\37_boyer_moore_string_search.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/38_rabin_karp_string_search.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/38_rabin_karp_string_search.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\38_rabin_karp_string_search.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/39_divide_conquer_basic.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/39_divide_conquer_basic.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\39_divide_conquer_basic.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/40_merge_sort_using_divide_conquer.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/40_merge_sort_using_divide_conquer.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\40_merge_sort_using_divide_conquer.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/41_fast_power_calculation.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/41_fast_power_calculation.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\41_fast_power_calculation.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/42_fibonacci_calculations.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/42_fibonacci_calculations.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\42_fibonacci_calculations.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/43_dynamic_programming_fibonacci.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/43_dynamic_programming_fibonacci.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\43_dynamic_programming_fibonacci.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/44_lcs_algorithm.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/44_lcs_algorithm.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\44_lcs_algorithm.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/45_knapsack_problem.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/45_knapsack_problem.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\45_knapsack_problem.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/46_greedy_algorithm_coinchange_problem.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/46_greedy_algorithm_coinchange_problem.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\46_greedy_algorithm_coinchange_problem.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/47_greedy_algorithm_kruskal.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/47_greedy_algorithm_kruskal.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\47_greedy_algorithm_kruskal.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/48_greedy_algorithm_dijkstra.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/48_greedy_algorithm_dijkstra.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\48_greedy_algorithm_dijkstra.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/49_greedy_algorithm-huffman.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/49_greedy_algorithm-huffman.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\49_greedy_algorithm-huffman.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/50_backtracking_maze_escape.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/50_backtracking_maze_escape.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\50_backtracking_maze_escape.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/51_n_queens_problem.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/51_n_queens_problem.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\51_n_queens_problem.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/52_avl_tree.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/52_avl_tree.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\52_avl_tree.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/53_b_tree.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/53_b_tree.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\53_b_tree.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/54_bellman_ford_algorithm.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/54_bellman_ford_algorithm.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\54_bellman_ford_algorithm.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/55_floyd_warshall_algorithm.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/55_floyd_warshall_algorithm.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\55_floyd_warshall_algorithm.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/56_red_black_tree.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/56_red_black_tree.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\56_red_black_tree.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/57_trie_tree.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/57_trie_tree.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\57_trie_tree.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/58_advanced_divide_conquer.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/58_advanced_divide_conquer.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\58_advanced_divide_conquer.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
 
 build CMakeFiles/C_DataStructures.dir/src/c/59_advanced_algorithm_techniques.c.obj: C_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/src/c/59_advanced_algorithm_techniques.c || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\src\c\59_advanced_algorithm_techniques.c.obj.d
-  FLAGS = -g -fdiagnostics-color=always
+  FLAGS = -g -std=gnu99 -fdiagnostics-color=always
   INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir
   OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\src\c
+
+build CMakeFiles/C_DataStructures.dir/tests/cpp/02_stack/stack_test.cpp.obj: CXX_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/tests/cpp/02_stack/stack_test.cpp || cmake_object_order_depends_target_C_DataStructures
+  DEP_FILE = CMakeFiles\C_DataStructures.dir\tests\cpp\02_stack\stack_test.cpp.obj.d
+  FLAGS = -g -fdiagnostics-color=always
+  INCLUDES = -ID:/Desktop/C_DataStructures/include/mylib/interfaces -ID:/Desktop/C_DataStructures/src/hpp -ID:/Desktop/C_DataStructures/src/hpp/01_linked_list -ID:/Desktop/C_DataStructures/src/hpp/02_stack -ID:/Desktop/C_DataStructures/src/hpp/03_queue -ID:/Desktop/C_DataStructures/src/hpp/04_tree
+  OBJECT_DIR = CMakeFiles\C_DataStructures.dir
+  OBJECT_FILE_DIR = CMakeFiles\C_DataStructures.dir\tests\cpp\02_stack
 
 build CMakeFiles/C_DataStructures.dir/examples/main.cpp.obj: CXX_COMPILER__C_DataStructures_unscanned_Debug D$:/Desktop/C_DataStructures/examples/main.cpp || cmake_object_order_depends_target_C_DataStructures
   DEP_FILE = CMakeFiles\C_DataStructures.dir\examples\main.cpp.obj.d
@@ -505,7 +512,7 @@ build CMakeFiles/C_DataStructures.dir/tests/cpp/01_linked_list/circular_linked_l
 #############################################
 # Link the executable C_DataStructures.exe
 
-build C_DataStructures.exe: CXX_EXECUTABLE_LINKER__C_DataStructures_Debug CMakeFiles/C_DataStructures.dir/src/c/01_single_linkedlist.c.obj CMakeFiles/C_DataStructures.dir/src/c/02_doubly_linkedlist.c.obj CMakeFiles/C_DataStructures.dir/src/c/03_circular_linkedlist.c.obj CMakeFiles/C_DataStructures.dir/src/c/04_array_stack.c.obj CMakeFiles/C_DataStructures.dir/src/c/05_linkedlist_stack.c.obj CMakeFiles/C_DataStructures.dir/src/c/06_circular_queue.c.obj CMakeFiles/C_DataStructures.dir/src/c/07_linked_queue.c.obj CMakeFiles/C_DataStructures.dir/src/c/08_binary_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/09_binary_search_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/10_expression_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/11_disjoint_set.c.obj CMakeFiles/C_DataStructures.dir/src/c/12_bubble_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/13_insertion_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/14_selection_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/15_quick_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/16_merge_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/17_heap_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/18_qsort_function.c.obj CMakeFiles/C_DataStructures.dir/src/c/19_sequential_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/20_binary_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/21_bsearch_function.c.obj CMakeFiles/C_DataStructures.dir/src/c/22_priority_queue.c.obj CMakeFiles/C_DataStructures.dir/src/c/23_max_heap.c.obj CMakeFiles/C_DataStructures.dir/src/c/24_heap_based_priority_que.c.obj CMakeFiles/C_DataStructures.dir/src/c/25_chaining_hash_table.c.obj CMakeFiles/C_DataStructures.dir/src/c/26_open_addressing_hash_table.c.obj CMakeFiles/C_DataStructures.dir/src/c/27_adjacency_matrix.c.obj CMakeFiles/C_DataStructures.dir/src/c/28_adjacency_list.c.obj CMakeFiles/C_DataStructures.dir/src/c/29_graph_dfs.c.obj CMakeFiles/C_DataStructures.dir/src/c/30_graph_bfs.c.obj CMakeFiles/C_DataStructures.dir/src/c/31_kruskal_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/32_prim_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/33_dijkstra_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/34_topological_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/35_brute_force_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/36_kmp_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/37_boyer_moore_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/38_rabin_karp_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/39_divide_conquer_basic.c.obj CMakeFiles/C_DataStructures.dir/src/c/40_merge_sort_using_divide_conquer.c.obj CMakeFiles/C_DataStructures.dir/src/c/41_fast_power_calculation.c.obj CMakeFiles/C_DataStructures.dir/src/c/42_fibonacci_calculations.c.obj CMakeFiles/C_DataStructures.dir/src/c/43_dynamic_programming_fibonacci.c.obj CMakeFiles/C_DataStructures.dir/src/c/44_lcs_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/45_knapsack_problem.c.obj CMakeFiles/C_DataStructures.dir/src/c/46_greedy_algorithm_coinchange_problem.c.obj CMakeFiles/C_DataStructures.dir/src/c/47_greedy_algorithm_kruskal.c.obj CMakeFiles/C_DataStructures.dir/src/c/48_greedy_algorithm_dijkstra.c.obj CMakeFiles/C_DataStructures.dir/src/c/49_greedy_algorithm-huffman.c.obj CMakeFiles/C_DataStructures.dir/src/c/50_backtracking_maze_escape.c.obj CMakeFiles/C_DataStructures.dir/src/c/51_n_queens_problem.c.obj CMakeFiles/C_DataStructures.dir/src/c/52_avl_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/53_b_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/54_bellman_ford_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/55_floyd_warshall_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/56_red_black_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/57_trie_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/58_advanced_divide_conquer.c.obj CMakeFiles/C_DataStructures.dir/src/c/59_advanced_algorithm_techniques.c.obj CMakeFiles/C_DataStructures.dir/examples/main.cpp.obj CMakeFiles/C_DataStructures.dir/C_DataStructures.cpp.obj CMakeFiles/C_DataStructures.dir/tests/cpp/01_linked_list/single_linked_list_test.cpp.obj CMakeFiles/C_DataStructures.dir/tests/cpp/01_linked_list/double_linked_list_test.cpp.obj CMakeFiles/C_DataStructures.dir/tests/cpp/01_linked_list/circular_linked_list.cpp.obj
+build C_DataStructures.exe: CXX_EXECUTABLE_LINKER__C_DataStructures_Debug CMakeFiles/C_DataStructures.dir/src/c/01_single_linkedlist.c.obj CMakeFiles/C_DataStructures.dir/src/c/02_doubly_linkedlist.c.obj CMakeFiles/C_DataStructures.dir/src/c/03_circular_linkedlist.c.obj CMakeFiles/C_DataStructures.dir/src/c/04_array_stack.c.obj CMakeFiles/C_DataStructures.dir/src/c/05_linkedlist_stack.c.obj CMakeFiles/C_DataStructures.dir/src/c/06_circular_queue.c.obj CMakeFiles/C_DataStructures.dir/src/c/07_linked_queue.c.obj CMakeFiles/C_DataStructures.dir/src/c/08_binary_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/09_binary_search_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/10_expression_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/11_disjoint_set.c.obj CMakeFiles/C_DataStructures.dir/src/c/12_bubble_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/13_insertion_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/14_selection_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/15_quick_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/16_merge_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/17_heap_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/18_qsort_function.c.obj CMakeFiles/C_DataStructures.dir/src/c/19_sequential_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/20_binary_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/21_bsearch_function.c.obj CMakeFiles/C_DataStructures.dir/src/c/22_priority_queue.c.obj CMakeFiles/C_DataStructures.dir/src/c/23_max_heap.c.obj CMakeFiles/C_DataStructures.dir/src/c/24_heap_based_priority_que.c.obj CMakeFiles/C_DataStructures.dir/src/c/25_chaining_hash_table.c.obj CMakeFiles/C_DataStructures.dir/src/c/26_open_addressing_hash_table.c.obj CMakeFiles/C_DataStructures.dir/src/c/27_adjacency_matrix.c.obj CMakeFiles/C_DataStructures.dir/src/c/28_adjacency_list.c.obj CMakeFiles/C_DataStructures.dir/src/c/29_graph_dfs.c.obj CMakeFiles/C_DataStructures.dir/src/c/30_graph_bfs.c.obj CMakeFiles/C_DataStructures.dir/src/c/31_kruskal_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/32_prim_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/33_dijkstra_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/34_topological_sort.c.obj CMakeFiles/C_DataStructures.dir/src/c/35_brute_force_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/36_kmp_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/37_boyer_moore_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/38_rabin_karp_string_search.c.obj CMakeFiles/C_DataStructures.dir/src/c/39_divide_conquer_basic.c.obj CMakeFiles/C_DataStructures.dir/src/c/40_merge_sort_using_divide_conquer.c.obj CMakeFiles/C_DataStructures.dir/src/c/41_fast_power_calculation.c.obj CMakeFiles/C_DataStructures.dir/src/c/42_fibonacci_calculations.c.obj CMakeFiles/C_DataStructures.dir/src/c/43_dynamic_programming_fibonacci.c.obj CMakeFiles/C_DataStructures.dir/src/c/44_lcs_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/45_knapsack_problem.c.obj CMakeFiles/C_DataStructures.dir/src/c/46_greedy_algorithm_coinchange_problem.c.obj CMakeFiles/C_DataStructures.dir/src/c/47_greedy_algorithm_kruskal.c.obj CMakeFiles/C_DataStructures.dir/src/c/48_greedy_algorithm_dijkstra.c.obj CMakeFiles/C_DataStructures.dir/src/c/49_greedy_algorithm-huffman.c.obj CMakeFiles/C_DataStructures.dir/src/c/50_backtracking_maze_escape.c.obj CMakeFiles/C_DataStructures.dir/src/c/51_n_queens_problem.c.obj CMakeFiles/C_DataStructures.dir/src/c/52_avl_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/53_b_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/54_bellman_ford_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/55_floyd_warshall_algorithm.c.obj CMakeFiles/C_DataStructures.dir/src/c/56_red_black_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/57_trie_tree.c.obj CMakeFiles/C_DataStructures.dir/src/c/58_advanced_divide_conquer.c.obj CMakeFiles/C_DataStructures.dir/src/c/59_advanced_algorithm_techniques.c.obj CMakeFiles/C_DataStructures.dir/tests/cpp/02_stack/stack_test.cpp.obj CMakeFiles/C_DataStructures.dir/examples/main.cpp.obj CMakeFiles/C_DataStructures.dir/C_DataStructures.cpp.obj CMakeFiles/C_DataStructures.dir/tests/cpp/01_linked_list/single_linked_list_test.cpp.obj CMakeFiles/C_DataStructures.dir/tests/cpp/01_linked_list/double_linked_list_test.cpp.obj CMakeFiles/C_DataStructures.dir/tests/cpp/01_linked_list/circular_linked_list.cpp.obj
   FLAGS = -g
   LINK_LIBRARIES = -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\C_DataStructures.dir

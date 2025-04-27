@@ -1,8 +1,9 @@
-```c
+//```c
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <limits.h>
+#include <stdbool.h>
 
 /*
 알고리즘 분류: 알고리즘 설계 기법

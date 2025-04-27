@@ -11,6 +11,10 @@ endif()
 
 project ("C_DataStructures")
 
+# C99 표준 사용 설정
+set(CMAKE_C_STANDARD 99)
+set(CMAKE_C_STANDARD_REQUIRED ON)
+
 # 이 프로젝트의 실행 파일에 소스를 추가합니다.
 
 # src/c 디렉터리의 모든 .c 파일
@@ -50,4 +54,8 @@ add_executable(C_DataStructures ${C_FILES} ${CPP_FILES} ${EXAMPLE_FILES} "C_Data
         tests/cpp/01_linked_list/single_linked_list_test.cpp
         tests/cpp/01_linked_list/double_linked_list_test.cpp
         tests/cpp/01_linked_list/circular_linked_list.cpp
+        include/mylib/interfaces/i_stack.hpp
+        src/hpp/02_stack/array_stack.hpp
+        src/hpp/02_stack/linked_stack.hpp
+        tests/cpp/02_stack/stack_test.cpp
 )
